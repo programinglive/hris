@@ -5,9 +5,22 @@ This open-source project is initiated and actively maintained by the Programing 
 
 ## Overview
 
-This HRIS system is designed to cater to the dynamic needs of human resources management in organizations of all sizes.
-From employee data management, payroll, benefits, training, recruiting, and compliance,
-this application is your all-in-one solution to ensure a smooth and efficient HR system.
+Our HRIS solution is designed to support multiple tenants,
+allowing different organizations
+to manage their respective human resource requirements in isolated instances within the same HRIS.
+This improves the utility and efficiency of our system,
+making it a suitable choice for software service providers, organizational franchises,
+large scale corporations with semi-independent branches, and more.
+
+<details>
+<summary>Minimum Viable Product (MVP)</summary>
+
+The primary feature set we aim to achieve for our MVP includes:
+
+1. **Company Registration:** Companies need to be able to register themselves to use this application. This process would involve providing company details, setting up an administrator account, and agreeing to any applicable terms and conditions. Once registered, the company should have its own isolated space within the application to operate independently.
+2. **Sister Company Management:** Aside from operating their own space, registered companies should be able to add and manage sister companies within their system. This facilitates centralized HR management for business conglomerates or franchises having multiple sister companies.
+
+</details>
 
 ## Features
 
