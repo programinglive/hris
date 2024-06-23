@@ -17,15 +17,11 @@
 	
 	@livewireStyles
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
+	@stack('styles')
 </head>
 <body class="bg-blue-50">
-    <livewire:page-header />
-    
-    <main>
-        <livewire:main-content />
-    </main>
-    
-    <livewire:page-footer />
+    {{ $slot }}
 	@livewireScripts
+	@stack('scripts')
 </body>
 </html>
