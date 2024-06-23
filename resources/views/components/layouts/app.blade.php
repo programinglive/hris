@@ -21,5 +21,6 @@
 <body class="bg-blue-50">
     {{ $slot }}
 	@livewireScripts
+	@stack('scripts')
 </body>
 </html>
