@@ -9,10 +9,15 @@ use Livewire\Component;
 
 class PageHeader extends Component
 {
+    public $navbarBrand = 'HRIS';
+
+    public $navItems = [
+        ['name' => 'About', 'url' => '/about'],
+        ['name' => 'Register', 'url' => '/register'],
+    ];
+
     /**
      * Render the view for the component.
-     *
-     * @return Factory|Application|View
      */
     public function render(): Factory|Application|View
     {
