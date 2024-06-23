@@ -17,6 +17,7 @@
 	
 	@livewireStyles
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
+	@stack('styles')
 </head>
 <body class="bg-blue-50">
     {{ $slot }}
