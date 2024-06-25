@@ -50,9 +50,9 @@ Make sure you have PHP, Composer, Node.js and Yarn installed on your machine bef
 
 ```shell
 # Clone the repository using git
-git clone https://github.com/<username>/<repository-name>.git
+git clone https://github.com/programinglive/hris.git
 # Navigate into the directory
-cd <repository-name>
+cd hris
 # Install PHP dependencies with Composer
 composer install
 # Install Node.js dependencies with Yarn
