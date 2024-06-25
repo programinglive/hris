@@ -9,6 +9,9 @@ class RouteTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @return void
+     */
     public function test_it_check_home_route()
     {
         $this->get(route('home'))->assertStatus(200);
@@ -22,5 +25,10 @@ class RouteTest extends TestCase
     public function test_it_check_about_route()
     {
         $this->get(route('about'))->assertStatus(200);
+    }
+
+    public function test_it_check_docs_route()
+    {
+        $this->get(route('docs'))->assertStatus(200);
     }
 }
