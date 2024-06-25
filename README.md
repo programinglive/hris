@@ -1,4 +1,4 @@
-# HRIS By Programing Live Community
+# HRIS By ProgramingLive Community
 
 Welcome to our community-driven Human Resource Information System (HRIS) project.
 This open-source project is initiated and actively maintained by the Programing Live Community.
@@ -43,6 +43,33 @@ This project uses various technologies:
 - SQLite for database
 - PHPUnit for testing
 - Various Composer and JavaScript packages
+
+## Installation Instructions
+
+Make sure you have PHP, Composer, Node.js and Yarn installed on your machine before starting the installation.
+
+```shell
+# Clone the repository using git
+git clone https://github.com/<username>/<repository-name>.git
+# Navigate into the directory
+cd <repository-name>
+# Install PHP dependencies with Composer
+composer install
+# Install Node.js dependencies with Yarn
+yarn install
+# Copy .env.example file to .env
+cp .env.example .env
+# Generate a fresh app key
+php artisan key:generate
+# Run the database migrations and seeders
+php artisan migrate --seed
+# Compile the frontend assets
+yarn dev
+# Serve the application
+php artisan serve
+```
+
+The application should now be running at `http://localhost:8000`.
 
 ## Contributions
 
