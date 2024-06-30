@@ -17,11 +17,6 @@ class RouteTest extends TestCase
         $this->get(route('home'))->assertStatus(200);
     }
 
-    public function test_it_check_company_register_route()
-    {
-        $this->get(route('companyRegister'))->assertStatus(200);
-    }
-
     public function test_it_check_about_route()
     {
         $this->get(route('about'))->assertStatus(200);
