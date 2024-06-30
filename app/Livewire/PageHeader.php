@@ -14,7 +14,7 @@ class PageHeader extends Component
     public $navItems = [
         ['name' => 'About', 'url' => '/about'],
         ['name' => 'Docs', 'url' => '/docs'],
-        ['name' => 'Register', 'url' => '/companyRegister'],
+        ['name' => 'Register', 'url' => '/company/register'],
     ];
 
     /**
