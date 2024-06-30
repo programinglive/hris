@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -10,8 +12,21 @@ class CompanyController extends Controller
     {
     }
 
+    /**
+     * Store a newly created company in the database.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request)
     {
+        $company = Company::create($request->all());
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Company created successfully',
+            'data' => $company
+        ], 201);
     }
 
     public function show($id)
