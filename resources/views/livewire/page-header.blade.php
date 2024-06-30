@@ -1,4 +1,4 @@
-<div class="container mx-auto">
+<div>
 	<nav class="w-full flex flex-col lg:flex-row justify-between bg-blue-500 p-6 shadow-md">
 		<div class="flex items-center lg:items-start flex-shrink-0 text-white lg:mb-0">
 			<a href="#" class="flex align-items-center">

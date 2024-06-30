@@ -20,7 +20,7 @@
 	@stack('styles')
 </head>
 <body class="bg-blue-50">
-    {{ $slot }}
+  {{ $slot }}
 	@livewireScripts
 	@stack('scripts')
 </body>

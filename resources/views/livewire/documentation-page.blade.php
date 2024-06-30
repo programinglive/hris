@@ -1,8 +1,10 @@
 <div class="flex bg-gray-900">
 	<aside class="w-1/4 bg-gray-800 min-h-screen p-4 text-white">
-		<div class="text-lg font-bold mb-4">HRIS</div>
+		<div class="text-lg font-bold mb-4">
+			<a href="/">HRIS</a>
+		</div>
 		<nav class="space-y-2">
-			<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Introduction</a>
+			<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Inx`troduction</a>
 			<div class="pl-4 space-y-1">
 				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Guides</a>
 				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">API Reference</a>
