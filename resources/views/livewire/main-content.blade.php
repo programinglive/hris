@@ -1,5 +1,5 @@
 <div class="flex justify-center items-center min-h-screen">
-	<div class="flex justify-center items-center h-full md:w-1/2 w-full">
+	<div class="flex justify-center items-center h-full md:w-1/2 w-3/4 sm:w-full px-4 sm:px-0">
 		{{-- Form Component --}}
 		<form id="login" class="w-full bg-white p-6 rounded-lg shadow-md -mt-20" method="POST" action="/login">
 			@csrf

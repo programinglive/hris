@@ -5,7 +5,7 @@
 				<img src="{{ asset('assets/images/hris_logo.svg') }}" alt="Logo" class="h-8 w-auto">
 				<span class="ml-2 text-2xl">{{ $navbarBrand }}</span>
 			</a>
-			<button id="burger" onClick="toggleNav()" class="lg:hidden ml-auto inline-flex p-3 hover:bg-gray-600 rounded-lg">
+			<button id="burger" @click="toggleNav()" class="lg:hidden ml-auto inline-flex p-3 hover:bg-blue-700 rounded-lg">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/>
 				</svg>
@@ -34,7 +34,26 @@
           #nav-content {
               display: block;
           }
-      }</style>
+      }
+
+      @media only screen
+      and (min-device-width: 768px)
+      and (max-device-width: 1024px) {
+          #nav-content {
+              display: none;
+          }
+      }
+
+
+      @media only screen
+      and (min-device-width: 1024px)
+      and (max-device-width: 1366px) {
+          #nav-content {
+              display: block;
+          }
+      }
+      
+  </style>
 @endpush
 
 @push('scripts')
