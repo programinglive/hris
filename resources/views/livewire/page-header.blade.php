@@ -12,7 +12,7 @@
 			</button>
 		</div>
 		<div class="lg:flex lg:items-center lg:w-auto lg:justify-end" id="navbar">
-			<div id="nav-content" class="lg:flex-grow lg:block">
+			<div id="nav-content" class="lg:flex-grow">
 				@foreach($navItems as $item)
 					<a href="{{ $item['url'] }}"
 					   class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">{{ $item['name'] }}</a>
@@ -24,15 +24,9 @@
 
 @push('styles')
   <style>
-      @media only screen and (max-width: 600px) {
+      @media only screen and (max-width: 1028px) {
           #nav-content {
               display: none;
-          }
-      }
-
-      @media only screen and (min-width: 600px) {
-          #nav-content {
-              display: block;
           }
       }
 
@@ -43,7 +37,6 @@
               display: none;
           }
       }
-
 
       @media only screen
       and (min-device-width: 1024px)
