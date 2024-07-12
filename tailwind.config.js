@@ -1,9 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  purge: [
+  content: [
     './resources/**/*.blade.php',
     './resources/**/*.js',
     './resources/**/*.vue',
+    "./node_modules/flowbite/**/*.js"
   ],
   theme: {
     extend: {},
@@ -11,5 +12,8 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ]
+
 }

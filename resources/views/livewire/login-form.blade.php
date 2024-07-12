@@ -18,6 +18,7 @@
 	
 	<div class="flex justify-end">
 		<button
+			wire:click="goToDashboard"
 			class="bg-blue-600 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 			type="submit">
 			Log in
