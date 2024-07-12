@@ -3,7 +3,7 @@
 	
 	<main>
 		<div class="flex justify-center items-center min-h-screen">
-			<div class="flex justify-center items-center h-full w-1/2">
+			<div class="flex justify-center items-center h-full w-full sm:w-full md:w-3/4 lg:w-1/2 xl:w-1/2 p-6">
 				{{-- Company Register Component --}}
 				<form id="companyRegister" class="w-full bg-white p-6 rounded-lg shadow-md -mt-20" method="POST"
 				      action="{{ route('company.store') }}">

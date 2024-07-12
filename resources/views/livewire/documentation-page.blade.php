@@ -1,44 +1,25 @@
-<div class="flex bg-gray-900">
-	<aside class="w-1/4 bg-gray-800 min-h-screen p-4 text-white">
-		<div class="text-lg font-bold mb-4">
+<div class="flex flex-col md:flex-row">
+	<aside class="w-full md:w-1/4 bg-gray-200">
+		<div class="text-lg text-white font-bold bg-blue-600 p-4">
 			<a href="/">HRIS</a>
 		</div>
-		<nav class="space-y-2">
-			<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Inx`troduction</a>
-			<div class="pl-4 space-y-1">
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Guides</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">API Reference</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Quickstart</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Authentication</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Pagination</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Errors</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Webhooks</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Business Guide</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Invoice Guide</a>
+		<nav class="bg-gray-800 hover:bg-gray-900" x-data="{ isOpen: false }">
+			<a href="#" class="block py-2 px-4 text-white" @click="isOpen = !isOpen">Introduction</a>
+			<div class="space-y-1 bg-gray-600 text-white" x-show="isOpen">
+				<a href="#" class="block py-2 px-4 rounded hover:bg-gray-500">Guides</a>
+				<a href="#" class="block py-2 px-4 rounded hover:bg-gray-500">API Reference</a>
+				<a href="#" class="block py-2 px-4 rounded hover:bg-gray-500">Quickstart</a>
+				<a href="#" class="block py-2 px-4 rounded hover:bg-gray-500">Authentication</a>
+				<a href="#" class="block py-2 px-4 rounded hover:bg-gray-500">Pagination</a>
+				<a href="#" class="block py-2 px-4 rounded hover:bg-gray-500">Errors</a>
+				<a href="#" class="block py-2 px-4 rounded hover:bg-gray-500">Webhooks</a>
+				<a href="#" class="block py-2 px-4 rounded hover:bg-gray-500">Business Guide</a>
+				<a href="#" class="block py-2 px-4 rounded hover:bg-gray-500">Invoice Guide</a>
 			</div>
 		</nav>
-		<div class="mt-8">
-			<h3 class="text-sm font-semibold mb-2 text-white">Frontend SDKs</h3>
-			<nav class="space-y-2 pl-4">
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">React SDK</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Vue SDK</a>
-			</nav>
-			<h3 class="text-sm font-semibold mt-4 mb-2 text-white">API Reference</h3>
-			<nav class="space-y-2 pl-4">
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Users</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Roles</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Businesses</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Counterparties</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Estimates</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Invoices</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Recurring Invoices</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Payments</a>
-				<a href="#" class="block py-2 px-4 text-white rounded hover:bg-gray-700">Tax Types</a>
-			</nav>
-		</div>
 	</aside>
 	<main class="flex-1 p-8">
-		<div class="bg-gray-800 p-6 rounded-lg text-white">
+		<div class="bg-gra-800 p-6 rounded-lg">
 			<div class="flex justify-between items-center mb-4">
 				<h1 class="text-2xl font-bold">API Documentation</h1>
 				<button class="bg-blue-600 px-4 py-2 rounded-lg">Quickstart →</button>
@@ -46,7 +27,7 @@
 			<div>
 				<h2 class="text-xl font-semibold mb-2">Getting started</h2>
 				<p class="mb-4">To get started with our API, follow these steps:</p>
-				<ol class="list-decimal list-inside space-y-2 text-white">
+				<ol class="list-decimal list-inside space-y-2">
 					<li>Contact us to obtain sandbox API keys. These keys will give you access to a testing environment where you
 						can experiment and develop your integration without affecting live data.
 					</li>
