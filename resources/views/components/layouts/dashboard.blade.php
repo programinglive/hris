@@ -21,7 +21,7 @@
 	
 	<div class="page-content">
 		
-		@include('layouts.shared/topbar')
+		<livewire:dashboard-top-bar />
 		
 		<main class="flex-grow p-6">
 			
