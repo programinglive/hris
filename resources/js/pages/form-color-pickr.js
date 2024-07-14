@@ -1,9 +1,3 @@
-/**
- * Theme: Konrix - Responsive Tailwind Admin Dashboard
- * Author: Coderthemes
- * Module/App: form-advanced.init.js
- */
-
 import Pickr from '@simonwep/pickr'
 
 class AdvancedForm {

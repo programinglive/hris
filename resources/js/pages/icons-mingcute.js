@@ -1,8 +1,4 @@
-/*
-Template Name: Konrix - Responsive Tailwind Admin Dashboard
-Author: CoderThemes
-Website: https://coderthemes.com/
-Contact: support@coderthemes.com
+/**
 File: Material Symbols Icons init js
 
 How to extact icons from material symbols (Trick)

@@ -188,7 +188,6 @@
                             <p class="mb-2 text-gray-500 dark:text-gray-200">
                                 <small>08:25 am</small>
                             </p>
-                            <p class="text-gray-500 dark:text-gray-200">Download the new updates of Konrix admin dashboard</p>
                         </div>
                         <div class="bg-white dark:bg-gray-800 absolute h-4 w-4 rotate-45 rounded-sm top-7 -start-2"></div>
                     </div>
@@ -241,7 +240,6 @@
                             <p class="mb-2 text-gray-500 dark:text-gray-200">
                                 <small>08:25 am</small>
                             </p>
-                            <p class="text-gray-500 dark:text-gray-200">Download the new updates of Konrix admin dashboard</p>
                         </div>
                         <div class="bg-white dark:bg-gray-800 absolute h-4 w-4 rotate-45 rounded-sm top-7 -start-2"></div>
                     </div>

@@ -1,8 +1,4 @@
 /*
-Template Name: Konrix - Responsive Tailwind Admin Dashboard
-Author: CoderThemes
-Website: https://coderthemes.com/
-Contact: support@coderthemes.com
 File: Tour init js
 */
 

@@ -7,12 +7,17 @@ use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
+    /**
+     * Run method to create admin user and factory user.
+     *
+     * @return void
+     */
     public function run(): void
     {
         User::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
-            'password' => bcrypt('helloworld'),
+            'password' => bcrypt('hrisproject'),
         ]);
         User::factory()->create();
     }

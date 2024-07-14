@@ -1,11 +1,3 @@
-/*
-Template Name: Konrix - Responsive 5 Admin Dashboard
-Author: CoderThemes
-Website: https://coderthemes.com/
-Contact: support@coderthemes.com
-File: vector map js
-*/
-
 import jsVectorMap from "jsvectormap";
 
 window.jsVectorMap = jsVectorMap;

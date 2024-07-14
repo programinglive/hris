@@ -1,9 +1,3 @@
-/**
- * Theme: Konrix - Responsive Tailwind Admin Dashboard
- * Author: coderthemes
- * Module/App: Theme Config Js
- */
-
 (function () {
 
     var savedConfig = sessionStorage.getItem("__CONFIG__");

@@ -1,12 +1,4 @@
-/*
-Template Name: Konrix - Responsive 5 Admin Dashboard
-Author: CoderThemes
-Website: https://coderthemes.com/
-Contact: support@coderthemes.com
-File: datatable js
-*/
-
-import { Grid, h, html } from "gridjs";
+import { Grid, html } from "gridjs";
 window.gridjs = Grid;
 
 class GridDatatable {
@@ -37,7 +29,7 @@ class GridDatatable {
                 {
                     name: 'Actions',
                     width: '120px',
-                    formatter: (function (cell) {
+                    formatter: (function () {
                         return html("<a href='#' class='text-reset text-decoration-underline'>" + "Details" + "</a>");
                     })
                 },
@@ -97,7 +89,7 @@ class GridDatatable {
                 {
                     name: 'Actions',
                     width: '100px',
-                    formatter: (function (cell) {
+                    formatter: (function () {
                         return html("<button type='button' class='btn btn-sm btn-light'>" +
                             "Details" +
                             "</button>");
