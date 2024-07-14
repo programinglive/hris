@@ -17,7 +17,7 @@
 
 <div class="flex wrapper">
 	
-	@include('layouts.shared/sidebar')
+	<livewire:dashboard-sidebar />
 	
 	<div class="page-content">
 		
