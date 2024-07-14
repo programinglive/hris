@@ -1,0 +1,83 @@
+//
+// _topbar.scss
+//
+
+.app-header {
+    @apply sticky top-0 shadow-sm;
+    z-index: 35;
+    background: $topbar-bg;
+    height: $topbar-height;
+
+    .nav-link {
+        color: $topbar-item-color;
+        @apply rounded-full bg-transparent transition-all ease-in-out;
+
+        &:hover {
+            color: $topbar-item-hover-color;
+            background: $topbar-item-hover-bg;
+        }
+
+        &:is(.open, .show, .active, :active, :focus) {
+            color: $topbar-item-active-color;
+            background: $topbar-item-active-bg;
+        }
+    }
+
+    .logo-box {
+        @apply lg:hidden md:flex;
+
+        .logo-lg {
+            @apply lg:block hidden;
+        }
+
+        .logo-sm {
+            @apply lg:hidden block;
+        }
+    }
+}
+
+// Topbar light/Dark Mode icon 
+html[data-mode="dark"] {
+    #light-dark-mode {
+        .mgc_moon_line {
+            &::before {
+                content: "\F069";
+            }
+        }
+    }
+}
+
+// Fullscreen exit icon
+.fullscreen-enable {
+    .mgc_fullscreen_line::before {
+        content: "\ECE3";
+    }
+}
+
+// Full Size Sidenav (Hide Sidenav | Open Sidenav with Backdrop) 
+html[data-sidenav-view="mobile"] {
+    .app-header {
+        .logo-box {
+            @apply flex;
+        }
+    }
+}
+
+// Topbar Logo
+
+html[data-mode="dark"],
+html[data-menu-color="brand"],
+html[data-menu-color="dark"],
+html[data-menu-color="gradient"] {
+    .app-header {
+        .logo-box {
+            .logo-light {
+                display: block;
+            }
+
+            .logo-dark {
+                display: none;
+            }
+        }
+    }
+}

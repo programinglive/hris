@@ -1,0 +1,82 @@
+.icons-list-demo {
+    i {
+        text-align: center;
+        vertical-align: middle;
+        font-size: 28px;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        border-radius: 3px;
+        display: inline-block;
+        transition: all .2s;
+    }
+
+    svg {
+        display: inline-flex;
+
+    }
+
+    span {
+        display: inline-flex;
+        user-select: all;
+        @apply ms-4;
+    }
+}
+
+.kanban-board{
+    position: relative;
+
+    &:before {
+        content: "No Tasks";
+        position: absolute;
+        display: flex;
+        inset-inline-start: 50%;
+        top: 0;
+        transform: translate(-50%);
+        min-height: 100px;
+        justify-content: center;
+        line-height: 110px;
+        z-index: -10;
+        text-align: center;
+        font-weight: 600;
+    }
+}
+
+.custom-scroll {
+    &::-webkit-scrollbar {
+        -webkit-appearance: none;
+    }
+
+    &::-webkit-scrollbar:vertical {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar:horizontal {
+        height: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        @apply rounded-lg bg-slate-300/50 dark:bg-slate-500/50;
+    }
+
+    &::-webkit-scrollbar-track {
+        @apply bg-transparent rounded-lg;
+    }
+
+    &::-webkit-scrollbar-corner {
+        @apply bg-transparent;
+    }
+}
+
+
+// Gallery Page
+.filter-options li a {
+    @apply border-light text-slate-900 dark:text-slate-200 dark:border-gray-700;
+}
+
+.filter-options li:hover a,
+.filter-options li.active a,
+.filter-options li:active a,
+.filter-options li:focus a {
+    @apply bg-primary text-white border-transparent shadow-primary/50;
+}

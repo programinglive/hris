@@ -1,0 +1,58 @@
+/*
+Template Name: Konrix - Responsive Tailwind Admin Dashboard
+Version: 1.0
+Author: CoderThemes
+Email: support@coderthemes.com
+File: Main Css File
+*/
+
+// Custom Variables
+@import "config/variables";
+@import "config/theme-config";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Structure
+@import "structure/sidenav";
+@import "structure/topbar";
+
+// Components
+@import "components/reboot";
+@import "components/buttons";
+@import "components/card";
+@import "components/forms";
+@import "components/print";
+@import "components/helper";
+
+// Plugins (Extended UI Components) 
+@import "plugins/swiper";
+@import "plugins/simplebar";
+@import "plugins/prismjs";
+@import "plugins/sweetalert2";
+@import "plugins/sortablejs";
+@import "plugins/tour";
+@import "plugins/glightbox";
+@import "plugins/tippy-tooltip";
+
+// Chart Plugins
+@import "plugins/apexcharts";
+
+// Advanced Form Plugins
+@import "plugins/dropzone";
+@import "plugins/range-slider";
+@import "plugins/flatpicker";
+@import "plugins/colorpicker";
+@import "plugins/choices";
+@import "plugins/quilljs";
+
+// Data Table
+@import "plugins/gridjs";
+
+// Map Plugins
+@import "plugins/vector-maps";
+@import "plugins/google-map";
+
+// App Pages Plugins
+@import "plugins/fullcalendar";

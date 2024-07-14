@@ -1,0 +1,97 @@
+//
+// SweetAlert2.scss
+//
+
+// Popup
+.swal2-popup {
+  @apply bg-white rounded-sm;
+
+	.swal2-title {
+		font-weight: 500;
+		font-size: 1.3rem;
+    @apply text-gray-900;
+	}
+
+	.swal2-html-container,
+	.swal2-content {
+		font-weight: normal;
+		font-size: 1.1rem;
+		margin-top: 1.5rem;
+    @apply text-gray-800;
+	}
+
+	.swal2-footer {
+    @apply border;
+	}
+
+	.btn {
+		margin: 15px 5px 0;
+	}
+
+	.swal2-styled {
+		&:focus {
+			box-shadow: none;
+		}
+	}
+
+	.swal2-actions {
+		margin: 1.5rem auto 1rem auto;
+	}
+}
+
+// Container
+.swal2-container {
+	&.swal2-shown {
+    @apply bg-gray-800;
+		opacity: 0.5;
+	}
+
+	// Content
+	.swal2-html-container {
+		max-height: 200px;
+		overflow: auto;
+	}
+}
+
+
+// State Colors
+.swal2-icon {
+
+	// Warning
+	&.swal2-warning {
+		@apply border-warning text-warning;
+	}
+
+	// Error
+	&.swal2-error {
+		@apply border-danger text-danger;
+
+		[class^=swal2-x-mark-line] {
+			@apply bg-danger/75;
+		}
+	}
+
+	// Success
+	&.swal2-success {
+		@apply border-success text-success;
+
+		[class^=swal2-success-line] {
+			@apply bg-success;
+		}
+
+		.swal2-success-ring {
+			@apply border-success/30;
+		}
+	}
+
+	// Info
+	&.swal2-info {
+		@apply border-info text-info;
+	}
+
+	// Question
+	&.swal2-question {
+		@apply border-primary;
+		@apply text-primary;
+	}
+}

@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
+
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{{ $title ?? '' }} | Beautyworld HRIS</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta content="Beautyworld HRIS" name="description">
+	<meta content="Beautyworld Team" name="author">
 	
-	<link rel="apple-touch-icon" sizes="180x180" href="{{asset("/assets/images/apple-touch-icon.png")}}">
-	<link rel="icon" type="image/png" sizes="32x32" href="{{asset("/assets/images/favicon-32x32.png")}}">
-	<link rel="icon" type="image/png" sizes="16x16" href="{{asset("/assets/images/favicon-16x16.png")}}">
-	<link rel="manifest" href="{{asset("/assets/images/site.webmanifest")}}">
+	<!-- App favicon -->
+	<link rel="shortcut icon" href="{{ asset('/images/favicon.ico')}}">
 	
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-	
-	<title>{{ config('app.name') }}</title>
-	
+	@vite(['resources/scss/app.scss', 'resources/scss/icons.scss'])
+	@vite(['resources/js/head.js', 'resources/js/config.js'])
 	@livewireStyles
-	@vite(['resources/css/app.css', 'resources/js/app.js'])
-	@stack('styles')
 </head>
-<body class="bg-blue-50">
-  {{ $slot }}
-	@livewireScripts
-	@stack('scripts')
+
+<body>
+<div class="bg-gradient-to-r from-rose-100 to-teal-100 dark:from-gray-700 dark:via-gray-900 dark:to-black">
+	
+	{{ $slot ?? '' }}
+
+</div>
+@livewireScripts
 </body>
 </html>

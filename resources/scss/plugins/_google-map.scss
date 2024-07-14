@@ -1,0 +1,44 @@
+//
+// _google-map.scss
+//
+
+.gmaps,
+.gmaps-panaroma {
+    height: 300px;
+    border-radius: 3px;
+    @apply bg-gray-100;
+}
+
+.gmaps-overlay {
+    display: block;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+    line-height: 40px;
+    border-radius: 4px;
+    padding: 10px 20px;
+    @apply bg-primary;
+}
+
+.gmaps-overlay_arrow {
+    left: 50%;
+    margin-left: -16px;
+    width: 0;
+    height: 0;
+    position: absolute;
+
+    &.above {
+        bottom: -15px;
+        border-left: 16px solid transparent;
+        border-right: 16px solid transparent;
+        @apply border-t-primary border-[16px];
+    }
+
+    &.below {
+        top: -15px;
+        border-left: 16px solid transparent;
+        border-right: 16px solid transparent;
+        @apply border-b-primary border-[16px];
+    }
+
+}

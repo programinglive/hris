@@ -1,0 +1,129 @@
+//
+// _swiper.scss
+//
+
+.swiper-button-next,
+.swiper-button-prev {
+    height: 32px;
+    width: 32px;
+    backdrop-filter: blur(2px);
+    font-family: "MingCute";
+    font-size: 28px;
+    @apply bg-primary/20 text-primary;
+    transition: all 0.3s ease;
+
+    &::after {
+        display: none;
+    }
+}
+
+.swiper-button-prev {
+    &::before {
+        content: "\EDC5";
+    }
+}
+
+.swiper-button-next {
+    &::before {
+        content: "\EF6B";
+    }
+}
+
+.swiper-pagination-bullet {
+    width: 22px;
+    height: 5px;
+    background-color: #fff;
+    border-radius: 50px;
+    @apply shadow;
+
+    .swiper-pagination-bullet-active {
+        opacity: 1;
+    }
+}
+
+.dynamic-pagination {
+    .swiper-pagination-bullet {
+        width: 8px;
+        height: 8px;
+        background-color: #fff;
+        opacity: 0.5;
+        transition: all 0.5s ease;
+
+        &.swiper-pagination-bullet-active {
+            opacity: 1;
+            width: 20px;
+        }
+    }
+}
+
+.swiper-pagination-fraction {
+    color: #fff;
+    font-size: 16px;
+    @apply bg-zinc-900/25;
+    backdrop-filter: blur(2px);
+}
+
+
+.pagination-custom {
+    .swiper-pagination-bullet {
+        height: 25px;
+        width: 25px;
+        line-height: 25px;
+        border-radius: 8px;
+        background-color: #fff;
+        opacity: 0.5;
+        transition: all 0.5s ease;
+
+        &.swiper-pagination-bullet-active {
+            @apply text-secondary;
+            opacity: 1;
+        }
+    }
+}
+
+.swiper-pagination-progressbar {
+    height: 6px !important;
+    @apply bg-success/25;
+
+    .swiper-pagination-progressbar-fill {
+        @apply bg-success;
+    }
+}
+
+
+.swiper-scrollbar {
+    background-color: rgba(#fff, 0.35);
+    backdrop-filter: blur(2px);
+    padding: 1.2px;
+    height: 6px !important;
+
+    .swiper-scrollbar-drag {
+        background-color: #fff;
+    }
+}
+
+.swiper-pagination-dark {
+    .swiper-pagination-bullet {
+        @apply bg-secondary;
+    }
+
+    .dynamic-pagination {
+        .swiper-pagination-bullet {
+            @apply bg-secondary;
+        }
+    }
+
+    &.pagination-custom {
+        .swiper-pagination-bullet {
+            color: #fff;
+
+            &.swiper-pagination-bullet-active {
+                opacity: 1;
+            }
+        }
+    }
+
+    &.swiper-scrollbar {
+        @apply bg-zinc-900/25;
+    }
+}

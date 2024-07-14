@@ -1,0 +1,177 @@
+// 
+// _gridjs.scss
+// 
+
+.gridjs-container {
+    padding: 0;
+    display: block;
+    @apply text-slate-500 dark:text-slate-400;
+}
+
+.gridjs-wrapper {
+    box-shadow: none;
+    border-radius: 0px;
+    @apply border border-collapse custom-scroll border-gray-200 dark:border-gray-700;
+    @apply rounded-t-md;
+
+
+    
+}
+
+.gridjs-table {
+    width: 100%;    
+}
+
+.gridjs-tbody,
+td.gridjs-td {
+    @apply bg-white dark:bg-slate-800;
+}
+
+th.gridjs-th,
+td.gridjs-td {
+    @apply border p-4 border-gray-200 dark:border-gray-700;
+}
+
+th {
+    &.gridjs-th {
+        @apply bg-light/75 dark:bg-slate-700/75;
+        border-top: 0;
+
+    }
+
+    &.gridjs-th-sort {
+
+        &:focus,
+        &:hover {
+            @apply bg-light/80 dark:bg-slate-700/80;
+        }
+    }
+}
+
+.gridjs-head {
+    padding-top: 0;
+}
+
+.gridjs-footer {
+    @apply shadow-none border border-t-0 bg-white dark:bg-slate-800 border-gray-200 dark:border-gray-700;
+}
+
+.gridjs-summary {
+    @apply text-gray-400;
+    margin-top: 8px !important;
+}
+
+.gridjs-pagination {
+
+    // .gridjs-pages{
+    //     @apply -space-x-1;
+    // }
+
+    .gridjs-pages button {
+        @apply text-gray-600 px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700;
+        outline: none;
+        user-select: none;
+
+        &:first-child {
+            @apply rounded-none rounded-s-md border border-gray-200 dark:border-gray-700;
+        }
+
+        &:last-child {
+            @apply rounded-none rounded-e-md border border-gray-200 dark:border-gray-700;
+        }
+
+        &:disabled,
+        &:hover:disabled,
+        &[disabled] {
+            @apply text-gray-600 bg-white dark:bg-slate-800;
+        }
+
+        &:hover {
+            @apply text-primary bg-white dark:bg-slate-800;
+        }
+
+        &:focus {
+            box-shadow: none;
+        }
+
+        &.gridjs-currentPage {
+            @apply bg-primary text-white border-primary font-medium;
+        }
+    }
+
+}
+
+.gridjs-search {
+    position: relative;
+    float: left;
+
+    &::before {
+        content: "\e8b6";
+        font-family: "Material Symbols Rounded";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        inset-inline-start: 10px;
+        font-size: 18px;
+        @apply text-gray-400;
+    }
+}
+
+input.gridjs-input {
+    @apply border bg-white dark:bg-slate-800 py-2 pe-3 ps-9 rounded border-gray-200 dark:border-gray-700;
+
+    &:focus {
+        @apply shadow-none border border-gray-200 dark:border-gray-700;
+    }
+}
+
+th.gridjs-th {
+    .gridjs-th-content {
+        display: inline-block;
+        vertical-align: middle;
+        @apply font-semibold;
+    }
+}
+
+button.gridjs-sort {
+    display: inline-block;
+    vertical-align: middle;
+    width: 10px;
+    height: 20px;
+}
+
+th.gridjs-th-sort .gridjs-th-content {
+    width: calc(100% - 10px);
+}
+
+button {
+
+    &.gridjs-sort-asc,
+    &.gridjs-sort-desc {
+        background-size: 7px;
+    }
+}
+
+
+.gridjs-td {
+    .gridjs-checkbox {
+        vertical-align: top;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        appearance: none;
+    }
+}
+
+.gridjs-border-none {
+
+    td.gridjs-td,
+    th.gridjs-th {
+        border-inline-end-width: 0;
+        border-inline-start-width: 0;
+    }
+}
+
+.gridjs-loading-bar {
+    @apply bg-white dark:bg-slate-800;
+}
