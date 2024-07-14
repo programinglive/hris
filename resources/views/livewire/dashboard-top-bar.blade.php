@@ -20,17 +20,6 @@
         </span>
 		</button>
 		
-		
-		<!-- Fullscreen Toggle Button -->
-		<div class="md:flex hidden">
-			<button data-toggle="fullscreen" type="button" class="nav-link p-2">
-				<span class="sr-only">Fullscreen Mode</span>
-				<span class="flex items-center justify-center h-6 w-6">
-                <i class="mgc_fullscreen_line text-2xl"></i>
-            </span>
-			</button>
-		</div>
-		
 		<!-- Notification Bell Button -->
 		<div class="relative md:flex hidden">
 			<button data-fc-type="dropdown" data-fc-placement="bottom-end" type="button" class="nav-link p-2">
