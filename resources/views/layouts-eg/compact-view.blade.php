@@ -1,4 +1,3 @@
-@extends('layouts.vertical', ['title' => 'Dashboard', 'sub_title' => 'Menu', 'mode' => $mode ?? '', 'demo' => $demo ?? '', 'sidenav' => $sidenav ?? 'md'])
 
 @section('content')
     <div class="grid 2xl:grid-cols-4 gap-6 mb-6">
@@ -19,17 +18,17 @@
                                 </button>
 
                                 <div class="hidden fc-dropdown fc-dropdown-open:opacity-100 opacity-0 w-36 z-50 mt-2 transition-[margin,opacity] duration-300 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg p-2">
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                         <i class="mgc_add_circle_line"></i> Add
                                     </a>
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                         <i class="mgc_edit_line"></i> Edit
                                     </a>
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                         <i class="mgc_copy_2_line"></i> Copy
                                     </a>
                                     <div class="h-px bg-gray-200 dark:bg-gray-700 my-2 -mx-2"></div>
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-danger hover:bg-danger/5" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-danger hover:bg-danger/5" href="#">
                                         <i class="mgc_delete_line"></i> Delete
                                     </a>
                                 </div>
@@ -41,11 +40,11 @@
                                 <p class="text-[13px] text-gray-400 dark:text-gray-500 font-semibold"><i class="mgc_alarm_2_line"></i> 4 Hrs ago</p>
                             </div>
                             <div class="flex">
-                                <a href="javascript:void(0);">
-                                    <img src="/images/users/avatar-1.jpg" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
+                                <a href="#">
+                                    <img src="{{ asset('/images/users/avatar-1.jpg') }}" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
                                 </a>
-                                <a href="javascript:void(0);" class="-ms-2">
-                                    <img src="/images/users/avatar-2.jpg" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
+                                <a href="#" class="-ms-2">
+                                    <img src="{{ asset('/images/users/avatar-2.jpg') }}" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
                                 </a>
                             </div>
                         </div>
@@ -65,17 +64,17 @@
                                 </button>
 
                                 <div class="hidden fc-dropdown fc-dropdown-open:opacity-100 opacity-0 w-36 z-50 mt-2 transition-[margin,opacity] duration-300 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg p-2">
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                         <i class="mgc_add_circle_line"></i> Add
                                     </a>
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                         <i class="mgc_edit_line"></i> Edit
                                     </a>
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                         <i class="mgc_copy_2_line"></i> Copy
                                     </a>
                                     <div class="h-px bg-gray-200 dark:bg-gray-700 my-2 -mx-2"></div>
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-danger hover:bg-danger/5" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-danger hover:bg-danger/5" href="#">
                                         <i class="mgc_delete_line"></i> Delete
                                     </a>
                                 </div>
@@ -87,11 +86,11 @@
                                 <p class="text-[13px] text-gray-400 dark:text-gray-500 font-semibold"><i class="mgc_alarm_2_line"></i> 3 Hrs ago</p>
                             </div>
                             <div class="flex">
-                                <a href="javascript:void(0);">
-                                    <img src="/images/users/avatar-3.jpg" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
+                                <a href="#">
+                                    <img src="{{ asset('/images/users/avatar-3.jpg') }}" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
                                 </a>
-                                <a href="javascript:void(0);" class="-ms-2">
-                                    <img src="/images/users/avatar-4.jpg" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
+                                <a href="#" class="-ms-2">
+                                    <img src="{{ asset('/images/users/avatar-4.jpg') }}" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
                                 </a>
                             </div>
                         </div>
@@ -111,17 +110,17 @@
                                 </button>
 
                                 <div class="hidden fc-dropdown fc-dropdown-open:opacity-100 opacity-0 w-36 z-50 mt-2 transition-[margin,opacity] duration-300 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg p-2">
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                         <i class="mgc_add_circle_line"></i> Add
                                     </a>
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                         <i class="mgc_edit_line"></i> Edit
                                     </a>
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                         <i class="mgc_copy_2_line"></i> Copy
                                     </a>
                                     <div class="h-px bg-gray-200 dark:bg-gray-700 my-2 -mx-2"></div>
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-danger hover:bg-danger/5" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-danger hover:bg-danger/5" href="#">
                                         <i class="mgc_delete_line"></i> Delete
                                     </a>
                                 </div>
@@ -133,11 +132,11 @@
                                 <p class="text-[13px] text-gray-400 dark:text-gray-500 font-semibold"><i class="mgc_alarm_2_line"></i> 5 Hrs ago</p>
                             </div>
                             <div class="flex">
-                                <a href="javascript:void(0);">
-                                    <img src="/images/users/avatar-5.jpg" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
+                                <a href="#">
+                                    <img src="{{ asset('/images/users/avatar-5.jpg') }}" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
                                 </a>
-                                <a href="javascript:void(0);" class="-ms-2">
-                                    <img src="/images/users/avatar-6.jpg" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
+                                <a href="#" class="-ms-2">
+                                    <img src="{{ asset('/images/users/avatar-6.jpg') }}" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
                                 </a>
                             </div>
                         </div>
@@ -157,17 +156,17 @@
                                 </button>
 
                                 <div class="hidden fc-dropdown fc-dropdown-open:opacity-100 opacity-0 w-36 z-50 mt-2 transition-[margin,opacity] duration-300 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg p-2">
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                         <i class="mgc_add_circle_line"></i> Add
                                     </a>
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                         <i class="mgc_edit_line"></i> Edit
                                     </a>
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                         <i class="mgc_copy_2_line"></i> Copy
                                     </a>
                                     <div class="h-px bg-gray-200 dark:bg-gray-700 my-2 -mx-2"></div>
-                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-danger hover:bg-danger/5" href="javascript:void(0)">
+                                    <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-danger hover:bg-danger/5" href="#">
                                         <i class="mgc_delete_line"></i> Delete
                                     </a>
                                 </div>
@@ -179,11 +178,11 @@
                                 <p class="text-[13px] text-gray-400 dark:text-gray-500 font-semibold"><i class="mgc_alarm_2_line"></i> 1 Day ago</p>
                             </div>
                             <div class="flex">
-                                <a href="javascript:void(0);">
-                                    <img src="/images/users/avatar-7.jpg" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
+                                <a href="#">
+                                    <img src="{{ asset('/images/users/avatar-7.jpg') }}" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
                                 </a>
-                                <a href="javascript:void(0);" class="-ms-2">
-                                    <img src="/images/users/avatar-8.jpg" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
+                                <a href="#" class="-ms-2">
+                                    <img src="{{ asset('/images/users/avatar-8.jpg') }}" class="rounded-full h-8 w-8 border-2 border-gray-300 dark:border-gray-700" alt="friend">
                                 </a>
                             </div>
                         </div>
@@ -253,17 +252,17 @@
                         </button>
 
                         <div class="hidden fc-dropdown fc-dropdown-open:opacity-100 opacity-0 w-36 z-50 mt-2 transition-[margin,opacity] duration-300 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg p-2">
-                            <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                            <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                 <i class="mgc_add_circle_line"></i> Add
                             </a>
-                            <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                            <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                 <i class="mgc_edit_line"></i> Edit
                             </a>
-                            <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                            <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                 <i class="mgc_copy_2_line"></i> Copy
                             </a>
                             <div class="h-px bg-gray-200 dark:bg-gray-700 my-2 -mx-2"></div>
-                            <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-danger hover:bg-danger/5" href="javascript:void(0)">
+                            <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-danger hover:bg-danger/5" href="#">
                                 <i class="mgc_delete_line"></i> Delete
                             </a>
                         </div>
@@ -389,16 +388,16 @@
                             </button>
 
                             <div class="hidden fc-dropdown fc-dropdown-open:opacity-100 opacity-0 w-36 z-50 mt-2 transition-[margin,opacity] duration-300 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg p-2">
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                     Today
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                     Yesterday
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                     Last Week
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                     Last Month
                                 </a>
                             </div>
@@ -427,16 +426,16 @@
                             </button>
 
                             <div class="hidden fc-dropdown fc-dropdown-open:opacity-100 opacity-0 w-36 z-50 mt-2 transition-[margin,opacity] duration-300 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg p-2">
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                     Today
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                     Yesterday
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                     Last Week
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                     Last Month
                                 </a>
                             </div>
@@ -465,16 +464,16 @@
                             </button>
 
                             <div class="hidden fc-dropdown fc-dropdown-open:opacity-100 opacity-0 w-36 z-50 mt-2 transition-[margin,opacity] duration-300 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg p-2">
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                     Today
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                     Yesterday
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                     Last Week
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                     Last Month
                                 </a>
                             </div>
@@ -503,16 +502,16 @@
                             </button>
 
                             <div class="hidden fc-dropdown fc-dropdown-open:opacity-100 opacity-0 w-36 z-50 mt-2 transition-[margin,opacity] duration-300 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg p-2">
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                     Today
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                     Yesterday
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                     Last Week
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                     Last Month
                                 </a>
                             </div>
@@ -535,16 +534,16 @@
                             </button>
 
                             <div class="hidden fc-dropdown fc-dropdown-open:opacity-100 opacity-0 w-36 z-50 mt-2 transition-[margin,opacity] duration-300 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg p-2">
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                     Today
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" href="#">
                                     Yesterday
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                     Last Week
                                 </a>
-                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="javascript:void(0)">
+                                <a class="flex items-center gap-1.5 py-1.5 px-3.5 rounded text-sm transition-all duration-300 bg-transparent text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                                     Last Month
                                 </a>
                             </div>
@@ -648,7 +647,7 @@
                         <div class="space-y-4">
                             <div class="border border-gray-200 dark:border-gray-700 rounded p-2">
                                 <ul class="flex items-center gap-2 mb-2">
-                                    <a href="javascript:void(0);" class="text-base text-gray-600 dark:text-gray-400">Landing Page Design</a>
+                                    <a href="#" class="text-base text-gray-600 dark:text-gray-400">Landing Page Design</a>
                                     <i class="mgc_round_fill text-[5px]"></i>
                                     <h5 class="text-sm font-semibold">2 Hrs ago</h5>
                                 </ul>
@@ -658,7 +657,7 @@
 
                             <div class="border border-gray-200 dark:border-gray-700 rounded p-2">
                                 <ul class="flex items-center gap-2 mb-2">
-                                    <a href="javascript:void(0);" class="text-base text-gray-600 dark:text-gray-400">Admin Dashboard</a>
+                                    <a href="#" class="text-base text-gray-600 dark:text-gray-400">Admin Dashboard</a>
                                     <i class="mgc_round_fill text-[5px]"></i>
                                     <h5 class="text-sm font-semibold">3 Hrs ago</h5>
                                 </ul>
@@ -668,7 +667,7 @@
 
                             <div class="border border-gray-200 dark:border-gray-700 rounded p-2">
                                 <ul class="flex items-center gap-2 mb-2">
-                                    <a href="javascript:void(0);" class="text-base text-gray-600 dark:text-gray-400">Client Work</a>
+                                    <a href="#" class="text-base text-gray-600 dark:text-gray-400">Client Work</a>
                                     <i class="mgc_round_fill text-[5px]"></i>
                                     <h5 class="text-sm font-semibold">5 Hrs ago</h5>
                                 </ul>
@@ -678,7 +677,7 @@
 
                             <div class="border border-gray-200 dark:border-gray-700 rounded p-2">
                                 <ul class="flex items-center gap-2 mb-2">
-                                    <a href="javascript:void(0);" class="text-base text-gray-600 dark:text-gray-400">UI/UX Design</a>
+                                    <a href="#" class="text-base text-gray-600 dark:text-gray-400">UI/UX Design</a>
                                     <i class="mgc_round_fill text-[5px]"></i>
                                     <h5 class="text-sm font-semibold">6 Hrs ago</h5>
                                 </ul>
@@ -713,9 +712,9 @@
                     <div class="px-6" data-simplebar style="max-height: 304px;">
                         <div class="space-y-6">
                             <div class="flex items-center">
-                                <img class="me-3 rounded-full" src="/images/users/avatar-1.jpg" width="40" alt="Generic placeholder image">
+                                <img class="me-3 rounded-full" src="{{ asset('/images/users/avatar-1.jpg') }}" width="40" alt="Generic placeholder image">
                                 <div class="w-full overflow-hidden">
-                                    <h5 class="font-semibold"><a href="javascript:void(0);" class="text-gray-600 dark:text-gray-400">Risa Pearson</a></h5>
+                                    <h5 class="font-semibold"><a href="#" class="text-gray-600 dark:text-gray-400">Risa Pearson</a></h5>
                                     <div class="flex items-center gap-2">
                                         <div>UI/UX Designer</div>
                                         <i class="mgc_round_fill text-[5px]"></i>
@@ -725,9 +724,9 @@
                             </div>
 
                             <div class="flex items-center">
-                                <img class="me-3 rounded-full" src="/images/users/avatar-2.jpg" width="40" alt="Generic placeholder image">
+                                <img class="me-3 rounded-full" src="{{ asset('/images/users/avatar-2.jpg') }}" width="40" alt="Generic placeholder image">
                                 <div class="w-full overflow-hidden">
-                                    <h5 class="font-semibold"><a href="javascript:void(0);" class="text-gray-600 dark:text-gray-400">Margaret D. Evans</a></h5>
+                                    <h5 class="font-semibold"><a href="#" class="text-gray-600 dark:text-gray-400">Margaret D. Evans</a></h5>
                                     <div class="flex items-center gap-2">
                                         <div>PHP Developer</div>
                                         <i class="mgc_round_fill text-[5px]"></i>
@@ -737,9 +736,9 @@
                             </div>
 
                             <div class="flex items-center">
-                                <img class="me-3 rounded-full" src="/images/users/avatar-3.jpg" width="40" alt="Generic placeholder image">
+                                <img class="me-3 rounded-full" src="{{ asset('/images/users/avatar-3.jpg') }}" width="40" alt="Generic placeholder image">
                                 <div class="w-full overflow-hidden">
-                                    <h5 class="font-semibold"><a href="javascript:void(0);" class="text-gray-600 dark:text-gray-400">Bryan J. Luellen</a></h5>
+                                    <h5 class="font-semibold"><a href="#" class="text-gray-600 dark:text-gray-400">Bryan J. Luellen</a></h5>
                                     <div class="flex items-center gap-2">
                                         <div>Front end Developer</div>
                                         <i class="mgc_round_fill text-[5px]"></i>
@@ -749,9 +748,9 @@
                             </div>
 
                             <div class="flex items-center">
-                                <img class="me-3 rounded-full" src="/images/users/avatar-4.jpg" width="40" alt="Generic placeholder image">
+                                <img class="me-3 rounded-full" src="{{ asset('/images/users/avatar-4.jpg') }}" width="40" alt="Generic placeholder image">
                                 <div class="w-full overflow-hidden">
-                                    <h5 class="font-semibold"><a href="javascript:void(0);" class="text-gray-600 dark:text-gray-400">Kathryn S. Collier</a></h5>
+                                    <h5 class="font-semibold"><a href="#" class="text-gray-600 dark:text-gray-400">Kathryn S. Collier</a></h5>
                                     <div class="flex items-center gap-2">
                                         <div>UI/UX Designer</div>
                                         <i class="mgc_round_fill text-[5px]"></i>
@@ -761,9 +760,9 @@
                             </div>
 
                             <div class="flex items-center">
-                                <img class="me-3 rounded-full" src="/images/users/avatar-5.jpg" width="40" alt="Generic placeholder image">
+                                <img class="me-3 rounded-full" src="{{ asset('/images/users/avatar-5.jpg') }}" width="40" alt="Generic placeholder image">
                                 <div class="w-full overflow-hidden">
-                                    <h5 class="font-semibold"><a href="javascript:void(0);" class="text-gray-600 dark:text-gray-400">Timothy Kauper</a></h5>
+                                    <h5 class="font-semibold"><a href="#" class="text-gray-600 dark:text-gray-400">Timothy Kauper</a></h5>
                                     <div class="flex items-center gap-2">
                                         <div>Backend Developer</div>
                                         <i class="mgc_round_fill text-[5px]"></i>
@@ -773,9 +772,9 @@
                             </div>
 
                             <div class="flex items-center">
-                                <img class="me-3 rounded-full" src="/images/users/avatar-6.jpg" width="40" alt="Generic placeholder image">
+                                <img class="me-3 rounded-full" src="{{ asset('/images/users/avatar-6.jpg') }}" width="40" alt="Generic placeholder image">
                                 <div class="w-full overflow-hidden">
-                                    <h5 class="font-semibold"><a href="javascript:void(0);" class="text-gray-600 dark:text-gray-400">Zara Raws</a></h5>
+                                    <h5 class="font-semibold"><a href="#" class="text-gray-600 dark:text-gray-400">Zara Raws</a></h5>
                                     <div class="flex items-center gap-2">
                                         <div>Python Developer</div>
                                         <i class="mgc_round_fill text-[5px]"></i>

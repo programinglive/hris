@@ -1,5 +1,3 @@
-@extends('layouts.vertical', ['title' => 'Modals', 'sub_title' => 'Component', 'mode' => $mode ?? '', 'demo' => $demo ?? ''])
-
 @section('content')
 <div class="grid 2xl:grid-cols-2 grid-cols-1 gap-6">
     <div class="card">
@@ -55,7 +53,7 @@
                             <button
                                 class="btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all"
                                 data-fc-dismiss type="button">Close</button>
-                            <a class="btn bg-primary text-white" href="javascript:void(0)">Save</a>
+                            <a class="btn bg-primary text-white" href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -89,7 +87,7 @@
                                 &lt;div class=&quot;flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700&quot;&gt;
                                     &lt;button class=&quot;btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all&quot; data-fc-dismiss type=&quot;button&quot;&gt;Close
                                     &lt;/button&gt;
-                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;javascript:void(0)&quot;&gt;Save&lt;/a&gt;
+                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;#&quot;&gt;Save&lt;/a&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -152,7 +150,7 @@
                             <button
                                 class="btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all"
                                 data-fc-dismiss type="button">Close</button>
-                            <a class="btn bg-primary text-white" href="javascript:void(0)">Save</a>
+                            <a class="btn bg-primary text-white" href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -186,7 +184,7 @@
                                 &lt;/div&gt;
                                 &lt;div class=&quot;flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700&quot;&gt;
                                     &lt;button class=&quot;btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all&quot; data-fc-dismiss type=&quot;button&quot;&gt;Close&lt;/button&gt;
-                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;javascript:void(0)&quot;&gt;Save&lt;/a&gt;
+                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;#&quot;&gt;Save&lt;/a&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -243,7 +241,7 @@
                                 class="btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all"
                                 data-fc-dismiss type="button">Close
                             </button>
-                            <a class="btn bg-primary text-white" href="javascript:void(0)">Save</a>
+                            <a class="btn bg-primary text-white" href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -272,7 +270,7 @@
                         </div>
                         <div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
                             <button class="btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button">Close</button>
-                            <a class="btn bg-primary text-white" href="javascript:void(0)">Save</a>
+                            <a class="btn bg-primary text-white" href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -299,7 +297,7 @@
                         <div
                             class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
                             <button class="btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button">Close</button>
-                            <a class="btn bg-primary text-white" href="javascript:void(0)">Save</a>
+                            <a class="btn bg-primary text-white" href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -328,7 +326,7 @@
                         <div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
                             <button class="btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button">Close
                             </button>
-                            <a class="btn bg-primary text-white" href="javascript:void(0)">Save</a>
+                            <a class="btn bg-primary text-white" href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -357,7 +355,7 @@
                         </div>
                         <div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
                             <button class="btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button">Close</button>
-                            <a class="btn bg-primary text-white" href="javascript:void(0)">Save</a>
+                            <a class="btn bg-primary text-white" href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -390,7 +388,7 @@
                         <div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
                             <button class="btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button">Close
                             </button>
-                            <a class="btn bg-primary text-white" href="javascript:void(0)">Save</a>
+                            <a class="btn bg-primary text-white" href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -427,7 +425,7 @@
                                 data-fc-dismiss type="button">Close
                             </button>
                             <a class="btn bg-primary text-white"
-                                href="javascript:void(0)">Save</a>
+                                href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -464,7 +462,7 @@
                                 data-fc-dismiss type="button">Close
                             </button>
                             <a class="btn bg-primary text-white"
-                                href="javascript:void(0)">Save</a>
+                                href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -501,7 +499,7 @@
                                         class=&quot;btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all&quot;
                                         data-fc-dismiss type=&quot;button&quot;&gt;Close
                                     &lt;/button&gt;
-                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;javascript:void(0)&quot;&gt;Save&lt;/a&gt;
+                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;#&quot;&gt;Save&lt;/a&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -530,7 +528,7 @@
                                 &lt;/div&gt;
                                 &lt;div class=&quot;flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700&quot;&gt;
                                     &lt;button class=&quot;btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all&quot; data-fc-dismiss type=&quot;button&quot;&gt;Close&lt;/button&gt;
-                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;javascript:void(0)&quot;&gt;Save&lt;/a&gt;
+                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;#&quot;&gt;Save&lt;/a&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -557,7 +555,7 @@
                                 &lt;div
                                     class=&quot;flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700&quot;&gt;
                                     &lt;button class=&quot;btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all&quot; data-fc-dismiss type=&quot;button&quot;&gt;Close&lt;/button&gt;
-                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;javascript:void(0)&quot;&gt;Save&lt;/a&gt;
+                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;#&quot;&gt;Save&lt;/a&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -586,7 +584,7 @@
                                 &lt;div class=&quot;flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700&quot;&gt;
                                     &lt;button class=&quot;btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all&quot; data-fc-dismiss type=&quot;button&quot;&gt;Close
                                     &lt;/button&gt;
-                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;javascript:void(0)&quot;&gt;Save&lt;/a&gt;
+                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;#&quot;&gt;Save&lt;/a&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -615,7 +613,7 @@
                                 &lt;/div&gt;
                                 &lt;div class=&quot;flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700&quot;&gt;
                                     &lt;button class=&quot;btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all&quot; data-fc-dismiss type=&quot;button&quot;&gt;Close&lt;/button&gt;
-                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;javascript:void(0)&quot;&gt;Save&lt;/a&gt;
+                                    &lt;a class=&quot;btn bg-primary text-white&quot; href=&quot;#&quot;&gt;Save&lt;/a&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -654,7 +652,7 @@
                                         data-fc-dismiss type=&quot;button&quot;&gt;Close
                                     &lt;/button&gt;
                                     &lt;a class=&quot;btn bg-primary text-white&quot;
-                                        href=&quot;javascript:void(0)&quot;&gt;Save&lt;/a&gt;
+                                        href=&quot;#&quot;&gt;Save&lt;/a&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -693,7 +691,7 @@
                                         data-fc-dismiss type=&quot;button&quot;&gt;Close
                                     &lt;/button&gt;
                                     &lt;a class=&quot;btn bg-primary text-white&quot;
-                                        href=&quot;javascript:void(0)&quot;&gt;Save&lt;/a&gt;
+                                        href=&quot;#&quot;&gt;Save&lt;/a&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -730,7 +728,7 @@
                                         data-fc-dismiss type=&quot;button&quot;&gt;Close
                                     &lt;/button&gt;
                                     &lt;a class=&quot;btn bg-primary text-white&quot;
-                                        href=&quot;javascript:void(0)&quot;&gt;Save&lt;/a&gt;
+                                        href=&quot;#&quot;&gt;Save&lt;/a&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -787,7 +785,7 @@
                                     data-fc-dismiss type="button">Close
                             </button>
                             <a class="py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-primary hover:bg-primary-600 text-white"
-                                href="javascript:void(0)">Save</a>
+                                href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -846,7 +844,7 @@
                         </div>
                         <div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
                             <button class="py-2 px-5 inline-flex justify-center items-center gap-2 rounded dark:text-gray-200 border dark:border-slate-700 font-medium hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button">Close</button>
-                            <a class="py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-primary hover:bg-primary-600 text-white" href="javascript:void(0)">Save</a>
+                            <a class="py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-primary hover:bg-primary-600 text-white" href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -879,7 +877,7 @@
                                 &lt;/div&gt;
                                 &lt;div class=&quot;flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700&quot;&gt;
                                     &lt;button class=&quot;py-2 px-5 inline-flex justify-center items-center gap-2 rounded dark:text-gray-200 border dark:border-slate-700 font-medium hover:bg-slate-100 hover:dark:bg-slate-700 transition-all&quot; data-fc-dismiss type=&quot;button&quot;&gt;Close&lt;/button&gt;
-                                    &lt;a class=&quot;py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-primary hover:bg-primary-600 text-white&quot; href=&quot;javascript:void(0)&quot;&gt;Save&lt;/a&gt;
+                                    &lt;a class=&quot;py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-primary hover:bg-primary-600 text-white&quot; href=&quot;#&quot;&gt;Save&lt;/a&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -938,7 +936,7 @@
                                     data-fc-dismiss type="button">Close
                             </button>
                             <a class="py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-primary hover:bg-primary-600 text-white"
-                            href="javascript:void(0)">Save</a>
+                            href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -969,7 +967,7 @@
                                     data-fc-dismiss type="button">Close
                             </button>
                             <a class="py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-primary hover:bg-primary-600 text-white"
-                            href="javascript:void(0)">Save</a>
+                            href="#">Save</a>
                         </div>
                     </div>
                 </div>
@@ -1005,7 +1003,7 @@
                                             data-fc-dismiss type=&quot;button&quot;&gt;Close
                                     &lt;/button&gt;
                                     &lt;a class=&quot;py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-primary hover:bg-primary-600 text-white&quot;
-                                    href=&quot;javascript:void(0)&quot;&gt;Save&lt;/a&gt;
+                                    href=&quot;#&quot;&gt;Save&lt;/a&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -1036,7 +1034,7 @@
                                             data-fc-dismiss type=&quot;button&quot;&gt;Close
                                     &lt;/button&gt;
                                     &lt;a class=&quot;py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-primary hover:bg-primary-600 text-white&quot;
-                                    href=&quot;javascript:void(0)&quot;&gt;Save&lt;/a&gt;
+                                    href=&quot;#&quot;&gt;Save&lt;/a&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;

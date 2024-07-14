@@ -5,7 +5,7 @@
         <!-- Grid -->
         <div class="flex justify-between">
             <div>
-                <img class="h-6" src="/images/logo-dark.png" alt="">
+                <img class="h-6" src="{{ asset('/images/logo-dark.png') }}" alt="">
 
                 <h1 class="mt-2 text-lg md:text-xl font-semibold text-primary dark:text-white">Coderthemes Inc.</h1>
             </div>

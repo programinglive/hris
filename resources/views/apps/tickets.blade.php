@@ -1,5 +1,3 @@
-@extends('layouts.vertical', ['title' => 'Tickets', 'sub_title' => 'Apps', 'mode' => $mode ?? '', 'demo' => $demo ?? ''])
-
 @section('content')
 <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6">
 	<div class="card">
@@ -62,7 +60,7 @@
 <div class="mt-6">
 	<div class="card">
 		<div class="flex flex-wrap justify-between items-center gap-2 p-6">
-			<a href="javascript:void(0);" class="btn bg-danger/20 text-sm font-medium text-danger hover:text-white hover:bg-danger">
+			<a href="#" class="btn bg-danger/20 text-sm font-medium text-danger hover:text-white hover:bg-danger">
 				<i class="mgc_add_circle_line me-3"></i>
 				Add Customers</a>
 			<div class="flex flex-wrap gap-2">
@@ -96,14 +94,14 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm">
 							<div class="flex items-center">
 								<div class="h-10 w-10 flex-shrink-0">
-									<img class="h-10 w-10 rounded-full" src="/images/users/avatar-9.jpg" alt="">
+									<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-9.jpg') }}" alt="">
 								</div>
 								<div class="font-medium text-gray-900 dark:text-gray-200 ms-4">Lindsay Walton</div>
 							</div>
 						</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">A new rating has been received</td>
 						<td class="whitespace-nowrap py-4 px-3 text-sm">
-							<img class="h-10 w-10 rounded-full" src="/images/users/avatar-9.jpg" alt="">
+							<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-9.jpg') }}" alt="">
 						</td>
 						<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 							<div class="inline-flex items-center gap-1.5 py-1 px-3 rounded text-xs font-medium bg-primary/25 text-primary">Medium</div>
@@ -114,10 +112,10 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">13/08/2011</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">30/08/2013</td>
 						<td class="whitespace-nowrap py-4 px-3 text-center text-sm font-medium">
-							<a href="javascript:void(0);" class="me-0.5">
+							<a href="#" class="me-0.5">
 								<i class="mgc_edit_line text-lg"></i>
 							</a>
-							<a href="javascript:void(0);" class="ms-0.5">
+							<a href="#" class="ms-0.5">
 								<i class="mgc_delete_line text-xl"></i>
 							</a>
 						</td>
@@ -130,14 +128,14 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm">
 							<div class="flex items-center">
 								<div class="h-10 w-10 flex-shrink-0">
-									<img class="h-10 w-10 rounded-full" src="/images/users/avatar-2.jpg" alt="">
+									<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-2.jpg') }}" alt="">
 								</div>
 								<div class="font-medium text-gray-900 dark:text-gray-200 ms-4">Jhon Maryo</div>
 							</div>
 						</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">Your application has been received!</td>
 						<td class="whitespace-nowrap py-4 px-3 text-sm">
-							<img class="h-10 w-10 rounded-full" src="/images/users/avatar-2.jpg" alt="">
+							<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-2.jpg') }}" alt="">
 						</td>
 						<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 							<div class="inline-flex items-center gap-1.5 py-1 px-3 rounded text-xs font-medium bg-danger/25 text-danger">High</div>
@@ -148,10 +146,10 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">01/04/2017</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">21/05/2017</td>
 						<td class="whitespace-nowrap py-4 px-3 text-center text-sm font-medium">
-							<a href="javascript:void(0);" class="me-0.5">
+							<a href="#" class="me-0.5">
 								<i class="mgc_edit_line text-lg"></i>
 							</a>
-							<a href="javascript:void(0);" class="ms-0.5">
+							<a href="#" class="ms-0.5">
 								<i class="mgc_delete_line text-xl"></i>
 							</a>
 						</td>
@@ -164,7 +162,7 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm">
 							<div class="flex items-center">
 								<div class="h-10 w-10 flex-shrink-0">
-									<img class="h-10 w-10 rounded-full" src="/images/users/avatar-3.jpg" alt="user">
+									<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-3.jpg') }}" alt="user">
 								</div>
 								<div class="font-medium text-gray-900 dark:text-gray-200 ms-4">Jerry Geiger</div>
 							</div>
@@ -172,7 +170,7 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">
 							Support for theme</td>
 						<td class="whitespace-nowrap py-4 px-3 text-sm">
-							<img class="h-10 w-10 rounded-full" src="/images/users/avatar-3.jpg" alt="">
+							<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-3.jpg') }}" alt="">
 						</td>
 						<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 							<div class="inline-flex items-center gap-1.5 py-1 px-3 rounded text-xs font-medium bg-dark/25 text-slate-900 dark:text-slate-200/90">Low</div>
@@ -183,10 +181,10 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">28/07/2020</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">28/07/2020</td>
 						<td class="whitespace-nowrap py-4 px-3 text-center text-sm font-medium">
-							<a href="javascript:void(0);" class="me-0.5">
+							<a href="#" class="me-0.5">
 								<i class="mgc_edit_line text-lg"></i>
 							</a>
-							<a href="javascript:void(0);" class="ms-0.5">
+							<a href="#" class="ms-0.5">
 								<i class="mgc_delete_line text-xl"></i>
 							</a>
 						</td>
@@ -199,14 +197,14 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm">
 							<div class="flex items-center">
 								<div class="h-10 w-10 flex-shrink-0">
-									<img class="h-10 w-10 rounded-full" src="/images/users/avatar-4.jpg" alt="user">
+									<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-4.jpg') }}" alt="user">
 								</div>
 								<div class="font-medium text-gray-900 dark:text-gray-200 ms-4">Adam Thomas</div>
 							</div>
 						</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">Question regarding your Tailwind Theme</td>
 						<td class="whitespace-nowrap py-4 px-3 text-sm">
-							<img class="h-10 w-10 rounded-full" src="/images/users/avatar-4.jpg" alt="">
+							<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-4.jpg') }}" alt="">
 						</td>
 						<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 							<div class="inline-flex items-center gap-1.5 py-1 px-3 rounded text-xs font-medium bg-danger/25 text-danger">High</div>
@@ -217,10 +215,10 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">01/04/2017</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">21/05/2017</td>
 						<td class="whitespace-nowrap py-4 px-3 text-center text-sm font-medium">
-							<a href="javascript:void(0);" class="me-0.5">
+							<a href="#" class="me-0.5">
 								<i class="mgc_edit_line text-lg"></i>
 							</a>
-							<a href="javascript:void(0);" class="ms-0.5">
+							<a href="#" class="ms-0.5">
 								<i class="mgc_delete_line text-xl"></i>
 							</a>
 						</td>
@@ -233,14 +231,14 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm">
 							<div class="flex items-center">
 								<div class="h-10 w-10 flex-shrink-0">
-									<img class="h-10 w-10 rounded-full" src="/images/users/avatar-5.jpg" alt="user">
+									<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-5.jpg') }}" alt="user">
 								</div>
 								<div class="font-medium text-gray-900 dark:text-gray-200 ms-4">Sara Lewis</div>
 							</div>
 						</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">Verify your new email address!</td>
 						<td class="whitespace-nowrap py-4 px-3 text-sm">
-							<img class="h-10 w-10 rounded-full" src="/images/users/avatar-5.jpg" alt="">
+							<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-5.jpg') }}" alt="">
 						</td>
 						<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 							<div class="inline-flex items-center gap-1.5 py-1 px-3 rounded text-xs font-medium bg-danger/25 text-danger">High</div>
@@ -251,10 +249,10 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">20/04/2008</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">20/04/2008</td>
 						<td class="whitespace-nowrap py-4 px-3 text-center text-sm font-medium">
-							<a href="javascript:void(0);" class="me-0.5">
+							<a href="#" class="me-0.5">
 								<i class="mgc_edit_line text-lg"></i>
 							</a>
-							<a href="javascript:void(0);" class="ms-0.5">
+							<a href="#" class="ms-0.5">
 								<i class="mgc_delete_line text-xl"></i>
 							</a>
 						</td>
@@ -267,14 +265,14 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm">
 							<div class="flex items-center">
 								<div class="h-10 w-10 flex-shrink-0">
-									<img class="h-10 w-10 rounded-full" src="/images/users/avatar-6.jpg" alt="user">
+									<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-6.jpg') }}" alt="user">
 								</div>
 								<div class="font-medium text-gray-900 dark:text-gray-200 ms-4">Myrtle Johnson</div>
 							</div>
 						</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">New submission on your website</td>
 						<td class="whitespace-nowrap py-4 px-3 text-sm">
-							<img class="h-10 w-10 rounded-full" src="/images/users/avatar-6.jpg" alt="">
+							<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-6.jpg') }}" alt="">
 						</td>
 						<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 							<div class="inline-flex items-center gap-1.5 py-1 px-3 rounded text-xs font-medium bg-primary/25 text-primary">Medium</div>
@@ -285,10 +283,10 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">20/04/2017</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">25/04/2017</td>
 						<td class="whitespace-nowrap py-4 px-3 text-center text-sm font-medium">
-							<a href="javascript:void(0);" class="me-0.5">
+							<a href="#" class="me-0.5">
 								<i class="mgc_edit_line text-lg"></i>
 							</a>
-							<a href="javascript:void(0);" class="ms-0.5">
+							<a href="#" class="ms-0.5">
 								<i class="mgc_delete_line text-xl"></i>
 							</a>
 						</td>
@@ -301,14 +299,14 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm">
 							<div class="flex items-center">
 								<div class="h-10 w-10 flex-shrink-0">
-									<img class="h-10 w-10 rounded-full" src="/images/users/avatar-7.jpg" alt="user">
+									<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-7.jpg') }}" alt="user">
 								</div>
 								<div class="font-medium text-gray-900 dark:text-gray-200 ms-4">Bryan Collier</div>
 							</div>
 						</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">Verify your new email address!</td>
 						<td class="whitespace-nowrap py-4 px-3 text-sm">
-							<img class="h-10 w-10 rounded-full" src="/images/users/avatar-7.jpg" alt="">
+							<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-7.jpg') }}" alt="">
 						</td>
 						<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 							<div class="inline-flex items-center gap-1.5 py-1 px-3 rounded text-xs font-medium bg-danger/25 text-danger">High</div>
@@ -319,10 +317,10 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">02/06/2018</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">21/06/2018</td>
 						<td class="whitespace-nowrap py-4 px-3 text-center text-sm font-medium">
-							<a href="javascript:void(0);" class="me-0.5">
+							<a href="#" class="me-0.5">
 								<i class="mgc_edit_line text-lg"></i>
 							</a>
-							<a href="javascript:void(0);" class="ms-0.5">
+							<a href="#" class="ms-0.5">
 								<i class="mgc_delete_line text-xl"></i>
 							</a>
 						</td>
@@ -335,14 +333,14 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm">
 							<div class="flex items-center">
 								<div class="h-10 w-10 flex-shrink-0">
-									<img class="h-10 w-10 rounded-full" src="/images/users/avatar-8.jpg" alt="user">
+									<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-8.jpg') }}" alt="user">
 								</div>
 								<div class="font-medium text-gray-900 dark:text-gray-200 ms-4">Joshua Moody</div>
 							</div>
 						</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">Security alert for my account</td>
 						<td class="whitespace-nowrap py-4 px-3 text-sm">
-							<img class="h-10 w-10 rounded-full" src="/images/users/avatar-8.jpg" alt="">
+							<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-8.jpg') }}" alt="">
 						</td>
 						<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 							<div class="inline-flex items-center gap-1.5 py-1 px-3 rounded text-xs font-medium bg-dark/25 text-slate-900 dark:text-slate-200/90">Low</div>
@@ -353,10 +351,10 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">28/07/2020</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">03/08/2020</td>
 						<td class="whitespace-nowrap py-4 px-3 text-center text-sm font-medium">
-							<a href="javascript:void(0);" class="me-0.5">
+							<a href="#" class="me-0.5">
 								<i class="mgc_edit_line text-lg"></i>
 							</a>
-							<a href="javascript:void(0);" class="ms-0.5">
+							<a href="#" class="ms-0.5">
 								<i class="mgc_delete_line text-xl"></i>
 							</a>
 						</td>
@@ -369,7 +367,7 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm">
 							<div class="flex items-center">
 								<div class="h-10 w-10 flex-shrink-0">
-									<img class="h-10 w-10 rounded-full" src="/images/users/avatar-9.jpg" alt="user">
+									<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-9.jpg') }}" alt="user">
 								</div>
 								<div class="ms-4">
 									<div class="font-medium text-gray-900 dark:text-gray-200">John Clune</div>
@@ -379,7 +377,7 @@
 						</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">Item Support Message sent</td>
 						<td class="whitespace-nowrap py-4 px-3 text-sm">
-							<img class="h-10 w-10 rounded-full" src="/images/users/avatar-9.jpg" alt="">
+							<img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-9.jpg') }}" alt="">
 						</td>
 						<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 							<div class="inline-flex items-center gap-1.5 py-1 px-3 rounded text-xs font-medium bg-primary/25 text-primary">Medium</div>
@@ -390,10 +388,10 @@
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">26/10/2021</td>
 						<td class="whitespace-nowrap py-4 pe-3 text-sm font-medium text-gray-900 dark:text-gray-200">30/10/2021</td>
 						<td class="whitespace-nowrap py-4 px-3 text-center text-sm font-medium">
-							<a href="javascript:void(0);" class="me-0.5">
+							<a href="#" class="me-0.5">
 								<i class="mgc_edit_line text-lg"></i>
 							</a>
-							<a href="javascript:void(0);" class="ms-0.5">
+							<a href="#" class="ms-0.5">
 								<i class="mgc_delete_line text-xl"></i>
 							</a>
 						</td>

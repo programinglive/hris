@@ -9,17 +9,17 @@
     </button>
 
     <!-- Topbar Brand Logo -->
-    <a href="{{ route('any', 'index') }}" class="logo-box">
+    <a href="#" class="logo-box">
         <!-- Light Brand Logo -->
         <div class="logo-light">
-            <img src="/images/logo-light.png" class="logo-lg h-6" alt="Light logo">
-            <img src="/images/logo-sm.png" class="logo-sm" alt="Small logo">
+            <img src="{{ asset('/images/logo-light.png') }}" class="logo-lg h-6" alt="Light logo">
+            <img src="{{ asset('/images/logo-light.png') }}" class="logo-sm" alt="Small logo">
         </div>
 
         <!-- Dark Brand Logo -->
         <div class="logo-dark">
-            <img src="/images/logo-dark.png" class="logo-lg h-6" alt="Dark logo">
-            <img src="/images/logo-sm.png" class="logo-sm" alt="Small logo">
+            <img src="{{ asset('/images/logo-dark.png') }}" class="logo-lg h-6" alt="Dark logo">
+            <img src="{{ asset('/images/logo-light.png') }}" class="logo-sm" alt="Small logo">
         </div>
     </a>
 
@@ -40,25 +40,25 @@
         </button>
         <div class="fc-dropdown fc-dropdown-open:opacity-100 hidden opacity-0 w-40 z-50 mt-2 transition-[margin,opacity] duration-300 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg p-2">
             <!-- item-->
-            <a href="javascript:void(0);" class="flex items-center gap-2.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300">
+            <a href="#" class="flex items-center gap-2.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300">
                 <img src="/images/flags/germany.jpg" alt="user-image" class="h-4">
                 <span class="align-middle">German</span>
             </a>
 
             <!-- item-->
-            <a href="javascript:void(0);" class="flex items-center gap-2.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300">
+            <a href="#" class="flex items-center gap-2.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300">
                 <img src="/images/flags/italy.jpg" alt="user-image" class="h-4">
                 <span class="align-middle">Italian</span>
             </a>
 
             <!-- item-->
-            <a href="javascript:void(0);" class="flex items-center gap-2.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300">
+            <a href="#" class="flex items-center gap-2.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300">
                 <img src="/images/flags/spain.jpg" alt="user-image" class="h-4">
                 <span class="align-middle">Spanish</span>
             </a>
 
             <!-- item-->
-            <a href="javascript:void(0);" class="flex items-center gap-2.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300">
+            <a href="#" class="flex items-center gap-2.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300">
                 <img src="/images/flags/russia.jpg" alt="user-image" class="h-4">
                 <span class="align-middle">Russian</span>
             </a>
@@ -88,7 +88,7 @@
             <div class="p-2 border-b border-dashed border-gray-200 dark:border-gray-700">
                 <div class="flex items-center justify-between">
                     <h6 class="text-sm"> Notification</h6>
-                    <a href="javascript: void(0);" class="text-gray-500 underline">
+                    <a href="#" class="text-gray-500 underline">
                         <small>Clear All</small>
                     </a>
                 </div>
@@ -98,7 +98,7 @@
 
                 <h5 class="text-xs text-gray-500 mb-2">Today</h5>
 
-                <a href="javascript:void(0);" class="block mb-4">
+                <a href="#" class="block mb-4">
                     <div class="card-body">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
@@ -114,7 +114,7 @@
                     </div>
                 </a>
 
-                <a href="javascript:void(0);" class="block mb-4">
+                <a href="#" class="block mb-4">
                     <div class="card-body">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
@@ -130,11 +130,11 @@
                     </div>
                 </a>
 
-                <a href="javascript:void(0);" class="block mb-4">
+                <a href="#" class="block mb-4">
                     <div class="card-body">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <img src="/images/users/avatar-2.jpg" class="rounded-full h-9 w-9" alt="">
+                                <img src="{{ asset('/images/users/avatar-2.jpg') }}" class="rounded-full h-9 w-9" alt="">
                             </div>
                             <div class="flex-grow truncate ms-2">
                                 <h5 class="text-sm font-semibold mb-1">Cristina Pride <small class="font-normal text-gray-500 ms-1">1 day ago</small></h5>
@@ -146,7 +146,7 @@
 
                 <h5 class="text-xs text-gray-500 mb-2">Yesterday</h5>
 
-                <a href="javascript:void(0);" class="block mb-4">
+                <a href="#" class="block mb-4">
                     <div class="card-body">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
@@ -162,11 +162,11 @@
                     </div>
                 </a>
 
-                <a href="javascript:void(0);" class="block">
+                <a href="#" class="block">
                     <div class="card-body">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <img src="/images/users/avatar-4.jpg" class="rounded-full h-9 w-9" alt="">
+                                <img src="{{ asset('/images/users/avatar-4.jpg') }}" class="rounded-full h-9 w-9" alt="">
                             </div>
                             <div class="flex-grow truncate ms-2">
                                 <h5 class="text-sm font-semibold mb-1">Karen Robinson</h5>
@@ -177,7 +177,7 @@
                 </a>
             </div>
 
-            <a href="javascript:void(0);" class="p-2 border-t border-dashed border-gray-200 dark:border-gray-700 block text-center text-primary underline font-semibold">
+            <a href="#" class="p-2 border-t border-dashed border-gray-200 dark:border-gray-700 block text-center text-primary underline font-semibold">
                 View All
             </a>
         </div>
@@ -207,12 +207,12 @@
                 <i class="mgc_task_2_line  me-2"></i>
                 <span>Kanban</span>
             </a>
-            <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="{{ route('second', ['auth', 'login']) }}">
+            <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                 <i class="mgc_lock_line  me-2"></i>
                 <span>Lock Screen</span>
             </a>
             <hr class="my-2 -mx-2 border-gray-200 dark:border-gray-700">
-            <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="{{ route('second', ['auth', 'login']) }}">
+            <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="#">
                 <i class="mgc_exit_line  me-2"></i>
                 <span>Log Out</span>
             </a>

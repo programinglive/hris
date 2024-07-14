@@ -36,8 +36,8 @@
             <div class="">
                 <div class="text-center mb-6">
                     <div class="inline-flex justify-center py-3 px-2" id="logo-tour">
-                        <img src="/images/logo-dark.png" class="h-5 block dark:hidden" alt="logo">
-                        <img src="/images/logo-light.png" class="h-5 hidden dark:block" alt="logo">
+                        <img src="{{ asset('/images/logo-dark.png') }}" class="h-5 block dark:hidden" alt="logo">
+                        <img src="{{ asset('/images/logo-light.png') }}" class="h-5 hidden dark:block" alt="logo">
                     </div>
                     <h5 class="text-base">Responsive Admin Dashboard Template</h5>
                 </div>

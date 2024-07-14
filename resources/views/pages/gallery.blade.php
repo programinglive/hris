@@ -1,4 +1,3 @@
-@extends('layouts.vertical', ['title' => 'Gallery', 'sub_title' => 'Pages', 'mode' => $mode ?? '', 'demo' => $demo ?? ''])
 
 @section('css')
     @vite(['node_modules/glightbox/dist/css/glightbox.min.css'])
@@ -18,19 +17,19 @@
                         <div class="flex justify-center mb-5">
                             <ul class="filter-options flex flex-wrap gap-4 justify-center">
                                 <li class="active" data-group="all">
-                                    <a href="javascript:void(0)" class="btn">All Items</a>
+                                    <a href="#" class="btn">All Items</a>
                                 </li>
                                 <li data-group="design">
-                                    <a href="javascript:void(0)" class="btn">Design</a>
+                                    <a href="#" class="btn">Design</a>
                                 </li>
                                 <li data-group="creative">
-                                    <a href="javascript:void(0)" class="btn">Creative</a>
+                                    <a href="#" class="btn">Creative</a>
                                 </li>
                                 <li data-group="digital">
-                                    <a href="javascript:void(0)" class="btn">Digital</a>
+                                    <a href="#" class="btn">Digital</a>
                                 </li>
                                 <li data-group="photography">
-                                    <a href="javascript:void(0)" class="btn">Photography</a>
+                                    <a href="#" class="btn">Photography</a>
                                 </li>
                             </ul>
                         </div>

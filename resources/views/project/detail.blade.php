@@ -1,4 +1,3 @@
-@extends('layouts.vertical', ['title' => 'Project Detail', 'sub_title' => 'Project', 'mode' => $mode ?? '', 'demo' => $demo ?? ''])
 
 @section('content')
     <div class="grid lg:grid-cols-3 gap-6">
@@ -114,17 +113,17 @@
                         <div class="mt-6">
                             <h6 class="text-sm text-gray-800 font-medium mb-3">Assign To</h6>
                             <div class="flex flex-wrap -space-x-2">
-                                <a href="javascript: void(0);">
-                                    <img class="inline-block h-10 w-10 rounded-full border-2 border-white dark:border-gray-800" src="/images/users/avatar-2.jpg" alt="Image Description">
+                                <a href="#">
+                                    <img class="inline-block h-10 w-10 rounded-full border-2 border-white dark:border-gray-800" src="{{ asset('/images/users/avatar-2.jpg') }}" alt="Image Description">
                                 </a>
-                                <a href="javascript: void(0);">
-                                    <img class="inline-block h-10 w-10 rounded-full border-2 border-white dark:border-gray-800" src="/images/users/avatar-3.jpg" alt="Image Description">
+                                <a href="#">
+                                    <img class="inline-block h-10 w-10 rounded-full border-2 border-white dark:border-gray-800" src="{{ asset('/images/users/avatar-3.jpg') }}" alt="Image Description">
                                 </a>
-                                <a href="javascript: void(0);">
-                                    <img class="inline-block h-10 w-10 rounded-full border-2 border-white dark:border-gray-800" src="/images/users/avatar-9.jpg" alt="Image Description">
+                                <a href="#">
+                                    <img class="inline-block h-10 w-10 rounded-full border-2 border-white dark:border-gray-800" src="{{ asset('/images/users/avatar-9.jpg') }}" alt="Image Description">
                                 </a>
-                                <a href="javascript: void(0);">
-                                    <img class="inline-block h-10 w-10 rounded-full border-2 border-white dark:border-gray-800" src="/images/users/avatar-10.jpg" alt="Image Description">
+                                <a href="#">
+                                    <img class="inline-block h-10 w-10 rounded-full border-2 border-white dark:border-gray-800" src="{{ asset('/images/users/avatar-10.jpg') }}" alt="Image Description">
                                 </a>
                             </div>
                         </div>
@@ -182,7 +181,7 @@
                         <div class="p-3">
                             <div class="flex items-center gap-3">
                                 <div class="h-10 w-10 flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="/images/users/avatar-1.jpg" alt="">
+                                    <img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-1.jpg') }}" alt="">
                                 </div>
                                 <div class="flex-grow truncate">
                                     <div class="font-medium text-gray-900 dark:text-gray-300">James Walton</div>
@@ -198,7 +197,7 @@
                         <div class="p-3">
                             <div class="flex items-center gap-3">
                                 <div class="h-10 w-10 flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="/images/users/avatar-2.jpg" alt="">
+                                    <img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-2.jpg') }}" alt="">
                                 </div>
                                 <div class="flex-grow truncate">
                                     <div class="font-medium text-gray-900 dark:text-gray-300">Jerry Geiger</div>
@@ -214,7 +213,7 @@
                         <div class="p-3">
                             <div class="flex items-center gap-3">
                                 <div class="h-10 w-10 flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="/images/users/avatar-3.jpg" alt="">
+                                    <img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-3.jpg') }}" alt="">
                                 </div>
                                 <div class="flex-grow truncate">
                                     <div class="font-medium text-gray-900 dark:text-gray-300">Mark Adams</div>
@@ -229,7 +228,7 @@
                         <div class="p-3">
                             <div class="flex items-center gap-3">
                                 <div class="h-10 w-10 flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="/images/users/avatar-9.jpg" alt="">
+                                    <img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-9.jpg') }}" alt="">
                                 </div>
                                 <div class="flex-grow truncate">
                                     <div class="font-medium text-gray-900 dark:text-gray-300">Lindsay Walton</div>
@@ -244,7 +243,7 @@
                         <div class="p-3">
                             <div class="flex items-center gap-3">
                                 <div class="h-10 w-10 flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="/images/users/avatar-5.jpg" alt="">
+                                    <img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-5.jpg') }}" alt="">
                                 </div>
                                 <div class="flex-grow truncate">
                                     <div class="font-medium text-gray-900 dark:text-gray-300">Jhon Otto</div>
@@ -259,7 +258,7 @@
                         <div class="p-3">
                             <div class="flex items-center gap-3">
                                 <div class="h-10 w-10 flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="/images/users/avatar-6.jpg" alt="">
+                                    <img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-6.jpg') }}" alt="">
                                 </div>
                                 <div class="flex-grow truncate">
                                     <div class="font-medium text-gray-900 dark:text-gray-300">Barak Obama</div>
@@ -274,7 +273,7 @@
                         <div class="p-3">
                             <div class="flex items-center gap-3">
                                 <div class="h-10 w-10 flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="/images/users/avatar-7.jpg" alt="">
+                                    <img class="h-10 w-10 rounded-full" src="{{ asset('/images/users/avatar-7.jpg') }}" alt="">
                                 </div>
                                 <div class="flex-grow truncate">
                                     <div class="font-medium text-gray-900 dark:text-gray-300">Oliver Williams</div>

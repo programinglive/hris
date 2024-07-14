@@ -1,5 +1,3 @@
-@extends('layouts.vertical', ['title' => 'Timeline', 'sub_title' => 'Pages', 'mode' => $mode ?? '', 'demo' => $demo ?? ''])
-
 @section('content')
     <div class="relative space-y-12 pb-6">
         <!-- Center Border Line -->
@@ -74,13 +72,13 @@
                             </p>
                             <p class="text-gray-500 dark:text-gray-200">3 new photo Uploaded on facebook fan page</p>
                             <div class="flex gap-2 mt-4">
-                                <a href="javascript: void(0);">
+                                <a href="#">
                                     <img class="rounded w-14" alt="" src="/images/small/img-1.jpg">
                                 </a>
-                                <a href="javascript: void(0);">
+                                <a href="#">
                                     <img class="rounded w-14" alt="" src="/images/small/img-2.jpg">
                                 </a>
-                                <a href="javascript: void(0);">
+                                <a href="#">
                                     <img class="rounded w-14" alt="" src="/images/small/img-3.jpg">
                                 </a>
                             </div>

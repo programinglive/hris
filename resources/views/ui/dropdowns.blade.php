@@ -1,5 +1,3 @@
-@extends('layouts.vertical', ['title' => 'Dropdowns', 'sub_title' => 'Component', 'mode' => $mode ?? '', 'demo' => $demo ?? ''])
-
 @section('content')
     <div class="grid 2xl:grid-cols-2 grid-cols-1 gap-6">
         <div class="card">
@@ -477,15 +475,15 @@
                         <div id="dropdown-target"
                             class="hidden bg-white  shadow rounded-lg border p-2 px-2 dark:bg-gray-800 dark:border-slate-700">
                             <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                                href="javascript:void(0)">
+                                href="#">
                                 Action
                             </a>
                             <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                                href="javascript:void(0)">
+                                href="#">
                                 Another Action
                             </a>
                             <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                                href="javascript:void(0)">
+                                href="#">
                                 Something else here
                             </a>
                             <div>
@@ -499,19 +497,19 @@
                                 <div
                                     class="-ms-2 hidden w-48 bg-white shadow-md rounded-lg border p-2 px-2 dark:bg-gray-800 dark:border-slate-700">
                                     <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                                        href="javascript:void(0)">
+                                        href="#">
                                         Action
                                     </a>
                                     <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                                        href="javascript:void(0)">
+                                        href="#">
                                         Another action
                                     </a>
                                     <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                                        href="javascript:void(0)">
+                                        href="#">
                                         Something else here
                                     </a>
                                     <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                                        href="javascript:void(0)">
+                                        href="#">
                                         Separated link
                                     </a>
                                 </div>
@@ -531,15 +529,15 @@
                         &lt;div id=&quot;dropdown-target&quot;
                             class=&quot;hidden bg-white  shadow rounded-lg border p-2 px-2 dark:bg-gray-800 dark:border-slate-700&quot;&gt;
                             &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                href=&quot;javascript:void(0)&quot;&gt;
+                                href=&quot;#&quot;&gt;
                                 Action
                             &lt;/a&gt;
                             &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                href=&quot;javascript:void(0)&quot;&gt;
+                                href=&quot;#&quot;&gt;
                                 Another Action
                             &lt;/a&gt;
                             &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                href=&quot;javascript:void(0)&quot;&gt;
+                                href=&quot;#&quot;&gt;
                                 Something else here
                             &lt;/a&gt;
                             &lt;div&gt;
@@ -554,19 +552,19 @@
                                 &lt;div
                                     class=&quot;-ms-2 hidden w-48 bg-white shadow-md rounded-lg border p-2 px-2 dark:bg-gray-800 dark:border-slate-700&quot;&gt;
                                     &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                        href=&quot;javascript:void(0)&quot;&gt;
+                                        href=&quot;#&quot;&gt;
                                         Action
                                     &lt;/a&gt;
                                     &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                        href=&quot;javascript:void(0)&quot;&gt;
+                                        href=&quot;#&quot;&gt;
                                         Another action
                                     &lt;/a&gt;
                                     &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                        href=&quot;javascript:void(0)&quot;&gt;
+                                        href=&quot;#&quot;&gt;
                                         Something else here
                                     &lt;/a&gt;
                                     &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                        href=&quot;javascript:void(0)&quot;&gt;
+                                        href=&quot;#&quot;&gt;
                                         Separated link
                                     &lt;/a&gt;
                                 &lt;/div&gt;
@@ -583,15 +581,15 @@
                         &lt;div id=&quot;dropdown-target&quot;
                             class=&quot;hidden bg-white  shadow rounded-lg border p-2 px-2 dark:bg-gray-800 dark:border-slate-700&quot;&gt;
                             &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                href=&quot;javascript:void(0)&quot;&gt;
+                                href=&quot;#&quot;&gt;
                                 Action
                             &lt;/a&gt;
                             &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                href=&quot;javascript:void(0)&quot;&gt;
+                                href=&quot;#&quot;&gt;
                                 Another Action
                             &lt;/a&gt;
                             &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                href=&quot;javascript:void(0)&quot;&gt;
+                                href=&quot;#&quot;&gt;
                                 Something else here
                             &lt;/a&gt;
                             &lt;div&gt;
@@ -606,19 +604,19 @@
                                 &lt;div
                                     class=&quot;-ms-2 hidden w-48 bg-white shadow-md rounded-lg border p-2 px-2 dark:bg-gray-800 dark:border-slate-700&quot;&gt;
                                     &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                        href=&quot;javascript:void(0)&quot;&gt;
+                                        href=&quot;#&quot;&gt;
                                         Action
                                     &lt;/a&gt;
                                     &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                        href=&quot;javascript:void(0)&quot;&gt;
+                                        href=&quot;#&quot;&gt;
                                         Another action
                                     &lt;/a&gt;
                                     &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                        href=&quot;javascript:void(0)&quot;&gt;
+                                        href=&quot;#&quot;&gt;
                                         Something else here
                                     &lt;/a&gt;
                                     &lt;a class=&quot;flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300&quot;
-                                        href=&quot;javascript:void(0)&quot;&gt;
+                                        href=&quot;#&quot;&gt;
                                         Separated link
                                     &lt;/a&gt;
                                 &lt;/div&gt;

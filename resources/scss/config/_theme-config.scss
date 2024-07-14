@@ -7,13 +7,10 @@
 
 
 // ===================================================== //
-// ======= Real Time Customistion :root Variable ======= //
+// ======= Real Time Customization :root Variable ======= //
 // ===================================================== //
 
 :root {
-    --tw-body-font-family:           theme(fontFamily.base);
-    --tw-body-bg:                    theme(backgroundColor.neutral.100);
-    --tw-body-color:                 theme(colors.slate.500);
 
     --tw-sidenav-width:             250px;
     --tw-sidenav-width-md:          175px;
@@ -36,8 +33,6 @@
 
 :root {
     &:is([data-mode="dark"]) {
-        --tw-body-bg:                    theme(backgroundColor.gray.900);
-        --tw-body-color:                 theme(colors.slate.400);
     }
 }
 
@@ -58,7 +53,6 @@ html[data-menu-color="light"] {
 // Dark Menu
 html[data-menu-color="dark"],
 html[data-mode="dark"][data-menu-color="light"] {
-    --tw-menu-bg:                               theme(backgroundColor.gray.800);
     --tw-menu-item-color:                       rgb(144, 151, 167);
     --tw-menu-item-active-color:                rgb(200, 205, 220);
     --tw-menu-item-active-bg:                   rgba(30, 133, 255, 0.1);
@@ -68,7 +62,6 @@ html[data-mode="dark"][data-menu-color="light"] {
 
 // Brand Menu
 html[data-menu-color="brand"] {
-    --tw-menu-bg:                             theme(backgroundColor.primary);
     --tw-menu-item-color:                     rgb(206, 220, 228);
     --tw-menu-item-active-color:              rgb(255, 255, 255);
     --tw-menu-item-active-bg:                 rgba(255, 255, 255, 0.1);
@@ -113,7 +106,6 @@ html[data-mode="dark"][data-topbar-color="light"] {
 
 // Brand Topbar
 html[data-topbar-color="brand"] {
-    --tw-topbar-bg:                           theme(backgroundColor.primary);
     --tw-topbar-item-color:                   rgba(255, 255, 255, 0.7);
     --tw-topbar-item-active-bg:               rgba(255, 255, 255, 0.1);
     --tw-topbar-item-active-color:            rgb(255, 255, 255);

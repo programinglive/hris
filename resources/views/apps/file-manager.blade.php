@@ -1,11 +1,9 @@
-@extends('layouts.vertical', ['title' => 'File Manager', 'sub_title' => 'Apps', 'mode' => $mode ?? '', 'demo' => $demo ?? ''])
-
 @section('content')
 <div class="flex">
 	<div id="default-offcanvas" class="lg:block hidden top-0 left-0 transform h-full min-w-[16rem] me-6 card rounded-none lg:rounded-md fc-offcanvas-open:translate-x-0 lg:z-0 z-50 fixed lg:static lg:translate-x-0 -translate-x-full transition-all duration-300" tabindex="-1">
 		<div class="p-5">
 			<div class="relative">
-				<a href="javascript:void(0)" data-fc-type="dropdown" data-fc-placement="bottom" type="button" class="btn inline-flex justify-center items-center bg-primary text-white w-full">
+				<a href="#" data-fc-type="dropdown" data-fc-placement="bottom" type="button" class="btn inline-flex justify-center items-center bg-primary text-white w-full">
 					<i class="mgc_add_line text-lg me-2"></i> Create New
 				</a>
 
@@ -30,35 +28,35 @@
 			</div>
 
 			<div class="space-y-2 mt-4">
-				<a href="javascript:void(0);" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
+				<a href="#" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
 					<i data-feather="home" class="me-3.5 w-4"></i>
 					<span>Home</span>
 				</a>
-				<a href="javascript:void(0);" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
+				<a href="#" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
 					<i data-feather="file-text" class="me-3.5 w-4"></i>
 					<span>Documents</span>
 				</a>
-				<a href="javascript:void(0);" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
+				<a href="#" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
 					<i data-feather="download" class="me-3.5 w-4"></i>
 					<span>Downloads</span>
 				</a>
-				<a href="javascript:void(0);" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
+				<a href="#" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
 					<i data-feather="music" class="me-3.5 w-4"></i>
 					<span>Music</span>
 				</a>
-				<a href="javascript:void(0);" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
+				<a href="#" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
 					<i data-feather="image" class="me-3.5 w-4"></i>
 					<span>Pictures</span>
 				</a>
-				<a href="javascript:void(0);" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
+				<a href="#" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
 					<i data-feather="video" class="me-3.5 w-4"></i>
 					<span>Video</span>
 				</a>
-				<a href="javascript:void(0);" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
+				<a href="#" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
 					<i data-feather="clock" class="me-3.5 w-4"></i>
 					<span>Recent</span>
 				</a>
-				<a href="javascript:void(0);" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
+				<a href="#" class="flex items-center py-2 px-4 text-sm rounded text-gray-500 hover:bg-slate-100 hover:text-slate-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" id="headingOne">
 					<i data-feather="trash" class="me-3.5 w-4"></i>
 					<span>Bin</span>
 				</a>
@@ -315,7 +313,7 @@
 										<tbody class="divide-y divide-gray-200 dark:divide-gray-600">
 											<tr>
 												<td class="p-3.5 text-sm text-gray-700 dark:text-gray-400">
-													<a href="javascript: void(0);" class="font-medium">App Design & Development</a>
+													<a href="#" class="font-medium">App Design & Development</a>
 												</td>
 												<td class="p-3.5 text-sm text-gray-700 dark:text-gray-400">
 													<p>Jan 03, 2020</p>
@@ -327,10 +325,10 @@
 												</td>
 												<td class="p-3.5">
 													<div class="flex -space-x-1.5">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-1.jpg" alt="Image Description">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-2.jpg" alt="Image Description">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-3.jpg" alt="Image Description">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-4.jpg" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-1.jpg') }}" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-2.jpg') }}" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-3.jpg') }}" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-4.jpg') }}" alt="Image Description">
 													</div>
 												</td>
 												<td class="p-3.5">
@@ -363,7 +361,7 @@
 
 											<tr>
 												<td class="p-3.5 text-sm text-gray-700 dark:text-gray-400">
-													<a href="javascript: void(0);" class="font-medium">Hyper-sketch-design.zip</a>
+													<a href="#" class="font-medium">Hyper-sketch-design.zip</a>
 												</td>
 												<td class="p-3.5 text-sm text-gray-700 dark:text-gray-400">
 													<p>Feb 13, 2020</p>
@@ -375,9 +373,9 @@
 												</td>
 												<td class="p-3.5">
 													<div class="flex -space-x-1.5">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-4.jpg" alt="Image Description">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-8.jpg" alt="Image Description">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-6.jpg" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-4.jpg') }}" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-8.jpg') }}" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-6.jpg') }}" alt="Image Description">
 													</div>
 												</td>
 												<td class="p-3.5">
@@ -409,7 +407,7 @@
 											</tr>
 											<tr>
 												<td class="p-3.5 text-sm text-gray-700 dark:text-gray-400">
-													<a href="javascript: void(0);" class="font-medium">Annualreport.pdf</a>
+													<a href="#" class="font-medium">Annualreport.pdf</a>
 												</td>
 												<td class="p-3.5 text-sm text-gray-700 dark:text-gray-400">
 													<p>Dec 18, 2019</p>
@@ -421,9 +419,9 @@
 												</td>
 												<td class="p-3.5">
 													<div class="flex -space-x-1.5">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-5.jpg" alt="Image Description">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-7.jpg" alt="Image Description">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-4.jpg" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-5.jpg') }}" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-7.jpg') }}" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-4.jpg') }}" alt="Image Description">
 													</div>
 												</td>
 												<td class="p-3.5">
@@ -455,7 +453,7 @@
 											</tr>
 											<tr>
 												<td class="p-3.5 text-sm text-gray-700 dark:text-gray-400">
-													<a href="javascript: void(0);" class="font-medium">Wireframes</a>
+													<a href="#" class="font-medium">Wireframes</a>
 												</td>
 												<td class="p-3.5 text-sm text-gray-700 dark:text-gray-400">
 													<p>Nov 25, 2019</p>
@@ -467,10 +465,10 @@
 												</td>
 												<td class="p-3.5">
 													<div class="flex -space-x-1.5">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-6.jpg" alt="Image Description">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-4.jpg" alt="Image Description">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-7.jpg" alt="Image Description">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-5.jpg" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-6.jpg') }}" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-4.jpg') }}" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-7.jpg') }}" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-5.jpg') }}" alt="Image Description">
 													</div>
 												</td>
 												<td class="p-3.5">
@@ -502,7 +500,7 @@
 											</tr>
 											<tr>
 												<td class="p-3.5 text-sm text-gray-700 dark:text-gray-400">
-													<a href="javascript: void(0);" class="font-medium">Documentation.docs</a>
+													<a href="#" class="font-medium">Documentation.docs</a>
 												</td>
 												<td class="p-3.5 text-sm text-gray-700 dark:text-gray-400">
 													<p>Feb 9, 2020</p>
@@ -514,8 +512,8 @@
 												</td>
 												<td class="p-3.5">
 													<div class="flex -space-x-1.5">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-5.jpg" alt="Image Description">
-														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="/images/users/avatar-8.jpg" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-5.jpg') }}" alt="Image Description">
+														<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-gray-700" src="{{ asset('/images/users/avatar-8.jpg') }}" alt="Image Description">
 													</div>
 												</td>
 												<td class="p-3.5">
