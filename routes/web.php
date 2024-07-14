@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\DashboardPage;
+use App\Livewire\LoginPage;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 require __DIR__ . '/auth.php';
+
+Route::get('/', LoginPage::class)->name('landingpage');
 
 Route::group(['prefix' => '/', 'middleware'=>'auth'], function () {
     Route::get('/dashboard', DashboardPage::class)->name('dashboard');
