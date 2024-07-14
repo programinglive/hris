@@ -25,11 +25,11 @@
 		
 		<main class="flex-grow p-6">
 			
-			@yield('content')
+			{{ $slot ?? '' }}
 		
 		</main>
 		
-		@include('layouts.shared/footer')
+		<livewire:dashboard-footer />
 	
 	</div>
 

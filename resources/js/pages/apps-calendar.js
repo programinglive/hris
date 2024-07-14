@@ -133,6 +133,6 @@ class CalendarClass {
     }
 
 }
-document.addEventListener('DOMContentLoaded', function (e) {
+document.addEventListener('DOMContentLoaded', function () {
     new CalendarClass().init();
 });

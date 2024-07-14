@@ -243,6 +243,6 @@ class GridDatatable {
 
 }
 
-document.addEventListener('DOMContentLoaded', function (e) {
+document.addEventListener('DOMContentLoaded', function () {
     new GridDatatable().init();
 });

@@ -25,19 +25,23 @@ class App {
             }
         });
 
-        mybutton.addEventListener('click', function (e) {
+        mybutton.addEventListener('click', function () {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
 
     // Topbar Fullscreen Button
+    cancelFullScreen;
+    mozFullScreenElement;
+    webkitFullscreenElement;
+    mozRequestFullScreen;
+    webkitRequestFullscreen;
     initfullScreenListener() {
-        var self = this;
-        var fullScreenBtn = document.querySelector('[data-toggle="fullscreen"]');
+        const fullScreenBtn = document.querySelector('[data-toggle="fullscreen"]');
 
         if (fullScreenBtn) {
-            fullScreenBtn.addEventListener('click', function (e) {
+            fullScreenBtn.addEventListener('click', function () {
                 e.preventDefault();
                 document.body.classList.toggle('fullscreen-enable')
                 if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement) {
@@ -68,6 +72,7 @@ class App {
 }
 
 class ThemeCustomizer {
+    Collapse;
 
     constructor() {
         this.html = document.getElementsByTagName('html')[0]
@@ -82,7 +87,6 @@ class ThemeCustomizer {
     }
 
     initSidenav() {
-        var self = this;
         var pageUrl = window.location.href.split(/[?#]/)[0];
         document.querySelectorAll('ul.menu a.menu-link').forEach((element) => {
             if (element.href === pageUrl) {
@@ -118,11 +122,10 @@ class ThemeCustomizer {
         }
 
         function scrollTo(element, to, duration) {
-            var start = element.scrollTop, change = to - start, currentTime = 0, increment = 20;
-            var animateScroll = function () {
+            let start = element.scrollTop, change = to - start, currentTime = 0, increment = 20;
+            const animateScroll = function () {
                 currentTime += increment;
-                var val = easeInOutQuad(currentTime, start, change, duration);
-                element.scrollTop = val;
+                element.scrollTop = easeInOutQuad(currentTime, start, change, duration);
                 if (currentTime < duration) {
                     setTimeout(animateScroll, increment);
                 }
@@ -202,54 +205,54 @@ class ThemeCustomizer {
     }
 
     initSwitchListener() {
-        var self = this;
+        const self = this;
 
         document.querySelectorAll('input[name=dir]').forEach(function (element) {
-            element.addEventListener('change', function (e) {
+            element.addEventListener('change', function () {
                 self.changeThemeDirection(element.value);
             })
         });
 
         document.querySelectorAll('input[name=data-mode]').forEach(function (element) {
-            element.addEventListener('change', function (e) {
+            element.addEventListener('change', function () {
                 self.changeThemeMode(element.value);
             })
         });
 
         document.querySelectorAll('input[name=data-layout-width]').forEach(function (element) {
-            element.addEventListener('change', function (e) {
+            element.addEventListener('change', function () {
                 self.changeLayoutWidth(element.value);
             })
         });
 
         document.querySelectorAll('input[name=data-layout-position]').forEach(function (element) {
-            element.addEventListener('change', function (e) {
+            element.addEventListener('change', function () {
                 self.changeLayoutPosition(element.value);
             })
         });
 
         document.querySelectorAll('input[name=data-topbar-color]').forEach(function (element) {
-            element.addEventListener('change', function (e) {
+            element.addEventListener('change', function () {
                 self.changeTopbarColor(element.value);
             })
         });
 
         document.querySelectorAll('input[name=data-menu-color]').forEach(function (element) {
-            element.addEventListener('change', function (e) {
+            element.addEventListener('change', function () {
                 self.changeMenuColor(element.value);
             })
         });
 
         document.querySelectorAll('input[name=data-sidenav-view]').forEach(function (element) {
-            element.addEventListener('change', function (e) {
+            element.addEventListener('change', function () {
                 self.changeSidenavView(element.value);
             })
         });
 
         //  Light Dark Button
-        var themeColorToggle = document.getElementById('light-dark-mode');
+        const themeColorToggle = document.getElementById('light-dark-mode');
         if (themeColorToggle) {
-            themeColorToggle.addEventListener('click', function (e) {
+            themeColorToggle.addEventListener('click', function () {
 
                 if (self.config.theme === 'light') {
                     self.changeThemeMode('dark');
@@ -270,15 +273,15 @@ class ThemeCustomizer {
                     self.showBackdrop();
                     self.html.classList.toggle('sidenav-enable');
                 } else {
-                    if (configView == 'hidden') {
+                    if (configView === 'hidden') {
                         if (view === 'hidden') {
-                            self.changeSidenavView(configView == 'hidden' ? 'default' : configView, false);
+                            self.changeSidenavView(configView === 'hidden' ? 'default' : configView, false);
                         } else {
                             self.changeSidenavView('hidden', false);
                         }
                     } else {
                         if (view === 'sm') {
-                            self.changeSidenavView(configView == 'sm' ? 'default' : configView, false);
+                            self.changeSidenavView(configView === 'sm' ? 'default' : configView, false);
                         } else {
                             self.changeSidenavView('sm', false);
                         }
@@ -293,15 +296,15 @@ class ThemeCustomizer {
                 var configView = self.config.sidenav.view;
                 var view = self.html.getAttribute('data-sidenav-view', configView);
 
-                if (configView == 'hover') {
+                if (configView === 'hover') {
                     if (view === 'hover') {
-                        self.changeSidenavView(configView == 'hover' ? 'hover-active' : configView, true);
+                        self.changeSidenavView(configView === 'hover' ? 'hover-active' : configView, true);
                     } else {
                         self.changeSidenavView('hover', true);
                     }
                 } else {
                     if (view === 'hover-active') {
-                        self.changeSidenavView(configView == 'hover-active' ? 'hover' : configView, true);
+                        self.changeSidenavView(configView === 'hover-active' ? 'hover' : configView, true);
                     } else {
                         self.changeSidenavView('hover-active', true);
                     }
@@ -312,7 +315,7 @@ class ThemeCustomizer {
         // Config Reset Button
         var resetBtn = document.querySelector('#reset-layout')
         if (resetBtn) {
-            resetBtn.addEventListener('click', function (e) {
+            resetBtn.addEventListener('click', function () {
                 self.resetTheme();
             });
         }
@@ -332,7 +335,7 @@ class ThemeCustomizer {
         }
 
         const self = this
-        backdrop.addEventListener('click', function (e) {
+        backdrop.addEventListener('click', function () {
             self.html.classList.remove('sidenav-enable');
             self.hideBackdrop();
         })
@@ -349,7 +352,7 @@ class ThemeCustomizer {
 
     initWindowSize() {
         var self = this;
-        window.addEventListener('resize', function (e) {
+        window.addEventListener('resize', function () {
             self.adjustLayout();
         })
     }
