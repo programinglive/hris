@@ -23,81 +23,23 @@
 			
 			<li class="menu-title">Master Data</li>
 			
+			<livewire:master-base-data-menu />
+			
+			<livewire:master-organisation-menu />
+			
 			<livewire:master-employee-menu />
 			
 			<livewire:master-announcement-menu />
 			
-			<li class="menu-item">
-				<a href="#" data-fc-type="collapse" class="menu-link">
-					<span class="menu-icon"><i class="mgc_briefcase_line"></i></span>
-					<span class="menu-text"> Assets </span>
-					<span class="menu-arrow"></span>
-				</a>
-				
-				<ul class="sub-menu hidden">
-					<li class="menu-item">
-						<a href="#" class="menu-link">
-							<span class="menu-text">Item</span>
-						</a>
-					</li>
-				</ul>
-			</li>
+			<livewire:master-asset-menu />
 			
 			<li class="menu-title">Transaction Data</li>
 			
-			<li class="menu-item">
-				<a href="#" data-fc-type="collapse" class="menu-link">
-					<span class="menu-icon"><i class="mgc_user_3_line"></i></span>
-					<span class="menu-text"> Auth Pages </span>
-					<span class="menu-arrow"></span>
-				</a>
-				
-				<ul class="sub-menu hidden">
-					<li class="menu-item">
-						<a href="#" class="menu-link">
-							<span class="menu-text">Log In</span>
-						</a>
-					</li>
-					<li class="menu-item">
-						<a href="#" class="menu-link">
-							<span class="menu-text">Register</span>
-						</a>
-					</li>
-					<li class="menu-item">
-						<a href="#" class="menu-link">
-							<span class="menu-text">Recover Password</span>
-						</a>
-					</li>
-					<li class="menu-item">
-						<a href="#" class="menu-link">
-							<span class="menu-text">Lock Screen</span>
-						</a>
-					</li>
-				</ul>
-			</li>
+			<livewire:transaction-data-menu />
 			
-			<li class="menu-title">Settings</li>
+			<li class="menu-title">Setting</li>
 			
-			<li class="menu-item">
-				<a href="#" data-fc-type="collapse" class="menu-link">
-					<span class="menu-icon"><i class="mgc_layout_grid_line"></i></span>
-					<span class="menu-text"> Tables </span>
-					<span class="menu-arrow"></span>
-				</a>
-				
-				<ul class="sub-menu hidden">
-					<li class="menu-item">
-						<a href="#" class="menu-link">
-							<span class="menu-text">Basic Tables</span>
-						</a>
-					</li>
-					<li class="menu-item">
-						<a href="#" class="menu-link">
-							<span class="menu-text">Data Tables</span>
-						</a>
-					</li>
-				</ul>
-			</li>
+			<livewire:setting-menu />
 		
 		</ul>
 	
