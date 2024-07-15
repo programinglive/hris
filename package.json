@@ -23,7 +23,6 @@
         "@tailwindcss/typography": "^0.5.9",
         "animate.css": "^4.1.1",
         "aos": "^2.3.4",
-        "apexcharts": "^3.41.0",
         "clipboard": "^2.0.11",
         "dropzone": "^5.9.0",
         "feather-icons": "^4.29.0",

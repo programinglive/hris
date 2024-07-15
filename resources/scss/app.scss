@@ -19,17 +19,11 @@
 @import "components/helper";
 
 // Plugins (Extended UI Components) 
-@import "plugins/swiper";
 @import "plugins/simplebar";
 @import "plugins/prismjs";
-@import "plugins/sweetalert2";
-@import "plugins/sortablejs";
 @import "plugins/tour";
 @import "plugins/glightbox";
 @import "plugins/tippy-tooltip";
-
-// Chart Plugins
-@import "plugins/apexcharts";
 
 // Advanced Form Plugins
 @import "plugins/dropzone";
@@ -37,7 +31,6 @@
 @import "plugins/flatpicker";
 @import "plugins/colorpicker";
 @import "plugins/choices";
-@import "plugins/quilljs";
 
 // Data Table
 @import "plugins/gridjs";
