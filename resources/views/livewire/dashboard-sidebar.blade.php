@@ -23,27 +23,21 @@
 			
 			<li class="menu-title">Master Data</li>
 			
+			<livewire:master-employee-menu />
+			
+			<livewire:master-announcement-menu />
+			
 			<li class="menu-item">
 				<a href="#" data-fc-type="collapse" class="menu-link">
-					<span class="menu-icon"><i class="mgc_building_2_line"></i></span>
-					<span class="menu-text"> Employee </span>
+					<span class="menu-icon"><i class="mgc_briefcase_line"></i></span>
+					<span class="menu-text"> Assets </span>
 					<span class="menu-arrow"></span>
 				</a>
 				
 				<ul class="sub-menu hidden">
 					<li class="menu-item">
 						<a href="#" class="menu-link">
-							<span class="menu-text">List</span>
-						</a>
-					</li>
-					<li class="menu-item">
-						<a href="#" class="menu-link">
-							<span class="menu-text">Detail</span>
-						</a>
-					</li>
-					<li class="menu-item">
-						<a href="#" class="menu-link">
-							<span class="menu-text">Create</span>
+							<span class="menu-text">Item</span>
 						</a>
 					</li>
 				</ul>
