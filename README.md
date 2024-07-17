@@ -71,6 +71,12 @@ php artisan serve
 
 The application should now be running at `http://localhost:8000`.
 
+## User Testing
+```
+Username: admin@test.com
+Password: hrisproject
+```
+
 ## Contributions
 
 We value your contributions!
