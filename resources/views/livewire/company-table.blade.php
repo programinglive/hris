@@ -1,7 +1,11 @@
-<div class="rounded bg-white flex flex-col gap-6 px-5 py-4" x-data="{ open: false }">
-	<div class="flex justify-between" x-show="!open">
+<div class="rounded bg-white flex flex-col gap-6 px-5 py-4"
+     x-data="{
+			open: $wire.entangle('showDropdown')
+		}"
+>
+	<div class="flex justify-between pt-2" x-show="!open" >
 		<div>
-			<button type="button" class="btn bg-primary text-white" @click="open = !open">+</button>
+			<button type="button" class="btn bg-primary text-white" @click="open = true">+</button>
 		</div>
 		<div class="w-1/4">
 			<label for="search" class="hidden text-gray-800 text-sm font-medium mb-2">Search</label>

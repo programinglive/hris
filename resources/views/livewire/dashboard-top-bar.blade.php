@@ -52,8 +52,8 @@
 									</div>
 								</div>
 								<div class="flex-grow truncate ms-2">
-									<h5 class="text-sm font-semibold mb-1">Datacorp <small class="font-normal text-gray-500 ms-1">1 min ago</small></h5>
-									<small class="noti-item-subtitle text-muted">Caleb Flakelar commented on Admin</small>
+									<h5 class="text-sm font-semibold mb-1">Data corp <small class="font-normal text-gray-500 ms-1">1 min ago</small></h5>
+									<small class="notification-item-subtitle text-muted">Caleb Flake commented on Admin</small>
 								</div>
 							</div>
 						</div>
@@ -69,7 +69,7 @@
 								</div>
 								<div class="flex-grow truncate ms-2">
 									<h5 class="text-sm font-semibold mb-1">Admin <small class="font-normal text-gray-500 ms-1">1 hr ago</small></h5>
-									<small class="noti-item-subtitle text-muted">New user registered</small>
+									<small class="notification-item-subtitle text-muted">New user registered</small>
 								</div>
 							</div>
 						</div>
@@ -83,7 +83,7 @@
 								</div>
 								<div class="flex-grow truncate ms-2">
 									<h5 class="text-sm font-semibold mb-1">Cristina Pride <small class="font-normal text-gray-500 ms-1">1 day ago</small></h5>
-									<small class="noti-item-subtitle text-muted">Hi, How are you? What about our next meeting</small>
+									<small class="notification-item-subtitle text-muted">Hi, How are you? What about our next meeting</small>
 								</div>
 							</div>
 						</div>
@@ -100,8 +100,8 @@
 									</div>
 								</div>
 								<div class="flex-grow truncate ms-2">
-									<h5 class="text-sm font-semibold mb-1">Datacorp</h5>
-									<small class="noti-item-subtitle text-muted">Caleb Flakelar commented on Admin</small>
+									<h5 class="text-sm font-semibold mb-1">Data corp</h5>
+									<small class="notification-item-subtitle text-muted">Caleb Flake commented on Admin</small>
 								</div>
 							</div>
 						</div>
@@ -115,7 +115,7 @@
 								</div>
 								<div class="flex-grow truncate ms-2">
 									<h5 class="text-sm font-semibold mb-1">Karen Robinson</h5>
-									<small class="noti-item-subtitle text-muted">Wow ! this admin looks good and awesome design</small>
+									<small class="notification-item-subtitle text-muted">Wow ! this admin looks good and awesome design</small>
 								</div>
 							</div>
 						</div>
@@ -126,16 +126,6 @@
 					View All
 				</a>
 			</div>
-		</div>
-		
-		<!-- Light/Dark Toggle Button -->
-		<div class="flex">
-			<button id="light-dark-mode" type="button" class="nav-link p-2">
-				<span class="sr-only">Light/Dark Mode</span>
-				<span class="flex items-center justify-center h-6 w-6">
-                <i class="mgc_moon_line text-2xl"></i>
-            </span>
-			</button>
 		</div>
 		
 		<!-- Profile Dropdown Button -->
