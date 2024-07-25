@@ -64,5 +64,7 @@
 				</table>
 			</div>
 		</div>
+		<hr class="my-4 border-gray-300">
+		{{ $companies->links() }}
 	</div>
 </div>
