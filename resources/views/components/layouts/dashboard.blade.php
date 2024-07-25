@@ -17,22 +17,16 @@
 <body>
 
 <div class="flex wrapper">
-	
 	@livewire('dashboard-sidebar')
 	
 	<div class="page-content">
-		
 		@livewire('dashboard-top-bar')
 		
 		<main class="flex-grow p-6 bg-gray-100">
-			
 			{{ $slot ?? '' }}
-		
 		</main>
 		
 		@livewire('dashboard-footer')
-	
-		@livewireScripts
 	</div>
 </div>
 
@@ -42,6 +36,7 @@
 
 @vite(['resources/js/app.js'])
 
+@livewireScripts
 </body>
 
 </html>
