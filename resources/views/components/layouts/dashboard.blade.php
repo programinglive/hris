@@ -11,28 +11,29 @@
 	
 	@vite(['resources/scss/app.scss', 'resources/scss/icons.scss'])
 	@vite(['resources/js/head.js', 'resources/js/config.js'])
+	@livewireStyles
 </head>
 
 <body>
 
 <div class="flex wrapper">
 	
-	<livewire:dashboard-sidebar />
+	@livewire('dashboard-sidebar')
 	
 	<div class="page-content">
 		
-		<livewire:dashboard-top-bar />
+		@livewire('dashboard-top-bar')
 		
-		<main class="flex-grow p-6">
+		<main class="flex-grow p-6 bg-gray-100">
 			
 			{{ $slot ?? '' }}
 		
 		</main>
 		
-		<livewire:dashboard-footer />
+		@livewire('dashboard-footer')
 	
+		@livewireScripts
 	</div>
-
 </div>
 
 @include('layouts.shared/customizer')

@@ -15,7 +15,7 @@
 			<li class="menu-title">Menu</li>
 			
 			<li class="menu-item">
-				<a href="#" class="menu-link">
+				<a href="{{ route('dashboard') }}" class="menu-link">
 					<span class="menu-icon"><i class="mgc_home_3_line"></i></span>
 					<span class="menu-text"> Dashboard </span>
 				</a>

@@ -20,5 +20,7 @@ require __DIR__ . '/auth.php';
 Route::get('/', LoginPage::class)->name('landingpage');
 
 Route::group(['prefix' => '/', 'middleware'=>'auth'], function () {
-    Route::get('/dashboard', DashboardPage::class)->name('dashboard');
+    Route::get('dashboard', DashboardPage::class)->name('dashboard');
+
+    include(__DIR__ . '/module/rmasterdata.php');
 });

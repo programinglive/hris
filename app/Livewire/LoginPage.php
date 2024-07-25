@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\User;
 use Auth;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -16,6 +15,13 @@ class LoginPage extends Component
 {
     public $email;
     public $password;
+
+    public function mount()
+    {
+        if(Auth::user()) {
+            return redirect()->intended('dashboard');
+        }
+    }
 
     /**
      * Logs in the user.
