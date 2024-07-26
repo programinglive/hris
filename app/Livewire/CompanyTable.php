@@ -14,7 +14,7 @@ class CompanyTable extends Component
     use withPagination;
     public $showForm = false;
 
-    #[Url]
+    #[url]
     public $search;
 
     /**
@@ -23,7 +23,7 @@ class CompanyTable extends Component
      * @param int $companyId The ID of the created company.
      * @return void
      */
-    #[On('company-created')]
+    #[on('company-created')]
     public function companyAdded(int $companyId): void
     {
         $this->showForm = false;
@@ -35,7 +35,7 @@ class CompanyTable extends Component
      * @param int $companyId The ID of the updated company.
      * @return void
      */
-    #[On('company-updated')]
+    #[on('company-updated')]
     public function companyUpdated(int $companyId): void
     {
         $this->showForm = false;
@@ -45,7 +45,7 @@ class CompanyTable extends Component
      * Handles the event when a company is deleted.
      * @return void
      */
-    #[On('company-deleted')]
+    #[on('company-deleted')]
     public function companyDeleted(): void
     {
         $this->showForm = false;

@@ -15,7 +15,7 @@ class BranchTable extends Component
     use withPagination;
     public $showForm = false;
 
-    #[Url]
+    #[url]
     public $search;
 
     /**
@@ -24,7 +24,7 @@ class BranchTable extends Component
      * @param int $branchId The ID of the created branch.
      * @return void
      */
-    #[On('branch-created')]
+    #[on('branch-created')]
     public function branchAdded(int $branchId): void
     {
         $this->showForm = false;
@@ -36,7 +36,7 @@ class BranchTable extends Component
      * @param int $branchId The ID of the updated branch.
      * @return void
      */
-    #[On('branch-updated')]
+    #[on('branch-updated')]
     public function branchUpdated(int $branchId): void
     {
         $this->showForm = false;
@@ -46,7 +46,7 @@ class BranchTable extends Component
      * Handles the event when a branch is deleted.
      * @return void
      */
-    #[On('branch-deleted')]
+    #[on('branch-deleted')]
     public function branchDeleted(): void
     {
         $this->showForm = false;
@@ -72,9 +72,7 @@ class BranchTable extends Component
      */
     public function getBranch(): LengthAwarePaginator
     {
-        return Branch::where('company_id', auth()->user()->details->company_id)
-            ->where('type', 'branch')
-            ->where('code', 'like', '%' . $this->search . '%')
+        return Branch::where('code', 'like', '%' . $this->search . '%')
             ->paginate(5);
     }
 

@@ -13,7 +13,7 @@ use Livewire\Component;
 
 class CompanyForm extends Component
 {
-    #[Url]
+    #[url]
     #[Validate('required|unique:companies,code,deleted_at|min:3')]
     public $code;
 
@@ -83,7 +83,7 @@ class CompanyForm extends Component
     /**
      * Edit the company details.
      */
-    #[On('edit')]
+    #[on('edit')]
     public function edit($code): void
     {
         $this->code = $code;
@@ -115,7 +115,7 @@ class CompanyForm extends Component
     /**
      * Deletes the company from the database.
      */
-    #[On('delete')]
+    #[on('delete')]
     public function destroy($code): void
     {
         $this->company = Company::where('code',$code)->first();
