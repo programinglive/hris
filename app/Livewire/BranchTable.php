@@ -15,7 +15,7 @@ class BranchTable extends Component
     use withPagination;
     public $showForm = false;
 
-    #[url]
+    #[Url]
     public $search;
 
     /**
@@ -24,7 +24,7 @@ class BranchTable extends Component
      * @param int $branchId The ID of the created branch.
      * @return void
      */
-    #[on('branch-created')]
+    #[On('branch-created')]
     public function branchAdded(int $branchId): void
     {
         $this->showForm = false;
@@ -36,7 +36,7 @@ class BranchTable extends Component
      * @param int $branchId The ID of the updated branch.
      * @return void
      */
-    #[on('branch-updated')]
+    #[On('branch-updated')]
     public function branchUpdated(int $branchId): void
     {
         $this->showForm = false;
@@ -46,7 +46,7 @@ class BranchTable extends Component
      * Handles the event when a branch is deleted.
      * @return void
      */
-    #[on('branch-deleted')]
+    #[On('branch-deleted')]
     public function branchDeleted(): void
     {
         $this->showForm = false;
@@ -59,7 +59,7 @@ class BranchTable extends Component
      *
      * @return void
      */
-    #[on('show-form')]
+    #[On('show-form')]
     public function showForm(): void
     {
         $this->showForm = true;

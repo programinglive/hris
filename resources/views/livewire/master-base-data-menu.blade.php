@@ -13,6 +13,9 @@
 			<a href="{{ route('master.permissions') }}" class="menu-link">
 				<span class="menu-text">Permission</span>
 			</a>
+			<a href="{{ route('master.brands') }}" class="menu-link">
+				<span class="menu-text">Brand</span>
+			</a>
 		</li>
 	</ul>
 </li>

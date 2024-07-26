@@ -2,14 +2,14 @@
 
 namespace App\Livewire;
 
+use App\Models\Brand;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Spatie\Permission\Models\Role;
 
-class RoleTable extends Component
+class BrandTable extends Component
 {
     use withPagination;
     public $showForm = false;
@@ -18,43 +18,43 @@ class RoleTable extends Component
     public $search;
 
     /**
-     * Handles the event when a role is created.
+     * Handles the event when a brand is created.
      *
-     * @param int $roleId The ID of the created role.
+     * @param int $brandId The ID of the created brand.
      * @return void
      */
-    #[On('role-created')]
-    public function roleAdded(int $roleId): void
+    #[On('brand-created')]
+    public function brandAdded(int $brandId): void
     {
         $this->showForm = false;
     }
 
     /**
-     * Handles the event when a role is updated.
+     * Handles the event when a brand is updated.
      *
-     * @param int $roleId The ID of the updated role.
+     * @param int $brandId The ID of the updated brand.
      * @return void
      */
-    #[On('role-updated')]
-    public function roleUpdated(int $roleId): void
+    #[On('brand-updated')]
+    public function brandUpdated(int $brandId): void
     {
         $this->showForm = false;
     }
 
     /**
-     * Handles the event when a role is deleted.
+     * Handles the event when a brand is deleted.
      * @return void
      */
-    #[On('role-deleted')]
-    public function roleDeleted(): void
+    #[On('brand-deleted')]
+    public function brandDeleted(): void
     {
         $this->showForm = false;
         $this->resetPage();
-        $this->getRoles();
+        $this->getBrands();
     }
 
     /**
-     * Shows the form role.
+     * Shows the form brand.
      *
      * @return void
      */
@@ -64,9 +64,9 @@ class RoleTable extends Component
         $this->showForm = true;
     }
 
-    public function getRoles()
+    public function getBrands()
     {
-        return Role::where('name', 'like', '%' . $this->search . '%')->paginate(5);
+        return Brand::where('name', 'like', '%' . $this->search . '%')->paginate(5);
     }
 
     /**
@@ -76,8 +76,8 @@ class RoleTable extends Component
      */
     public function render(): View
     {
-        return view('livewire.role-table',[
-            'roles' => self::getRoles()
+        return view('livewire.brand-table',[
+            'brands' => self::getBrands()
         ]);
     }
 }

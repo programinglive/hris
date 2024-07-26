@@ -13,7 +13,7 @@ use Livewire\Component;
 
 class BranchForm extends Component
 {
-    #[url]
+    #[Url]
     #[validate('required|unique:companies,code,deleted_at|min:3')]
     public $code;
 
@@ -78,7 +78,7 @@ class BranchForm extends Component
     /**
      * Edit the branch details.
      */
-    #[on('edit')]
+    #[On('edit')]
     public function edit($code): void
     {
         $this->code = $code;
@@ -107,7 +107,7 @@ class BranchForm extends Component
     /**
      * Deletes the branch from the database.
      */
-    #[on('delete')]
+    #[On('delete')]
     public function destroy($code): void
     {
         $this->branch = Branch::where('code',$code)->first();

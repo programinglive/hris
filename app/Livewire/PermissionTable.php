@@ -14,7 +14,7 @@ class PermissionTable extends Component
     use withPagination;
     public $showForm = false;
 
-    #[url]
+    #[Url]
     public $search;
 
     /**
@@ -23,7 +23,7 @@ class PermissionTable extends Component
      * @param int $permissionId The ID of the created permission.
      * @return void
      */
-    #[on('permission-created')]
+    #[On('permission-created')]
     public function permissionAdded(int $permissionId): void
     {
         $this->showForm = false;
@@ -35,7 +35,7 @@ class PermissionTable extends Component
      * @param int $permissionId The ID of the updated permission.
      * @return void
      */
-    #[on('permission-updated')]
+    #[On('permission-updated')]
     public function permissionUpdated(int $permissionId): void
     {
         $this->showForm = false;
@@ -45,7 +45,7 @@ class PermissionTable extends Component
      * Handles the event when a permission is deleted.
      * @return void
      */
-    #[on('permission-deleted')]
+    #[On('permission-deleted')]
     public function permissionDeleted(): void
     {
         $this->showForm = false;
@@ -58,7 +58,7 @@ class PermissionTable extends Component
      *
      * @return void
      */
-    #[on('show-form')]
+    #[On('show-form')]
     public function showForm(): void
     {
         $this->showForm = true;

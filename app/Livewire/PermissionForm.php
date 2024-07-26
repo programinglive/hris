@@ -69,7 +69,7 @@ class PermissionForm extends Component
     /**
      * Edit the permission details.
      */
-    #[on('edit')]
+    #[On('edit')]
     public function edit($name): void
     {
         $this->permission = Permission::where('name',$name)->first();
@@ -97,7 +97,7 @@ class PermissionForm extends Component
     /**
      * Deletes the permission from the database.
      */
-    #[on('delete')]
+    #[On('delete')]
     public function destroy($name): void
     {
         $this->permission = Permission::where('name',$name)->first();

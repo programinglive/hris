@@ -2,21 +2,21 @@
 
 namespace App\Livewire;
 
+use App\Models\Brand;
 use DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
-use Spatie\Permission\Models\Role;
 
-class RoleForm extends Component
+class BrandForm extends Component
 {
 
-    #[validate('required|unique:roles|min:3')]
+    #[validate('required|unique:brands|min:3')]
     public $name;
 
-    public $role;
+    public $brand;
 
     public $actionForm = 'save';
 
@@ -41,7 +41,7 @@ class RoleForm extends Component
      *
      * @return array
      */
-    public function roleData(): array
+    public function brandData(): array
     {
         return [
             'name' => $this->name,
@@ -49,7 +49,7 @@ class RoleForm extends Component
     }
 
     /**
-     * Saves the role details to the database and dispatches a 'role-created' event.
+     * Saves the brand details to the database and dispatches a 'brand-created' event.
      *
      * @return void
      */
@@ -58,22 +58,22 @@ class RoleForm extends Component
         $this->validate();
 
         DB::transaction(function () {
-            $this->role = Role::create($this->roleData());
+            $this->brand = Brand::create($this->brandData());
         }, 5);
 
-        $this->dispatch('role-created', roleId: $this->role->id);
+        $this->dispatch('brand-created', brandId: $this->brand->id);
 
         $this->reset();
     }
 
     /**
-     * Edit the role details.
+     * Edit the brand details.
      */
     #[On('edit')]
     public function edit($name): void
     {
-        $this->role = Role::where('name',$name)->first();
-        $this->name = $this->role->name;
+        $this->brand = Brand::where('name',$name)->first();
+        $this->name = $this->brand->name;
 
         $this->actionForm = 'update';
 
@@ -81,29 +81,29 @@ class RoleForm extends Component
     }
 
     /**
-     * Updates the role details in the database.
+     * Updates the brand details in the database.
      */
     public function update(): void
     {
         DB::transaction(function () {
-            $this->role->update($this->roleData());
+            $this->brand->update($this->brandData());
         }, 5);
 
-        $this->dispatch('role-updated', roleId: $this->role->id);
+        $this->dispatch('brand-updated', brandId: $this->brand->id);
 
         $this->reset();
     }
 
     /**
-     * Deletes the role from the database.
+     * Deletes the brand from the database.
      */
     #[On('delete')]
     public function destroy($name): void
     {
-        $this->role = Role::where('name',$name)->first();
-        $this->role->delete();
+        $this->brand = Brand::where('name',$name)->first();
+        $this->brand->delete();
 
-        $this->dispatch('role-deleted', refreshCompanies: true);
+        $this->dispatch('brand-deleted', refreshCompanies: true);
     }
 
     /**
@@ -113,6 +113,6 @@ class RoleForm extends Component
      */
     public function render(): View
     {
-        return view('livewire.role-form');
+        return view('livewire.brand-form');
     }
 }
