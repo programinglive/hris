@@ -20,6 +20,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('code');
             $table->string('name');
+            $table->enum('type', ['branch', 'partner'])->default('branch');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -22,6 +22,7 @@ class BranchFactory extends Factory
             'company_id' => Company::factory()->create()->id,
             'code' => $this->faker->unique()->randomNumber(5),
             'name' => $this->faker->company(),
+            'type' => 'branch',
         ];
     }
 }
