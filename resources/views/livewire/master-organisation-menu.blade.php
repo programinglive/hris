@@ -12,7 +12,7 @@
 			</a>
 		</li>
 		<li class="menu-item">
-			<a href="#" class="menu-link">
+			<a href="{{ route('master.branches') }}" class="menu-link">
 				<span class="menu-text">Branch</span>
 			</a>
 		</li>

@@ -28,7 +28,7 @@
 			</div>
 			@enderror
 		</div>
-		<div>
+		<div class="flex flex-col gap-3">
 			<label for="address" class="block text-sm font-medium text-gray-700">Address</label>
 			<textarea
 				wire:model="address"
