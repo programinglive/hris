@@ -12,6 +12,8 @@ use Livewire\Component;
 
 class BrandForm extends Component
 {
+    #[validate('required|unique:brands|min:3')]
+    public $code;
 
     #[validate('required|unique:brands|min:3')]
     public $name;
@@ -44,6 +46,9 @@ class BrandForm extends Component
     public function brandData(): array
     {
         return [
+            'company_id' => auth()->user()->details->company_id,
+            'branch_id' => auth()->user()->details->branch_id,
+            'code' => $this->code,
             'name' => $this->name,
         ];
     }
@@ -73,6 +78,7 @@ class BrandForm extends Component
     public function edit($name): void
     {
         $this->brand = Brand::where('name',$name)->first();
+        $this->code = $this->brand->code;
         $this->name = $this->brand->name;
 
         $this->actionForm = 'update';
