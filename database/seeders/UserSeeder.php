@@ -27,6 +27,8 @@ class UserSeeder extends Seeder
            'first_name' => $user->name
         ]);
 
+        $user->assignRole('root');
+
         User::factory()->create();
     }
 }
