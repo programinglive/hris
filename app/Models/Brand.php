@@ -8,16 +8,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Models\Role;
 
-class Branch extends Model
+class Brand extends Model
 {
-    use SoftDeletes, HasFactory, LogsActivity;
+    use HasFactory, SoftDeletes, LogsActivity;
 
     protected $guarded = ['id'];
 
     /**
-     * Get the company that the branch belongs to.
-     *
      * @return BelongsTo
      */
     public function company(): BelongsTo
@@ -26,11 +25,27 @@ class Branch extends Model
     }
 
     /**
+     * @return BelongsTo
+     */
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    /**
      * @return LogOptions
      */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->useLogName('Branch');
+            ->useLogName('Brand');
     }
 }

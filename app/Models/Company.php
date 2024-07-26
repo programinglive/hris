@@ -12,7 +12,7 @@ class Company extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     /**
      * @return LogOptions

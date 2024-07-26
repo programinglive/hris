@@ -12,7 +12,7 @@ class UserDetail extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
     
-    public $guarded = [];
+    public $guarded = ['id'];
     
     public function user()
     {
