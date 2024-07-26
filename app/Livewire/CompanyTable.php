@@ -38,6 +38,18 @@ class CompanyTable extends Component
     }
 
     /**
+     * Handles the event when a company is deleted.
+     * @return void
+     */
+    #[On('company-deleted')]
+    public function companyDeleted(): void
+    {
+        $this->showForm = false;
+        $this->resetPage();
+        $this->getCompanies();
+    }
+
+    /**
      * Shows the form company.
      *
      * @return void
@@ -48,6 +60,11 @@ class CompanyTable extends Component
         $this->showForm = true;
     }
 
+    public function getCompanies()
+    {
+        return Company::paginate(5);
+    }
+
     /**
      * Render the livewire component.
      *
@@ -56,7 +73,7 @@ class CompanyTable extends Component
     public function render(): View
     {
         return view('livewire.company-table',[
-            'companies' => Company::paginate(5)
+            'companies' => self::getCompanies()
         ]);
     }
 }

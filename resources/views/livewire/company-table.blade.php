@@ -22,7 +22,7 @@
 					<thead>
 						<tr>
 							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th>
-							<th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">Action</th>
+							<th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase" style="width: 100px">Action</th>
 						</tr>
 					</thead>
 					<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -50,14 +50,14 @@
 									<div>{{ $company->phone }}</div>
 								</div>
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex flex-col">
-								<button class="text-gray-500 hover:text-sky-700" wire:click="$dispatch('edit', { code: '{{ $company->code }}'})">Edit</button>
-								<a class="text-gray-500 hover:text-sky-700" href="#">Delete</a>
+							<td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex flex-col" style="width: 100px">
+								<button class="text-gray-500 hover:text-sky-700 text-end" wire:click="$dispatch('edit', { code: '{{ $company->code }}'})">Edit</button>
+								<button class="text-gray-500 hover:text-sky-700 text-end" wire:click="$dispatch('delete', { code: '{{ $company->code }}'})">Delete</button>
 							</td>
 						</tr>
 					@empty
 						<tr>
-							<td colspan="4">Empty Data</td>
+							<td colspan="4" class="text-center text-gray-500 pt-4">Empty Data</td>
 						</tr>
 					@endforelse
 					</tbody>

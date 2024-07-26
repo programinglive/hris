@@ -112,6 +112,18 @@ class CompanyForm extends Component
         $this->reset();
     }
 
+    /**
+     * Deletes the company from the database.
+     */
+    #[On('delete')]
+    public function destroy($code): void
+    {
+        $this->company = Company::where('code',$code)->first();
+        $this->company->delete();
+
+        $this->dispatch('company-deleted', refreshCompanies: true);
+    }
+
 
     /**
      * Render the livewire component.
