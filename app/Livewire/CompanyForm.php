@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Company;
 use DB;
 use Illuminate\Contracts\View\View;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
@@ -29,7 +30,16 @@ class CompanyForm extends Component
 
     public $actionForm = 'save';
 
-    public function updated($key, $value)
+    /**
+     * Updates the specified property with the given value and performs validation if the property is 'code',
+     * 'email', or 'phone'.
+     *
+     * @param string $key The name of the property to be updated.
+     * @param mixed $value The new value for the property.
+     * @return void
+     * @throws ValidationException
+     */
+    public function updated(string $key, mixed $value): void
     {
         if($key == 'code' || $key == 'email' || $key = 'phone'){
             $this->validateOnly($key);
