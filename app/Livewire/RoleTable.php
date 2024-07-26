@@ -66,7 +66,7 @@ class RoleTable extends Component
 
     public function getRoles()
     {
-        return Role::where('code', 'like', '%' . $this->search . '%')->paginate(5);
+        return Role::where('name', 'like', '%' . $this->search . '%')->paginate(5);
     }
 
     /**

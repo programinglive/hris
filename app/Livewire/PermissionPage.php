@@ -2,12 +2,21 @@
 
 namespace App\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class PermissionPage extends Component
 {
-    public function render()
+    public $moduleLabel = 'Permission';
+
+    /**
+     * Renders the view for the role page.
+     *
+     * @return View The rendered view.
+     */
+    public function render(): View
     {
-        return view('livewire.permission-page');
+        return view('livewire.permission-page')
+            ->layout('components.layouts.dashboard');
     }
 }

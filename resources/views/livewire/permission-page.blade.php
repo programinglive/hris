@@ -1,3 +1,4 @@
-<div>
-    {{-- Be like water. --}}
+<div class="">
+	<livewire:breadcrumb :moduleLabel="$moduleLabel"/>
+	<livewire:permission-table />
 </div>
