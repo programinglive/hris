@@ -30,6 +30,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('bank_account')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

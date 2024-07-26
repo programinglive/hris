@@ -16,10 +16,5 @@
 				<span class="menu-text">Branch</span>
 			</a>
 		</li>
-		<li class="menu-item">
-			<a href="#" class="menu-link">
-				<span class="menu-text">Warehouse</span>
-			</a>
-		</li>
 	</ul>
 </li>
