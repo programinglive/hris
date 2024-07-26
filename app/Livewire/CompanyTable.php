@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Company;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,6 +13,9 @@ class CompanyTable extends Component
 {
     use withPagination;
     public $showForm = false;
+
+    #[Url]
+    public $search;
 
     /**
      * Handles the event when a company is created.
@@ -62,7 +66,7 @@ class CompanyTable extends Component
 
     public function getCompanies()
     {
-        return Company::paginate(5);
+        return Company::where('code', 'like', '%' . $this->search . '%')->paginate(5);
     }
 
     /**

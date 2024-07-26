@@ -7,9 +7,15 @@
 		<div>
 			<button type="button" class="btn bg-primary text-white" @click="open = true">+</button>
 		</div>
-		<div class="w-1/4">
-			<label for="search" class="hidden text-gray-800 text-sm font-medium mb-2">Search</label>
-			<input type="text" id="search" class="form-input" placeholder="Search...">
+		<div class="w-1/4 relative">
+			<input wire:model.live="search" type="text" id="search" class="form-input pr-10" placeholder="Search...">
+			@if($search)
+			<button wire:click="$set('search',null)" type="button" class="absolute inset-y-0 right-0 flex items-center pr-3" wire:click="clearSearch">
+				<svg class="h-3 w-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+				</svg>
+			</button>
+			@endif
 		</div>
 	</div>
 	<div x-show="open">
