@@ -1,6 +1,6 @@
 <div class="rounded bg-white flex flex-col gap-6 px-5 py-4"
      x-data="{
-			open: $wire.entangle('showDropdown')
+			open: $wire.entangle('showForm')
 		}"
 >
 	<div class="flex justify-between pt-2" x-show="!open" >
@@ -51,7 +51,7 @@
 								</div>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex flex-col">
-								<a class="text-gray-500 hover:text-sky-700" href="#">Edit</a>
+								<button class="text-gray-500 hover:text-sky-700" wire:click="$dispatch('edit', { code: '{{ $company->code }}'})">Edit</button>
 								<a class="text-gray-500 hover:text-sky-700" href="#">Delete</a>
 							</td>
 						</tr>

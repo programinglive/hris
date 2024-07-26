@@ -11,7 +11,7 @@ use Livewire\WithPagination;
 class CompanyTable extends Component
 {
     use withPagination;
-    public $showDropdown = false;
+    public $showForm = false;
 
     /**
      * Handles the event when a company is created.
@@ -22,7 +22,30 @@ class CompanyTable extends Component
     #[On('company-created')]
     public function companyAdded(int $companyId): void
     {
-        $this->showDropdown = false;
+        $this->showForm = false;
+    }
+
+    /**
+     * Handles the event when a company is updated.
+     *
+     * @param int $companyId The ID of the updated company.
+     * @return void
+     */
+    #[On('company-updated')]
+    public function companyUpdated(int $companyId): void
+    {
+        $this->showForm = false;
+    }
+
+    /**
+     * Shows the form company.
+     *
+     * @return void
+     */
+    #[on('show-form')]
+    public function showForm(): void
+    {
+        $this->showForm = true;
     }
 
     /**

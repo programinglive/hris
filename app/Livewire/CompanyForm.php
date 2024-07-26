@@ -5,12 +5,14 @@ namespace App\Livewire;
 use App\Models\Company;
 use DB;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class CompanyForm extends Component
 {
-
+    #[Url]
     #[Validate('required|unique:companies,code,deleted_at|min:3')]
     public $code;
 
@@ -25,21 +27,77 @@ class CompanyForm extends Component
 
     public $company;
 
+    public $actionForm = 'save';
+
+    public function updated($key, $value)
+    {
+        if($key == 'code' || $key == 'email' || $key = 'phone'){
+            $this->validateOnly($key);
+        }
+    }
+
+    /**
+     * The default data for the form.
+     *
+     * @return array
+     */
+    public function companyData(): array
+    {
+        return [
+            'code' => $this->code,
+            'name' => $this->name,
+            'address' => $this->address,
+            'email' => $this->email,
+            'phone' => $this->phone
+        ];
+    }
+
+    /**
+     * Saves the company details to the database and dispatches a 'company-created' event.
+     *
+     * @return void
+     */
     public function save(): void
     {
         $this->validate();
 
         DB::transaction(function () {
-            $this->company = Company::create([
-                'code' => $this->code,
-                'name' => $this->name,
-                'address' => $this->address,
-                'email' => $this->email,
-                'phone' => $this->phone
-            ]);
+            $this->company = Company::create($this->companyData());
         }, 5);
 
         $this->dispatch('company-created', companyId: $this->company->id);
+
+        $this->reset();
+    }
+
+    /**
+     * Edit the company details.
+     */
+    #[On('edit')]
+    public function edit($code): void
+    {
+        $this->code = $code;
+        $this->company = Company::where('code',$code)->first();
+        $this->name = $this->company->name;
+        $this->address = $this->company->address;
+        $this->email = $this->company->email;
+        $this->phone = $this->company->phone;
+
+        $this->actionForm = 'update';
+
+        $this->dispatch('show-form');
+    }
+
+    /**
+     * Updates the company details in the database.
+     */
+    public function update(): void
+    {
+        DB::transaction(function () {
+            $this->company->update($this->companyData());
+        }, 5);
+
+        $this->dispatch('company-updated', companyId: $this->company->id);
 
         $this->reset();
     }

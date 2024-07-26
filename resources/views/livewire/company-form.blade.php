@@ -1,9 +1,9 @@
-<form wire:submit.prevent="save">
+<form wire:submit.prevent="{{$actionForm}}">
 	<div class="flex flex-col gap-4">
 		<div class="flex flex-col gap-3">
 			<label for="code" class="block text-sm font-medium text-gray-700">Code</label>
 			<input
-				wire:model="code"
+				wire:model.live="code"
 				type="text"
 				id="code"
 				class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
