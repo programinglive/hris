@@ -22,5 +22,6 @@ Route::get('/', LoginPage::class)->name('landingpage');
 Route::group(['prefix' => '/', 'middleware'=>'auth'], function () {
     Route::get('dashboard', DashboardPage::class)->name('dashboard');
 
-    include(__DIR__ . '/module/rmasterdata.php');
+    include(__DIR__ . '/module/rbasedata.php');
+    include(__DIR__ . '/module/rorganizationdata.php');
 });

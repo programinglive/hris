@@ -8,10 +8,10 @@
 	<ul class="sub-menu hidden">
 		<li class="menu-item">
 			<a href="#" class="menu-link">
-				<span class="menu-text">Category</span>
+				<span class="menu-text">Role</span>
 			</a>
 			<a href="#" class="menu-link">
-				<span class="menu-text">Sub Category</span>
+				<span class="menu-text">Permission</span>
 			</a>
 		</li>
 	</ul>
