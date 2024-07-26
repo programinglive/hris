@@ -2,10 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Branch;
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Branch>
+ * @extends Factory<Branch>
  */
 class BranchFactory extends Factory
 {
@@ -17,7 +19,9 @@ class BranchFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'company_id' => Company::factory()->create()->id,
+            'code' => $this->faker->unique()->randomNumber(5),
+            'name' => $this->faker->company(),
         ];
     }
 }
