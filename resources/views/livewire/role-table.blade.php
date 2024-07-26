@@ -33,34 +33,20 @@
 					</thead>
 					<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
 					@forelse($roles as $role)
+						@if($role->name != 'root')
 						<tr>
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
-								<div class="flex justify-between">
-									<div>Code</div>
-									<div>{{ $role->code }}</div>
-								</div>
 								<div class="flex justify-between">
 									<div>Name</div>
 									<div>{{ $role->name }}</div>
 								</div>
-								<div class="flex justify-between">
-									<div>Email</div>
-									<div>{{ $role->email }}</div>
-								</div>
-								<div class="flex justify-between">
-									<div>Address</div>
-									<div>{{ $role->address }}</div>
-								</div>
-								<div class="flex justify-between">
-									<div>Phone</div>
-									<div>{{ $role->phone }}</div>
-								</div>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex flex-col" style="width: 100px">
-								<button class="text-gray-500 hover:text-sky-700 text-end" wire:click="$dispatch('edit', { code: '{{ $role->code }}'})">Edit</button>
-								<button class="text-gray-500 hover:text-sky-700 text-end" wire:click="$dispatch('delete', { code: '{{ $role->code }}'})">Delete</button>
+								<button class="text-gray-500 hover:text-sky-700 text-end" wire:click="$dispatch('edit', { name: '{{ $role->name }}'})">Edit</button>
+								<button class="text-gray-500 hover:text-sky-700 text-end" wire:click="$dispatch('delete', { name: '{{ $role->name }}'})">Delete</button>
 							</td>
 						</tr>
+						@endif
 					@empty
 						<tr>
 							<td colspan="4" class="text-center text-gray-500 pt-4">Empty Data</td>

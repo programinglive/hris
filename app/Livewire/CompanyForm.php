@@ -14,15 +14,15 @@ use Livewire\Component;
 class CompanyForm extends Component
 {
     #[url]
-    #[Validate('required|unique:companies,code,deleted_at|min:3')]
+    #[validate('required|unique:companies|min:3')]
     public $code;
 
-    #[Validate('required|min:3')]
+    #[validate('required|min:3')]
     public $name;
     
     public $address;
 
-    #[Validate('required|email:unique:companies') ]
+    #[validate('required|email:unique:companies') ]
     public $email;
     public $phone;
 
