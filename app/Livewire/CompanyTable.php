@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Company;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -64,7 +65,12 @@ class CompanyTable extends Component
         $this->showForm = true;
     }
 
-    public function getCompanies()
+    /**
+     * Retrieves a paginated list of companies based on a search query.
+     *
+     * @return LengthAwarePaginator The paginated list of companies.
+     */
+    public function getCompanies(): LengthAwarePaginator
     {
         return Company::where('code', 'like', '%' . $this->search . '%')->paginate(5);
     }

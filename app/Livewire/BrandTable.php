@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Brand;
 use Illuminate\Contracts\View\View;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -64,7 +65,12 @@ class BrandTable extends Component
         $this->showForm = true;
     }
 
-    public function getBrands()
+    /**
+     * Retrieves a paginated list of brands based on a search query.
+     *
+     * @return LengthAwarePaginator The paginated list of brands.
+     */
+    public function getBrands(): LengthAwarePaginator
     {
         return Brand::where('name', 'like', '%' . $this->search . '%')->paginate(5);
     }

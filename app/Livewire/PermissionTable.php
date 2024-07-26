@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -64,7 +65,12 @@ class PermissionTable extends Component
         $this->showForm = true;
     }
 
-    public function getPermissions()
+    /**
+     * Retrieves a paginated list of permissions that match the search query.
+     *
+     * @return LengthAwarePaginator
+     */
+    public function getPermissions(): LengthAwarePaginator
     {
         return Permission::where('name', 'like', '%' . $this->search . '%')->paginate(5);
     }

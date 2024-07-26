@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -64,7 +65,12 @@ class RoleTable extends Component
         $this->showForm = true;
     }
 
-    public function getRoles()
+    /**
+     * Retrieves a paginated list of roles based on a search query.
+     *
+     * @return LengthAwarePaginator The paginated list of roles.
+     */
+    public function getRoles(): LengthAwarePaginator
     {
         return Role::where('name', 'like', '%' . $this->search . '%')->paginate(5);
     }
