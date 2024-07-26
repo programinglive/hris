@@ -16,5 +16,15 @@
 				<span class="menu-text">Branch</span>
 			</a>
 		</li>
+		<li class="menu-item">
+			<a href="{{ route('master.roles') }}" class="menu-link">
+				<span class="menu-text">Role</span>
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="{{ route('master.brands') }}" class="menu-link">
+				<span class="menu-text">Brand</span>
+			</a>
+		</li>
 	</ul>
 </li>
