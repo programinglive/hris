@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Branch;
 use Illuminate\Contracts\View\View;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -64,7 +65,12 @@ class BranchTable extends Component
         $this->showForm = true;
     }
 
-    public function getBranch()
+    /**
+     * Retrieves the branch records based on the search criteria.
+     *
+     * @return LengthAwarePaginator The paginated branch records.
+     */
+    public function getBranch(): LengthAwarePaginator
     {
         return Branch::where('company_id', auth()->user()->details->company_id)
             ->where('type', 'branch')
