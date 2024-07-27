@@ -13,6 +13,7 @@ use Livewire\Component;
 
 class DivisionForm extends Component
 {
+    #[Validate('required|string|min:1')]
     public $departmentId;
 
     #[Validate('required|unique:divisions|min:3')]
@@ -36,6 +37,8 @@ class DivisionForm extends Component
      */
     public function updated(string $key, mixed $value): void
     {
+        $this->resetErrorBag();
+
         if($key == 'code' || $key == 'name'){
             $this->validateOnly($key);
         }
@@ -49,6 +52,8 @@ class DivisionForm extends Component
     public function divisionData(): array
     {
         return [
+            'company_id' => auth()->user()->details->company_id,
+            'branch_id' => auth()->user()->details->branch_id,
             'department_id' => $this->departmentId,
             'code' => $this->code,
             'name' => $this->name,

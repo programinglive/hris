@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -14,7 +15,7 @@ class Department extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     /**
      * Get the company that owns the department.
@@ -39,11 +40,11 @@ class Department extends Model
     /**
      * Get the division that owns the department.
      *
-     * @return BelongsTo
+     * @return hasOne
      */
-    public function division(): BelongsTo
+    public function division(): hasOne
     {
-        return $this->belongsTo(Division::class);
+        return $this->hasOne(Division::class);
     }
 
     /**

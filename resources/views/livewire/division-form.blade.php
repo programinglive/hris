@@ -2,6 +2,7 @@
 	<div class="flex flex-col gap-4">
 		<div class="flex flex-col gap-3">
 			<label for="departmentId" class="block text-sm font-medium text-gray-700">Department</label>
+			@dump($departmentId)
 			<select wire:model="departmentId" id="departmentId" class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2">
 				<option value="">Select Department</option>
 				@foreach ($departments as $department)

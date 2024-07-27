@@ -17,15 +17,15 @@ return new class extends Migration
         Schema::create('divisions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Company::class)
-                ->constrained('companies')
+                ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignIdFor(Branch::class)
-                ->constrained('branches')
+                ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignIdFor(Department::class)
-                ->constrained('departments')
+                ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->string('code');

@@ -36,6 +36,10 @@
 						<tr>
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
 								<div class="flex justify-between">
+									<div>Department</div>
+									<div>{{ $division->department->name }}</div>
+								</div>
+								<div class="flex justify-between">
 									<div>Code</div>
 									<div>{{ $division->code }}</div>
 								</div>
