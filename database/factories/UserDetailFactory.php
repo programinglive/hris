@@ -22,9 +22,9 @@ class UserDetailFactory extends Factory
         return [
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
+            'phone' => $this->faker->phoneNumber(),
             'user_id' => User::factory()->id,
             'company_id' => Company::factory()->id,
-
         ];
     }
 }

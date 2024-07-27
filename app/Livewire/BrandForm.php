@@ -12,10 +12,10 @@ use Livewire\Component;
 
 class BrandForm extends Component
 {
-    #[validate('required|unique:brands|min:3')]
+    #[Validate('required|unique:brands|min:3')]
     public $code;
 
-    #[validate('required|unique:brands|min:3')]
+    #[Validate('required|unique:brands|min:3')]
     public $name;
 
     public $brand;

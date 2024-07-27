@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -20,15 +21,18 @@ class UserSeeder extends Seeder
             'password' => bcrypt('hrisproject'),
         ]);
 
+        $faker = Factory::create();
+
         $user->details()->create([
            'company_id' => 1,
            'branch_id' => 1,
            'user_id' => $user->id,
-           'first_name' => $user->name
+           'first_name' => $user->name,
+           'phone' => $faker->phoneNumber(),
         ]);
 
         $user->assignRole('root');
 
-        User::factory()->create();
+        User::factory(10)->create();
     }
 }

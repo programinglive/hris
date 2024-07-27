@@ -14,10 +14,10 @@ use Livewire\Component;
 class BranchForm extends Component
 {
     #[Url]
-    #[validate('required|unique:companies,code,deleted_at|min:3')]
+    #[Validate('required|unique:companies,code,deleted_at|min:3')]
     public $code;
 
-    #[validate('required|min:3')]
+    #[Validate('required|min:3')]
     public $name;
 
     public $type;

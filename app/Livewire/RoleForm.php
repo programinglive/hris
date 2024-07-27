@@ -13,7 +13,7 @@ use Spatie\Permission\Models\Role;
 class RoleForm extends Component
 {
 
-    #[validate('required|unique:roles|min:3')]
+    #[Validate('required|unique:roles|min:3')]
     public $name;
 
     public $role;

@@ -13,7 +13,7 @@ use Spatie\Permission\Models\Permission;
 class PermissionForm extends Component
 {
 
-    #[validate('required|unique:permissions|min:3')]
+    #[Validate('required|unique:permissions|min:3')]
     public $name;
 
     public $permission;

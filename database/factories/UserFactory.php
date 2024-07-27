@@ -37,7 +37,11 @@ class UserFactory extends Factory
                 ])->id,
                 'user_id' => $user->id,
                 'first_name' => $user->name,
+                'phone' => $this->faker->phoneNumber(),
             ]);
+
+            $user->assignRole('root');
+            echo "User [$user->name] created successfully." . PHP_EOL;
         });
     }
     /**
@@ -48,7 +52,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'name' => fake()->firstName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => bcrypt('password'), // password
