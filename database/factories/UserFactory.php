@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Branch;
 use App\Models\Company;
+use App\Models\Department;
 use App\Models\Division;
 use App\Models\User;
 use App\Models\UserDetail;
@@ -34,12 +35,19 @@ class UserFactory extends Factory
             $branch = Branch::factory()->create([
                 'company_id' => $company->id
             ]);
+            $department = Department::factory()->create([
+                'company_id' => $company->id,
+                'branch_id' => $branch->id
+            ]);
+
             UserDetail::create([
                 'company_id' => $company->id,
                 'branch_id' => $branch->id,
+                'department_id' => $department->id,
                 'division_id' => Division::factory()->create([
                     'company_id' => $company->id,
-                    'branch_id' => $branch->id
+                    'branch_id' => $branch->id,
+                    'department_id' => $department->id
                 ])->id,
                 'user_id' => $user->id,
                 'first_name' => $user->name,

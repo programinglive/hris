@@ -17,7 +17,7 @@
 			</a>
 		</li>
 		<li class="menu-item">
-			<a href="{{ route('master.brands') }}" class="menu-link">
+			<a href="{{ route('master.departments') }}" class="menu-link">
 				<span class="menu-text">Department</span>
 			</a>
 		</li>

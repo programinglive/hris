@@ -10,7 +10,7 @@ class DivisionPage extends Component
     public $moduleLabel = 'Division';
 
     /**
-     * Renders the view for the role page.
+     * Renders the view for the division page.
      *
      * @return View The rendered view.
      */

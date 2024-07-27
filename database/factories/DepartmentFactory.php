@@ -5,13 +5,12 @@ namespace Database\Factories;
 use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Department;
-use App\Models\Division;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Division>
+ * @extends Factory<Department>
  */
-class DivisionFactory extends Factory
+class DepartmentFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -23,7 +22,6 @@ class DivisionFactory extends Factory
         return [
             'company_id' => Company::first()->id,
             'branch_id' => Branch::first()->id,
-            'department_id' => Department::first()->id,
             'code' => fake()->ean8(),
             'name' => fake()->name(),
         ];

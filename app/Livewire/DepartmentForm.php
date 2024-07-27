@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Department;
-use App\Models\Division;
 use DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
@@ -11,17 +10,15 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class DivisionForm extends Component
+class DepartmentForm extends Component
 {
-    public $departmentId;
-
-    #[Validate('required|unique:divisions|min:3')]
+    #[Validate('required|unique:departments|min:3')]
     public $code;
 
-    #[Validate('required|unique:divisions|min:3')]
+    #[Validate('required|unique:departments|min:3')]
     public $name;
 
-    public $division;
+    public $department;
 
     public $actionForm = 'save';
 
@@ -46,17 +43,18 @@ class DivisionForm extends Component
      *
      * @return array
      */
-    public function divisionData(): array
+    public function departmentData(): array
     {
         return [
-            'department_id' => $this->departmentId,
+            'company_id' => auth()->user()->details->company_id,
+            'branch_id' => auth()->user()->details->branch_id,
             'code' => $this->code,
             'name' => $this->name,
         ];
     }
 
     /**
-     * Saves the division details to the database and dispatches a 'division-created' event.
+     * Saves the department details to the database and dispatches a 'department-created' event.
      *
      * @return void
      */
@@ -65,23 +63,23 @@ class DivisionForm extends Component
         $this->validate();
 
         DB::transaction(function () {
-            $this->division = Division::create($this->divisionData());
+            $this->department = Department::create($this->departmentData());
         }, 5);
 
-        $this->dispatch('division-created', divisionId: $this->division->id);
+        $this->dispatch('department-created', departmentId: $this->department->id);
 
         $this->reset();
     }
 
     /**
-     * Edit the division details.
+     * Edit the department details.
      */
     #[On('edit')]
     public function edit($code): void
     {
-        $this->division = Division::where('code',$code)->first();
-        $this->code = $this->division->code;
-        $this->name = $this->division->name;
+        $this->department = Department::where('code',$code)->first();
+        $this->code = $this->department->code;
+        $this->name = $this->department->name;
 
         $this->actionForm = 'update';
 
@@ -89,29 +87,29 @@ class DivisionForm extends Component
     }
 
     /**
-     * Updates the division details in the database.
+     * Updates the department details in the database.
      */
     public function update(): void
     {
         DB::transaction(function () {
-            $this->division->update($this->divisionData());
+            $this->department->update($this->departmentData());
         }, 5);
 
-        $this->dispatch('division-updated', divisionId: $this->division->id);
+        $this->dispatch('department-updated', departmentId: $this->department->id);
 
         $this->reset();
     }
 
     /**
-     * Deletes the division from the database.
+     * Deletes the department from the database.
      */
     #[On('delete')]
     public function destroy($code): void
     {
-        $this->division = Division::where('code',$code)->first();
-        $this->division->delete();
+        $this->department = Department::where('code',$code)->first();
+        $this->department->delete();
 
-        $this->dispatch('division-deleted', refreshCompanies: true);
+        $this->dispatch('department-deleted', refreshCompanies: true);
     }
 
     /**
@@ -121,8 +119,6 @@ class DivisionForm extends Component
      */
     public function render(): View
     {
-        return view('livewire.division-form', [
-            'departments' => Department::all(),
-        ]);
+        return view('livewire.department-form');
     }
 }

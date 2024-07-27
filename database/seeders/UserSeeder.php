@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Department;
+use App\Models\Division;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
@@ -26,6 +28,8 @@ class UserSeeder extends Seeder
         $user->details()->create([
            'company_id' => 1,
            'branch_id' => 1,
+           'department_id' => Department::first()->id,
+           'division_id' => Division::first()->id,
            'user_id' => $user->id,
            'first_name' => $user->name,
            'phone' => $faker->phoneNumber(),

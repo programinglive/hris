@@ -10,7 +10,7 @@ class PermissionPage extends Component
     public $moduleLabel = 'Permission';
 
     /**
-     * Renders the view for the role page.
+     * Renders the view for the permission page.
      *
      * @return View The rendered view.
      */
