@@ -82,6 +82,8 @@
 			<div class="flex flex-col gap-4 flex-1">
 				<livewire:form-department-option />
 				<livewire:form-division-option />
+				<livewire:form-level-option />
+				<livewire:form-position-option />
 			</div>
 		</div>
 		<div>

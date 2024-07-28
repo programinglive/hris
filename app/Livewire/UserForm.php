@@ -99,6 +99,34 @@ class UserForm extends Component
     }
 
     /**
+     * Set the level ID for the details.
+     *
+     * @param int $levelId The ID of the level.
+     * @return void
+     */
+    #[On('setLevel')]
+    public function setLevel(int $levelId): void
+    {
+        if($levelId != 0){
+            $this->details['level_id'] = $levelId;
+        }
+    }
+
+    /**
+     * Set the position ID for the details.
+     *
+     * @param int $positionId The ID of the position.
+     * @return void
+     */
+    #[On('setPosition')]
+    public function setPosition(int $positionId): void
+    {
+        if($positionId != 0){
+            $this->details['position_id'] = $positionId;
+        }
+    }
+
+    /**
      * The default data for the form.
      *
      * @return array
