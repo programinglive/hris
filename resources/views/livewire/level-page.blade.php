@@ -1,3 +1,4 @@
-<div>
-    {{-- If you look to others for fulfillment, you will never truly be fulfilled. --}}
+<div class="">
+	<livewire:breadcrumb :moduleLabel="$moduleLabel"/>
+	<livewire:level-table />
 </div>

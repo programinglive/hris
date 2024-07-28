@@ -6,6 +6,7 @@ use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
+use App\Models\Level;
 use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -39,16 +40,23 @@ class UserFactory extends Factory
                 'company_id' => $company->id,
                 'branch_id' => $branch->id
             ]);
+            $division = Division::factory()->create([
+                'company_id' => $company->id,
+                'branch_id' => $branch->id,
+                'department_id' => $department->id
+            ]);
 
             UserDetail::create([
                 'company_id' => $company->id,
                 'branch_id' => $branch->id,
                 'department_id' => $department->id,
-                'division_id' => Division::factory()->create([
+                'division_id' => $division->id,
+                'level_id' => Level::factory([
                     'company_id' => $company->id,
                     'branch_id' => $branch->id,
-                    'department_id' => $department->id
-                ])->id,
+                    'department_id' => $department->id,
+                    'division_id' => $division->id
+                ])->create()->id,
                 'user_id' => $user->id,
                 'first_name' => $user->name,
                 'phone' => $this->faker->phoneNumber(),
