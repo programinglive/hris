@@ -4,10 +4,10 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
-class MasterAssetMenu extends Component
+class TransactionAssetMenu extends Component
 {
     public function render()
     {
-        return view('livewire.master-asset-menu');
+        return view('livewire.transaction-asset-menu');
     }
 }

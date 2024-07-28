@@ -31,11 +31,13 @@
 			
 			<livewire:master-announcement-menu />
 			
-			<livewire:master-asset-menu />
-			
 			<li class="menu-title">Transaction Data</li>
 			
-			<livewire:transaction-data-menu />
+			<livewire:transaction-recruitment-menu />
+			<livewire:transaction-attendance-menu />
+			<livewire:transaction-business-trip-menu />
+			<livewire:transaction-asset-menu />
+			<livewire:transaction-payroll-menu />
 			
 			<li class="menu-title">Setting</li>
 			

@@ -17,26 +17,6 @@
 			</a>
 		</li>
 		<li class="menu-item">
-			<a href="{{ route('master.departments') }}" class="menu-link">
-				<span class="menu-text">Department</span>
-			</a>
-		</li>
-		<li class="menu-item">
-			<a href="{{ route('master.divisions') }}" class="menu-link">
-				<span class="menu-text">Division</span>
-			</a>
-		</li>
-		<li class="menu-item">
-			<a href="{{ route('master.brands') }}" class="menu-link">
-				<span class="menu-text">Level</span>
-			</a>
-		</li>
-		<li class="menu-item">
-			<a href="{{ route('master.roles') }}" class="menu-link">
-				<span class="menu-text">Role</span>
-			</a>
-		</li>
-		<li class="menu-item">
 			<a href="{{ route('master.brands') }}" class="menu-link">
 				<span class="menu-text">Brand</span>
 			</a>

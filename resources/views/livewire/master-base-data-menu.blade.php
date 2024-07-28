@@ -16,5 +16,10 @@
 				<span class="menu-text">User</span>
 			</a>
 		</li>
+		<li class="menu-item">
+			<a href="{{ route('master.users') }}" class="menu-link">
+				<span class="menu-text">Item</span>
+			</a>
+		</li>
 	</ul>
 </li>

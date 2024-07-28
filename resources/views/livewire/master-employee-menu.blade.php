@@ -10,25 +10,26 @@
 			<a href="#" class="menu-link">
 				<span class="menu-text">Employee</span>
 			</a>
-		</li>
+		
+		
 		<li class="menu-item">
-			<a href="#" class="menu-link">
-				<span class="menu-text">Attendance</span>
+			<a href="{{ route('master.departments') }}" class="menu-link">
+				<span class="menu-text">Department</span>
 			</a>
 		</li>
 		<li class="menu-item">
-			<a href="#" class="menu-link">
-				<span class="menu-text">Leave / Time Off</span>
+			<a href="{{ route('master.divisions') }}" class="menu-link">
+				<span class="menu-text">Division</span>
 			</a>
 		</li>
 		<li class="menu-item">
-			<a href="#" class="menu-link">
-				<span class="menu-text">Business Trip</span>
+			<a href="{{ route('master.brands') }}" class="menu-link">
+				<span class="menu-text">Level</span>
 			</a>
 		</li>
 		<li class="menu-item">
-			<a href="#" class="menu-link">
-				<span class="menu-text">Recruitment</span>
+			<a href="{{ route('master.roles') }}" class="menu-link">
+				<span class="menu-text">Role</span>
 			</a>
 		</li>
 	</ul>

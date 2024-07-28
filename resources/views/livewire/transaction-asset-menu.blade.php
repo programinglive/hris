@@ -8,7 +8,12 @@
 	<ul class="sub-menu hidden">
 		<li class="menu-item">
 			<a href="#" class="menu-link">
-				<span class="menu-text">Item</span>
+				<span class="menu-text">Lists</span>
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="#" class="menu-link">
+				<span class="menu-text">Request</span>
 			</a>
 		</li>
 	</ul>
