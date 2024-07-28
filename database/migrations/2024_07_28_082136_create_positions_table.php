@@ -1,5 +1,10 @@
 <?php
 
+use App\Models\Branch;
+use App\Models\Company;
+use App\Models\Department;
+use App\Models\Division;
+use App\Models\Level;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,6 +18,29 @@ return new class extends Migration
     {
         Schema::create('positions', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Company::class)
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->foreignIdFor(Branch::class)
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->foreignIdFor(Department::class)
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->foreignIdFor(Division::class)
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->foreignIdFor(Level::class)
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->string('code');
+            $table->string('name');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

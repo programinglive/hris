@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
 use App\Models\Level;
+use App\Models\Position;
 use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -17,17 +18,12 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
+
     /**
-     * Configures the factory and creates a new user after creation.
+     * Configures the factory to create a new user with associated company,
+     * branch, department, division, level, position, and user detail.
      *
-     * This function is called after creating a new user instance.
-     * It creates a new company using the `Company::factory()->create()` method.
-     * Then, it creates a new branch using the `Branch::factory()->create()` method with the `company_id`
-     * set to the id of the created company.
-     * Finally, it creates a new `UserDetail` instance with the `company_id`,
-     * `branch_id`, `user_id`, and `first_name` properties set accordingly.
-     *
-     * @return Factory|UserFactory The configured factory instance.
+     * @return Factory|UserFactory
      */
     public function configure(): Factory|UserFactory
     {
@@ -45,18 +41,27 @@ class UserFactory extends Factory
                 'branch_id' => $branch->id,
                 'department_id' => $department->id
             ]);
+            $level = Level::factory([
+                'company_id' => $company->id,
+                'branch_id' => $branch->id,
+                'department_id' => $department->id,
+                'division_id' => $division->id
+            ])->create();
+            $position = Position::factory([
+                'company_id' => $company->id,
+                'branch_id' => $branch->id,
+                'department_id' => $department->id,
+                'division_id' => $division->id,
+                'level_id' => $level->id
+            ])->create();
 
             UserDetail::create([
                 'company_id' => $company->id,
                 'branch_id' => $branch->id,
                 'department_id' => $department->id,
                 'division_id' => $division->id,
-                'level_id' => Level::factory([
-                    'company_id' => $company->id,
-                    'branch_id' => $branch->id,
-                    'department_id' => $department->id,
-                    'division_id' => $division->id
-                ])->create()->id,
+                'level_id' => $level->id,
+                'position_id' => $position->id,
                 'user_id' => $user->id,
                 'first_name' => $user->name,
                 'phone' => $this->faker->phoneNumber(),
