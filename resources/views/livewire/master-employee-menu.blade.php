@@ -23,13 +23,13 @@
 			</a>
 		</li>
 		<li class="menu-item">
-			<a href="{{ route('master.brands') }}" class="menu-link">
+			<a href="{{ route('master.levels') }}" class="menu-link">
 				<span class="menu-text">Level</span>
 			</a>
 		</li>
 		<li class="menu-item">
-			<a href="{{ route('master.roles') }}" class="menu-link">
-				<span class="menu-text">Role</span>
+			<a href="{{ route('master.positions') }}" class="menu-link">
+				<span class="menu-text">Position</span>
 			</a>
 		</li>
 	</ul>
