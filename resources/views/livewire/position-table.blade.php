@@ -41,7 +41,7 @@
 								</div>
 								<div class="flex justify-between">
 									<div>Code</div>
-									<div>{{ $osition->code }}</div>
+									<div>{{ $position->code }}</div>
 								</div>
 								<div class="flex justify-between">
 									<div>Name</div>

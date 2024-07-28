@@ -71,6 +71,34 @@ class UserForm extends Component
     }
 
     /**
+     * Set the department ID for the details.
+     *
+     * @param int $departmentId The ID of the department.
+     * @return void
+     */
+    #[On('setDepartment')]
+    public function setDepartment(int $departmentId): void
+    {
+        if($departmentId != 0){
+            $this->details['department_id'] = $departmentId;
+        }
+    }
+
+    /**
+     * Set the division ID for the details.
+     *
+     * @param int $divisionId The ID of the division.
+     * @return void
+     */
+    #[On('setDivision')]
+    public function setDivision(int $divisionId): void
+    {
+        if($divisionId != 0){
+            $this->details['division_id'] = $divisionId;
+        }
+    }
+
+    /**
      * The default data for the form.
      *
      * @return array
