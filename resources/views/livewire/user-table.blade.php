@@ -46,7 +46,7 @@
 									</div>
 									<div class="flex justify-between">
 										<div>Phone</div>
-										<div>{{ $user->details->phone }}</div>
+										<div>{{ $user->details?->phone }}</div>
 									</div>
 								</td>
 								<td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex flex-col" style="width: 100px">

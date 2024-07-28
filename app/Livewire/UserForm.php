@@ -28,14 +28,34 @@ class UserForm extends Component
 
     public $user;
 
+    public $details = [
+        'company_id',
+        'branch_id',
+        'department_id',
+        'level_id',
+        'position_id',
+        'first_name',
+        'last_name',
+        'phone',
+        'address',
+        'gender',
+        'religion',
+        'last_education',
+        'marriage_status',
+        'place_of_birth',
+        'date_of_birth',
+        'ktp',
+        'npwp',
+        'bank_account',
+    ];
+
     public $actionForm = 'save';
 
     /**
-     * Updates the specified property with the given value and performs validation if the property is 'code',
-     * 'email', or 'phone'.
+     * 
      *
-     * @param string $key The name of the property to be updated.
-     * @param mixed $value The new value for the property.
+     * @param string $key
+     * @param mixed $value
      * @return void
      * @throws ValidationException
      */
@@ -96,7 +116,8 @@ class UserForm extends Component
         $this->user = User::where('name',$name)->first();
         $this->name = $this->user->name;
         $this->email = $this->user->email;
-
+        $this->details = $this->user->details;
+        
         $this->actionForm = 'update';
 
         $this->dispatch('show-form');
