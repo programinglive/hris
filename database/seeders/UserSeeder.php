@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Department;
-use App\Models\Division;
+use App\Models\Branch;
+use App\Models\Company;
 use App\Models\User;
-use Faker\Factory;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -24,8 +23,8 @@ class UserSeeder extends Seeder
         ]);
 
         $user->details()->create([
-           'company_id' => 1,
-           'branch_id' => 1,
+           'company_id' => Company::factory()->create()->id,
+           'branch_id' => Branch::factory()->create()->id,
            'user_id' => $user->id,
            'first_name' => $user->name,
         ]);
