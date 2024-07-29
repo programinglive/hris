@@ -72,7 +72,11 @@ class DivisionTable extends Component
      */
     public function getDivisions(): LengthAwarePaginator
     {
-        return Division::where('code', 'like', '%' . $this->search . '%')->paginate(5);
+        return Division::where(function ($query){
+            $query->where('name', 'like', '%' . $this->search . '%')
+                ->orWhere('code', 'like', '%' . $this->search . '%');
+            })
+            ->orderBy('id', 'asc')->paginate(5);
     }
 
     /**
