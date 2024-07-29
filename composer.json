@@ -12,8 +12,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.5",
         "opcodesio/log-viewer": "^3.10",
-        "spatie/laravel-activitylog": "^4.8",
-        "spatie/laravel-permission": "^6.9"
+        "spatie/laravel-activitylog": "^4.8"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

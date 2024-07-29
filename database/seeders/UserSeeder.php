@@ -29,9 +29,5 @@ class UserSeeder extends Seeder
            'user_id' => $user->id,
            'first_name' => $user->name,
         ]);
-
-        $user->assignRole('root');
-
-//        User::factory(10)->create();
     }
 }
