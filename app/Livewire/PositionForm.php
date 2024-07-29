@@ -15,12 +15,8 @@ use Livewire\Component;
 
 class PositionForm extends Component
 {
-    #[Validate('required|string|min:1')]
     public $departmentId;
-    #[Validate('required|string|min:1')]
     public $divisionId;
-
-    #[Validate('required|string|min:1')]
     public $levelId;
 
     #[Validate('required|unique:positions|min:3')]
@@ -45,8 +41,10 @@ class PositionForm extends Component
     {
         $this->resetErrorBag();
 
-        if($key == 'code' || $key == 'name'){
-            $this->validateOnly($key);
+        if($key == 'code' && $this->position){
+            if($value !== $this->position->code){
+                $this->validateOnly($key);
+            }
         }
     }
 
@@ -93,9 +91,9 @@ class PositionForm extends Component
     public function edit($code): void
     {
         $this->position = Position::where('code',$code)->first();
-        $this->departmentId = $this->position->department_id;
-        $this->divisionId = $this->position->division_id;
-        $this->levelId = $this->position->level_id;
+        $this->departmentId = (string) $this->position->department_id;
+        $this->divisionId = (string) $this->position->division_id;
+        $this->levelId = (string) $this->position->level_id;
         $this->code = $this->position->code;
         $this->name = $this->position->name;
 
@@ -109,6 +107,24 @@ class PositionForm extends Component
      */
     public function update(): void
     {
+        $organizations = [
+            'departmentId',
+            'divisionId',
+            'levelId',
+        ];
+
+        foreach($organizations as $organization){
+
+            if($this->{$organization} == ''){
+                $this->addError( $organization, 'Please select a ['. ucfirst(rtrim($organization, 'Id')).'].');
+                return;
+            }
+        }
+
+        if($this->code != $this->position->code){
+            $this->validateOnly('code');
+        }
+
         DB::transaction(function () {
             $this->position->update($this->positionData());
         }, 5);
