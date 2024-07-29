@@ -52,7 +52,7 @@ class LevelForm extends Component
      *
      * @return array
      */
-    public function divisionData(): array
+    public function levelData(): array
     {
         return [
             'company_id' => auth()->user()->details->company_id,
@@ -65,7 +65,7 @@ class LevelForm extends Component
     }
 
     /**
-     * Saves the division details to the database and dispatches a 'division-created' event.
+     * Saves the level details to the database and dispatches a 'level-created' event.
      *
      * @return void
      */
@@ -74,16 +74,16 @@ class LevelForm extends Component
         $this->validate();
 
         DB::transaction(function () {
-            $this->level = Level::create($this->divisionData());
+            $this->level = Level::create($this->levelData());
         }, 5);
 
-        $this->dispatch('division-created', divisionId: $this->division->id);
+        $this->dispatch('level-created', levelId: $this->level->id);
 
         $this->reset();
     }
 
     /**
-     * Edit the division details.
+     * Edit the level details.
      */
     #[On('edit')]
     public function edit($code): void
@@ -91,8 +91,8 @@ class LevelForm extends Component
         $this->level = Level::where('code',$code)->first();
         $this->departmentId = $this->level->departmentId;
         $this->divisionId = $this->level->divisionId;
-        $this->code = $this->division->code;
-        $this->name = $this->division->name;
+        $this->code = $this->level->code;
+        $this->name = $this->level->name;
 
         $this->actionForm = 'update';
 
@@ -100,21 +100,21 @@ class LevelForm extends Component
     }
 
     /**
-     * Updates the division details in the database.
+     * Updates the level details in the database.
      */
     public function update(): void
     {
         DB::transaction(function () {
-            $this->division->update($this->divisionData());
+            $this->level->update($this->levelData());
         }, 5);
 
-        $this->dispatch('division-updated', divisionId: $this->division->id);
+        $this->dispatch('level-updated', levelId: $this->level->id);
 
         $this->reset();
     }
 
     /**
-     * Deletes the division from the database.
+     * Deletes the level from the database.
      */
     #[On('delete')]
     public function destroy($code): void
@@ -122,7 +122,7 @@ class LevelForm extends Component
         $this->level = Level::where('code',$code)->first();
         $this->level->delete();
 
-        $this->dispatch('division-deleted', refreshCompanies: true);
+        $this->dispatch('level-deleted', refreshCompanies: true);
     }
 
     /**
