@@ -23,10 +23,10 @@ class PositionForm extends Component
     #[Validate('required|string|min:1')]
     public $levelId;
 
-    #[Validate('required|unique:divisions|min:3')]
+    #[Validate('required|unique:positions|min:3')]
     public $code;
 
-    #[Validate('required|unique:divisions|min:3')]
+    #[Validate('required|min:3')]
     public $name;
 
     public $position;
@@ -34,8 +34,7 @@ class PositionForm extends Component
     public $actionForm = 'save';
 
     /**
-     * Updates the specified property with the given value and performs validation if the property is 'code',
-     * 'email', or 'phone'.
+     * Updates the specified property with the given value and performs validation if the property is 'code' or 'name'.
      *
      * @param string $key The name of the property to be updated.
      * @param mixed $value The new value for the property.
@@ -56,19 +55,21 @@ class PositionForm extends Component
      *
      * @return array
      */
-    public function divisionData(): array
+    public function positionData(): array
     {
         return [
             'company_id' => auth()->user()->details->company_id,
             'branch_id' => auth()->user()->details->branch_id,
-            'position_id' => $this->positionId,
+            'department_id' => $this->departmentId,
+            'division_id' => $this->divisionId,
+            'level_id' => $this->levelId,
             'code' => $this->code,
             'name' => $this->name,
         ];
     }
 
     /**
-     * Saves the division details to the database and dispatches a 'division-created' event.
+     * Saves the position details to the database and dispatches a 'position-created' event.
      *
      * @return void
      */
@@ -77,26 +78,26 @@ class PositionForm extends Component
         $this->validate();
 
         DB::transaction(function () {
-            $this->position = Position::create($this->divisionData());
+            $this->position = Position::create($this->positionData());
         }, 5);
 
-        $this->dispatch('division-created', divisionId: $this->division->id);
+        $this->dispatch('position-created', positionId: $this->position->id);
 
         $this->reset();
     }
 
     /**
-     * Edit the division details.
+     * Edit the position details.
      */
     #[On('edit')]
     public function edit($code): void
     {
         $this->position = Position::where('code',$code)->first();
-        $this->departmentId = $this->position->departmentId;
-        $this->divisionId = $this->position->divisionId;
-        $this->levelId = $this->position->levelId;
-        $this->code = $this->division->code;
-        $this->name = $this->division->name;
+        $this->departmentId = $this->position->department_id;
+        $this->divisionId = $this->position->division_id;
+        $this->levelId = $this->position->level_id;
+        $this->code = $this->position->code;
+        $this->name = $this->position->name;
 
         $this->actionForm = 'update';
 
@@ -104,21 +105,21 @@ class PositionForm extends Component
     }
 
     /**
-     * Updates the division details in the database.
+     * Updates the position details in the database.
      */
     public function update(): void
     {
         DB::transaction(function () {
-            $this->division->update($this->divisionData());
+            $this->position->update($this->positionData());
         }, 5);
 
-        $this->dispatch('division-updated', divisionId: $this->division->id);
+        $this->dispatch('position-updated', positionId: $this->position->id);
 
         $this->reset();
     }
 
     /**
-     * Deletes the division from the database.
+     * Deletes the position from the database.
      */
     #[On('delete')]
     public function destroy($code): void
@@ -126,7 +127,7 @@ class PositionForm extends Component
         $this->position = Position::where('code',$code)->first();
         $this->position->delete();
 
-        $this->dispatch('division-deleted', refreshCompanies: true);
+        $this->dispatch('position-deleted', refreshCompanies: true);
     }
 
     /**
