@@ -40,6 +40,10 @@
 									<div>{{ $level->department->name }}</div>
 								</div>
 								<div class="flex justify-between">
+									<div>Division</div>
+									<div>{{ $level->division->name }}</div>
+								</div>
+								<div class="flex justify-between">
 									<div>Code</div>
 									<div>{{ $level->code }}</div>
 								</div>
