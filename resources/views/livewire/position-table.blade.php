@@ -40,6 +40,14 @@
 									<div>{{ $position->department->name }}</div>
 								</div>
 								<div class="flex justify-between">
+									<div>Division</div>
+									<div>{{ $position->division->name }}</div>
+								</div>
+								<div class="flex justify-between">
+									<div>Level</div>
+									<div>{{ $position->level->name }}</div>
+								</div>
+								<div class="flex justify-between">
 									<div>Code</div>
 									<div>{{ $position->code }}</div>
 								</div>

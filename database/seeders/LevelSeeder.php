@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Level;
 use Illuminate\Database\Seeder;
 
 class LevelSeeder extends Seeder
@@ -12,6 +12,6 @@ class LevelSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Level::factory(10)->create();
     }
 }
