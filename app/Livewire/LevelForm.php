@@ -57,6 +57,8 @@ class LevelForm extends Component
         return [
             'company_id' => auth()->user()->details->company_id,
             'branch_id' => auth()->user()->details->branch_id,
+            'department_id' => $this->departmentId,
+            'position_id' => $this->positionId,
             'level_id' => $this->levelId,
             'code' => $this->code,
             'name' => $this->name,

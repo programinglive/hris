@@ -72,7 +72,10 @@ class LevelTable extends Component
      */
     public function getLevels(): LengthAwarePaginator
     {
-        return Level::where('code', 'like', '%' . $this->search . '%')->paginate(5);
+        return Level::where(function($query){
+            $query->where('name', 'like', '%' . $this->search . '%')
+                ->orWhere('code', 'like', '%' . $this->search . '%');
+        })->paginate(5);
     }
 
     /**
