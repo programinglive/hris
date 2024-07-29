@@ -13,7 +13,6 @@ use Livewire\Component;
 
 class DivisionForm extends Component
 {
-    #[Validate('required|string|min:1')]
     public $departmentId;
 
     #[Validate('required|unique:divisions|min:3')]
@@ -45,6 +44,18 @@ class DivisionForm extends Component
     }
 
     /**
+     * Sets the department ID based on the provided department code.
+     *
+     * @param string $departmentCode The code of the department.
+     * @return void
+     */
+    #[On('setDepartment')]
+    public function setDepartment(string $departmentCode): void
+    {
+        $this->departmentId = Department::where('code', $departmentCode)->first()->id;
+    }
+
+    /**
      * The default data for the form.
      *
      * @return array
@@ -67,6 +78,11 @@ class DivisionForm extends Component
      */
     public function save(): void
     {
+        if(!$this->departmentId){
+            $this->dispatch('setErrorDepartment');
+            return;
+        }
+        
         $this->validate();
 
         DB::transaction(function () {
@@ -86,6 +102,9 @@ class DivisionForm extends Component
     {
         $this->division = Division::where('code',$code)->first();
         $this->departmentId = $this->division->department_id;
+
+        $this->dispatch('selectDepartment', departmentId: $this->departmentId );
+
         $this->code = $this->division->code;
         $this->name = $this->division->name;
 
@@ -99,6 +118,11 @@ class DivisionForm extends Component
      */
     public function update(): void
     {
+        if(!$this->departmentId){
+            $this->dispatch('setErrorDepartment');
+            return;
+        }
+        
         DB::transaction(function () {
             $this->division->update($this->divisionData());
         }, 5);

@@ -104,6 +104,24 @@ class LevelForm extends Component
      */
     public function update(): void
     {
+        $organizations = [
+            'departmentId',
+            'divisionId',
+            'levelId',
+        ];
+
+        foreach($organizations as $organization){
+
+            if($this->{$organization} == ''){
+                $this->addError( $organization, 'Please select a ['. ucfirst(rtrim($organization, 'Id')).'].');
+                return;
+            }
+        }
+
+        if($this->code != $this->position->code){
+            $this->validateOnly('code');
+        }
+
         DB::transaction(function () {
             $this->level->update($this->levelData());
         }, 5);
