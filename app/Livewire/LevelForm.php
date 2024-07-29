@@ -89,8 +89,8 @@ class LevelForm extends Component
     public function edit($code): void
     {
         $this->level = Level::where('code',$code)->first();
-        $this->departmentId = $this->level->departmentId;
-        $this->divisionId = $this->level->divisionId;
+        $this->departmentId = $this->level->department_id;
+        $this->divisionId = $this->level->division_id;
         $this->code = $this->level->code;
         $this->name = $this->level->name;
 
