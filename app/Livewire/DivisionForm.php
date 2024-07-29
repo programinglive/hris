@@ -85,6 +85,7 @@ class DivisionForm extends Component
     public function edit($code): void
     {
         $this->division = Division::where('code',$code)->first();
+        $this->departmentId = $this->division->department_id;
         $this->code = $this->division->code;
         $this->name = $this->division->name;
 
