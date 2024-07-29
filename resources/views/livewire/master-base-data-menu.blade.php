@@ -7,16 +7,6 @@
 	
 	<ul class="sub-menu hidden">
 		<li class="menu-item">
-			<a href="{{ route('master.roles') }}" class="menu-link">
-				<span class="menu-text">Role</span>
-			</a>
-		</li>
-		<li class="menu-item">
-			<a href="{{ route('master.permissions') }}" class="menu-link">
-				<span class="menu-text">Permission</span>
-			</a>
-		</li>
-		<li class="menu-item">
 			<a href="{{ route('master.users') }}" class="menu-link">
 				<span class="menu-text">User</span>
 			</a>
