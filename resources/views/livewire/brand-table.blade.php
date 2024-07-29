@@ -46,8 +46,8 @@
 									</div>
 								</td>
 								<td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex flex-col" style="width: 100px">
-									<button class="text-gray-500 hover:text-sky-700 text-end" wire:click="$dispatch('edit', { name: '{{ $brand->name }}'})">Edit</button>
-									<button class="text-gray-500 hover:text-sky-700 text-end" wire:click="$dispatch('delete', { name: '{{ $brand->name }}'})">Delete</button>
+									<button class="text-gray-500 hover:text-sky-700 text-end" wire:click="$dispatch('edit', { code: '{{ $brand->code }}'})">Edit</button>
+									<button class="text-gray-500 hover:text-sky-700 text-end" wire:click="$dispatch('delete', { code: '{{ $brand->code }}'})">Delete</button>
 								</td>
 							</tr>
 						@endif
