@@ -19,10 +19,10 @@ class LevelForm extends Component
     #[Validate('required|string|min:1')]
     public $divisionId;
 
-    #[Validate('required|unique:divisions|min:3')]
+    #[Validate('required|unique:levels|min:3')]
     public $code;
 
-    #[Validate('required|unique:divisions|min:3')]
+    #[Validate('required|unique:levels|min:3')]
     public $name;
 
     public $level;
