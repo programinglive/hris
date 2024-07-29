@@ -54,8 +54,8 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('phone')->nullable();
             $table->string('address')->nullable();
+            $table->string('phone')->nullable();
             $table->string('gender')->nullable();
             $table->string('religion')->nullable();
             $table->string('last_education')->nullable();
