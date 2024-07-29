@@ -22,7 +22,7 @@ class LevelForm extends Component
     #[Validate('required|unique:levels|min:3')]
     public $code;
 
-    #[Validate('required|unique:levels|min:3')]
+    #[Validate('required|min:3')]
     public $name;
 
     public $level;
