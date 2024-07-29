@@ -19,7 +19,7 @@ class DivisionForm extends Component
     #[Validate('required|unique:divisions|min:3')]
     public $code;
 
-    #[Validate('required|unique:divisions|min:3')]
+    #[Validate('required|min:3')]
     public $name;
 
     public $division;
