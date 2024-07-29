@@ -104,10 +104,12 @@ class BrandForm extends Component
      * Deletes the brand from the database.
      */
     #[On('delete')]
-    public function destroy($name): void
+    public function destroy($code): void
     {
-        $this->brand = Brand::where('name',$name)->first();
+        $this->brand = Brand::where('code',$code)->first();
         $this->brand->delete();
+
+        $this->reset();
 
         $this->dispatch('brand-deleted', refreshCompanies: true);
     }
