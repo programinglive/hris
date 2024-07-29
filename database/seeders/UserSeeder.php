@@ -23,8 +23,6 @@ class UserSeeder extends Seeder
             'password' => bcrypt('hrisproject'),
         ]);
 
-        $faker = Factory::create();
-
         $user->details()->create([
            'company_id' => 1,
            'branch_id' => 1,
