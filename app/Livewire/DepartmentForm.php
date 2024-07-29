@@ -109,6 +109,8 @@ class DepartmentForm extends Component
         $this->department = Department::where('code',$code)->first();
         $this->department->delete();
 
+        $this->reset();
+
         $this->dispatch('department-deleted', refreshCompanies: true);
     }
 
