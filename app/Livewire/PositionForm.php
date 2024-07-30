@@ -141,6 +141,9 @@ class PositionForm extends Component
     public function destroy($code): void
     {
         $this->position = Position::where('code',$code)->first();
+        $this->position->code = $code . '-deleted';
+        $this->position->save();
+
         $this->position->delete();
 
         $this->dispatch('position-deleted', refreshCompanies: true);

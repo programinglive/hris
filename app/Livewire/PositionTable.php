@@ -72,7 +72,12 @@ class PositionTable extends Component
      */
     public function getPositions(): LengthAwarePaginator
     {
-        return Position::where('code', 'like', '%' . $this->search . '%')->paginate(5);
+        return Position::where(function($query){
+            $query
+                ->where('code','like','%'.$this->search.'%')
+                ->where('name','like','%'.$this->search.'%');
+            })
+            ->orderBy('id','asc')->paginate(5);
     }
 
     /**
