@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use DB;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,6 +12,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        exec('php artisan migrate:fresh');
+
         $this->call([
             BrandSeeder::class,
             CompanySeeder::class,

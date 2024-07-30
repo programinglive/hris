@@ -5,9 +5,7 @@ namespace Tests\Livewire;
 use App\Livewire\DepartmentForm;
 use App\Models\Department;
 use App\Models\User;
-use Database\Seeders\BranchSeeder;
-use Database\Seeders\CompanySeeder;
-use Database\Seeders\UserSeeder;
+use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -28,12 +26,9 @@ class DepartmentFormTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed([
-            CompanySeeder::class,
-            BranchSeeder::class,
-            UserSeeder::class
 
-        ]);
+        $this->seed(DatabaseSeeder::class);
+
         $this->department = Department::factory([
             'code' => 'D001',
             'name' => 'Department A',
@@ -56,7 +51,7 @@ class DepartmentFormTest extends TestCase
         Livewire::test(DepartmentForm::class)
             ->call('destroy', 'D001');
 
-        $this->assertSoftDeleted('departments', ['code' => 'D001']);
+        $this->assertSoftDeleted('departments', ['code' => 'D001-deleted']);
     }
 
     /** @test */

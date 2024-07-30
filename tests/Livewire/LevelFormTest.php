@@ -5,11 +5,7 @@ namespace Tests\Livewire;
 use App\Livewire\LevelForm;
 use App\Models\Level;
 use App\Models\User;
-use Database\Seeders\BranchSeeder;
-use Database\Seeders\CompanySeeder;
-use Database\Seeders\DepartmentSeeder;
-use Database\Seeders\DivisionSeeder;
-use Database\Seeders\UserSeeder;
+use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -20,6 +16,7 @@ class LevelFormTest extends TestCase
     use RefreshDatabase;
 
     public $level;
+
     /**
      * Set up the test environment before each test case.
      *
@@ -40,13 +37,7 @@ class LevelFormTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed([
-            CompanySeeder::class,
-            BranchSeeder::class,
-            UserSeeder::class,
-            DepartmentSeeder::class,
-            DivisionSeeder::class,
-        ]);
+        $this->seed(DatabaseSeeder::class);
 
         $this->level == Level::factory([
             'company_id' => 1,

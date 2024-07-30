@@ -107,6 +107,9 @@ class DepartmentForm extends Component
     public function destroy($code): void
     {
         $this->department = Department::where('code',$code)->first();
+        $this->department->code = $this->department->code.'-deleted';
+        $this->department->save();
+
         $this->department->delete();
 
         $this->reset();

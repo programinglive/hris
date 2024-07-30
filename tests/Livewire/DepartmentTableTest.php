@@ -4,10 +4,7 @@ namespace Tests\Livewire;
 
 use App\Livewire\DepartmentTable;
 use App\Models\Department;
-use Database\Seeders\BranchSeeder;
-use Database\Seeders\CompanySeeder;
-use Database\Seeders\DepartmentSeeder;
-use Database\Seeders\UserSeeder;
+use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -15,7 +12,7 @@ use Tests\TestCase;
 class DepartmentTableTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     public $department;
 
     /**
@@ -31,12 +28,8 @@ class DepartmentTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed([
-            CompanySeeder::class,
-            BranchSeeder::class,
-            UserSeeder::class,
-            DepartmentSeeder::class,
-        ]);
+
+        $this->seed(DatabaseSeeder::class);
 
         $this->department = Department::first();
     }
