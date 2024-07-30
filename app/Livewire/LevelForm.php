@@ -107,7 +107,6 @@ class LevelForm extends Component
         $organizations = [
             'departmentId',
             'divisionId',
-            'levelId',
         ];
 
         foreach($organizations as $organization){
@@ -118,7 +117,7 @@ class LevelForm extends Component
             }
         }
 
-        if($this->code != $this->position->code){
+        if($this->code != $this->level->code){
             $this->validateOnly('code');
         }
 
@@ -141,6 +140,8 @@ class LevelForm extends Component
         $this->level->delete();
 
         $this->dispatch('level-deleted', refreshCompanies: true);
+
+        $this->reset();
     }
 
     /**
