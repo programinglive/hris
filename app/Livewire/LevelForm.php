@@ -137,6 +137,8 @@ class LevelForm extends Component
     public function destroy($code): void
     {
         $this->level = Level::where('code',$code)->first();
+        $this->level->code = $this->level->code.'-deleted';
+        $this->level->save();
         $this->level->delete();
 
         $this->dispatch('level-deleted', refreshCompanies: true);
