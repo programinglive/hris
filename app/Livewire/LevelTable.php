@@ -75,7 +75,9 @@ class LevelTable extends Component
         return Level::where(function($query){
             $query->where('name', 'like', '%' . $this->search . '%')
                 ->orWhere('code', 'like', '%' . $this->search . '%');
-        })->paginate(5);
+            })
+                ->orderBy('id','asc')
+                ->paginate(5);
     }
 
     /**
