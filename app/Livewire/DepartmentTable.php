@@ -72,7 +72,11 @@ class DepartmentTable extends Component
      */
     public function getDepartments(): LengthAwarePaginator
     {
-        return Department::where('code', 'like', '%' . $this->search . '%')->paginate(5);
+        return Department::where(function($query){
+            $query->where('code', 'like', '%' . $this->search . '%')
+                ->orWhere('name', 'like', '%' . $this->search . '%');
+            })->orderBy('id', 'asc')
+            ->paginate(5);
     }
 
     /**
