@@ -139,6 +139,9 @@ class DivisionForm extends Component
     public function destroy($code): void
     {
         $this->division = Division::where('code',$code)->first();
+        $this->division->code = $code . '-deleted';
+        $this->division->save();
+
         $this->division->delete();
 
         $this->dispatch('division-deleted', refreshCompanies: true);

@@ -76,7 +76,8 @@ class DivisionTable extends Component
             $query->where('name', 'like', '%' . $this->search . '%')
                 ->orWhere('code', 'like', '%' . $this->search . '%');
             })
-            ->orderBy('id', 'asc')->paginate(5);
+            ->orderBy('id', 'asc')
+            ->paginate(5);
     }
 
     /**
