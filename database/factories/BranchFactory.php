@@ -19,7 +19,7 @@ class BranchFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_id' => Company::factory()->create()->id,
+            'company_id' => Company::first()->id,
             'code' => $this->faker->unique()->randomNumber(5),
             'name' => $this->faker->company(),
             'type' => 'branch',

@@ -20,8 +20,8 @@ class DepartmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_id' => Company::factory()->create()->id,
-            'branch_id' => Branch::factory()->create()->id,
+            'company_id' => Company::first()->id,
+            'branch_id' => Branch::first()->id,
             'code' => fake()->ean8(),
             'name' => fake()->name(),
         ];

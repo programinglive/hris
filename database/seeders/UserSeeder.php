@@ -23,8 +23,8 @@ class UserSeeder extends Seeder
         ]);
 
         $user->details()->create([
-           'company_id' => Company::factory()->create()->id,
-           'branch_id' => Branch::factory()->create()->id,
+           'company_id' => Company::first()->id,
+           'branch_id' => Branch::first()->id,
            'user_id' => $user->id,
            'first_name' => $user->name,
         ]);

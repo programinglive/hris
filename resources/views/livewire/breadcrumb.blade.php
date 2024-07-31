@@ -1,4 +1,4 @@
-<div class="flex justify-between items-center mb-6">
+<div class="flex justify-between items-center">
 	<h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">{{ $moduleLabel }}</h4>
 	
 	<div class="md:flex hidden items-center gap-2.5 text-sm font-semibold">

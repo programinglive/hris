@@ -15,9 +15,9 @@ class DatabaseSeeder extends Seeder
         exec('php artisan migrate:fresh');
 
         $this->call([
-            BrandSeeder::class,
             CompanySeeder::class,
             BranchSeeder::class,
+            BrandSeeder::class,
             DepartmentSeeder::class,
             DivisionSeeder::class,
             LevelSeeder::class,
