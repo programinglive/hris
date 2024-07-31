@@ -15,8 +15,17 @@ class CompanyTable extends Component
     use withPagination;
     public $showForm = false;
 
-    #[Url]
+    #[Url(keep: true)]
     public $search;
+
+    #[Url(keep: true)]
+    public $companyCode;
+
+    #[On('setCompanyCode')]
+    public function setCompanyCode($code)
+    {
+        $this->companyCode = $code;
+    }
 
     /**
      * Handles the event when a company is created.
@@ -72,7 +81,7 @@ class CompanyTable extends Component
      */
     public function getCompanies(): LengthAwarePaginator
     {
-        return Company::where('code', 'like', '%' . $this->search . '%')->paginate(5);
+        return Company::where('code', 'like', '%' . $this->companyCode . '%')->paginate(5);
     }
 
     /**
