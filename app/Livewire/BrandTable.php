@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Brand;
+use App\Models\Company;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
@@ -17,6 +18,21 @@ class BrandTable extends Component
 
     #[Url]
     public $search;
+
+    #[Url]
+    public ?String $companyCode;
+
+    /**
+     * Sets the company code.
+     *
+     * @param string $code The code to set as the company code.
+     * @return void
+     */
+    #[On('setCompanyCode')]
+    public function setCompanyCode(String $code): void
+    {
+        $this->companyCode = $code;
+    }
 
     /**
      * Handles the event when a brand is created.
@@ -72,11 +88,17 @@ class BrandTable extends Component
      */
     public function getBrands(): LengthAwarePaginator
     {
-        return Brand::where(function ($query){
+        return $this->companyCode != "" ? Brand::where(function ($query){
             $query->where('code', 'like', '%' . $this->search . '%')
                 ->orWhere('name', 'like', '%' . $this->search . '%');
-            })->orderBy('id', 'asc')
-                ->paginate(5);
+            })
+            ->where('company_id', Company::where('code', $this->companyCode)->first()->id)
+            ->orderBy('id', 'asc')
+                ->paginate(5)
+            : Brand::where(function ($query){
+                $query->where('code', 'like', '%' . $this->search . '%')
+                    ->orWhere('name', 'like', '%' . $this->search . '%');
+            })->orderByd('id', 'asc')->paginate(5);
     }
 
     /**

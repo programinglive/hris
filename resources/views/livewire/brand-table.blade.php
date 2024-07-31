@@ -37,6 +37,10 @@
 							<tr>
 								<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
 									<div class="flex justify-between">
+										<div>Company</div>
+										<div>{{ $brand->company?->name }}</div>
+									</div>
+									<div class="flex justify-between">
 										<div>Code</div>
 										<div>{{ $brand->code }}</div>
 									</div>
