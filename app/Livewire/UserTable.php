@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
@@ -17,6 +18,15 @@ class UserTable extends Component
 
     #[Url]
     public $search;
+
+    #[Url(keep:true)]
+    public ?String $companyCode = "";
+
+    #[On('setCompanyCode')]
+    public function setCompanyCode($code): void
+    {
+        $this->companyCode = $code;
+    }
 
     /**
      * Handles the event when a user is created.
@@ -72,7 +82,25 @@ class UserTable extends Component
      */
     public function getUsers(): LengthAwarePaginator
     {
-        return User::where('name', 'like', '%' . $this->search . '%')->paginate(5);
+        if($this->companyCode !== "" && !Company::where('code', $this->companyCode)->first()){
+            abort(404);
+        }
+        
+        return $this->companyCode != "" ? User::join('user_details', 'user_details.user_id', '=', 'users.id')
+                    ->where(function($query){
+                        $query->where('user_details.code', 'like', '%' . $this->search . '%')
+                            ->orWhere('users.name', 'like', '%' . $this->search . '%');
+                    })
+                    ->where('user_details.company_id', Company::where('code', $this->companyCode)->first()->id)
+                    ->orderBy('users.id')
+                        ->paginate(5)
+            : User::join('user_details', 'user_details.user_id', '=', 'users.id')
+                ->where(function($query){
+                    $query->where('user_details.code', 'like', '%' . $this->search . '%')
+                        ->orWhere('user_details.first_name', 'like', '%' . $this->search . '%')
+                        ->orWhere('user_details.last_name', 'like', '%' . $this->search . '%');
+                })->orderBy('users.id')
+                    ->paginate(5);
     }
 
     /**

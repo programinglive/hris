@@ -28,7 +28,7 @@ class UserFactory extends Factory
     public function configure(): Factory|UserFactory
     {
         return $this->afterCreating(function (User $user) {
-            $company = Company::factory()->create();
+            $company = Company::first();
             $branch = Branch::factory()->create([
                 'company_id' => $company->id
             ]);
@@ -63,6 +63,7 @@ class UserFactory extends Factory
                 'level_id' => $level->id,
                 'position_id' => $position->id,
                 'user_id' => $user->id,
+                'code' => $this->faker->unique()->ean8(),
                 'first_name' => $user->name,
                 'phone' => $this->faker->phoneNumber(),
             ]);
