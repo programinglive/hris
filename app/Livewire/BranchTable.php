@@ -93,8 +93,7 @@ class BranchTable extends Component
             : Branch::where(function($query){
                 $query->where('code', 'like', '%' . $this->search . '%')
                     ->orWhere('name', 'like', '%' . $this->search . '%');
-            })
-                ->orderBy('id', 'asc')
+            })->orderBy('id', 'asc')
                 ->paginate(5);
 
     }

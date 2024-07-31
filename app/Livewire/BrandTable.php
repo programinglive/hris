@@ -98,7 +98,8 @@ class BrandTable extends Component
             : Brand::where(function ($query){
                 $query->where('code', 'like', '%' . $this->search . '%')
                     ->orWhere('name', 'like', '%' . $this->search . '%');
-            })->orderByd('id', 'asc')->paginate(5);
+            })->orderByd('id', 'asc')
+                ->paginate(5);
     }
 
     /**
