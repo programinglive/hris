@@ -84,8 +84,18 @@ class BranchTable extends Component
     {
         return  $this->companyCode != "" ?
             Branch::where('company_id',Company::where('code', $this->companyCode)->first()->id)
+                ->where(function($query){
+                    $query->where('code', 'like', '%' . $this->search . '%')
+                        ->orWhere('name', 'like', '%' . $this->search . '%');
+                })
+                ->orderBy('id', 'asc')
                 ->paginate(5)
-            : Branch::paginate(5);
+            : Branch::where(function($query){
+                $query->where('code', 'like', '%' . $this->search . '%')
+                    ->orWhere('name', 'like', '%' . $this->search . '%');
+            })
+                ->orderBy('id', 'asc')
+                ->paginate(5);
 
     }
 

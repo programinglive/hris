@@ -19,8 +19,8 @@ class BrandTable extends Component
     #[Url]
     public $search;
 
-    #[Url]
-    public ?String $companyCode;
+    #[Url(keep: true)]
+    public ?String $companyCode = "";
 
     /**
      * Sets the company code.

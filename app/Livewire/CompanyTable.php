@@ -87,8 +87,8 @@ class CompanyTable extends Component
                     })
                     ->where('id', Company::where('code', $this->companyCode)->first()->id)
                     ->orderBy('id', 'asc')
-                    ->paginate(5) :
-            Company::where(function($query){
+                    ->paginate(5)
+            : Company::where(function($query){
                 $query->where('code', 'like', '%' . $this->search . '%')
                     ->orWhere('name', 'like', '%' . $this->search . '%');
              })->orderBy('id', 'asc')->paginate(5);
