@@ -81,7 +81,17 @@ class CompanyTable extends Component
      */
     public function getCompanies(): LengthAwarePaginator
     {
-        return Company::where('code', 'like', '%' . $this->companyCode . '%')->paginate(5);
+        return $this->companyCode != "" ? Company::where(function($query){
+                    $query->where('code', 'like', '%' . $this->search . '%')
+                        ->orWhere('name', 'like', '%' . $this->search . '%');
+                    })
+                    ->where('id', Company::where('code', $this->companyCode)->first()->id)
+                    ->orderBy('id', 'asc')
+                    ->paginate(5) :
+            Company::where(function($query){
+                $query->where('code', 'like', '%' . $this->search . '%')
+                    ->orWhere('name', 'like', '%' . $this->search . '%');
+             })->orderBy('id', 'asc')->paginate(5);
     }
 
     /**
