@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Branch;
+use App\Models\Company;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
@@ -17,6 +18,15 @@ class BranchTable extends Component
 
     #[Url]
     public $search;
+
+    #[Url(keep:true)]
+    public ?String $companyCode = "";
+
+    #[On('setCompanyCode')]
+    public function setCompanyCode($code): void
+    {
+        $this->companyCode = $code;
+    }
 
     /**
      * Handles the event when a branch is created.
@@ -72,8 +82,11 @@ class BranchTable extends Component
      */
     public function getBranch(): LengthAwarePaginator
     {
-        return Branch::where('code', 'like', '%' . $this->search . '%')
-            ->paginate(5);
+        return  $this->companyCode != "" ?
+            Branch::where('company_id',Company::where('code', $this->companyCode)->first()->id)
+                ->paginate(5)
+            : Branch::paginate(5);
+
     }
 
     /**
