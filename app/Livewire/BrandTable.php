@@ -72,7 +72,11 @@ class BrandTable extends Component
      */
     public function getBrands(): LengthAwarePaginator
     {
-        return Brand::where('name', 'like', '%' . $this->search . '%')->paginate(5);
+        return Brand::where(function ($query){
+            $query->where('code', 'like', '%' . $this->search . '%')
+                ->orWhere('name', 'like', '%' . $this->search . '%');
+            })->orderBy('id', 'asc')
+                ->paginate(5);
     }
 
     /**

@@ -75,9 +75,9 @@ class BrandForm extends Component
      * Edit the brand details.
      */
     #[On('edit')]
-    public function edit($name): void
+    public function edit($code): void
     {
-        $this->brand = Brand::where('name',$name)->first();
+        $this->brand = Brand::where('code',$code)->first();
         $this->code = $this->brand->code;
         $this->name = $this->brand->name;
 
@@ -107,6 +107,9 @@ class BrandForm extends Component
     public function destroy($code): void
     {
         $this->brand = Brand::where('code',$code)->first();
+        $this->brand->code = $this->brand->code . '-deleted';
+        $this->brand->save();
+
         $this->brand->delete();
 
         $this->reset();
