@@ -22,7 +22,7 @@ class CompanyTable extends Component
     public $companyCode;
 
     #[On('setCompanyCode')]
-    public function setCompanyCode($code)
+    public function setCompanyCode($code): void
     {
         $this->companyCode = $code;
     }

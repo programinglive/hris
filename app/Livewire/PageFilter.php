@@ -12,7 +12,13 @@ class PageFilter extends Component
     #[Url(keep: true)]
     public $companyCode;
 
-    public function updatedCompanyCode($code)
+    /**
+     * Dispatches a 'setCompanyCode' event with the given company code.
+     *
+     * @param string $code The company code to be set.
+     * @return void
+     */
+    public function updatedCompanyCode(string $code): void
     {
         $this->dispatch('setCompanyCode', $code);
     }
