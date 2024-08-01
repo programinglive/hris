@@ -6,6 +6,7 @@ use App\Livewire\CompanyForm;
 use App\Models\Company;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
+use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\AssertionFailedError;
@@ -32,7 +33,7 @@ class CompanyFormTest extends TestCase
 
         $this->seed(DatabaseSeeder::class);
 
-        $this->faker = \Faker\Factory::create();
+        $this->faker = Factory::create();
 
         $this->company = Company::factory([
             'code' => 'D001',

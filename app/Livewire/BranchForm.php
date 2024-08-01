@@ -84,6 +84,7 @@ class BranchForm extends Component
         $this->code = $code;
         $this->branch = Branch::where('code',$code)->first();
         $this->name = $this->branch->name;
+        $this->type = $this->branch->type;
 
         $this->actionForm = 'update';
 
@@ -111,6 +112,9 @@ class BranchForm extends Component
     public function destroy($code): void
     {
         $this->branch = Branch::where('code',$code)->first();
+        $this->branch->code = $this->branch->code.'-deleted';
+        $this->branch->save();
+
         $this->branch->delete();
 
         $this->dispatch('branch-deleted', refreshCompanies: true);
