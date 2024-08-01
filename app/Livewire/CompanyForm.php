@@ -25,7 +25,7 @@ class CompanyForm extends Component
     #[Validate('required|email:unique:companies') ]
     public $email;
 
-    #[Validate('required|email:unique:companies') ]
+    #[Validate('required|unique:companies') ]
     public $phone;
 
     public $company;
