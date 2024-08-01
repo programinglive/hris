@@ -30,24 +30,15 @@ class BranchForm extends Component
 
     public $actionForm = 'save';
 
+    /**
+     * Initializes the component by setting the companyCode property based on the user's role and company code.
+     *
+     * @return void
+     */
     public function mount(): void
     {
         $role = auth()->user()->details->role;
         $this->companyCode = $role == 'administrator' ? auth()->user()->details->company->code : "" ;
-    }
-
-    /**
-     * Sets the value of the companyCode property to the given code.
-     *
-     * @param string $code The code to set the companyCode property to.
-     * @return void
-     */
-    #[On('setCompanyCode')]
-    public function setCompanyCode(string $code): void
-    {
-        $this->companyCode = $code;
-
-        $this->companyId = Company::where('code', $code)->first()->id;
     }
 
     /**
@@ -64,6 +55,26 @@ class BranchForm extends Component
         if($key == 'code'){
             $this->validateOnly($key);
         }
+    }
+
+    /**
+     * Sets the value of the companyCode property to the given code.
+     *
+     * @param string $code The code to set the companyCode property to.
+     * @return void
+     */
+    #[On('setCompanyCode')]
+    public function setCompanyCode(string $code): void
+    {
+        $this->companyCode = $code;
+        
+        $this->companyId = Company::where('code', $code)->first()->id;
+    }
+
+    #[On('resetCompanyId')]
+    public function resetCompanyId(): void
+    {
+        $this->reset('companyId');
     }
 
     /**
@@ -99,7 +110,8 @@ class BranchForm extends Component
             $this->branch = Branch::create($this->branchData());
         }, 5);
 
-        $this->dispatch('branch-created', branchId: $this->branch->id);
+        $this->dispatch('branch-created', branchId: $this->branch->id, refreshCompanies: true);
+        $this->dispatch('clearFormCompanyOption');
 
         $this->reset();
     }
@@ -112,6 +124,8 @@ class BranchForm extends Component
     {
         $this->code = $code;
         $this->branch = Branch::where('code',$code)->first();
+        $this->companyId = $this->branch->company_id;
+        $this->dispatch('selectCompany', companyId: $this->companyId);
         $this->name = $this->branch->name;
         $this->type = $this->branch->type;
 
@@ -125,11 +139,17 @@ class BranchForm extends Component
      */
     public function update(): void
     {
+        if(!$this->companyId){
+            $this->dispatch('companyRequired');
+            return;
+        }
+
         DB::transaction(function () {
             $this->branch->update($this->branchData());
         }, 5);
 
-        $this->dispatch('branch-updated', branchId: $this->branch->id);
+        $this->dispatch('branch-updated', branchId: $this->branch->id, refreshCompanies: true);
+        $this->dispatch('clearFormCompanyOption');
 
         $this->reset();
     }
@@ -147,8 +167,8 @@ class BranchForm extends Component
         $this->branch->delete();
 
         $this->dispatch('branch-deleted', refreshCompanies: true);
+        $this->dispatch('clearFormCompanyOption');
     }
-
 
     /**
      * Render the livewire component.

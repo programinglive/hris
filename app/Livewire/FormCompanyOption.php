@@ -16,17 +16,6 @@ class FormCompanyOption extends Component
     public $companyCode = "";
 
     /**
-     * Handles the 'companyRequired' event by adding an error message to the 'companyId' field.
-     *
-     * @return void
-     */
-    #[On('companyRequired')]
-    public function companyRequired(): void
-    {
-        $this->addError('companyId', 'This field is required');
-    }
-
-    /**
      * Updates the company ID and emits a 'setCompanyCode' event.
      *
      * @param mixed $value The new value for the company ID.
@@ -36,12 +25,36 @@ class FormCompanyOption extends Component
     {
         if($value == "") {
             $this->addError('companyCode', 'This field is required');
+            $this->dispatch('resetCompanyId');
             return;
         }
 
         $this->companyCode = $value;
 
-        $this->emit('setCompanyCode', $value);
+        $this->dispatch('setCompanyCode', $value);
+    }
+
+    /**
+     * Selects the company with the given ID and emits a 'selectCompany' event.
+     *
+     * @param int $companyId The ID of the company to select.
+     * @return void
+     */
+    #[On('selectCompany')]
+    public function selectCompany(int $companyId): void
+    {
+        $this->companyId = Company::find($companyId)->code;
+    }
+
+    /**
+     * Handles the 'companyRequired' event by adding an error message to the 'companyId' field.
+     *
+     * @return void
+     */
+    #[On('companyRequired')]
+    public function companyRequired(): void
+    {
+        $this->addError('companyId', 'This field is required');
     }
 
     /**
@@ -57,6 +70,14 @@ class FormCompanyOption extends Component
         }
         return collect();
     }
+
+    #[On('clearFormCompanyOption')]
+    public function clearFormCompanyOption(): void
+    {
+        $this->reset();
+        $this->resetErrorBag();
+    }
+
     /**
      * Render the view for the form company option.
      *

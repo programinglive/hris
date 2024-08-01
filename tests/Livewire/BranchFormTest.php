@@ -40,6 +40,8 @@ class BranchFormTest extends TestCase
             'name' => 'Branch A',
             'type' => 'branch'
         ])->create();
+
+        auth()->login(User::first());
     }
 
     /**
