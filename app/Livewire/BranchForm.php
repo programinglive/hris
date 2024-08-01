@@ -19,7 +19,7 @@ class BranchForm extends Component
     #[Validate('required|min:3')]
     public $name;
 
-    public $type;
+    public $type = 'branch';
     
     public $branch;
 
