@@ -28,6 +28,7 @@ class UserSeeder extends Seeder
            'code' => 'USR0001',
            'user_id' => $user->id,
            'first_name' => $user->name,
+           'role' => 'administrator',
         ]);
     }
 }

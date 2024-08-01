@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Branch;
+use App\Models\Company;
 use DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
@@ -13,6 +14,10 @@ use Livewire\Component;
 
 class BranchForm extends Component
 {
+    public $companyId;
+    #[Url(keep:true)]
+    public $companyCode;
+
     #[Validate('required|unique:branches|min:3')]
     public $code;
 
@@ -24,6 +29,26 @@ class BranchForm extends Component
     public $branch;
 
     public $actionForm = 'save';
+
+    public function mount(): void
+    {
+        $role = auth()->user()->details->role;
+        $this->companyCode = $role == 'administrator' ? auth()->user()->details->company->code : "" ;
+    }
+
+    /**
+     * Sets the value of the companyCode property to the given code.
+     *
+     * @param string $code The code to set the companyCode property to.
+     * @return void
+     */
+    #[On('setCompanyCode')]
+    public function setCompanyCode(string $code): void
+    {
+        $this->companyCode = $code;
+
+        $this->companyId = Company::where('code', $code)->first()->id;
+    }
 
     /**
      * Updates the specified property with the given value and performs validation if the property is 'code',
@@ -49,7 +74,7 @@ class BranchForm extends Component
     public function branchData(): array
     {
         return [
-            'company_id' => auth()->user()->details->company_id,
+            'company_id' => $this->companyId,
             'code' => $this->code,
             'name' => $this->name,
             'type' => $this->type
@@ -63,6 +88,11 @@ class BranchForm extends Component
      */
     public function save(): void
     {
+        if(!$this->companyId){
+            $this->dispatch('companyRequired');
+            return;
+        }
+
         $this->validate();
 
         DB::transaction(function () {

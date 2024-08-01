@@ -65,6 +65,7 @@ return new class extends Migration
             $table->date('date_of_birth')->nullable();
             $table->string('ktp')->nullable();
             $table->string('npwp')->nullable();
+            $table->enum('role', ['administrator', 'employee'])->default('employee');
             $table->string('bank_account')->nullable();
             $table->softDeletes();
             $table->timestamps();

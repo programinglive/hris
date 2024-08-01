@@ -18,7 +18,6 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
-
     /**
      * Configures the factory to create a new user with associated company,
      * branch, department, division, level, position, and user detail.
@@ -65,6 +64,8 @@ class UserFactory extends Factory
                 'user_id' => $user->id,
                 'code' => $this->faker->unique()->ean8(),
                 'first_name' => $user->name,
+                'last_name' => $user->faker->lastName(),
+                'role' => 'employee',
                 'phone' => $this->faker->phoneNumber(),
             ]);
 
