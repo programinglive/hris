@@ -24,6 +24,8 @@ class CompanyForm extends Component
 
     #[Validate('required|email:unique:companies') ]
     public $email;
+
+    #[Validate('required|email:unique:companies') ]
     public $phone;
 
     public $company;
@@ -119,6 +121,9 @@ class CompanyForm extends Component
     public function destroy($code): void
     {
         $this->company = Company::where('code',$code)->first();
+        $this->company->code = $this->company->code . '-deleted';
+        $this->company->save();
+
         $this->company->delete();
 
         $this->dispatch('company-deleted', refreshCompanies: true);

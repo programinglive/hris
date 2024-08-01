@@ -25,6 +25,7 @@ class UserSeeder extends Seeder
         $user->details()->create([
            'company_id' => Company::first()->id,
            'branch_id' => Branch::first()->id,
+           'code' => 'USR0001',
            'user_id' => $user->id,
            'first_name' => $user->name,
         ]);
