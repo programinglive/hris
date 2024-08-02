@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Brand;
 use App\Models\Company;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
@@ -10,10 +11,44 @@ use Livewire\Component;
 
 class PageFilter extends Component
 {
-    #[Url(keep: true)]
+    #[Url(keep:true)]
     public $companyCode;
 
+    #[Url(keep:true)]
+    public $brandCode;
+
     public $filter = true;
+
+    public $companyId;
+
+    public $branchFilter = false;
+
+    public $brands;
+
+    /**
+     * Initializes the component by setting the company ID and brands based on the company code.
+     *
+     * @return void
+     */
+    public function mount(): void
+    {
+        if($this->companyCode != "") {
+            $this->companyId = Company::where('code', $this->companyCode)->first()->id;
+
+            $this->brands = Brand::where('company_id', $this->companyId)->get();
+        }
+    }
+
+    /**
+     * Dispatches a 'setBrandCode' event with the given brand code.
+     *
+     * @param string $code The brand code to be set.
+     * @return void
+     */
+    public function updatedBrandCode(string $code): void
+    {
+        $this->dispatch('setBrandCode', $code);
+    }
 
     /**
      * Dispatches a 'setCompanyCode' event with the given company code.
@@ -23,7 +58,13 @@ class PageFilter extends Component
      */
     public function updatedCompanyCode(string $code): void
     {
-        $this->dispatch('setCompanyCode', $code);
+        if($code != "") {
+            $this->dispatch('setCompanyCode', $code);
+
+            $this->companyId = Company::where('code', $code)->first()->id;
+
+            $this->brands = Brand::where('company_id', $this->companyId)->get();
+        }
     }
 
     #[On('disableFilter')]
@@ -41,7 +82,8 @@ class PageFilter extends Component
     public function render(): View
     {
         return view('livewire.page-filter', [
-            'companies' => Company::all()
+            'companies' => Company::all(),
+            'brands' => $this->brands
         ]);
     }
 }

@@ -76,6 +76,13 @@ class BranchForm extends Component
         $this->companyId = Company::where('code', $code)->first()->id;
     }
 
+    /**
+     * Resets the 'companyId' property to its initial value.
+     *
+     * This function is triggered when the 'resetCompanyId' event is dispatched.
+     *
+     * @return void
+     */
     #[On('resetCompanyId')]
     public function resetCompanyId(): void
     {
