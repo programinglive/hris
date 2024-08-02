@@ -5,7 +5,11 @@
 >
 	<div class="flex justify-between pt-2" x-show="!open" >
 		<div>
-			<button type="button" class="btn bg-primary text-white" @click="open = true">+</button>
+			<button
+				type="button"
+				class="btn bg-primary text-white"
+				@click="open = true; $wire.dispatch('disableFilter')"
+			>+</button>
 		</div>
 		<div class="w-1/4 relative">
 			<input wire:model.live="search" type="text" id="search" class="form-input pr-10" placeholder="Search...">

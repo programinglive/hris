@@ -94,6 +94,11 @@ class DepartmentForm extends Component
 
         $this->dispatch('department-created', departmentId: $this->department->id);
 
+        $this->dispatch('setCompanyCode', $this->companyCode);
+        $this->dispatch('selectCompany', $this->companyId);
+
+        $this->dispatch('enableFilter');
+
         $this->reset();
     }
 

@@ -54,6 +54,8 @@ class DepartmentTable extends Component
         } else {
             $this->companyCode = "all";
         }
+
+        $this->resetPage();
     }
 
     /**
@@ -120,11 +122,10 @@ class DepartmentTable extends Component
         if($this->companyCode == "") {
             abort(404);
         }
-
         if($this->companyCode != "all") {
             $departments = $departments->where('company_id', $this->companyId);
         }
-        
+
         return $departments->paginate(5);
     }
 

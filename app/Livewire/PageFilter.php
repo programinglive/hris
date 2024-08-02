@@ -75,6 +75,33 @@ class PageFilter extends Component
 
     }
 
+    /**
+     * Sets the value of the company code property to the given code.
+     *
+     * @param string $code The code to set as the company code.
+     * @return void
+     */
+    #[On('setCompanyCode')]
+    public function setCompanyCode(string $code): void
+    {
+        $this->companyCode = $code;
+    }
+
+    /**
+     * Disables the filter by setting the 'filter' property to false.
+     *
+     * @return void
+     */
+    /**
+     * Disables the filter by setting the 'filter' property to false.
+     *
+     * @return void
+     */
+    /**
+     * Disables the filter by setting the 'filter' property to false.
+     *
+     * @return void
+     */
     #[On('disableFilter')]
     public function disableFilter(): void
     {

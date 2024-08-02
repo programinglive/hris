@@ -21,7 +21,7 @@ class FormCompanyOption extends Component
      * @param mixed $value The new value for the company ID.
      * @return void
      */
-    public function updatedCompanyId(mixed $value): void
+    public function updatedCompanyCode(mixed $value): void
     {
         if($value == "") {
             $this->addError('companyCode', 'This field is required');
