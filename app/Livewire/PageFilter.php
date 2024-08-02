@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Company;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -11,6 +12,8 @@ class PageFilter extends Component
 {
     #[Url(keep: true)]
     public $companyCode;
+
+    public $filter = true;
 
     /**
      * Dispatches a 'setCompanyCode' event with the given company code.
@@ -22,6 +25,14 @@ class PageFilter extends Component
     {
         $this->dispatch('setCompanyCode', $code);
     }
+
+    #[On('disableFilter')]
+    public function disableFilter(): void
+    {
+        $this->filter = false;
+    }
+
+
     /**
      * Renders the view for the page filter.
      *

@@ -33,8 +33,6 @@ class BranchTable extends Component
         if(!Company::where("code", $this->companyCode)->first() && $this->companyCode != "") {
             abort(404);
         }
-
-        $this->companyId = $this->companyCode != "" ? Company::where('code', $this->companyCode)->first()->id : auth()->user()->details->company_id;
     }
 
     #[On('setCompanyCode')]
@@ -97,19 +95,17 @@ class BranchTable extends Component
      */
     public function getBranch(): LengthAwarePaginator
     {
-        return  $this->companyCode != "" ?
-            Branch::where('company_id', $this->companyId)
-                ->where(function($query){
-                    $query->where('code', 'like', '%' . $this->search . '%')
-                        ->orWhere('name', 'like', '%' . $this->search . '%');
-                })
-                ->orderBy('id', 'asc')
-                ->paginate(5)
-            : Branch::where(function($query){
-                $query->where('code', 'like', '%' . $this->search . '%')
-                    ->orWhere('name', 'like', '%' . $this->search . '%');
-            })->orderBy('id', 'asc')
+        if($this->companyCode == "") {
+            return Branch::where(function($query){
+                $query->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('code', 'like', '%' . $this->search . '%');
+            })->orderBy('id')
                 ->paginate(5);
+        }
+
+        $this->companyId = Company::where("code", $this->companyCode)->first()->id;
+
+        return Branch::where('company_id', $this->companyId)->paginate(5);
 
     }
 
