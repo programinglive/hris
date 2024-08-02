@@ -2,16 +2,22 @@
 
 namespace App\Livewire;
 
+use App\Models\Company;
 use App\Models\Department;
 use DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class DepartmentForm extends Component
 {
+    public $companyId;
+    #[Url(keep:true)]
+    public $companyCode;
+
     #[Validate('required|unique:departments|min:3')]
     public $code;
 
@@ -39,6 +45,20 @@ class DepartmentForm extends Component
     }
 
     /**
+     * Sets the value of the companyCode property to the given code.
+     *
+     * @param string $code The code to set the companyCode property to.
+     * @return void
+     */
+    #[On('setCompanyCode')]
+    public function setCompanyCode(string $code): void
+    {
+        $this->companyCode = $code;
+
+        $this->companyId = Company::where('code', $code)->first()->id;
+    }
+
+    /**
      * The default data for the form.
      *
      * @return array
@@ -46,7 +66,7 @@ class DepartmentForm extends Component
     public function departmentData(): array
     {
         return [
-            'company_id' => auth()->user()->details->company_id,
+            'company_id' => $this->companyId,
             'branch_id' => auth()->user()->details->branch_id,
             'code' => $this->code,
             'name' => $this->name,
@@ -81,8 +101,12 @@ class DepartmentForm extends Component
         $this->code = $this->department->code;
         $this->name = $this->department->name;
 
+        $this->companyId = $this->department->company_id;
+        $this->dispatch('selectCompany', $this->companyId);
+
         $this->actionForm = 'update';
 
+        $this->dispatch('disableFilter');
         $this->dispatch('show-form');
     }
 
@@ -96,6 +120,8 @@ class DepartmentForm extends Component
         }, 5);
 
         $this->dispatch('department-updated', departmentId: $this->department->id);
+
+        $this->dispatch('enableFilter');
 
         $this->reset();
     }

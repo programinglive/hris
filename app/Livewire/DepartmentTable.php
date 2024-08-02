@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Company;
 use App\Models\Department;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
@@ -15,8 +16,34 @@ class DepartmentTable extends Component
     use withPagination;
     public $showForm = false;
 
+    public $companyId;
+
+    #[Url(keep:true)]
+    public $companyCode;
+
     #[Url]
     public $search;
+
+    public function mount(): void
+    {
+        if($this->companyCode != ""){
+            $this->companyId = Company::where('code', $this->companyCode)->first()->id;
+        }
+    }
+
+    /**
+     * Sets the company ID based on the provided code.
+     *
+     * @param string $code The code of the company.
+     * @return void
+     */
+    #[On('setCompanyCode')]
+    public function setCompanyCode(string $code): void
+    {
+        if($code != "") {
+            $this->companyId = Company::where('code', $code)->first()->id;
+        }
+    }
 
     /**
      * Handles the event when a department is created.
@@ -72,9 +99,10 @@ class DepartmentTable extends Component
      */
     public function getDepartments(): LengthAwarePaginator
     {
-        return Department::where(function($query){
-            $query->where('code', 'like', '%' . $this->search . '%')
-                ->orWhere('name', 'like', '%' . $this->search . '%');
+        return Department::where('company_id', $this->companyId)
+            ->where(function($query){
+                $query->where('code', 'like', '%' . $this->search . '%')
+                    ->orWhere('name', 'like', '%' . $this->search . '%');
             })->orderBy('id', 'asc')
             ->paginate(5);
     }

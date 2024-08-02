@@ -73,6 +73,16 @@ class PageFilter extends Component
         $this->filter = false;
     }
 
+    /**
+     * Enables the filter by setting the 'filter' property to true.
+     *
+     * @return void
+     */
+    #[On('enableFilter')]
+    public function enableFilter(): void
+    {
+        $this->filter = true;
+    }
 
     /**
      * Renders the view for the page filter.
