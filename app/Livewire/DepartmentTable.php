@@ -19,14 +19,19 @@ class DepartmentTable extends Component
     public $companyId;
 
     #[Url(keep:true)]
-    public $companyCode;
+    public $companyCode = "all";
 
     #[Url]
     public $search;
 
+    /**
+     * Initializes the component by setting the company ID based on the provided code.
+     *
+     * @return void
+     */
     public function mount(): void
     {
-        if($this->companyCode != ""){
+        if($this->companyCode != "all") {
             $this->companyId = Company::where('code', $this->companyCode)->first()->id;
         }
     }
@@ -40,8 +45,14 @@ class DepartmentTable extends Component
     #[On('setCompanyCode')]
     public function setCompanyCode(string $code): void
     {
-        if($code != "") {
+        if($code == ""){
+            abort(404);
+        }
+        if($code != "all") {
+            $this->companyCode = $code;
             $this->companyId = Company::where('code', $code)->first()->id;
+        } else {
+            $this->companyCode = "all";
         }
     }
 
@@ -77,6 +88,7 @@ class DepartmentTable extends Component
     public function departmentDeleted(): void
     {
         $this->showForm = false;
+        
         $this->resetPage();
         $this->getDepartments();
     }
@@ -97,14 +109,23 @@ class DepartmentTable extends Component
      *
      * @return LengthAwarePaginator The paginated list of departments.
      */
+    #[On('getDepartments')]
     public function getDepartments(): LengthAwarePaginator
     {
-        return Department::where('company_id', $this->companyId)
-            ->where(function($query){
-                $query->where('code', 'like', '%' . $this->search . '%')
-                    ->orWhere('name', 'like', '%' . $this->search . '%');
-            })->orderBy('id', 'asc')
-            ->paginate(5);
+        $departments = Department::where(function($query){
+            $query->where('code', 'like', '%' . $this->search . '%')
+                ->orWhere('name', 'like', '%' . $this->search . '%');
+            })->orderBy('id');
+
+        if($this->companyCode == "") {
+            abort(404);
+        }
+
+        if($this->companyCode != "all") {
+            $departments = $departments->where('company_id', $this->companyId);
+        }
+        
+        return $departments->paginate(5);
     }
 
     /**

@@ -12,7 +12,7 @@ use Livewire\Component;
 class PageFilter extends Component
 {
     #[Url(keep:true)]
-    public $companyCode;
+    public $companyCode = "all";
 
     #[Url(keep:true)]
     public $brandCode;
@@ -32,9 +32,12 @@ class PageFilter extends Component
      */
     public function mount(): void
     {
-        if($this->companyCode != "") {
-            $this->companyId = Company::where('code', $this->companyCode)->first()->id;
+        if($this->companyCode == ""){
+            abort(404);
+        }
 
+        if($this->companyCode != "all") {
+            $this->companyId = Company::where('code', $this->companyCode)->first()->id;
             $this->brands = Brand::where('company_id', $this->companyId)->get();
         }
     }
@@ -58,13 +61,18 @@ class PageFilter extends Component
      */
     public function updatedCompanyCode(string $code): void
     {
-        if($code != "") {
+        if($code == "") {
+            abort(404);
+        } else if ($code == "all") {
+            $this->dispatch('setCompanyCode', 'all');
+        } else {
             $this->dispatch('setCompanyCode', $code);
 
             $this->companyId = Company::where('code', $code)->first()->id;
 
             $this->brands = Brand::where('company_id', $this->companyId)->get();
         }
+
     }
 
     #[On('disableFilter')]

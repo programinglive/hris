@@ -13,7 +13,7 @@ class FormCompanyOption extends Component
 {
     public $companyId;
     #[Url(keep:true)]
-    public $companyCode = "";
+    public $companyCode = "all";
 
     /**
      * Updates the company ID and emits a 'setCompanyCode' event.

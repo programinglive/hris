@@ -16,7 +16,7 @@ class DepartmentForm extends Component
 {
     public $companyId;
     #[Url(keep:true)]
-    public $companyCode;
+    public $companyCode = "all";
 
     #[Validate('required|unique:departments|min:3')]
     public $code;
@@ -53,9 +53,15 @@ class DepartmentForm extends Component
     #[On('setCompanyCode')]
     public function setCompanyCode(string $code): void
     {
-        $this->companyCode = $code;
+        if($code == ""){
+            abort(404);
+        }
 
-        $this->companyId = Company::where('code', $code)->first()->id;
+        if($code !== 'all'){
+            $this->companyCode = $code;
+
+            $this->companyId = Company::where('code', $code)->first()->id;
+        }
     }
 
     /**

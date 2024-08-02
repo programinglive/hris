@@ -9,7 +9,7 @@
                 dark:focus:ring-gray-600 dark:focus:border-gray-600
             " @if(!$filter) disabled @endif>
                 @if($filter)
-                <option value="">All Company</option>
+                <option value="all">All Company</option>
                 @foreach ($companies as $company)
                     <option value="{{ $company->code }}">{{ $company->name }}</option>
                 @endforeach
