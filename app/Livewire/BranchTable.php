@@ -25,8 +25,14 @@ class BranchTable extends Component
     #[Url(keep:true)]
     public ?String $companyCode = "all";
 
+    /**
+     * Sets the value of the companyCode property.
+     *
+     * @param string $code The new value for the companyCode property.
+     * @return void
+     */
     #[On('setCompanyCode')]
-    public function setCompanyCode($code): void
+    public function setCompanyCode(string $code): void
     {
         $this->companyCode = $code;
     }
