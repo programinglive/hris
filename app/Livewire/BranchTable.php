@@ -14,14 +14,16 @@ use Livewire\WithPagination;
 class BranchTable extends Component
 {
     use withPagination;
+
     public $showForm = false;
 
     #[Url]
     public $search;
 
     public $companyId;
+
     #[Url(keep:true)]
-    public ?String $companyCode = "";
+    public ?String $companyCode = "all";
 
     #[On('setCompanyCode')]
     public function setCompanyCode($code): void
