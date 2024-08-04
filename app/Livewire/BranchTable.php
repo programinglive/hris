@@ -23,18 +23,6 @@ class BranchTable extends Component
     #[Url(keep:true)]
     public ?String $companyCode = "";
 
-    /**
-     * Mounts the component and sets the company ID based on the company code.
-     *
-     * @return void
-     */
-    public function mount(): void
-    {
-        if(!Company::where("code", $this->companyCode)->first() && $this->companyCode != "") {
-            abort(404);
-        }
-    }
-
     #[On('setCompanyCode')]
     public function setCompanyCode($code): void
     {
@@ -96,16 +84,20 @@ class BranchTable extends Component
     public function getBranch(): LengthAwarePaginator
     {
         if($this->companyCode == "") {
-            return Branch::where(function($query){
-                $query->where('name', 'like', '%' . $this->search . '%')
-                    ->orWhere('code', 'like', '%' . $this->search . '%');
-            })->orderBy('id')
-                ->paginate(5);
+            abort(404);
         }
 
-        $this->companyId = Company::where("code", $this->companyCode)->first()->id;
+        $branches = Branch::where(function($query){
+            $query->where('name', 'like', '%' . $this->search . '%')
+                ->orWhere('code', 'like', '%' . $this->search . '%');
+        });
 
-        return Branch::where('company_id', $this->companyId)->paginate(5);
+        if($this->companyCode != "all") {
+            $this->companyId = Company::where("code", $this->companyCode)->first()->id;
+            $branches = $branches->where('company_id', $this->companyId);
+        }
+
+        return $branches->orderBy('id')->paginate(5);
 
     }
 

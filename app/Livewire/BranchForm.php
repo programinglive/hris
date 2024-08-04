@@ -71,9 +71,11 @@ class BranchForm extends Component
             return;
         }
 
-        $this->companyCode = $code;
-        
-        $this->companyId = Company::where('code', $code)->first()->id;
+        if($code != 'all') {
+            $this->companyCode = $code;
+            $this->companyId = Company::where('code', $code)->first()->id;
+        }
+
     }
 
     /**
