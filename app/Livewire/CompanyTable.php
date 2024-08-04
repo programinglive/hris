@@ -19,10 +19,16 @@ class CompanyTable extends Component
     public $search;
 
     #[Url(keep: true)]
-    public $companyCode;
+    public $companyCode = "all";
 
+    /**
+     * Sets the value of the company code property to the given code.
+     *
+     * @param string $code The code to set as the company code.
+     * @return void
+     */
     #[On('setCompanyCode')]
-    public function setCompanyCode($code): void
+    public function setCompanyCode(string $code): void
     {
         $this->companyCode = $code;
     }

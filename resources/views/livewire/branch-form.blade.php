@@ -1,4 +1,4 @@
-<form wire:submit.prevent="{{$actionForm}}">
+<form wire:submit.aprevent="{{$actionForm}}">
 	<div class="flex flex-col gap-4">
 		<livewire:form-company-option />
 		<div class="flex flex-col gap-3">

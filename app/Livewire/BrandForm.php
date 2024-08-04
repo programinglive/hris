@@ -7,11 +7,18 @@ use DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class BrandForm extends Component
 {
+    #[Url(keep:true)]
+    public $companyCode = 'all';
+
+    #[Url(keep:true)]
+    public $branchCode = 'all';
+
     #[Validate('required|unique:brands|min:3')]
     public $code;
 

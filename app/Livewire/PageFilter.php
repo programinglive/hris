@@ -15,7 +15,7 @@ class PageFilter extends Component
     public $companyCode = "all";
 
     #[Url(keep:true)]
-    public $brandCode;
+    public $branchCode = "all";
 
     public $filter = true;
 

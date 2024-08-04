@@ -41,6 +41,10 @@
 										<div>{{ $brand->company?->name }}</div>
 									</div>
 									<div class="flex justify-between">
+										<div>Brand</div>
+										<div>{{ $brand->branch?->name }}</div>
+									</div>
+									<div class="flex justify-between">
 										<div>Code</div>
 										<div>{{ $brand->code }}</div>
 									</div>
