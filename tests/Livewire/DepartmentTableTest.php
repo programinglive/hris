@@ -4,6 +4,7 @@ namespace Tests\Livewire;
 
 use App\Livewire\DepartmentTable;
 use App\Models\Department;
+use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -32,6 +33,8 @@ class DepartmentTableTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $this->department = Department::first();
+
+        $this->actingAs(User::first());
     }
 
     /**
