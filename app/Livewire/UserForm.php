@@ -176,6 +176,7 @@ class UserForm extends Component
         
         $this->actionForm = 'update';
 
+        $this->dispatch('disableFilter');
         $this->dispatch('show-form');
     }
 
