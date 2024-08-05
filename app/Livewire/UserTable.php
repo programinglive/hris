@@ -20,10 +20,19 @@ class UserTable extends Component
     public $search;
 
     #[Url(keep:true)]
-    public ?String $companyCode = "";
+    public $companyCode = "all";
 
+    #[Url(keep:true)]
+    public $branchCode = "all";
+
+    /**
+     * Sets the value of the company code property to the given code.
+     *
+     * @param string $code The code to set as the company code.
+     * @return void
+     */
     #[On('setCompanyCode')]
-    public function setCompanyCode($code): void
+    public function setCompanyCode(string $code): void
     {
         $this->companyCode = $code;
     }
@@ -82,24 +91,21 @@ class UserTable extends Component
      */
     public function getUsers(): LengthAwarePaginator
     {
-        if($this->companyCode !== "" && !Company::where('code', $this->companyCode)->first()){
-            abort(404);
+        $users = User::join('user_details', 'user_details.user_id', '=', 'users.id')
+            ->where(function($query){
+                $query->where('user_details.code', 'like', '%' . $this->search . '%')
+                    ->orWhere('users.name', 'like', '%' . $this->search . '%');
+            });
+
+        if($this->companyCode != "all") {
+            $users = $users->where('user_details.company_id', Company::where('code', $this->companyCode)->first()->id);
         }
-        
-        return $this->companyCode != "" ? User::join('user_details', 'user_details.user_id', '=', 'users.id')
-                    ->where(function($query){
-                        $query->where('user_details.code', 'like', '%' . $this->search . '%')
-                            ->orWhere('users.name', 'like', '%' . $this->search . '%');
-                    })
-                    ->where('user_details.company_id', Company::where('code', $this->companyCode)->first()->id)
-                    ->orderBy('users.id')
-                        ->paginate(5)
-            : User::join('user_details', 'user_details.user_id', '=', 'users.id')
-                ->where(function($query){
-                    $query->where('user_details.code', 'like', '%' . $this->search . '%')
-                        ->orWhere('user_details.first_name', 'like', '%' . $this->search . '%')
-                        ->orWhere('user_details.last_name', 'like', '%' . $this->search . '%');
-                })->orderBy('users.id')
+
+        if($this->branchCode != "all") {
+            $users = $users->where('user_details.branch_id', $this->branchCode);
+        }
+
+        return $users->orderBy('users.id')
                     ->paginate(5);
     }
 

@@ -64,7 +64,6 @@
 					@enderror
 				</div>
 			</div>
-			<livewire:form-user-detail />
 			<div class="flex flex-col gap-4 flex-1">
 				<livewire:form-department-option />
 				<livewire:form-division-option />
@@ -72,6 +71,7 @@
 				<livewire:form-position-option />
 			</div>
 		</div>
+		<livewire:form-user-detail />
 		<div>
 			<button type="submit" class="btn bg-primary text-white float-end">Save</button>
 		</div>
