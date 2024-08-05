@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Http\Controllers\BranchController;
 use App\Models\Branch;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,7 +21,7 @@ class BranchFactory extends Factory
     {
         return [
             'company_id' => Company::first()->id,
-            'code' => $this->faker->unique()->randomNumber(5),
+            'code' => BranchController::generateCode(),
             'name' => $this->faker->company(),
             'type' => 'branch',
         ];

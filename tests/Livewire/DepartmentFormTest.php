@@ -2,6 +2,7 @@
 
 namespace Tests\Livewire;
 
+use App\Http\Controllers\DepartmentController;
 use App\Livewire\DepartmentForm;
 use App\Models\Department;
 use App\Models\User;
@@ -35,6 +36,8 @@ class DepartmentFormTest extends TestCase
             'code' => 'D001',
             'name' => 'Department A',
         ])->create();
+
+        $this->actingAs(User::first());
     }
 
     /**
@@ -80,15 +83,18 @@ class DepartmentFormTest extends TestCase
     public function it_can_update_department(): void
     {
         $this->actingAs(User::first());
+        $departmentCode = DepartmentController::generateCode();
+        
         Livewire::test(DepartmentForm::class)
+            ->set('companyId', $this->department->company_id)
             ->set('department', $this->department)
-            ->set('code', 'D002')
+            ->set('code', $departmentCode)
             ->set('name', 'Department B')
             ->call('update');
 
-        $this->department = Department::where('code','D002')->first();
+        $this->department = Department::find($this->department->id);
 
-        $this->assertEquals('D002', $this->department->code);
+        $this->assertEquals($departmentCode, $this->department->code);
         $this->assertEquals('Department B', $this->department->name);
     }
 

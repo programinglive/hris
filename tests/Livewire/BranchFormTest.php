@@ -2,6 +2,7 @@
 
 namespace Tests\Livewire;
 
+use App\Http\Controllers\BranchController;
 use App\Livewire\BranchForm;
 use App\Models\Branch;
 use App\Models\User;
@@ -87,17 +88,20 @@ class BranchFormTest extends TestCase
     #[Test]
     public function it_can_update_branch(): void
     {
+        $this->branch = Branch::factory()->create();
+
         $this->actingAs(User::first());
         Livewire::test(BranchForm::class)
+            ->set('companyId', $this->branch->company_id)
             ->set('branch', $this->branch)
-            ->set('code', 'D002')
+            ->set('code', 'code-updated')
             ->set('name', 'Branch B')
             ->set('type', 'partner')
             ->call('update');
 
-        $this->branch = Branch::where('code','D002')->first();
-
-        $this->assertEquals('D002', $this->branch->code);
+        $this->branch = Branch::find($this->branch->id);
+        
+        $this->assertEquals('code-updated', $this->branch->code);
         $this->assertEquals('Branch B', $this->branch->name);
         $this->assertEquals('partner', $this->branch->type);
     }

@@ -71,6 +71,11 @@ class FormCompanyOption extends Component
         return collect();
     }
 
+    /**
+     * Clears the form by resetting all properties and error bag.
+     *
+     * @return void
+     */
     #[On('clearFormCompanyOption')]
     public function clearFormCompanyOption(): void
     {

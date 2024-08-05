@@ -162,7 +162,7 @@ class BranchForm extends Component
         DB::transaction(function () {
             $this->branch->update($this->branchData());
         }, 5);
-
+        
         $this->dispatch('branch-updated', branchId: $this->branch->id, refreshBranches: true);
         $this->dispatch('clearFormCompanyOption');
 
