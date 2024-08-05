@@ -65,6 +65,7 @@
 				</div>
 			</div>
 			<div class="flex flex-col gap-4 flex-1">
+				<livewire:form-company-option />
 				<livewire:form-department-option />
 				<livewire:form-division-option />
 				<livewire:form-level-option />

@@ -35,8 +35,12 @@ class PageFilter extends Component
         if($this->companyCode == ""){
             abort(404);
         }
-
+        
         if($this->companyCode != "all") {
+            if(!Company::where('code', $this->companyCode)->first()){
+                abort(404);
+            }
+
             $this->companyId = Company::where('code', $this->companyCode)->first()->id;
             $this->brands = Brand::where('company_id', $this->companyId)->get();
         }

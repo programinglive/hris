@@ -2,14 +2,50 @@
 
 namespace App\Livewire;
 
+use App\Models\Company;
 use App\Models\Department;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class FormDepartmentOption extends Component
 {
     public $departmentId;
+
+    public $companyId;
+
+    #[Url(keep:true)]
+    public $companyCode = "all";
+
+    public $option = "disabled";
+
+    public $departments;
+
+    public function mount(): void
+    {
+        if($this->companyCode != "all") {
+            $company = Company::where('code', $this->companyCode)->first();
+            
+            if($company) {
+                $this->option = "";
+                $this->companyId = $company->id;
+                $this->departments = $company->departments;
+            }
+        }
+    }
+
+    /**
+     * Update the option value based on the provided option.
+     *
+     * @param mixed $option The new option value.
+     * @return void
+     */
+    #[On('departmentOption')]
+    public function departmentOption(mixed $option): void
+    {
+        $this->option = $option;
+    }
 
     /**
      * Update the department ID and dispatch the 'setDepartment' event with the new ID.
@@ -46,14 +82,30 @@ class FormDepartmentOption extends Component
     }
 
     /**
+     * Retrieves the department data based on the provided option.
+     *
+     */
+    #[On('getDepartment')]
+    public function getDepartment()
+    {
+        $this->reset('departments');
+
+        $this->departments = Department::orderBy('id');
+
+        if($this->option != "disabled") {
+            return $this->company->departments;
+        }
+
+        return [];
+    }
+
+    /**
      * Render the view for the form department option.
      *
      * @return View The rendered view.
      */
     public function render(): View
     {
-        return view('livewire.form-department-option',[
-            'departments' => Department::all(),
-        ]);
+        return view('livewire.form-department-option');
     }
 }

@@ -23,6 +23,8 @@ class FormCompanyOption extends Component
      */
     public function updatedCompanyCode(mixed $value): void
     {
+        $this->resetErrorBag();
+
         if($value == "") {
             $this->addError('companyCode', 'This field is required');
             $this->dispatch('resetCompanyId');
@@ -30,7 +32,6 @@ class FormCompanyOption extends Component
         }
 
         $this->companyCode = $value;
-
         $this->dispatch('setCompanyCode', $value);
     }
 
