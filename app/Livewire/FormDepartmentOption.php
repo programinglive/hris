@@ -86,17 +86,18 @@ class FormDepartmentOption extends Component
      *
      */
     #[On('getDepartment')]
-    public function getDepartment()
+    public function getDepartment($value): void
     {
-        $this->reset('departments');
-
-        $this->departments = Department::orderBy('id');
-
-        if($this->option != "disabled") {
-            return $this->company->departments;
+        $this->reset([
+            'departments',
+            'option'
+        ]);
+        $company = Company::where('code', $value)->first();
+        $countDepartment = Department::where('company_id', $company->id)->count();
+        if($countDepartment > 0){
+            $this->option ="";
+            $this->departments = Department::where('company_id', $company->id)->get();
         }
-
-        return [];
     }
 
     /**

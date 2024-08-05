@@ -12,6 +12,7 @@ use Livewire\Component;
 class FormCompanyOption extends Component
 {
     public $companyId;
+
     #[Url(keep:true)]
     public $companyCode = "all";
 
@@ -28,11 +29,13 @@ class FormCompanyOption extends Component
         if($value == "") {
             $this->addError('companyCode', 'This field is required');
             $this->dispatch('resetCompanyId');
+            $this->companyCode = "all";
             return;
         }
 
         $this->companyCode = $value;
         $this->dispatch('setCompanyCode', $value);
+        $this->dispatch('getDepartment', $value);
     }
 
     /**
