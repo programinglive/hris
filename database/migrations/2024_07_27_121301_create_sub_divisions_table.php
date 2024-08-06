@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Branch;
-use App\Models\SubDivision;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
@@ -16,7 +15,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('levels', function (Blueprint $table) {
+        Schema::create('sub_divisions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Company::class)
                 ->constrained()
@@ -34,10 +33,6 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignIdFor(SubDivision::class)
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
             $table->string('code')->unique();
             $table->string('name');
             $table->softDeletes();
@@ -50,6 +45,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('levels');
+        Schema::dropIfExists('sub_divisions');
     }
 };

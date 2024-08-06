@@ -6,14 +6,13 @@ use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
-use App\Models\Level;
 use App\Models\SubDivision;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Level>
+ * @extends Factory<SubDivision>
  */
-class LevelFactory extends Factory
+class SubDivisionFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -27,9 +26,8 @@ class LevelFactory extends Factory
             'branch_id' => Branch::first()->id,
             'department_id' => Department::first()->id,
             'division_id' => Division::first()->id,
-            'sub_division_id' => SubDivision::first()->id,
-            'code' => $this->faker->unique()->word(),
-            'name' => $this->faker->word(),
+            'code' => $this->faker->unique()->word,
+            'name' => $this->faker->sentence(3),
         ];
     }
 }

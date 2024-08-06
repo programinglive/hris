@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\Branch;
 use App\Models\Company;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -38,8 +37,14 @@ class FormBranchOption extends Component
         }
     }
 
+    /**
+     * Retrieves the branch information for a given company code.
+     *
+     * @param string $companyCode The code of the company.
+     * @return void
+     */
     #[On('getBranch')]
-    public function getBranch($companyCode): void
+    public function getBranch(string $companyCode): void
     {
         $this->reset([
             'branches',

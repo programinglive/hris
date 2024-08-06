@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Branch;
+use App\Models\SubDivision;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
@@ -29,6 +30,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignIdFor(Branch::class)
+                ->nullable()
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
@@ -38,6 +40,11 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignIdFor(Division::class)
+                ->nullable()
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->foreignIdFor(SubDivision::class)
                 ->nullable()
                 ->constrained()
                 ->cascadeOnUpdate()
