@@ -56,7 +56,7 @@ class PageFilter extends Component
     }
 
     /**
-     * Dispatches a 'setCompanyCode' event with the given company code.
+     * Dispatches a 'setCompany' event with the given company code.
      *
      * @param string $code The company code to be set.
      * @return void
@@ -66,9 +66,9 @@ class PageFilter extends Component
         if($code == "") {
             abort(404);
         } else if ($code == "all") {
-            $this->dispatch('setCompanyCode', 'all');
+            $this->dispatch('setCompany', 'all');
         } else {
-            $this->dispatch('setCompanyCode', $code);
+            $this->dispatch('setCompany', $code);
 
             $this->companyId = Company::where('code', $code)->first()->id;
 
@@ -83,8 +83,8 @@ class PageFilter extends Component
      * @param string $code The code to set as the company code.
      * @return void
      */
-    #[On('setCompanyCode')]
-    public function setCompanyCode(string $code): void
+    #[On('setCompany')]
+    public function setCompany(string $code): void
     {
         $this->companyCode = $code;
     }

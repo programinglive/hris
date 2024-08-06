@@ -64,8 +64,8 @@ class BranchForm extends Component
      * @param string $code The code to set the companyCode property to.
      * @return void
      */
-    #[On('setCompanyCode')]
-    public function setCompanyCode(string $code): void
+    #[On('setCompany')]
+    public function setCompany(string $code): void
     {
         if($code == "") {
             $this->reset('companyId');

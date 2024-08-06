@@ -36,8 +36,8 @@ class UserTable extends Component
      * @param string $code The code to set as the company code.
      * @return void
      */
-    #[On('setCompanyCode')]
-    public function setCompanyCode(string $code): void
+    #[On('setCompany')]
+    public function setCompany(string $code): void
     {
         $this->companyCode = $code;
     }

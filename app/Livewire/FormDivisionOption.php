@@ -8,19 +8,19 @@ use Livewire\Component;
 
 class FormDivisionOption extends Component
 {
-    public $divisionId;
+    public $divisionCode;
 
     public $option = "disabled";
 
     /**
      * Update the division ID and dispatch the 'setDivision' event with the new ID.
      *
-     * @param int $divisionId The new division ID.
+     * @param string $divisionCode The new division ID.
      * @return void
      */
-    public function updatedDivisionId(int $divisionId): void
+    public function updatedDivisionId(string $divisionCode): void
     {
-        $this->dispatch('setDivision',  divisionId: $divisionId );
+        $this->dispatch('setDivision',  divisionCode: $divisionCode );
     }
     /**
      * Render the view for the form division option.

@@ -28,8 +28,8 @@ class BrandTable extends Component
      * @param string $code The code to set as the company code.
      * @return void
      */
-    #[On('setCompanyCode')]
-    public function setCompanyCode(String $code): void
+    #[On('setCompany')]
+    public function setCompany(String $code): void
     {
         $this->companyCode = $code;
     }

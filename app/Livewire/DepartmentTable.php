@@ -42,8 +42,8 @@ class DepartmentTable extends Component
      * @param string $code The code of the company.
      * @return void
      */
-    #[On('setCompanyCode')]
-    public function setCompanyCode(string $code): void
+    #[On('setCompany')]
+    public function setCompany(string $code): void
     {
         if($code == ""){
             abort(404);

@@ -17,25 +17,26 @@ class FormCompanyOption extends Component
     public $companyCode = "all";
 
     /**
-     * Updates the company ID and emits a 'setCompanyCode' event.
+     * Updates the company ID and emits a 'setCompany' event.
      *
-     * @param mixed $value The new value for the company ID.
+     * @param mixed $companyCode The new value for the company ID.
      * @return void
      */
-    public function updatedCompanyCode(mixed $value): void
+    public function updatedCompanyCode(mixed $companyCode): void
     {
         $this->resetErrorBag();
 
-        if($value == "") {
+        if($companyCode == "") {
             $this->addError('companyCode', 'This field is required');
             $this->dispatch('resetCompanyId');
             $this->companyCode = "all";
             return;
         }
 
-        $this->companyCode = $value;
-        $this->dispatch('setCompanyCode', $value);
-        $this->dispatch('getDepartment', $value);
+        $this->companyCode = $companyCode;
+
+        $this->dispatch('setCompany', $companyCode);
+        $this->dispatch('getDepartment', $companyCode);
     }
 
     /**

@@ -11,7 +11,7 @@ use Livewire\Component;
 
 class FormDepartmentOption extends Component
 {
-    public $departmentId;
+    public $departmentCode;
 
     public $companyId;
 
@@ -22,6 +22,9 @@ class FormDepartmentOption extends Component
 
     public $departments;
 
+    /**
+     * Mount the component and retrieve departments if the company code is not "all".
+     */
     public function mount(): void
     {
         if($this->companyCode != "all") {
@@ -53,7 +56,7 @@ class FormDepartmentOption extends Component
      * @param string $departmentCode The new department ID.
      * @return void
      */
-    public function updatedDepartmentId(string $departmentCode): void
+    public function updatedDepartmentCode(string $departmentCode): void
     {
         $this->dispatch('setDepartment',  departmentCode: $departmentCode );
     }
@@ -61,13 +64,13 @@ class FormDepartmentOption extends Component
     /**
      * Update the department ID based on the provided department ID.
      *
-     * @param int $departmentId The ID of the department.
+     * @param int $departmentCode The ID of the department.
      * @return void
      */
     #[On('selectDepartment')]
-    public function selectDepartment(int $departmentId): void
+    public function selectDepartment(int $departmentCode): void
     {
-        $this->departmentId =  Department::find($departmentId)->code;
+        $this->departmentCode =  Department::where('code',$departmentCode)->id;
     }
 
     /**
@@ -78,7 +81,7 @@ class FormDepartmentOption extends Component
     #[On('setErrorDepartment')]
     public function setErrorDepartment(): void
     {
-        $this->addError('departmentId', 'Please select department');
+        $this->addError('departmentCode', 'Please select department');
     }
 
     /**

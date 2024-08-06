@@ -50,8 +50,8 @@ class DepartmentForm extends Component
      * @param string $code The code to set the companyCode property to.
      * @return void
      */
-    #[On('setCompanyCode')]
-    public function setCompanyCode(string $code): void
+    #[On('setCompany')]
+    public function setCompany(string $code): void
     {
         if($code == ""){
             abort(404);
@@ -94,7 +94,7 @@ class DepartmentForm extends Component
 
         $this->dispatch('department-created', departmentId: $this->department->id);
 
-        $this->dispatch('setCompanyCode', $this->companyCode);
+        $this->dispatch('setCompany', $this->companyCode);
         $this->dispatch('selectCompany', $this->companyId);
 
         $this->dispatch('enableFilter');

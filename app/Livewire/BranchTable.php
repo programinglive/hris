@@ -31,8 +31,8 @@ class BranchTable extends Component
      * @param string $code The new value for the companyCode property.
      * @return void
      */
-    #[On('setCompanyCode')]
-    public function setCompanyCode(string $code): void
+    #[On('setCompany')]
+    public function setCompany(string $code): void
     {
         $this->companyCode = $code;
     }
