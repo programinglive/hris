@@ -58,7 +58,11 @@ class FormDepartmentOption extends Component
      */
     public function updatedDepartmentCode(string $departmentCode): void
     {
+        $this->resetErrorBag();
+
         $this->dispatch('setDepartment',  departmentCode: $departmentCode );
+        $this->dispatch('getDivision', departmentCode: $departmentCode );
+
     }
 
     /**
@@ -99,11 +103,11 @@ class FormDepartmentOption extends Component
         ]);
 
         $company = Company::where('code', $companyCode)->first();
-        $countDepartment = Department::where('company_id', $company->id)->count();
+        $departments = Department::where('company_id', $company->id);
 
-        if($countDepartment > 0){
+        if($departments->count() > 0){
             $this->option ="";
-            $this->departments = Department::where('company_id', $company->id)->get();
+            $this->departments = $departments->get();
         }
     }
 

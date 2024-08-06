@@ -2,13 +2,17 @@
 
 namespace App\Livewire;
 
+use App\Models\Department;
 use App\Models\Division;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class FormDivisionOption extends Component
 {
     public $divisionCode;
+
+    public $divisions;
 
     public $option = "disabled";
 
@@ -22,6 +26,30 @@ class FormDivisionOption extends Component
     {
         $this->dispatch('setDivision',  divisionCode: $divisionCode );
     }
+
+    #[On('getDivision')]
+    public function getDivision($departmentCode): void
+    {
+        $this->reset([
+           'divisions',
+           'option'
+        ]);
+
+        $department = Department::where('code', $departmentCode)->first();
+
+        if($department == null) {
+            return;
+        }
+
+        $divisions = Division::where('department_id', $department->id);
+
+        if($divisions->count() > 0) {
+            $this->option = "";
+            $this->divisions = $divisions->get();
+        }
+
+    }
+
     /**
      * Render the view for the form division option.
      *
@@ -29,8 +57,6 @@ class FormDivisionOption extends Component
      */
     public function render(): View
     {
-        return view('livewire.form-division-option',[
-            'divisions' => Division::all(),
-        ]);
+        return view('livewire.form-division-option');
     }
 }
