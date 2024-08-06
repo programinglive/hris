@@ -10,6 +10,8 @@ class FormDivisionOption extends Component
 {
     public $divisionId;
 
+    public $option = "disabled";
+
     /**
      * Update the division ID and dispatch the 'setDivision' event with the new ID.
      *

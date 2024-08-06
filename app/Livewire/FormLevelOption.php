@@ -10,6 +10,8 @@ class FormLevelOption extends Component
 {
     public $levelId;
 
+    public $option = "disabled";
+
     /**
      * Update the level ID and dispatch the 'setLevel' event with the new ID.
      *

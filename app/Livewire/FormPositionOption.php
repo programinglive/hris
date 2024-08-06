@@ -10,6 +10,8 @@ class FormPositionOption extends Component
 {
     public $positionId;
 
+    public $option = "disabled";
+
     /**
      * Update the position ID and dispatch the 'setPosition' event with the new ID.
      *
