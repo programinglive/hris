@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use Illuminate\Contracts\View\View;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -13,19 +12,6 @@ class UserPage extends Component
     public $companyCode = 'all';
 
     public $moduleLabel = 'User';
-
-    /**
-     * Resets the 'companyCode' property to its initial value.
-     *
-     * This function is triggered when the 'resetCompanyCode' event is dispatched.
-     *
-     * @return void
-     */
-    #[On('resetCompanyCode')]
-    public function resetCompanyCode(): void
-    {
-        $this->reset('companyCode');
-    }
 
     /**
      * Renders the view for the user page.

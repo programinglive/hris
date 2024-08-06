@@ -11,7 +11,7 @@
 		<option value="0">Select Level</option>
 		@if($levels)
 			@foreach ($levels as $level)
-				<option value="{{ $level->id }}">{{ $level->name }}</option>
+				<option value="{{ $level->code }}">{{ $level->name }}</option>
 			@endforeach
 		@endif
 	</select>

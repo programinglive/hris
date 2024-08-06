@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Department;
 use App\Models\Division;
 use App\Models\Level;
+use App\Models\Position;
 use App\Models\User;
 use App\Models\UserDetail;
 use DB;
@@ -117,14 +118,14 @@ class UserForm extends Component
     /**
      * Set the level ID for the details.
      *
-     * @param int $leveCode The ID of the level.
+     * @param string $levelCode The ID of the level.
      * @return void
      */
     #[On('setLevel')]
-    public function setLevel(int $leveCode): void
+    public function setLevel(string $levelCode): void
     {
-        if($leveCode != 0){
-            $level = Level::where('code', $leveCode)->first();
+        if($levelCode != 0){
+            $level = Level::where('code', $levelCode)->first();
 
             if(!$level){
                 $this->dispatch('setErrorLevel');
@@ -138,14 +139,21 @@ class UserForm extends Component
     /**
      * Set the position ID for the details.
      *
-     * @param int $positionId The ID of the position.
+     * @param int $positionCode The ID of the position.
      * @return void
      */
     #[On('setPosition')]
-    public function setPosition(int $positionId): void
+    public function setPosition(int $positionCode): void
     {
-        if($positionId != 0){
-            $this->details['position_id'] = $positionId;
+        if($positionCode != 0){
+            $position = Position::where('code', $positionCode)->first();
+
+            if(!$position){
+                $this->dispatch('setErrorPosition');
+                return;
+            }
+
+            $this->details['position_id'] = $position->id;
         }
     }
 

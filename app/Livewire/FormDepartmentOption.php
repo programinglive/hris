@@ -27,6 +27,8 @@ class FormDepartmentOption extends Component
      */
     public function mount(): void
     {
+        $this->reset();
+
         if($this->companyCode != "all") {
             $company = Company::where('code', $this->companyCode)->first();
             

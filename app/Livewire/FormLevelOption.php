@@ -16,6 +16,19 @@ class FormLevelOption extends Component
 
     public $option = "disabled";
 
+    /**
+     * Update the level ID and dispatch the 'setLevel' event with the new ID.
+     *
+     * @param string $levelCode The new level ID.
+     * @return void
+     */
+    public function updatedLevelCode(string $levelCode): void
+    {
+        $this->resetErrorBag();
+
+        $this->dispatch('setLevel',  levelCode: $levelCode );
+        $this->dispatch('getPosition',  levelCode: $levelCode );
+    }
 
     /**
      * Retrieves the levels associated with a given division code.
@@ -45,16 +58,6 @@ class FormLevelOption extends Component
         }
     }
 
-    /**
-     * Update the level ID and dispatch the 'setLevel' event with the new ID.
-     *
-     * @param int $levelCode The new level ID.
-     * @return void
-     */
-    public function updatedLevelCode(int $levelCode): void
-    {
-        $this->dispatch('setLevel',  levelCode: $levelCode );
-    }
     /**
      * Render the view for the form level option.
      *

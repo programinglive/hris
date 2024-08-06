@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Position;
 use Illuminate\Database\Seeder;
 
 class PositionSeeder extends Seeder
@@ -12,6 +12,6 @@ class PositionSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Position::factory(10)->create();
     }
 }
