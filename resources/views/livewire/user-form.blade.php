@@ -68,6 +68,7 @@
 			<div class="flex flex-col gap-4 flex-1">
 				<h2 class="mb-1 text-2xl">Organization</h2>
 				<livewire:form-company-option />
+				<livewire:form-branch-option />
 				<livewire:form-department-option />
 				<livewire:form-division-option />
 				<livewire:form-level-option />

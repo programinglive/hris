@@ -69,10 +69,6 @@ class UserForm extends Component
         if($key == 'name'){
             $this->validateOnly($key);
         }
-
-        if($key == 'password'){
-            $this->newPassword = true;
-        }
     }
 
     /**
@@ -167,7 +163,21 @@ class UserForm extends Component
         return [
             'name' => $this->name,
             'email' => $this->email,
-            'password' => $this->password,
+        ];
+    }
+
+    /**
+     * Returns an array containing the company ID, branch ID, and user ID of the given user.
+     *
+     * @param User $user The user object to retrieve the details from.
+     * @return array An array with keys 'company_id', 'branch_id', and 'user_id', each containing the respective ID.
+     */
+    public function userDetailData(User $user): array
+    {
+        return [
+            'company_id' => $this->companyId,
+            'branch_id' => $this->branchId,
+            'user_id' => $this->user->id
         ];
     }
 
@@ -181,12 +191,8 @@ class UserForm extends Component
         $this->validate();
 
         DB::transaction(function () {
-            $this->user = User::create($this->userData());
-            UserDetail::create([
-                'company_id' => auth()->user()->details->company_id,
-                'branch_id' => auth()->user()->details->branch_id,
-                'user_id' => $this->user->id
-            ]);
+            $this->user = User::create(self::userData());
+            UserDetail::create(self::UserDetailData($this->user));
         }, 5);
 
         $this->dispatch('user-created', userId: $this->user->id);

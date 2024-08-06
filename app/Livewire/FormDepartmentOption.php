@@ -105,11 +105,15 @@ class FormDepartmentOption extends Component
         ]);
 
         $company = Company::where('code', $companyCode)->first();
-        $departments = Department::where('company_id', $company->id);
 
-        if($departments->count() > 0){
+        if(!$company) {
+            $this->option = "disabled";
+            return;
+        }
+
+        if($company->departments()->count() > 0){
             $this->option ="";
-            $this->departments = $departments->get();
+            $this->departments = $company->departments;
         }
     }
 
