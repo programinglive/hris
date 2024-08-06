@@ -2,6 +2,7 @@
 	<div class="flex flex-col gap-4">
 		<div class="flex justify-between gap-6">
 			<div class="flex flex-col gap-4 flex-1">
+				<h2 class="mb-1 text-2xl">User Account</h2>
 				<div class="flex flex-col gap-3">
 					<label for="name" class="block text-sm font-medium text-gray-700">Name</label>
 					<input
@@ -65,6 +66,7 @@
 				</div>
 			</div>
 			<div class="flex flex-col gap-4 flex-1">
+				<h2 class="mb-1 text-2xl">Organization</h2>
 				<livewire:form-company-option />
 				<livewire:form-department-option />
 				<livewire:form-division-option />

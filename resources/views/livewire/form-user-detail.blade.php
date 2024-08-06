@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-4 mt-2 border-t pt-4">
-	<h3>User Details</h3>
+	<h2 class="mb-1 text-2xl">User Details</h2>
 	<div class="flex justify-between gap-6">
 		<div class="flex flex-col gap-4 flex-1">
 			<div class="flex flex-col gap-3">
