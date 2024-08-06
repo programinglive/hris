@@ -17,6 +17,16 @@ class FormCompanyOption extends Component
     public $companyCode = "all";
 
     /**
+     * Initializes the component by dispatching a 'refreshCompany' event.
+     *
+     * @return void
+     */
+    public function mount(): void
+    {
+        $this->dispatch('refreshCompany');
+    }
+
+    /**
      * Updates the company ID and emits a 'setCompany' event.
      *
      * @param mixed $companyCode The new value for the company ID.
@@ -37,6 +47,17 @@ class FormCompanyOption extends Component
 
         $this->dispatch('setCompany', $companyCode);
         $this->dispatch('getDepartment', $companyCode);
+    }
+
+    /**
+     * Resets the 'companyCode' property to its initial value.
+     *
+     * @return void
+     */
+    #[On('refreshCompany')]
+    public function refreshCompany(): void
+    {
+        $this->companyCode = "all";
     }
 
     /**

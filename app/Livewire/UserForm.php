@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Department;
 use App\Models\Division;
+use App\Models\Level;
 use App\Models\User;
 use App\Models\UserDetail;
 use DB;
@@ -116,14 +117,21 @@ class UserForm extends Component
     /**
      * Set the level ID for the details.
      *
-     * @param int $levelId The ID of the level.
+     * @param int $leveCode The ID of the level.
      * @return void
      */
     #[On('setLevel')]
-    public function setLevel(int $levelId): void
+    public function setLevel(int $leveCode): void
     {
-        if($levelId != 0){
-            $this->details['level_id'] = $levelId;
+        if($leveCode != 0){
+            $level = Level::where('code', $leveCode)->first();
+
+            if(!$level){
+                $this->dispatch('setErrorLevel');
+                return;
+            }
+
+            $this->details['level_id'] = $level->id;
         }
     }
 
