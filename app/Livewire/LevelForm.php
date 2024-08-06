@@ -17,7 +17,7 @@ class LevelForm extends Component
     #[Validate('required|string|min:1')]
     public $departmentId;
     #[Validate('required|string|min:1')]
-    public $divisionId;
+    public $divisionCode;
 
     #[Validate('required|unique:levels|min:3')]
     public $code;
@@ -58,7 +58,7 @@ class LevelForm extends Component
             'company_id' => auth()->user()->details->company_id,
             'branch_id' => auth()->user()->details->branch_id,
             'department_id' => $this->departmentId,
-            'division_id' => $this->divisionId,
+            'division_id' => $this->divisionCode,
             'code' => $this->code,
             'name' => $this->name,
         ];
@@ -90,7 +90,7 @@ class LevelForm extends Component
     {
         $this->level = Level::where('code',$code)->first();
         $this->departmentId = $this->level->department_id;
-        $this->divisionId = $this->level->division_id;
+        $this->divisionCode = $this->level->division_id;
         $this->code = $this->level->code;
         $this->name = $this->level->name;
 
@@ -106,7 +106,7 @@ class LevelForm extends Component
     {
         $organizations = [
             'departmentId',
-            'divisionId',
+            'divisionCode',
         ];
 
         foreach($organizations as $organization){

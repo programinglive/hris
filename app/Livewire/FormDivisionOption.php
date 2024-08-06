@@ -22,13 +22,22 @@ class FormDivisionOption extends Component
      * @param string $divisionCode The new division ID.
      * @return void
      */
-    public function updatedDivisionId(string $divisionCode): void
+    public function updatedDivisionCode(string $divisionCode): void
     {
+        $this->resetErrorBag();
+        
         $this->dispatch('setDivision',  divisionCode: $divisionCode );
+        $this->dispatch('getLevel',  divisionCode: $divisionCode );
     }
 
+    /**
+     * Retrieves the division based on the provided department code and updates the corresponding properties.
+     *
+     * @param string $departmentCode The code of the department.
+     * @return void
+     */
     #[On('getDivision')]
-    public function getDivision($departmentCode): void
+    public function getDivision(string $departmentCode): void
     {
         $this->reset([
            'divisions',
@@ -47,7 +56,6 @@ class FormDivisionOption extends Component
             $this->option = "";
             $this->divisions = $divisions->get();
         }
-
     }
 
     /**

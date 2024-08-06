@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Department;
+use App\Models\Division;
 use App\Models\User;
 use App\Models\UserDetail;
 use DB;
@@ -94,14 +95,21 @@ class UserForm extends Component
     /**
      * Set the division ID for the details.
      *
-     * @param int $divisionId The ID of the division.
+     * @param int $divisionCode The ID of the division.
      * @return void
      */
     #[On('setDivision')]
-    public function setDivision(int $divisionId): void
+    public function setDivision(int $divisionCode): void
     {
-        if($divisionId != 0){
-            $this->details['division_id'] = $divisionId;
+        if($divisionCode != 0){
+            $division = Division::where('code', $divisionCode)->first();
+
+            if(!$division){
+                $this->dispatch('setErrorDivision');
+                return;
+            }
+
+            $this->details['division_id'] = $division->code;
         }
     }
 
