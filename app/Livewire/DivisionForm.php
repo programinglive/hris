@@ -52,7 +52,14 @@ class DivisionForm extends Component
     #[On('setDepartment')]
     public function setDepartment(string $departmentCode): void
     {
-        $this->departmentId = Department::where('code', $departmentCode)->first()->id;
+        $department = Department::where('code', $departmentCode)->first();
+
+        if(!$department){
+            $this->dispatch('setErrorDepartment');
+            return;
+        }
+
+        $this->departmentId = $department->id;
     }
 
     /**

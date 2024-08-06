@@ -82,18 +82,22 @@ class FormDepartmentOption extends Component
     }
 
     /**
-     * Retrieves the department data based on the provided option.
+     * Get the departments based on the provided company code.
      *
+     * @param string $companyCode The company code.
+     * @return void
      */
     #[On('getDepartment')]
-    public function getDepartment($value): void
+    public function getDepartment(string $companyCode): void
     {
         $this->reset([
             'departments',
             'option'
         ]);
-        $company = Company::where('code', $value)->first();
+
+        $company = Company::where('code', $companyCode)->first();
         $countDepartment = Department::where('company_id', $company->id)->count();
+
         if($countDepartment > 0){
             $this->option ="";
             $this->departments = Department::where('company_id', $company->id)->get();

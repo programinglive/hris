@@ -25,6 +25,11 @@ class UserTable extends Component
     #[Url(keep:true)]
     public $branchCode = "all";
 
+    public function mount()
+    {
+        $this->companyCode = 'all';
+    }
+
     /**
      * Sets the value of the company code property to the given code.
      *

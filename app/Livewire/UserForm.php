@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Department;
 use App\Models\User;
 use App\Models\UserDetail;
 use DB;
@@ -13,6 +14,7 @@ use Livewire\Component;
 
 class UserForm extends Component
 {
+
     #[Validate('required|unique:users|regex:/^\S+$/')]
     public $name;
 
@@ -73,14 +75,19 @@ class UserForm extends Component
     /**
      * Set the department ID for the details.
      *
-     * @param int $departmentId The ID of the department.
+     * @param string $departmentCode The ID of the department.
      * @return void
      */
     #[On('setDepartment')]
-    public function setDepartment(int $departmentId): void
+    public function setDepartment(string $departmentCode): void
     {
-        if($departmentId != 0){
-            $this->details['department_id'] = $departmentId;
+        if($departmentCode != 0){
+            $department = Department::where('code', $departmentCode)->first();
+            if(!$department){
+                $this->dispatch('setErrorDepartment');
+                return;
+            }
+            $this->details['department_id'] = $department->id;
         }
     }
 
