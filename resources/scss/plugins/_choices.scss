@@ -1,0 +1,59 @@
+//
+// _choices.scss
+//
+
+select.selectize,
+select.search-select {
+    @apply hidden;
+}
+
+.nice-select {
+    float: none !important;
+}
+
+.nice-select .nice-select-dropdown {
+    @apply w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700;
+}
+
+.nice-select:after {
+    @apply rtl:right-auto rtl:left-4;
+}
+
+.nice-select .option {
+    @apply rtl:text-right;
+}
+
+.nice-select .nice-select-search {
+    margin: 0 !important;
+    @apply form-input;
+}
+
+.nice-select .nice-select-dropdown {
+    width: 100%;
+    transform: translateY(5px) !important;
+    transition: all .2s cubic-bezier(.4, .35, .38, .39), opacity .2s ease-out !important
+}
+
+.nice-select.open .nice-select-dropdown {
+    transform: scale(1) translateY(0) !important
+}
+
+//
+.nice-select,
+.nice-select.open {
+    @apply dark:bg-gray-800 dark:border-gray-700;
+}
+
+.nice-select .nice-select-dropdown {
+    @apply dark:bg-gray-800;
+}
+
+.nice-select .option.focus,
+.nice-select .option.selected.focus,
+.nice-select .option:hover {
+    @apply dark:bg-gray-700 dark:border-gray-700 dark:text-gray-300;
+}
+
+:is([dir=rtl] .nice-select) {
+    text-align: right !important;
+}

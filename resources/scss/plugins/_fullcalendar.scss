@@ -1,0 +1,104 @@
+//
+// calendar.scss
+//
+
+.fc-view {
+    margin-top: 30px;
+}
+
+.fc-toolbar {
+    margin: 6px 0 5px 0 !important;
+
+    h2 {
+        font-size: 1.25rem !important;
+        line-height: 1.875rem;
+        text-transform: uppercase;
+    }
+}
+
+.fc-day-grid-event {
+    .fc-time {
+        @apply font-semibold;
+    }
+}
+
+th.fc-day-header {
+    padding: 0.5rem 0;
+}
+
+.fc-day {
+    background: transparent;
+}
+
+
+.fc {
+    th.fc-widget-header {
+        @apply bg-gray-100 font-semibold;
+        font-size: 13px;
+        line-height: 20px;
+        padding: 10px 0;
+        text-transform: uppercase;
+    }
+
+    .fc-daygrid-body,
+    .fc-scrollgrid-section-body table,
+    .fc-scrollgrid-section-footer table {
+        width: 100% !important;
+    }
+}
+
+
+
+
+.fc-state-down,
+.fc-state-active,
+.fc-state-disabled {
+    @apply bg-primary text-white;
+    text-shadow: none;
+}
+
+.fc .fc-toolbar {
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+}
+
+.fc-event {
+    border-radius: 2px;
+    border: none;
+    cursor: move;
+    font-size: 0.8125rem;
+    margin: 5px 7px;
+    padding: 5px 5px;
+    text-align: center;
+    @apply text-white;
+}
+
+@screen md {
+    .fc-toolbar {
+
+        .fc-toolbar-chunk {
+            margin: 6px 0;
+        }
+
+        .fc-left,
+        .fc-right,
+        .fc-center {
+            float: none;
+            display: block;
+            clear: both;
+            margin: 10px 0;
+        }
+    }
+}
+
+.fc-list-item-title,
+.fc-list-item-time {
+    @apply text-white;
+}
+
+.fc-theme-standard .fc-scrollgrid,
+.fc-theme-standard td,
+.fc-theme-standard th {
+    @apply border border-solid border-gray-200 dark:border-gray-700;
+}

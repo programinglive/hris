@@ -1,0 +1,166 @@
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 1em;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+    @apply text-gray-600 dark:text-gray-400;
+}
+
+
+/* Code blocks */
+pre[class*="language-"] {
+    padding: 1em;
+    margin: 0;
+    overflow: auto;
+}
+
+:not(pre)>code[class*="language-"],
+pre[class*="language-"] {
+    @apply bg-transparent bg-gray-100 mt-4 rounded dark:bg-gray-900;
+}
+
+/* Inline code */
+:not(pre)>code[class*="language-"] {
+    padding: 0.1em;
+    border-radius: 0.3em;
+    white-space: normal;
+}
+
+.token {
+
+    &.comment,
+    &.prolog,
+    &.doctype,
+    &.cdata {
+        color: slategray;
+    }
+
+    &.punctuation {
+        color: #999;
+    }
+
+    &.namespace {
+        opacity: 0.7;
+    }
+
+    &.property,
+    &.tag,
+    &.boolean,
+    &.number,
+    &.constant,
+    &.symbol,
+    &.deleted {
+        @apply text-danger;
+    }
+
+    &.selector,
+    &.attr-name,
+    &.string,
+    &.char,
+    &.builtin,
+    &.inserted {
+        @apply text-success;
+    }
+
+    &.atrule,
+    &.attr-value,
+    &.keyword {
+        @apply text-primary;
+    }
+
+    &.function,
+    &.class-name {
+        @apply text-danger;
+    }
+
+    &.regex,
+    &.important,
+    &.variable {
+        @apply text-warning;
+    }
+
+    &.important,
+    &.bold {
+        font-weight: bold;
+    }
+
+    &.italic {
+        font-style: italic;
+    }
+
+    &.entity {
+        cursor: help;
+    }
+
+    &.operator,
+    &.entity,
+    &.url{
+        color: #9a6e3a;
+    }
+
+}
+
+.language-css .token.string,
+.style .token.string {
+    color: #9a6e3a;
+    background: hsla(0, 0%, 100%, 0.5);
+}
+
+
+// Scrollbar
+pre[class*="language-"] {
+    &::-webkit-scrollbar {
+        -webkit-appearance: none;
+    }
+
+    &::-webkit-scrollbar:vertical {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar:horizontal {
+        height: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        @apply bg-zinc-900/10 border-2 border-zinc-900/10 dark:bg-slate-200/10 dark:border-slate-200/10 rounded-lg;
+        opacity: 0.5;
+        
+    }
+
+    &::-webkit-scrollbar-track {
+        @apply bg-transparent rounded-lg;
+    }
+
+    &::-webkit-scrollbar-corner {
+        @apply bg-transparent;
+    }
+}
+
+.btn-code {
+    @apply flex items-center rounded-md py-2 px-2 text-xs font-semibold bg-slate-100 dark:bg-slate-700;
+    
+    &.fc-collapse.open {
+        .mgc_eye_line::before {
+            content: "\EC07";
+        }
+    }
+}

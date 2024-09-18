@@ -1,0 +1,86 @@
+//
+// forms.scss
+//
+
+
+@layer components {
+    label {
+        @apply text-sm font-medium cursor-pointer text-gray-800 dark:text-gray-400;
+    }
+
+    .form-input,
+    .form-select {
+        @apply font-normal rounded block w-full border-gray-200 text-sm focus:border-gray-300 
+        focus:ring-0 bg-transparent dark:border-gray-700 dark:text-gray-400;
+
+        &-sm{
+            @apply py-1 ps-2 pe-8 text-xs;
+        }
+    }
+
+
+    .form-textarea {
+        @apply font-normal rounded block w-full border-gray-200 text-sm focus:border-gray-300 
+        focus:ring-0 bg-transparent dark:border-gray-700 dark:text-gray-400;
+    }
+
+    .form-checkbox,
+    .form-radio {
+        @apply bg-inherit cursor-pointer border-gray-300 dark:border-gray-600 dark:checked:border-transparent focus:ring-0 focus:ring-offset-0;
+    }
+
+    // Form Switch
+    .form-switch {
+        @apply w-9 h-5 flex items-center appearance-none bg-gray-200 dark:bg-opacity-20 border-2 border-transparent
+        rounded-full focus:ring-0 focus:ring-offset-0 cursor-pointer transition-colors ease-in-out duration-200 checked:bg-none;
+
+        &::before{
+            @apply content-[''] inline-block w-4 h-4 bg-white rounded-full translate-x-0 transform transition ease-in-out checked:translate-x-full duration-200;
+        }
+        
+        &.form-switch-lg {
+            @apply w-11 h-6;
+        
+            &::before{
+                @apply w-5 h-5;
+            }
+        }
+
+        &.square {
+            @apply rounded-none before:rounded-none;
+        }
+    }
+
+    // card radio
+    .card-radio {
+        @apply relative;
+
+        .form-label {
+            @apply border overflow-hidden text-ellipsis whitespace-nowrap flex flex-col cursor-pointer border-gray-200 dark:border-gray-700;
+        }
+
+        .form-radio {
+            @apply hidden;
+
+            &:checked + .form-label {
+            @apply border-primary text-primary;
+            }
+        }
+    }
+
+    //  Radio Button Group
+    .btn-radio{
+        .form-radio {
+            @apply hidden;
+            
+            &:checked + label {
+                @apply bg-primary text-white;
+            }
+        }
+    }    
+}
+
+// Form Validation
+.text-help {
+    @apply text-danger text-xs mt-1.5;
+}

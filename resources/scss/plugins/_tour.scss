@@ -1,0 +1,37 @@
+.shepherd-button,
+.shepherd-button:not(:disabled):hover {
+    @apply bg-primary text-white;
+}
+
+.shepherd-button.shepherd-button-secondary {
+    @apply text-slate-900 dark:text-slate-200 bg-secondary;
+}
+
+.shepherd-title {
+    @apply card-title
+}
+
+.shepherd-button.shepherd-button-secondary:not(:disabled):hover,
+.shepherd-has-title .shepherd-content .shepherd-cancel-icon {
+    @apply text-gray-600 dark:text-gray-300;
+}
+
+.shepherd-has-title .shepherd-content .shepherd-header {
+    @apply bg-slate-100 dark:bg-slate-700;
+}
+
+.shepherd-text {
+    @apply text-gray-400;
+}
+
+.shepherd-element {
+    @apply card;
+}
+
+.shepherd-arrow:before {
+    @apply bg-slate-100 dark:bg-slate-700;
+}
+
+.shepherd-element.shepherd-has-title[data-popper-placement^=bottom]>.shepherd-arrow:before {
+    @apply bg-slate-100 dark:bg-slate-700;
+}

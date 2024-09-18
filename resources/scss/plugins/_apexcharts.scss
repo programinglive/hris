@@ -1,0 +1,68 @@
+//
+// _apexcharts.scss
+//
+
+.apex-charts {
+    min-height: 10px !important;
+}
+
+.apexcharts-canvas {
+    margin: 0 auto;
+
+    .apexcharts-text.apexcharts-xaxis-label,
+    .apexcharts-text.apexcharts-yaxis-label,
+    .apexcharts-title-text {
+        @apply fill-gray-500 bg-gray-500/10;
+    }
+
+    .apexcharts-tooltip.apexcharts-theme-light,
+    .apexcharts-xaxistooltip.apexcharts-theme-light {
+        @apply shadow-none border border-slate-950/50 bg-slate-950/50 text-white;
+    }
+
+    .apexcharts-xaxistooltip-bottom:after,
+    .apexcharts-xaxistooltip-bottom:before {
+        @apply border-b-slate-950/50;
+    }
+
+    .apexcharts-tooltip-series-group.apexcharts-active {
+        @apply text-white;
+    }
+
+    .apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
+        @apply border-slate-950 bg-slate-950/20;
+    }
+}
+
+.apexcharts-legend-series {
+    @apply font-semibold;
+}
+
+.apexcharts-legend-text {
+    @apply text-gray-300;
+    font-size: 13px !important;
+    vertical-align: middle;
+}
+
+.apexcharts-legend-marker {
+    vertical-align: middle;
+    margin-right: 5px !important;
+}
+
+.apexcharts-pie-label {
+    @apply fill-white;
+}
+
+.apex-charts text,
+.apexcharts-tooltip-title,
+.apexcharts-tooltip-text,
+.apexcharts-xaxistooltip-text,
+.apexcharts-yaxis .text,
+.apexcharts-xaxis .text,
+.apexcharts-datalabels text,
+.apexcharts-title-text,
+.apexcharts-legend-text,
+.apexcharts-subtitle-text,
+.apexcharts-tooltip {
+    font-family: $body-font-family !important;
+}

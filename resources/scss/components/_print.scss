@@ -1,0 +1,25 @@
+//
+// print.scss
+//
+
+// Used invoice page
+@media print {
+
+    .app-menu,
+    .app-header,
+    .footer,
+    [data-fc-target="theme-customization"] {
+        @apply hidden;
+    }
+
+    .page-content,
+    .content,
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+    .card {
+        box-shadow: none;
+    }
+}

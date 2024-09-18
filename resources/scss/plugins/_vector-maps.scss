@@ -1,0 +1,20 @@
+//
+// vector-maps.scss
+//
+
+.jvm-tooltip {
+    border-radius: 3px;
+    @apply bg-primary;
+    @apply shadow-lg;
+    padding: 5px 9px;
+}
+
+.jvm-container {
+    text {
+        @apply text-sm fill-gray-700;
+    }
+}
+
+.jvm-zoom-btn {
+    @apply bg-primary;
+}

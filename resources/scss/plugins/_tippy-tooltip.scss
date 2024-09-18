@@ -1,0 +1,75 @@
+//
+// tippy.scss
+//
+
+.tippy-tooltip {
+    .light-theme[data-animatefill] {
+        background-color: transparent;
+    }
+}
+
+.light-theme {
+    @apply text-slate-900 dark:text-slate-200 shadow bg-white;
+
+    .tippy-backdrop {
+        @apply bg-white;
+    }
+    
+    .tippy-roundarrow {
+        fill: #FFF;
+    }
+}
+
+.gradient-theme {
+    .tippy-backdrop {
+        @apply bg-primary bg-gradient-to-l to-danger via-primary;
+    }
+}
+
+.tippy-popper{
+    &[x-placement^=top] {
+        .tippy-tooltip{
+            &.light-theme {
+                .tippy-arrow {
+                    border-top: 7px solid #FFF;
+                    border-right: 7px solid transparent;
+                    border-left: 7px solid transparent;
+                }
+            }
+        }
+    }
+    &[x-placement^=bottom] {
+        .tippy-tooltip {
+            &.light-theme {
+                .tippy-arrow {
+                    border-bottom: 7px solid #FFF;
+                    border-right: 7px solid transparent;
+                    border-left: 7px solid transparent;
+                }
+            }
+        }    
+    }
+    &[x-placement^=left] {
+        .tippy-tooltip{
+            &.light-theme {
+                .tippy-arrow {
+                    border-left: 7px solid #FFF;
+                    border-top: 7px solid transparent;
+                    border-bottom: 7px solid transparent;
+                }
+            }
+        }
+    }
+    &[x-placement^=right] {
+        .tippy-tooltip {
+            &.light-theme {
+                .tippy-arrow {
+                    border-right: 7px solid #FFF;
+                    border-top: 7px solid transparent;
+                    border-bottom: 7px solid transparent;
+                }
+            }
+        }
+    }
+}
+

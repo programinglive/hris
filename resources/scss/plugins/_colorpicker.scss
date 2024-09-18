@@ -1,0 +1,70 @@
+//
+// _colorpicker.scss
+//
+
+.pcr-app {
+    @apply shadow-lg bg-white border;
+    border-radius: 4px;
+}
+
+.pickr {
+    .pcr-button {
+        border-radius: 50%;
+        @apply shadow bg-white;
+
+        &::after,
+        &::before {
+            border-radius: 50%;
+        }
+    }
+}
+
+.pcr-app {
+    &[data-mode=classic] {
+        .pcr-selection {
+            .pcr-color-preview {
+                margin-right: .75em;
+                margin-left: 0;
+            }
+
+            .pcr-color-chooser,
+            .pcr-color-opacity {
+                margin-left: .75em;
+                margin-right: 0;
+            }
+        }
+    }
+
+    &[data-mode="monolith"] {
+        .pcr-result {
+            min-width: 100%;
+        }
+    }
+
+    .pcr-interaction {
+        .pcr-type.active {
+            @apply bg-primary;
+        }
+
+        .pcr-result {
+            @apply bg-white border rounded;
+        }
+
+        input {
+            @apply rounded;
+
+            &:focus {
+                @apply bg-white;
+            }
+        }
+
+        .pcr-save {
+            @apply bg-success;
+        }
+
+        .pcr-clear,
+        .pcr-cancel {
+            @apply bg-danger;
+        }
+    }
+}
