@@ -12,22 +12,24 @@
 			>+</button>
 		</div>
 		<div class="flex items-center gap-2 justify-between w-1/4 relative">
-			<form wire:submit="save" method="POST" enctype="multipart/form-data">
-				@csrf
-				<label for="import" class="btn bg-green-500 text-white cursor-pointer">
-					<i class="mgc_attachment_2_line"></i>
-					<span class="ml-2">Import</span>
-					<input
-						wire:model="import"
-						type="file"
-						id="import"
-						name="import"
-						class="hidden"
-						accept=".csv,.xlsx"
-					>
-				</label>
-				@error('import') <div class="text-red-500">{{ $message }}</div> @enderror
-			</form>
+			<label for="import" class="inline">
+				<input
+					wire:model="import"
+					type="file"
+					id="import"
+					name="import"
+					accept=".csv,.xlsx"
+					class="form-input"
+				>
+			</label>
+			@error('import') <div class="text-red-500 inline">{{ $message }}</div> @enderror
+			<button
+				wire:click="save"
+				type="button"
+				class="btn bg-green-500 text-white inline"
+			>
+				<i class="mgc_upload_line"></i>
+			</button>
 			<input
 				wire:model.live="search"
 				type="text"

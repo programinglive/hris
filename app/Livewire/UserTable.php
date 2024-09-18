@@ -51,7 +51,7 @@ class UserTable extends Component
      *
      * @return void
      */
-    public function updatedImport(): void
+    public function save(): void
     {
         $this->validate([
             'import' => 'required|mimes:csv,xlsx,xls',
