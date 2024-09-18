@@ -53,26 +53,11 @@ class UserTable extends Component
      */
     public function updatedImport(): void
     {
-        $this->save();
-    }
-
-    /**
-     * Handles the event when the import field is updated.
-     *
-     * This function will validate the uploaded file and store it in the
-     * 'photos' directory.
-     * The path of the uploaded file will be stored in
-     * the $this→import variable.
-     *
-     * @return void
-     */
-    public function save(): void
-    {
         $this->validate([
             'import' => 'required|mimes:csv,xlsx,xls',
         ]);
 
-        $this->import->store(path: 'uploads');
+        $this->import->store(path: 'photos');
 
         $this->import = $this->import->path();
 
