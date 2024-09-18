@@ -12,7 +12,7 @@
 			>+</button>
 		</div>
 		<div class="flex items-center gap-2 justify-between w-1/4 relative">
-			<form enctype="multipart/form-data">
+			<form method="POST" enctype="multipart/form-data">
 				@csrf
 				<label for="import" class="btn bg-green-500 text-white cursor-pointer">
 					<i class="mgc_attachment_2_line"></i>
