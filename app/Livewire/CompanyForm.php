@@ -19,6 +19,8 @@ class CompanyForm extends Component
 
     #[Validate('required|min:3')]
     public $name;
+
+    public $npwp;
     
     public $address;
 
@@ -58,6 +60,7 @@ class CompanyForm extends Component
         return [
             'code' => $this->code,
             'name' => $this->name,
+            'npwp' => $this->npwp,
             'address' => $this->address,
             'email' => $this->email,
             'phone' => $this->phone
@@ -93,6 +96,7 @@ class CompanyForm extends Component
         $this->code = $code;
         $this->company = Company::where('code',$code)->first();
         $this->name = $this->company->name;
+        $this->npwp = $this->company->npwp;
         $this->address = $this->company->address;
         $this->email = $this->company->email;
         $this->phone = $this->company->phone;
@@ -133,6 +137,19 @@ class CompanyForm extends Component
         $this->dispatch('company-deleted', refreshCompanies: true);
     }
 
+    /**
+     * Resets the form by clearing all properties and error bag.
+     *
+     * This function is triggered when the 'refresh-form' event is dispatched.
+     *
+     * @return void
+     */
+    #[On('refresh-form')]
+    public function refreshCompanyForm(): void
+    {
+        $this->reset();
+        $this->resetErrorBag();
+    }
 
     /**
      * Render the livewire component.

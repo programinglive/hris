@@ -80,6 +80,19 @@ class CompanyTable extends Component
         $this->showForm = true;
     }
 
+
+    /**
+     * Hide the form company.
+     *
+     * @return void
+     */
+    #[On('hide-form')]
+    public function hideForm(): void
+    {
+        $this->showForm = false;
+        $this->dispatch('refresh-form');
+    }
+
     /**
      * Retrieves a paginated list of companies based on a search query.
      *
