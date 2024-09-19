@@ -10,6 +10,6 @@ class CategoryController extends Controller
     {
         $latest = Category::withTrashed()->count() + 1;
 
-        return 'CTG' . str_pad($latest, 4, '0', STR_PAD_LEFT);
+        return 'CTG'.str_pad($latest, 4, '0', STR_PAD_LEFT);
     }
 }

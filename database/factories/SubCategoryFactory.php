@@ -29,7 +29,7 @@ class SubCategoryFactory extends Factory
             'company_id' => $companyId,
             'branch_id' => $branchId,
         ]);
-        
+
         return [
             'company_id' => $companyId,
             'branch_id' => $branchId,

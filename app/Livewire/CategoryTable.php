@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Company;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -11,7 +11,7 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class BrandTable extends Component
+class CategoryTable extends Component
 {
     use withPagination;
 
@@ -35,40 +35,40 @@ class BrandTable extends Component
     }
 
     /**
-     * Handles the event when a brand is created.
+     * Handles the event when a category is created.
      *
-     * @param  int  $brandId  The ID of the created brand.
+     * @param  int  $categoryId  The ID of the created category.
      */
-    #[On('brand-created')]
-    public function brandAdded(int $brandId): void
+    #[On('category-created')]
+    public function categoryAdded(int $categoryId): void
     {
         $this->showForm = false;
     }
 
     /**
-     * Handles the event when a brand is updated.
+     * Handles the event when a category is updated.
      *
-     * @param  int  $brandId  The ID of the updated brand.
+     * @param  int  $categoryId  The ID of the updated category.
      */
-    #[On('brand-updated')]
-    public function brandUpdated(int $brandId): void
+    #[On('category-updated')]
+    public function categoryUpdated(int $categoryId): void
     {
         $this->showForm = false;
     }
 
     /**
-     * Handles the event when a brand is deleted.
+     * Handles the event when a category is deleted.
      */
-    #[On('brand-deleted')]
-    public function brandDeleted(): void
+    #[On('category-deleted')]
+    public function categoryDeleted(): void
     {
         $this->showForm = false;
         $this->resetPage();
-        $this->getBrands();
+        $this->getCategories();
     }
 
     /**
-     * Shows the form brand.
+     * Shows the form category.
      */
     #[On('show-form')]
     public function showForm(): void
@@ -77,22 +77,22 @@ class BrandTable extends Component
     }
 
     /**
-     * Retrieves a paginated list of brands based on a search query.
+     * Retrieves a paginated list of categories based on a search query.
      *
-     * @return LengthAwarePaginator The paginated list of brands.
+     * @return LengthAwarePaginator The paginated list of categories.
      */
-    public function getBrands(): LengthAwarePaginator
+    public function getCategories(): LengthAwarePaginator
     {
-        $brands = Brand::where(function ($query) {
+        $categories = Category::where(function ($query) {
             $query->where('code', 'like', '%'.$this->search.'%')
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
 
         if ($this->companyCode !== 'all') {
-            $brands = $brands->where('company_id', Company::where('code', $this->companyCode)->first()?->id);
+            $categories = $categories->where('company_id', Company::where('code', $this->companyCode)->first()?->id);
         }
 
-        return $brands->orderBy('id')
+        return $categories->orderBy('id')
             ->paginate(5);
     }
 
@@ -101,8 +101,8 @@ class BrandTable extends Component
      */
     public function render(): View
     {
-        return view('livewire.brand-table', [
-            'brands' => self::getBrands(),
+        return view('livewire.category-table', [
+            'categories' => self::getCategories(),
         ]);
     }
 }

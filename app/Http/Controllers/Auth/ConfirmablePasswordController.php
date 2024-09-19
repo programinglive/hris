@@ -13,7 +13,6 @@ class ConfirmablePasswordController extends Controller
 {
     /**
      * Show the confirmation password view.
-     *
      */
     public function show(Request $request): View
     {

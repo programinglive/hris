@@ -17,8 +17,6 @@ class SubCategory extends Model
 
     /**
      * Get the company that owns the Brand
-     *
-     * @return BelongsTo
      */
     public function company(): BelongsTo
     {
@@ -27,8 +25,6 @@ class SubCategory extends Model
 
     /**
      * Get the branch that owns the Brand
-     *
-     * @return BelongsTo
      */
     public function branch(): BelongsTo
     {
@@ -37,8 +33,6 @@ class SubCategory extends Model
 
     /**
      * Customize the activity log
-     *
-     * @return LogOptions
      */
     public function getActivitylogOptions(): LogOptions
     {
