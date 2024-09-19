@@ -15,16 +15,31 @@ class Brand extends Model
 
     protected $guarded = ['id'];
 
+    /**
+     * Get the company that owns the Brand
+     *
+     * @return BelongsTo
+     */
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }
 
+    /**
+     * Get the branch that owns the Brand
+     *
+     * @return BelongsTo
+     */
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
     }
 
+    /**
+     * Customize the activity log
+     *
+     * @return LogOptions
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
