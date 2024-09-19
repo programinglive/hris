@@ -68,6 +68,10 @@ class UserTable extends Component
                         str_replace(' ', '', $rowProperties['name'])
                     )
                 );
+
+                if (User::where('name', $name)->exists()) {
+                    return;
+                }
                 
                 $user = User::firstOrNew([
                     'name' => $name,
