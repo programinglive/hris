@@ -11,14 +11,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class UserDetail extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
-    
+    use HasFactory, LogsActivity, SoftDeletes;
+
     public $guarded = ['id'];
-    
+
     /**
      * Get the user that owns the user detail.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -27,18 +25,12 @@ class UserDetail extends Model
 
     /**
      * Get the company that owns the user detail.
-     *
-     * @return BelongsTo
      */
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }
 
-
-    /**
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

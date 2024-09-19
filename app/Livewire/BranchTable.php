@@ -22,14 +22,13 @@ class BranchTable extends Component
 
     public $companyId;
 
-    #[Url(keep:true)]
-    public ?String $companyCode = "all";
+    #[Url(keep: true)]
+    public ?string $companyCode = 'all';
 
     /**
      * Sets the value of the companyCode property.
      *
-     * @param string $code The new value for the companyCode property.
-     * @return void
+     * @param  string  $code  The new value for the companyCode property.
      */
     #[On('setCompany')]
     public function setCompany(string $code): void
@@ -40,8 +39,7 @@ class BranchTable extends Component
     /**
      * Handles the event when a branch is created.
      *
-     * @param int $branchId The ID of the created branch.
-     * @return void
+     * @param  int  $branchId  The ID of the created branch.
      */
     #[On('branch-created')]
     public function branchAdded(int $branchId): void
@@ -52,8 +50,7 @@ class BranchTable extends Component
     /**
      * Handles the event when a branch is updated.
      *
-     * @param int $branchId The ID of the updated branch.
-     * @return void
+     * @param  int  $branchId  The ID of the updated branch.
      */
     #[On('branch-updated')]
     public function branchUpdated(int $branchId): void
@@ -63,7 +60,6 @@ class BranchTable extends Component
 
     /**
      * Handles the event when a branch is deleted.
-     * @return void
      */
     #[On('branch-deleted')]
     public function branchDeleted(): void
@@ -75,8 +71,6 @@ class BranchTable extends Component
 
     /**
      * Shows the form branch.
-     *
-     * @return void
      */
     #[On('show-form')]
     public function showForm(): void
@@ -91,17 +85,17 @@ class BranchTable extends Component
      */
     public function getBranch(): LengthAwarePaginator
     {
-        if($this->companyCode == "") {
+        if ($this->companyCode == '') {
             abort(404);
         }
 
-        $branches = Branch::where(function($query){
-            $query->where('name', 'like', '%' . $this->search . '%')
-                ->orWhere('code', 'like', '%' . $this->search . '%');
+        $branches = Branch::where(function ($query) {
+            $query->where('name', 'like', '%'.$this->search.'%')
+                ->orWhere('code', 'like', '%'.$this->search.'%');
         });
 
-        if($this->companyCode != "all") {
-            $this->companyId = Company::where("code", $this->companyCode)->first()->id;
+        if ($this->companyCode != 'all') {
+            $this->companyId = Company::where('code', $this->companyCode)->first()->id;
             $branches = $branches->where('company_id', $this->companyId);
         }
 
@@ -111,13 +105,11 @@ class BranchTable extends Component
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {
-        return view('livewire.branch-table',[
-            'branches' => self::getBranch()
+        return view('livewire.branch-table', [
+            'branches' => self::getBranch(),
         ]);
     }
 }

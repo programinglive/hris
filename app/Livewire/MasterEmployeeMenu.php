@@ -9,8 +9,6 @@ class MasterEmployeeMenu extends Component
 {
     /**
      * Renders the 'master-employee-menu' view.
-     *
-     * @return View
      */
     public function render(): View
     {

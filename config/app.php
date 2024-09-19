@@ -159,8 +159,7 @@ return [
 
     'providers' => ServiceProvider::defaultProviders()->merge([
 
-
-          /*
+        /*
          * Laravel Framework Service Providers...
          */
         Illuminate\Auth\AuthServiceProvider::class,
@@ -185,7 +184,6 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
 
         /*
          * Package Service Providers...

@@ -17,9 +17,8 @@ use Spatie\SimpleExcel\SimpleExcelReader;
 
 class UserTable extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads, withPagination;
 
-    use withPagination;
     public $showForm = false;
 
     public $import;
@@ -27,15 +26,12 @@ class UserTable extends Component
     #[Url]
     public $search;
 
-    #[Url(keep:true)]
-    public $companyCode = "all";
+    #[Url(keep: true)]
+    public $companyCode = 'all';
 
-    #[Url(keep:true)]
-    public $branchCode = "all";
+    #[Url(keep: true)]
+    public $branchCode = 'all';
 
-    /**
-     * @return void
-     */
     public function mount(): void
     {
         $this->companyCode = 'all';
@@ -48,8 +44,6 @@ class UserTable extends Component
      * 'photos' directory.
      * The path of the uploaded file will be stored in
      * the $this→import variable.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -62,7 +56,7 @@ class UserTable extends Component
         $this->import = $this->import->path();
 
         SimpleExcelReader::create($this->import)->getRows()
-            ->each(function(array $rowProperties) {
+            ->each(function (array $rowProperties) {
                 $name = trim(
                     strtolower(
                         str_replace(' ', '', $rowProperties['name'])
@@ -72,10 +66,10 @@ class UserTable extends Component
                 if (User::where('name', $name)->exists()) {
                     return;
                 }
-                
+
                 $user = User::firstOrNew([
                     'name' => $name,
-                    'email' => $name . '@beautyworld.co.id',
+                    'email' => $name.'@beautyworld.co.id',
                 ]);
 
                 $user->password = bcrypt('hrisproject');
@@ -85,7 +79,7 @@ class UserTable extends Component
                 $userDetail = UserDetail::create([
                     'company_id' => Company::first()->id,
                     'branch_id' => Branch::first()->id,
-                    'code' => 'EMP' . str_pad(UserDetail::withTrashed()->count() + 1, 7, "0", STR_PAD_LEFT),
+                    'code' => $this->generateEmployeeCode(),
                     'user_id' => $user->id,
                     'first_name' => $name,
                 ]);
@@ -100,8 +94,7 @@ class UserTable extends Component
     /**
      * Sets the value of the company code property to the given code.
      *
-     * @param string $code The code to set as the company code.
-     * @return void
+     * @param  string  $code  The code to set as the company code.
      */
     #[On('setCompany')]
     public function setCompany(string $code): void
@@ -112,8 +105,7 @@ class UserTable extends Component
     /**
      * Handles the event when a user is created.
      *
-     * @param int $userId The ID of the created user.
-     * @return void
+     * @param  int  $userId  The ID of the created user.
      */
     #[On('user-created')]
     public function userAdded(int $userId): void
@@ -124,8 +116,7 @@ class UserTable extends Component
     /**
      * Handles the event when a user is updated.
      *
-     * @param int $userId The ID of the updated user.
-     * @return void
+     * @param  int  $userId  The ID of the updated user.
      */
     #[On('user-updated')]
     public function userUpdated(int $userId): void
@@ -135,7 +126,6 @@ class UserTable extends Component
 
     /**
      * Handles the event when a user is deleted.
-     * @return void
      */
     #[On('user-deleted')]
     public function userDeleted(): void
@@ -147,8 +137,6 @@ class UserTable extends Component
 
     /**
      * Shows the form user.
-     *
-     * @return void
      */
     #[On('show-form')]
     public function showForm(): void
@@ -158,8 +146,6 @@ class UserTable extends Component
 
     /**
      * Hide the form user.
-     *
-     * @return void
      */
     #[On('hide-form')]
     public function hideForm(): void
@@ -175,32 +161,35 @@ class UserTable extends Component
     public function getUsers(): LengthAwarePaginator
     {
         $users = User::join('user_details', 'user_details.user_id', '=', 'users.id')
-            ->where(function($query){
-                $query->where('user_details.code', 'like', '%' . $this->search . '%')
-                    ->orWhere('users.name', 'like', '%' . $this->search . '%');
+            ->where(function ($query) {
+                $query->where('user_details.code', 'like', '%'.$this->search.'%')
+                    ->orWhere('users.name', 'like', '%'.$this->search.'%');
             });
 
-        if($this->companyCode != "all") {
+        if ($this->companyCode != 'all') {
             $users = $users->where('user_details.company_id', Company::where('code', $this->companyCode)->first()->id);
         }
 
-        if($this->branchCode != "all") {
+        if ($this->branchCode != 'all') {
             $users = $users->where('user_details.branch_id', $this->branchCode);
         }
 
         return $users->orderBy('users.id')
-                    ->paginate(5);
+            ->paginate(5);
     }
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {
-        return view('livewire.user-table',[
-            'users' => self::getUsers()
+        return view('livewire.user-table', [
+            'users' => self::getUsers(),
         ]);
+    }
+
+    public function generateEmployeeCode(): string
+    {
+        return 'EMP'.str_pad(UserDetail::withTrashed()->count() + 1, 7, '0', STR_PAD_LEFT);
     }
 }

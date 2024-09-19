@@ -18,14 +18,13 @@ class CompanyFormTest extends TestCase
     use RefreshDatabase;
 
     public $company;
+
     public $faker;
 
     /**
      * Set up the test environment before each test case.
      *
      * This function creates a new instance of the Company model with the specified code and name.
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -46,7 +45,6 @@ class CompanyFormTest extends TestCase
     /**
      * Test that the 'edit' method of the CompanyForm component can successfully update the 'code' and 'name' fields.
      *
-     * @return void
      * @throws AssertionFailedError if the assertions fail
      */
     #[Test]
@@ -65,8 +63,6 @@ class CompanyFormTest extends TestCase
      *
      * This test case verifies that the 'destroy' method of the CompanyForm component
      * can successfully softly delete a company with the provided code.
-     *
-     * @return void
      */
     #[Test]
     public function it_can_destroy_company(): void
@@ -82,7 +78,6 @@ class CompanyFormTest extends TestCase
      *
      * This test case verifies that the 'update' method of the CompanyForm component
      * can successfully update a company with the provided data.
-     *
      */
     #[Test]
     public function it_can_update_company(): void
@@ -96,7 +91,7 @@ class CompanyFormTest extends TestCase
             ->set('phone', '1234567890')
             ->call('update');
 
-        $this->company = Company::where('code','D002')->first();
+        $this->company = Company::where('code', 'D002')->first();
 
         $this->assertEquals('D002', $this->company->code);
         $this->assertEquals('Company B', $this->company->name);
@@ -109,7 +104,6 @@ class CompanyFormTest extends TestCase
      *
      * This test case verifies that the 'companyData' method of the CompanyForm component
      * can successfully set the 'code' and 'name' fields.
-     *
      */
     #[Test]
     public function test_it_can_get_company_data(): void
@@ -130,7 +124,6 @@ class CompanyFormTest extends TestCase
      * This test case verifies that the 'save' method of the CompanyForm component
      * can successfully save a company with the provided data.
      *
-     * @return void
      * @throws AssertionFailedError if the assertions fail
      */
     #[Test]
@@ -151,8 +144,6 @@ class CompanyFormTest extends TestCase
      *
      * This test case verifies that the CompanyForm component can successfully render the form
      * with the expected fields (code and name).
-     *
-     * @return void
      */
     #[Test]
     public function it_can_render_company_form(): void

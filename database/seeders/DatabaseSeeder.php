@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,7 +23,7 @@ class DatabaseSeeder extends Seeder
             LevelSeeder::class,
             PositionSeeder::class,
             UserSeeder::class,
-            NewsSeeder::class
+            NewsSeeder::class,
         ]);
     }
 }

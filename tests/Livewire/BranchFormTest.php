@@ -2,7 +2,6 @@
 
 namespace Tests\Livewire;
 
-use App\Http\Controllers\BranchController;
 use App\Livewire\BranchForm;
 use App\Models\Branch;
 use App\Models\User;
@@ -19,14 +18,13 @@ class BranchFormTest extends TestCase
     use RefreshDatabase;
 
     public $branch;
+
     public $faker;
 
     /**
      * Set up the test environment before each test case.
      *
      * This function creates a new instance of the Branch model with the specified code and name.
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -39,7 +37,7 @@ class BranchFormTest extends TestCase
         $this->branch = Branch::factory([
             'code' => 'D001',
             'name' => 'Branch A',
-            'type' => 'branch'
+            'type' => 'branch',
         ])->create();
 
         auth()->login(User::first());
@@ -48,7 +46,6 @@ class BranchFormTest extends TestCase
     /**
      * Test that the 'edit' method of the BranchForm component can successfully update the 'code' and 'name' fields.
      *
-     * @return void
      * @throws AssertionFailedError if the assertions fail
      */
     #[Test]
@@ -66,8 +63,6 @@ class BranchFormTest extends TestCase
      *
      * This test case verifies that the 'destroy' method of the BranchForm component
      * can successfully softly delete a branch with the provided code.
-     *
-     * @return void
      */
     #[Test]
     public function it_can_destroy_branch(): void
@@ -83,7 +78,6 @@ class BranchFormTest extends TestCase
      *
      * This test case verifies that the 'update' method of the BranchForm component
      * can successfully update a branch with the provided data.
-     *
      */
     #[Test]
     public function it_can_update_branch(): void
@@ -100,7 +94,7 @@ class BranchFormTest extends TestCase
             ->call('update');
 
         $this->branch = Branch::find($this->branch->id);
-        
+
         $this->assertEquals('code-updated', $this->branch->code);
         $this->assertEquals('Branch B', $this->branch->name);
         $this->assertEquals('partner', $this->branch->type);
@@ -111,7 +105,6 @@ class BranchFormTest extends TestCase
      *
      * This test case verifies that the 'branchData' method of the BranchForm component
      * can successfully set the 'code' and 'name' fields.
-     *
      */
     #[Test]
     public function test_it_can_get_branch_data(): void
@@ -132,7 +125,6 @@ class BranchFormTest extends TestCase
      * This test case verifies that the 'save' method of the BranchForm component
      * can successfully save a branch with the provided data.
      *
-     * @return void
      * @throws AssertionFailedError if the assertions fail
      */
     #[Test]
@@ -154,8 +146,6 @@ class BranchFormTest extends TestCase
      *
      * This test case verifies that the BranchForm component can successfully render the form
      * with the expected fields (code and name).
-     *
-     * @return void
      */
     #[Test]
     public function it_can_render_branch_form(): void

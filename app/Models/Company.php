@@ -11,14 +11,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Company extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $guarded = ['id'];
 
     /**
      * Returns a HasMany relationship between the current model and the Branch model.
-     *
-     * @return HasMany
      */
     public function branches(): HasMany
     {
@@ -27,8 +25,6 @@ class Company extends Model
 
     /**
      * Returns a HasMany relationship between the current model and the Department model.
-     *
-     * @return HasMany
      */
     public function departments(): HasMany
     {
@@ -37,19 +33,12 @@ class Company extends Model
 
     /**
      * Retrieve the users associated with this company.
-     *
-     * @return HasMany
      */
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
 
-
-
-    /**
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

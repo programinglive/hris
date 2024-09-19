@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use Illuminate\View\View;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class NewsPage extends Component

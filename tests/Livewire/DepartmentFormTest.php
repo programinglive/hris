@@ -23,8 +23,6 @@ class DepartmentFormTest extends TestCase
      * Set up the test environment before each test case.
      *
      * This function creates a new instance of the Department model with the specified code and name.
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -43,7 +41,6 @@ class DepartmentFormTest extends TestCase
     /**
      * Test that the 'edit' method of the DepartmentForm component can successfully update the 'code' and 'name' fields.
      *
-     * @return void
      * @throws AssertionFailedError if the assertions fail
      */
     #[Test]
@@ -60,8 +57,6 @@ class DepartmentFormTest extends TestCase
      *
      * This test case verifies that the 'destroy' method of the DepartmentForm component
      * can successfully softly delete a department with the provided code.
-     *
-     * @return void
      */
     #[Test]
     public function it_can_destroy_department(): void
@@ -77,14 +72,13 @@ class DepartmentFormTest extends TestCase
      *
      * This test case verifies that the 'update' method of the DepartmentForm component
      * can successfully update a department with the provided data.
-     *
      */
     #[Test]
     public function it_can_update_department(): void
     {
         $this->actingAs(User::first());
         $departmentCode = DepartmentController::generateCode();
-        
+
         Livewire::test(DepartmentForm::class)
             ->set('companyId', $this->department->company_id)
             ->set('department', $this->department)
@@ -103,7 +97,6 @@ class DepartmentFormTest extends TestCase
      *
      * This test case verifies that the 'departmentData' method of the DepartmentForm component
      * can successfully set the 'code' and 'name' fields.
-     *
      */
     #[Test]
     public function test_it_can_get_department_data(): void
@@ -124,7 +117,6 @@ class DepartmentFormTest extends TestCase
      * This test case verifies that the 'save' method of the DepartmentForm component
      * can successfully save a department with the provided data.
      *
-     * @return void
      * @throws AssertionFailedError if the assertions fail
      */
     #[Test]
@@ -145,8 +137,6 @@ class DepartmentFormTest extends TestCase
      *
      * This test case verifies that the DepartmentForm component can successfully render the form
      * with the expected fields (code and name).
-     *
-     * @return void
      */
     #[Test]
     public function it_can_render_department_form(): void

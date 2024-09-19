@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Company;
-use App\Models\Department;
 use App\Models\News;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
@@ -17,24 +16,23 @@ use Livewire\WithPagination;
 class NewsTable extends Component
 {
     use withPagination;
+
     public $showForm = false;
 
     public $companyId;
 
-    #[Url(keep:true)]
-    public $companyCode = "all";
+    #[Url(keep: true)]
+    public $companyCode = 'all';
 
     #[Url]
     public $search;
 
     /**
      * Initializes the component by setting the company ID based on the provided code.
-     *
-     * @return void
      */
     public function mount(): void
     {
-        if($this->companyCode != "all") {
+        if ($this->companyCode != 'all') {
             $this->companyId = Company::where('code', $this->companyCode)->first()->id;
         }
     }
@@ -42,20 +40,19 @@ class NewsTable extends Component
     /**
      * Sets the company ID based on the provided code.
      *
-     * @param string $code The code of the company.
-     * @return void
+     * @param  string  $code  The code of the company.
      */
     #[On('setCompany')]
     public function setCompany(string $code): void
     {
-        if($code == ""){
+        if ($code == '') {
             abort(404);
         }
-        if($code != "all") {
+        if ($code != 'all') {
             $this->companyCode = $code;
             $this->companyId = Company::where('code', $code)->first()->id;
         } else {
-            $this->companyCode = "all";
+            $this->companyCode = 'all';
         }
 
         $this->resetPage();
@@ -64,8 +61,7 @@ class NewsTable extends Component
     /**
      * Handles the event when a news is created.
      *
-     * @param int $newsId The ID of the created news.
-     * @return void
+     * @param  int  $newsId  The ID of the created news.
      */
     #[On('news-created')]
     public function newsAdded(int $newsId): void
@@ -76,8 +72,7 @@ class NewsTable extends Component
     /**
      * Handles the event when a news is updated.
      *
-     * @param int $newsId The ID of the updated news.
-     * @return void
+     * @param  int  $newsId  The ID of the updated news.
      */
     #[On('news-updated')]
     public function newsUpdated(int $newsId): void
@@ -87,7 +82,6 @@ class NewsTable extends Component
 
     /**
      * Handles the event when a news is deleted.
-     * @return void
      */
     #[On('news-deleted')]
     public function newsDeleted(): void
@@ -100,8 +94,6 @@ class NewsTable extends Component
 
     /**
      * Shows the form news.
-     *
-     * @return void
      */
     #[On('show-form')]
     public function showForm(): void
@@ -117,25 +109,26 @@ class NewsTable extends Component
     #[On('getDepartments')]
     public function getNews(): LengthAwarePaginator
     {
-        $news = News::where(function($query){
-            $query->where('code', 'like', '%' . $this->search . '%')
-                ->orWhere('name', 'like', '%' . $this->search . '%');
+        $news = News::where(function ($query) {
+            $query->where('code', 'like', '%'.$this->search.'%')
+                ->orWhere('name', 'like', '%'.$this->search.'%');
         })->orderBy('id');
 
-        if($this->companyCode == "") {
+        if ($this->companyCode == '') {
             abort(404);
         }
 
-        if($this->companyCode != "all") {
+        if ($this->companyCode != 'all') {
             $news = $news->where('company_id', $this->companyId);
         }
 
         return $news->paginate(5);
     }
+
     public function render(): Application|Factory|View|\Illuminate\View\View
     {
         return view('livewire.news-table', [
-            'newsData' => self::getNews()
+            'newsData' => self::getNews(),
         ]);
     }
 }

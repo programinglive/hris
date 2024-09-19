@@ -13,6 +13,7 @@ use Livewire\WithPagination;
 class DivisionTable extends Component
 {
     use withPagination;
+
     public $showForm = false;
 
     #[Url]
@@ -21,8 +22,7 @@ class DivisionTable extends Component
     /**
      * Handles the event when a division is created.
      *
-     * @param int $divisionId The ID of the created division.
-     * @return void
+     * @param  int  $divisionId  The ID of the created division.
      */
     #[On('division-created')]
     public function divisionAdded(int $divisionId): void
@@ -33,8 +33,7 @@ class DivisionTable extends Component
     /**
      * Handles the event when a division is updated.
      *
-     * @param int $divisionId The ID of the updated division.
-     * @return void
+     * @param  int  $divisionId  The ID of the updated division.
      */
     #[On('division-updated')]
     public function divisionUpdated(int $divisionId): void
@@ -44,7 +43,6 @@ class DivisionTable extends Component
 
     /**
      * Handles the event when a division is deleted.
-     * @return void
      */
     #[On('division-deleted')]
     public function divisionDeleted(): void
@@ -56,8 +54,6 @@ class DivisionTable extends Component
 
     /**
      * Shows the form division.
-     *
-     * @return void
      */
     #[On('show-form')]
     public function showForm(): void
@@ -72,23 +68,21 @@ class DivisionTable extends Component
      */
     public function getDivisions(): LengthAwarePaginator
     {
-        return Division::where(function ($query){
-            $query->where('name', 'like', '%' . $this->search . '%')
-                ->orWhere('code', 'like', '%' . $this->search . '%');
-            })
+        return Division::where(function ($query) {
+            $query->where('name', 'like', '%'.$this->search.'%')
+                ->orWhere('code', 'like', '%'.$this->search.'%');
+        })
             ->orderBy('id', 'asc')
             ->paginate(5);
     }
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {
-        return view('livewire.division-table',[
-            'divisions' => self::getDivisions()
+        return view('livewire.division-table', [
+            'divisions' => self::getDivisions(),
         ]);
     }
 }

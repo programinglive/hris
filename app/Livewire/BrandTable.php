@@ -14,22 +14,22 @@ use Livewire\WithPagination;
 class BrandTable extends Component
 {
     use withPagination;
+
     public $showForm = false;
 
     #[Url]
     public $search;
 
     #[Url(keep: true)]
-    public ?String $companyCode = "";
+    public ?string $companyCode = '';
 
     /**
      * Sets the company code.
      *
-     * @param string $code The code to set as the company code.
-     * @return void
+     * @param  string  $code  The code to set as the company code.
      */
     #[On('setCompany')]
-    public function setCompany(String $code): void
+    public function setCompany(string $code): void
     {
         $this->companyCode = $code;
     }
@@ -37,8 +37,7 @@ class BrandTable extends Component
     /**
      * Handles the event when a brand is created.
      *
-     * @param int $brandId The ID of the created brand.
-     * @return void
+     * @param  int  $brandId  The ID of the created brand.
      */
     #[On('brand-created')]
     public function brandAdded(int $brandId): void
@@ -49,8 +48,7 @@ class BrandTable extends Component
     /**
      * Handles the event when a brand is updated.
      *
-     * @param int $brandId The ID of the updated brand.
-     * @return void
+     * @param  int  $brandId  The ID of the updated brand.
      */
     #[On('brand-updated')]
     public function brandUpdated(int $brandId): void
@@ -60,7 +58,6 @@ class BrandTable extends Component
 
     /**
      * Handles the event when a brand is deleted.
-     * @return void
      */
     #[On('brand-deleted')]
     public function brandDeleted(): void
@@ -72,8 +69,6 @@ class BrandTable extends Component
 
     /**
      * Shows the form brand.
-     *
-     * @return void
      */
     #[On('show-form')]
     public function showForm(): void
@@ -88,28 +83,26 @@ class BrandTable extends Component
      */
     public function getBrands(): LengthAwarePaginator
     {
-        $brands = Brand::where(function ($query){
-            $query->where('code', 'like', '%' . $this->search . '%')
-                ->orWhere('name', 'like', '%' . $this->search . '%');
+        $brands = Brand::where(function ($query) {
+            $query->where('code', 'like', '%'.$this->search.'%')
+                ->orWhere('name', 'like', '%'.$this->search.'%');
         });
 
-        if ($this->companyCode !== "all") {
+        if ($this->companyCode !== 'all') {
             $brands = $brands->where('company_id', Company::where('code', $this->companyCode)->first()?->id);
         }
 
         return $brands->orderBy('id')
-                ->paginate(5);
+            ->paginate(5);
     }
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {
-        return view('livewire.brand-table',[
-            'brands' => self::getBrands()
+        return view('livewire.brand-table', [
+            'brands' => self::getBrands(),
         ]);
     }
 }

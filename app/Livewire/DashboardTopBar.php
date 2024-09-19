@@ -12,6 +12,7 @@ class DashboardTopBar extends Component
         auth()->logout();
         redirect('/');
     }
+
     public function render(): View
     {
         return view('livewire.dashboard-top-bar');

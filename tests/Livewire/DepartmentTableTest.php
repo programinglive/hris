@@ -23,8 +23,6 @@ class DepartmentTableTest extends TestCase
      * It calls the parent setUp function and then runs the CompanySeeder,
      * BranchSeeder, and UserSeeder to populate the database with test data.
      * Finally, it assigns the first Department record to the $this->department property.
-     *
-     * @return void
      */
     public function setUp(): void
     {

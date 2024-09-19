@@ -13,6 +13,7 @@ use Livewire\WithPagination;
 class LevelTable extends Component
 {
     use withPagination;
+
     public $showForm = false;
 
     #[Url]
@@ -21,8 +22,7 @@ class LevelTable extends Component
     /**
      * Handles the event when a level is created.
      *
-     * @param int $levelId The ID of the created level.
-     * @return void
+     * @param  int  $levelId  The ID of the created level.
      */
     #[On('level-created')]
     public function levelAdded(int $levelId): void
@@ -33,8 +33,7 @@ class LevelTable extends Component
     /**
      * Handles the event when a level is updated.
      *
-     * @param int $levelId The ID of the updated level.
-     * @return void
+     * @param  int  $levelId  The ID of the updated level.
      */
     #[On('level-updated')]
     public function levelUpdated(int $levelId): void
@@ -44,7 +43,6 @@ class LevelTable extends Component
 
     /**
      * Handles the event when a level is deleted.
-     * @return void
      */
     #[On('level-deleted')]
     public function levelDeleted(): void
@@ -56,8 +54,6 @@ class LevelTable extends Component
 
     /**
      * Shows the form level.
-     *
-     * @return void
      */
     #[On('show-form')]
     public function showForm(): void
@@ -72,23 +68,21 @@ class LevelTable extends Component
      */
     public function getLevels(): LengthAwarePaginator
     {
-        return Level::where(function($query){
-            $query->where('name', 'like', '%' . $this->search . '%')
-                ->orWhere('code', 'like', '%' . $this->search . '%');
-            })
-                ->orderBy('id','asc')
-                ->paginate(5);
+        return Level::where(function ($query) {
+            $query->where('name', 'like', '%'.$this->search.'%')
+                ->orWhere('code', 'like', '%'.$this->search.'%');
+        })
+            ->orderBy('id', 'asc')
+            ->paginate(5);
     }
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {
-        return view('livewire.level-table',[
-            'levels' => self::getLevels()
+        return view('livewire.level-table', [
+            'levels' => self::getLevels(),
         ]);
     }
 }

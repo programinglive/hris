@@ -17,7 +17,6 @@ use Livewire\Component;
 
 class UserForm extends Component
 {
-
     #[Validate('required|unique:users|regex:/^\S+$/')]
     public $name;
 
@@ -57,16 +56,11 @@ class UserForm extends Component
     public $actionForm = 'save';
 
     /**
-     * 
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return void
      * @throws ValidationException
      */
     public function updated(string $key, mixed $value): void
     {
-        if($key == 'name'){
+        if ($key == 'name') {
             $this->validateOnly($key);
         }
     }
@@ -74,16 +68,16 @@ class UserForm extends Component
     /**
      * Set the department ID for the details.
      *
-     * @param string $departmentCode The ID of the department.
-     * @return void
+     * @param  string  $departmentCode  The ID of the department.
      */
     #[On('setDepartment')]
     public function setDepartment(string $departmentCode): void
     {
-        if($departmentCode != 0){
+        if ($departmentCode != 0) {
             $department = Department::where('code', $departmentCode)->first();
-            if(!$department){
+            if (! $department) {
                 $this->dispatch('setErrorDepartment');
+
                 return;
             }
             $this->details['department_id'] = $department->id;
@@ -93,17 +87,17 @@ class UserForm extends Component
     /**
      * Set the division ID for the details.
      *
-     * @param int $divisionCode The ID of the division.
-     * @return void
+     * @param  int  $divisionCode  The ID of the division.
      */
     #[On('setDivision')]
     public function setDivision(int $divisionCode): void
     {
-        if($divisionCode != 0){
+        if ($divisionCode != 0) {
             $division = Division::where('code', $divisionCode)->first();
 
-            if(!$division){
+            if (! $division) {
                 $this->dispatch('setErrorDivision');
+
                 return;
             }
 
@@ -114,17 +108,17 @@ class UserForm extends Component
     /**
      * Set the level ID for the details.
      *
-     * @param string $levelCode The ID of the level.
-     * @return void
+     * @param  string  $levelCode  The ID of the level.
      */
     #[On('setLevel')]
     public function setLevel(string $levelCode): void
     {
-        if($levelCode != 0){
+        if ($levelCode != 0) {
             $level = Level::where('code', $levelCode)->first();
 
-            if(!$level){
+            if (! $level) {
                 $this->dispatch('setErrorLevel');
+
                 return;
             }
 
@@ -135,17 +129,17 @@ class UserForm extends Component
     /**
      * Set the position ID for the details.
      *
-     * @param int $positionCode The ID of the position.
-     * @return void
+     * @param  int  $positionCode  The ID of the position.
      */
     #[On('setPosition')]
     public function setPosition(int $positionCode): void
     {
-        if($positionCode != 0){
+        if ($positionCode != 0) {
             $position = Position::where('code', $positionCode)->first();
 
-            if(!$position){
+            if (! $position) {
                 $this->dispatch('setErrorPosition');
+
                 return;
             }
 
@@ -155,8 +149,6 @@ class UserForm extends Component
 
     /**
      * The default data for the form.
-     *
-     * @return array
      */
     public function userData(): array
     {
@@ -169,7 +161,7 @@ class UserForm extends Component
     /**
      * Returns an array containing the company ID, branch ID, and user ID of the given user.
      *
-     * @param User $user The user object to retrieve the details from.
+     * @param  User  $user  The user object to retrieve the details from.
      * @return array An array with keys 'company_id', 'branch_id', and 'user_id', each containing the respective ID.
      */
     public function userDetailData(User $user): array
@@ -177,14 +169,12 @@ class UserForm extends Component
         return [
             'company_id' => $this->companyId,
             'branch_id' => $this->branchId,
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ];
     }
 
     /**
      * Saves the user details to the database and dispatches a 'user-created' event.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -206,11 +196,11 @@ class UserForm extends Component
     #[On('edit')]
     public function edit($name): void
     {
-        $this->user = User::where('name',$name)->first();
+        $this->user = User::where('name', $name)->first();
         $this->name = $this->user->name;
         $this->email = $this->user->email;
         $this->details = $this->user->details;
-        
+
         $this->actionForm = 'update';
 
         $this->dispatch('selectCompany', $this->user->details->company_id);
@@ -245,7 +235,7 @@ class UserForm extends Component
     #[On('delete')]
     public function destroy($name): void
     {
-        $this->user = User::where('name',$name)->first();
+        $this->user = User::where('name', $name)->first();
         $this->user->delete();
 
         $this->dispatch('user-deleted', refreshCompanies: true);
@@ -262,8 +252,6 @@ class UserForm extends Component
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {

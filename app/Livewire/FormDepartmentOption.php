@@ -15,10 +15,10 @@ class FormDepartmentOption extends Component
 
     public $companyId;
 
-    #[Url(keep:true)]
-    public $companyCode = "all";
+    #[Url(keep: true)]
+    public $companyCode = 'all';
 
-    public $option = "disabled";
+    public $option = 'disabled';
 
     public $departments;
 
@@ -29,11 +29,11 @@ class FormDepartmentOption extends Component
     {
         $this->reset();
 
-        if($this->companyCode != "all") {
+        if ($this->companyCode != 'all') {
             $company = Company::where('code', $this->companyCode)->first();
-            
-            if($company) {
-                $this->option = "";
+
+            if ($company) {
+                $this->option = '';
                 $this->companyId = $company->id;
                 $this->departments = $company->departments;
             }
@@ -43,8 +43,7 @@ class FormDepartmentOption extends Component
     /**
      * Update the option value based on the provided option.
      *
-     * @param mixed $option The new option value.
-     * @return void
+     * @param  mixed  $option  The new option value.
      */
     #[On('departmentOption')]
     public function departmentOption(mixed $option): void
@@ -55,34 +54,30 @@ class FormDepartmentOption extends Component
     /**
      * Update the department ID and dispatch the 'setDepartment' event with the new ID.
      *
-     * @param string $departmentCode The new department ID.
-     * @return void
+     * @param  string  $departmentCode  The new department ID.
      */
     public function updatedDepartmentCode(string $departmentCode): void
     {
         $this->resetErrorBag();
 
-        $this->dispatch('setDepartment',  departmentCode: $departmentCode );
-        $this->dispatch('getDivision', departmentCode: $departmentCode );
+        $this->dispatch('setDepartment', departmentCode: $departmentCode);
+        $this->dispatch('getDivision', departmentCode: $departmentCode);
 
     }
 
     /**
      * Update the department ID based on the provided department ID.
      *
-     * @param int $departmentCode The ID of the department.
-     * @return void
+     * @param  int  $departmentCode  The ID of the department.
      */
     #[On('selectDepartment')]
     public function selectDepartment(int $departmentCode): void
     {
-        $this->departmentCode =  Department::where('code',$departmentCode)->id;
+        $this->departmentCode = Department::where('code', $departmentCode)->id;
     }
 
     /**
      * Dispatch the 'setErrorDepartment' event.
-     *
-     * @return void
      */
     #[On('setErrorDepartment')]
     public function setErrorDepartment(): void
@@ -93,26 +88,26 @@ class FormDepartmentOption extends Component
     /**
      * Get the departments based on the provided company code.
      *
-     * @param string $companyCode The company code.
-     * @return void
+     * @param  string  $companyCode  The company code.
      */
     #[On('getDepartment')]
     public function getDepartment(string $companyCode): void
     {
         $this->reset([
             'departments',
-            'option'
+            'option',
         ]);
 
         $company = Company::where('code', $companyCode)->first();
 
-        if(!$company) {
-            $this->option = "disabled";
+        if (! $company) {
+            $this->option = 'disabled';
+
             return;
         }
 
-        if($company->departments()->count() > 0){
-            $this->option ="";
+        if ($company->departments()->count() > 0) {
+            $this->option = '';
             $this->departments = $company->departments;
         }
     }

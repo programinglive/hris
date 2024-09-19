@@ -11,11 +11,11 @@ class BranchPage extends Component
 
     public function render(): View
     {
-    /**
-     * Render the view for the branch page.
-     *
-     * @return View The rendered view.
-     */
+        /**
+         * Render the view for the branch page.
+         *
+         * @return View The rendered view.
+         */
         return view('livewire.branch-page')
             ->layout('components.layouts.dashboard');
     }

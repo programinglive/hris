@@ -15,8 +15,9 @@ use Livewire\Component;
 class DepartmentForm extends Component
 {
     public $companyId;
-    #[Url(keep:true)]
-    public $companyCode = "all";
+
+    #[Url(keep: true)]
+    public $companyCode = 'all';
 
     #[Validate('required|unique:departments|min:3')]
     public $code;
@@ -32,14 +33,14 @@ class DepartmentForm extends Component
      * Updates the specified property with the given value and performs validation if the property is 'code',
      * 'email', or 'phone'.
      *
-     * @param string $key The name of the property to be updated.
-     * @param mixed $value The new value for the property.
-     * @return void
+     * @param  string  $key  The name of the property to be updated.
+     * @param  mixed  $value  The new value for the property.
+     *
      * @throws ValidationException
      */
     public function updated(string $key, mixed $value): void
     {
-        if($key == 'code' || $key == 'name'){
+        if ($key == 'code' || $key == 'name') {
             $this->validateOnly($key);
         }
     }
@@ -47,17 +48,16 @@ class DepartmentForm extends Component
     /**
      * Sets the value of the companyCode property to the given code.
      *
-     * @param string $code The code to set the companyCode property to.
-     * @return void
+     * @param  string  $code  The code to set the companyCode property to.
      */
     #[On('setCompany')]
     public function setCompany(string $code): void
     {
-        if($code == ""){
+        if ($code == '') {
             abort(404);
         }
 
-        if($code !== 'all'){
+        if ($code !== 'all') {
             $this->companyCode = $code;
 
             $this->companyId = Company::where('code', $code)->first()->id;
@@ -66,8 +66,6 @@ class DepartmentForm extends Component
 
     /**
      * The default data for the form.
-     *
-     * @return array
      */
     public function departmentData(): array
     {
@@ -81,8 +79,6 @@ class DepartmentForm extends Component
 
     /**
      * Saves the department details to the database and dispatches a 'department-created' event.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -108,7 +104,7 @@ class DepartmentForm extends Component
     #[On('edit')]
     public function edit($code): void
     {
-        $this->department = Department::where('code',$code)->first();
+        $this->department = Department::where('code', $code)->first();
         $this->code = $this->department->code;
         $this->name = $this->department->name;
 
@@ -143,7 +139,7 @@ class DepartmentForm extends Component
     #[On('delete')]
     public function destroy($code): void
     {
-        $this->department = Department::where('code',$code)->first();
+        $this->department = Department::where('code', $code)->first();
         $this->department->code = $this->department->code.'-deleted';
         $this->department->save();
 
@@ -156,8 +152,6 @@ class DepartmentForm extends Component
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {

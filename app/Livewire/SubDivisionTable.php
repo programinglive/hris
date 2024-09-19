@@ -13,6 +13,7 @@ use Livewire\WithPagination;
 class SubDivisionTable extends Component
 {
     use withPagination;
+
     public $showForm = false;
 
     #[Url]
@@ -21,8 +22,7 @@ class SubDivisionTable extends Component
     /**
      * Handles the event when a subDivision is created.
      *
-     * @param int $subDivisionId The ID of the created subDivision.
-     * @return void
+     * @param  int  $subDivisionId  The ID of the created subDivision.
      */
     #[On('sub-division-created')]
     public function subDivisionAdded(int $subDivisionId): void
@@ -33,8 +33,7 @@ class SubDivisionTable extends Component
     /**
      * Handles the event when a subDivision is updated.
      *
-     * @param int $subDivisionId The ID of the updated subDivision.
-     * @return void
+     * @param  int  $subDivisionId  The ID of the updated subDivision.
      */
     #[On('sub-division-updated')]
     public function subDivisionUpdated(int $subDivisionId): void
@@ -44,7 +43,6 @@ class SubDivisionTable extends Component
 
     /**
      * Handles the event when a subDivision is deleted.
-     * @return void
      */
     #[On('sub-division-deleted')]
     public function subDivisionDeleted(): void
@@ -56,8 +54,6 @@ class SubDivisionTable extends Component
 
     /**
      * Shows the form subDivision.
-     *
-     * @return void
      */
     #[On('show-form')]
     public function showForm(): void
@@ -72,9 +68,9 @@ class SubDivisionTable extends Component
      */
     public function getSubDivisions(): LengthAwarePaginator
     {
-        return SubDivision::where(function ($query){
-            $query->where('name', 'like', '%' . $this->search . '%')
-                ->orWhere('code', 'like', '%' . $this->search . '%');
+        return SubDivision::where(function ($query) {
+            $query->where('name', 'like', '%'.$this->search.'%')
+                ->orWhere('code', 'like', '%'.$this->search.'%');
         })
             ->orderBy('id', 'asc')
             ->paginate(5);
@@ -82,13 +78,11 @@ class SubDivisionTable extends Component
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {
-        return view('livewire.sub-division-table',[
-            'subDivisions' => self::getSubDivisions()
+        return view('livewire.sub-division-table', [
+            'subDivisions' => self::getSubDivisions(),
         ]);
     }
 }

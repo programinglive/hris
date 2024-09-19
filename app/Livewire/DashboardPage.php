@@ -15,8 +15,6 @@ class DashboardPage extends Component
 
     /**
      * Render the view for the dashboard page.
-     *
-     * @return Application|Factory|View
      */
     public function render(): Application|Factory|View
     {

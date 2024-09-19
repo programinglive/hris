@@ -13,6 +13,6 @@ class BranchController extends Controller
      */
     public static function generateCode()
     {
-        return 'B' . str_pad(Branch::withTrashed()->count() + 1, 7, "0", STR_PAD_LEFT);
+        return 'B'.str_pad(Branch::withTrashed()->count() + 1, 7, '0', STR_PAD_LEFT);
     }
 }

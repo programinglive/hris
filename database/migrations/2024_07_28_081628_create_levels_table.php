@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\Branch;
-use App\Models\SubDivision;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
+use App\Models\SubDivision;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

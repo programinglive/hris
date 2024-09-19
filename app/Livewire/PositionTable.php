@@ -13,6 +13,7 @@ use Livewire\WithPagination;
 class PositionTable extends Component
 {
     use withPagination;
+
     public $showForm = false;
 
     #[Url]
@@ -21,8 +22,7 @@ class PositionTable extends Component
     /**
      * Handles the event when a position is created.
      *
-     * @param int $positionId The ID of the created position.
-     * @return void
+     * @param  int  $positionId  The ID of the created position.
      */
     #[On('position-created')]
     public function positionAdded(int $positionId): void
@@ -33,8 +33,7 @@ class PositionTable extends Component
     /**
      * Handles the event when a position is updated.
      *
-     * @param int $positionId The ID of the updated position.
-     * @return void
+     * @param  int  $positionId  The ID of the updated position.
      */
     #[On('position-updated')]
     public function positionUpdated(int $positionId): void
@@ -44,7 +43,6 @@ class PositionTable extends Component
 
     /**
      * Handles the event when a position is deleted.
-     * @return void
      */
     #[On('position-deleted')]
     public function positionDeleted(): void
@@ -56,8 +54,6 @@ class PositionTable extends Component
 
     /**
      * Shows the form position.
-     *
-     * @return void
      */
     #[On('show-form')]
     public function showForm(): void
@@ -72,23 +68,21 @@ class PositionTable extends Component
      */
     public function getPositions(): LengthAwarePaginator
     {
-        return Position::where(function($query){
+        return Position::where(function ($query) {
             $query
-                ->where('code','like','%'.$this->search.'%')
-                ->where('name','like','%'.$this->search.'%');
-            })
-            ->orderBy('id','asc')->paginate(5);
+                ->where('code', 'like', '%'.$this->search.'%')
+                ->where('name', 'like', '%'.$this->search.'%');
+        })
+            ->orderBy('id', 'asc')->paginate(5);
     }
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {
-        return view('livewire.position-table',[
-            'positions' => self::getPositions()
+        return view('livewire.position-table', [
+            'positions' => self::getPositions(),
         ]);
     }
 }

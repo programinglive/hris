@@ -13,19 +13,19 @@ use Livewire\WithPagination;
 class CompanyTable extends Component
 {
     use withPagination;
+
     public $showForm = false;
 
     #[Url(keep: true)]
     public $search;
 
     #[Url(keep: true)]
-    public $companyCode = "all";
+    public $companyCode = 'all';
 
     /**
      * Sets the value of the company code property to the given code.
      *
-     * @param string $code The code to set as the company code.
-     * @return void
+     * @param  string  $code  The code to set as the company code.
      */
     #[On('setCompany')]
     public function setCompany(string $code): void
@@ -36,8 +36,7 @@ class CompanyTable extends Component
     /**
      * Handles the event when a company is created.
      *
-     * @param int $companyId The ID of the created company.
-     * @return void
+     * @param  int  $companyId  The ID of the created company.
      */
     #[On('company-created')]
     public function companyAdded(int $companyId): void
@@ -48,8 +47,7 @@ class CompanyTable extends Component
     /**
      * Handles the event when a company is updated.
      *
-     * @param int $companyId The ID of the updated company.
-     * @return void
+     * @param  int  $companyId  The ID of the updated company.
      */
     #[On('company-updated')]
     public function companyUpdated(int $companyId): void
@@ -59,7 +57,6 @@ class CompanyTable extends Component
 
     /**
      * Handles the event when a company is deleted.
-     * @return void
      */
     #[On('company-deleted')]
     public function companyDeleted(): void
@@ -71,8 +68,6 @@ class CompanyTable extends Component
 
     /**
      * Shows the form company.
-     *
-     * @return void
      */
     #[On('show-form')]
     public function showForm(): void
@@ -80,11 +75,8 @@ class CompanyTable extends Component
         $this->showForm = true;
     }
 
-
     /**
      * Hide the form company.
-     *
-     * @return void
      */
     #[On('hide-form')]
     public function hideForm(): void
@@ -100,29 +92,27 @@ class CompanyTable extends Component
      */
     public function getCompanies(): LengthAwarePaginator
     {
-        $companies = Company::where(function($query){
-            $query->where('code', 'like', '%' . $this->search . '%')
-                ->orWhere('name', 'like', '%' . $this->search . '%');
+        $companies = Company::where(function ($query) {
+            $query->where('code', 'like', '%'.$this->search.'%')
+                ->orWhere('name', 'like', '%'.$this->search.'%');
         });
 
-        if($this->companyCode != "all" && $this->companyCode != "") {
+        if ($this->companyCode != 'all' && $this->companyCode != '') {
             $companies = Company::where('code', $this->companyCode);
         }
 
         return $companies
-                ->orderBy('id')
-                ->paginate(5);
+            ->orderBy('id')
+            ->paginate(5);
     }
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {
-        return view('livewire.company-table',[
-            'companies' => self::getCompanies()
+        return view('livewire.company-table', [
+            'companies' => self::getCompanies(),
         ]);
     }
 }

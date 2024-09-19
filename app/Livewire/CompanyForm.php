@@ -21,7 +21,7 @@ class CompanyForm extends Component
     public $name;
 
     public $npwp;
-    
+
     public $address;
 
     #[Validate('required|email:unique:companies') ]
@@ -38,22 +38,20 @@ class CompanyForm extends Component
      * Updates the specified property with the given value and performs validation if the property is 'code',
      * 'email', or 'phone'.
      *
-     * @param string $key The name of the property to be updated.
-     * @param mixed $value The new value for the property.
-     * @return void
+     * @param  string  $key  The name of the property to be updated.
+     * @param  mixed  $value  The new value for the property.
+     *
      * @throws ValidationException
      */
     public function updated(string $key, mixed $value): void
     {
-        if($key == 'code' || $key == 'email' || $key = 'phone'){
+        if ($key == 'code' || $key == 'email' || $key = 'phone') {
             $this->validateOnly($key);
         }
     }
 
     /**
      * The default data for the form.
-     *
-     * @return array
      */
     public function companyData(): array
     {
@@ -63,14 +61,12 @@ class CompanyForm extends Component
             'npwp' => $this->npwp,
             'address' => $this->address,
             'email' => $this->email,
-            'phone' => $this->phone
+            'phone' => $this->phone,
         ];
     }
 
     /**
      * Saves the company details to the database and dispatches a 'company-created' event.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -94,7 +90,7 @@ class CompanyForm extends Component
     public function edit($code): void
     {
         $this->code = $code;
-        $this->company = Company::where('code',$code)->first();
+        $this->company = Company::where('code', $code)->first();
         $this->name = $this->company->name;
         $this->npwp = $this->company->npwp;
         $this->address = $this->company->address;
@@ -126,8 +122,8 @@ class CompanyForm extends Component
     #[On('delete')]
     public function destroy($code): void
     {
-        $this->company = Company::where('code',$code)->first();
-        $this->company->code = $this->company->code . '-deleted';
+        $this->company = Company::where('code', $code)->first();
+        $this->company->code = $this->company->code.'-deleted';
         $this->company->save();
 
         $this->company->delete();
@@ -141,8 +137,6 @@ class CompanyForm extends Component
      * Resets the form by clearing all properties and error bag.
      *
      * This function is triggered when the 'refresh-form' event is dispatched.
-     *
-     * @return void
      */
     #[On('refresh-form')]
     public function refreshCompanyForm(): void
@@ -153,8 +147,6 @@ class CompanyForm extends Component
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {

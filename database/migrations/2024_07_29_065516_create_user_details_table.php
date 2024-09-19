@@ -1,12 +1,12 @@
 <?php
 
 use App\Models\Branch;
-use App\Models\SubDivision;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
 use App\Models\Level;
 use App\Models\Position;
+use App\Models\SubDivision;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

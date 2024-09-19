@@ -13,6 +13,6 @@ class DepartmentController extends Controller
      */
     public static function generateCode()
     {
-        return 'D' . str_pad(Department::withTrashed()->count() + 1, 3, '0', STR_PAD_LEFT);
+        return 'D'.str_pad(Department::withTrashed()->count() + 1, 3, '0', STR_PAD_LEFT);
     }
 }
