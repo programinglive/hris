@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Models\SubCategory;
 use App\Models\Company;
+use App\Models\SubCategory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
@@ -90,7 +90,7 @@ class SubCategoryTable extends Component
 
         if ($this->companyCode !== 'all') {
             $subCategories = $subCategories->where(
-                    'company_id', Company::where('code', $this->companyCode
+                'company_id', Company::where('code', $this->companyCode
                 )->first()?->id
             );
         }

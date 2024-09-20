@@ -21,6 +21,7 @@ class SubCategoryForm extends Component
     public $branchCode = 'all';
 
     public $categories;
+
     public $categoryId;
 
     #[Validate('required|unique:categories|min:3')]

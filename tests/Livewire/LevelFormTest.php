@@ -47,6 +47,7 @@ class LevelFormTest extends TestCase
         ])->create();
 
     }
+
     /**
      * Test case for updating a level.
      *
