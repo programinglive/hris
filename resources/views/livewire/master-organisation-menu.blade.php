@@ -8,7 +8,7 @@
 	<ul class="sub-menu hidden">
 		<li class="menu-item">
 			<a href="{{ route('master.companies') }}" class="menu-link">
-				<span class="menu-text">Companies</span>
+				<span class="menu-text">Company</span>
 			</a>
 		</li>
 		<li class="menu-item">
