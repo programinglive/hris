@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Http\Controllers\ToolController;
 use App\Models\Company;
 use DB;
 use Illuminate\Contracts\View\View;
@@ -56,7 +57,7 @@ class CompanyForm extends Component
     public function companyData(): array
     {
         return [
-            'code' => trim(preg_replace('/\s+/', '', $this->code)),
+            'code' => ToolController::sanitizeString($this->code),
             'name' => $this->name,
             'npwp' => $this->npwp,
             'address' => $this->address,

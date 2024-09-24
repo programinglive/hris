@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Http\Controllers\ToolController;
 use App\Models\Branch;
 use App\Models\Company;
 use DB;
@@ -97,7 +98,7 @@ class BranchForm extends Component
     {
         return [
             'company_id' => $this->companyId,
-            'code' => $this->code,
+            'code' => ToolController::sanitizeString($this->code),
             'name' => $this->name,
             'type' => $this->type,
             'company_code' => $this->companyCode,
