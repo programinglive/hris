@@ -71,7 +71,7 @@ class NewsForm extends Component
     {
         return [
             'company_id' => $this->companyId,
-            'branch_id' => auth()->user()->details->branch_id,
+            'branch_id' => 1,
             'title' => $this->title,
             'content' => $this->content,
         ];

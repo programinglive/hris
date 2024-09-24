@@ -113,7 +113,37 @@
 							scope="col"
 							class="px-6 py-3 text-left text-xs
 											font-medium text-gray-500 uppercase"
-						>Data</th>
+						>
+							Company
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs
+											font-medium text-gray-500 uppercase"
+						>
+							Branch
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs
+											font-medium text-gray-500 uppercase"
+						>
+							Category
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs
+											font-medium text-gray-500 uppercase"
+						>
+							Code
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs
+											font-medium text-gray-500 uppercase"
+						>
+							Name
+						</th>
 						<th
 							scope="col"
 							class="px-6 py-3 text-end text-xs
@@ -133,22 +163,31 @@
 								class="px-6 py-4 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
-								<div class="flex justify-between">
-									<div>Company</div>
-									<div>{{ $subCategory->company?->name }}</div>
-								</div>
-								<div class="flex justify-between">
-									<div>Code</div>
-									<div>{{ $subCategory->code }}</div>
-								</div>
-								<div class="flex justify-between">
-									<div>Name</div>
-									<div>{{ $subCategory->name }}</div>
-								</div>
-								<div class="flex justify-between">
-									<div>Type</div>
-									<div>{{ $subCategory->type }}</div>
-								</div>
+								{{ $subCategory->company_name }}
+							</td>
+							<td
+								class="px-6 py-4 whitespace-nowrap
+												text-sm font-medium text-gray-500"
+							>
+								{{ $subCategory->branch_name }}
+							</td>
+							<td
+								class="px-6 py-4 whitespace-nowrap
+												text-sm font-medium text-gray-500"
+							>
+								{{ $subCategory->category_name }}
+							</td>
+							<td
+								class="px-6 py-4 whitespace-nowrap
+												text-sm font-medium text-gray-500"
+							>
+								{{ $subCategory->code }}
+							</td>
+							<td
+								class="px-6 py-4 whitespace-nowrap
+												text-sm font-medium text-gray-500"
+							>
+								{{ $subCategory->name }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-end

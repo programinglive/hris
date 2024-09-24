@@ -4,7 +4,7 @@
 		<select wire:model="categoryId" id="categoryId" class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2">
 			<option value="">Select Category</option>
 			@foreach ($categories as $category)
-				<option value="{{ $category->id }}">{{ $category->name }}</option>
+				<option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
 			@endforeach
 		</select>
 		@error('categoryId')

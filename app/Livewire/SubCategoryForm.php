@@ -16,13 +16,18 @@ class SubCategoryForm extends Component
 {
     #[Url(keep: true)]
     public $companyCode = 'all';
+    public $companyName;
 
     #[Url(keep: true)]
     public $branchCode = 'all';
+    public $branchName;
 
-    public $categories;
+    #[Url(keep: true)]
+
+    public $categories = [];
 
     public $categoryId;
+    public $categoryCode;
 
     #[Validate('required|unique:categories|min:3')]
     public $code;
@@ -35,11 +40,14 @@ class SubCategoryForm extends Component
     public $actionForm = 'save';
 
     /**
-     * The action to be performed by the form (save or update).
+     * Mounts the component.
      */
     public function mount(): void
     {
-        $this->categories = Category::where('company_id', 1)->get();
+        $this->categories = Category::where(
+            'company_code', $this->companyCode
+        )
+            ->get()->toArray();
     }
 
     /**
@@ -65,10 +73,16 @@ class SubCategoryForm extends Component
     {
         return [
             'company_id' => 1,
-            'branch_id' => auth()->user()->details->branch_id,
+            'branch_id' => 1,
             'category_id' => $this->categoryId,
             'code' => $this->code,
             'name' => $this->name,
+            'company_code' => $this->companyCode,
+            'company_name' => $this->companyName,
+            'branch_code' => $this->branchCode,
+            'branch_name' => $this->branchName,
+            'category_code' => $this->categoryCode,
+            'category_name' => $this->categoryName,
         ];
     }
 
@@ -80,7 +94,9 @@ class SubCategoryForm extends Component
         $this->validate();
 
         DB::transaction(function () {
-            $this->subCategory = SubCategory::create($this->subCategoryData());
+            $this->subCategory = SubCategory::create(
+                $this->subCategoryData()
+            );
         }, 5);
 
         $this->dispatch('sub-category-created', subCategoryId: $this->subCategory->id);
@@ -112,7 +128,10 @@ class SubCategoryForm extends Component
             $this->subCategory->update($this->subCategoryData());
         }, 5);
 
-        $this->dispatch('sub-category-updated', subCategoryId: $this->subCategory->id);
+        $this->dispatch(
+            'sub-category-updated',
+            subCategoryId: $this->subCategory->id
+        );
 
         $this->reset();
     }

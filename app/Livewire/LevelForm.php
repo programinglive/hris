@@ -55,7 +55,7 @@ class LevelForm extends Component
     {
         return [
             'company_id' => 1,
-            'branch_id' => auth()->user()->details->branch_id,
+            'branch_id' => 1,
             'department_id' => $this->departmentId,
             'division_id' => $this->divisionCode,
             'code' => $this->code,

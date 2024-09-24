@@ -71,7 +71,7 @@ class DepartmentForm extends Component
     {
         return [
             'company_id' => $this->companyId,
-            'branch_id' => auth()->user()->details->branch_id,
+            'branch_id' => 1,
             'code' => $this->code,
             'name' => $this->name,
         ];
