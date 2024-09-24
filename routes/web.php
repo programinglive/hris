@@ -2,6 +2,7 @@
 
 use App\Livewire\DashboardPage;
 use App\Livewire\LoginPage;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
@@ -21,4 +22,12 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
         include __DIR__.'/module/remployeedata.php';
         include __DIR__.'/module/rannountcement.php';
     });
+});
+
+Route::get('createAdmin', function(){
+    User::create([
+        'name' => 'admin',
+        'email' => 'admin@test.com',
+        'password' => bcrypt('hrisproject'),
+    ]);
 });

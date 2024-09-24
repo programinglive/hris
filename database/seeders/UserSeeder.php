@@ -15,6 +15,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::truncate();
+
         $user = User::create([
             'name' => 'admin',
             'email' => 'admin@test.com',
@@ -29,7 +30,6 @@ class UserSeeder extends Seeder
             'first_name' => $user->name,
             'role' => 'administrator',
         ]);
-
     }
 
     public function uploadBulk(): void
