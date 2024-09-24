@@ -45,13 +45,21 @@ class UserTable extends Component
      * The path of the uploaded file will be stored in
      * the $this→import variable.
      */
-    public function save(): void
+    public function importUser(): void
     {
+        // check if a company exists
+        $company = Company::first();
+        
+        if( !$company){
+            $this->addError('messages', 'Company not found');
+            return;
+        }
+        
         $this->validate([
             'import' => 'required|mimes:csv,xlsx,xls',
         ]);
 
-        $this->import->store(path: 'photos');
+        $this->import->store(path: 'users');
 
         $this->import = $this->import->path();
 
