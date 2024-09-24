@@ -4,10 +4,20 @@
 		}"
 >
 	@error('messages')
-	<div x-data="{ showError: true }" x-show="showError" class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+	<div
+		x-data="{ showError: true }"
+		x-show="showError"
+		class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg
+						dark:bg-red-200 dark:text-red-800"
+		role="alert"
+	>
 		<div class="flex justify-between">
 			{{ $message }}
-			<button type="button" @click="showError = false" class="ml-auto">x</button>
+			<button
+				type="button"
+				@click="showError = false"
+				class="ml-auto"
+			>x</button>
 		</div>
 	</div>
 	@enderror
@@ -30,7 +40,9 @@
 					class="form-input"
 				>
 			</label>
-			@error('import') <div class="text-red-500 inline">{{ $message }}</div> @enderror
+			@error('import')
+				<div class="text-red-500 inline">{{ $message }}</div>
+			@enderror
 			<button
 				wire:click="importUser"
 				type="button"
@@ -135,8 +147,13 @@
 										>
 											...
 										</button>
-										<div style="z-index: 9999" x-show="open" class="absolute right-0 top-0 bg-white dark:bg-slate-800 p-2 rounded-md shadow-lg "
-											@click.outside="open = false">
+										<div
+											style="z-index: 9999"
+								      x-show="open"
+											class="absolute right-0 top-0 bg-white
+															dark:bg-slate-800 p-2 rounded-md shadow-lg "
+											@click.outside="open = false"
+										>
 											<button
 												wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"
 												class="block w-full text-gray-500 hover:text-sky-700 text-end"

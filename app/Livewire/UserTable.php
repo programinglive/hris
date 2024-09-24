@@ -54,6 +54,14 @@ class UserTable extends Component
             $this->addError('messages', 'Company not found');
             return;
         }
+
+        // check if a branch exists
+        $branch = Branch::first();
+
+        if( !$branch){
+            $this->addError('messages', 'Branch not found');
+            return;
+        }
         
         $this->validate([
             'import' => 'required|mimes:csv,xlsx,xls',
