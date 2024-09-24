@@ -3,24 +3,69 @@
 			open: $wire.entangle('showForm')
 		}"
 >
+	@error('messages')
+	<div
+		x-data="{ showError: true }"
+		x-show="showError"
+		class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg
+	                    dark:bg-red-200 dark:text-red-800"
+		role="alert"
+	>
+		<div class="flex justify-between">
+			{{ $message }}
+			<button
+				type="button"
+				@click="showError = false"
+				class="ml-auto"
+			>x
+			</button>
+		</div>
+	</div>
+	@enderror
 	<div class="flex justify-between pt-2" x-show="!open" >
 		<div>
 			<button type="button" class="btn bg-primary text-white" @click="open = true">+</button>
 		</div>
-		<div class="w-1/4 relative">
-			<input wire:model.live="search" type="text" id="search" class="form-input pr-10" placeholder="Search...">
+		<div class="flex items-center gap-2 justify-between w-1/4 relative">
+			<label for="import" class="inline">
+				<input
+					wire:model="import"
+					type="file"
+					id="import"
+					name="import"
+					accept=".csv,.xlsx"
+					class="form-input"
+				>
+			</label>
+			@error('import') <div class="text-red-500 inline">{{ $message }}</div> @enderror
+			<button
+				wire:click="importBranch"
+				type="button"
+				class="btn bg-green-500 text-white inline"
+			>
+				<i class="mgc_upload_line"></i>
+			</button>
+			<input
+				wire:model.live="search"
+				type="text"
+				id="search"
+				class="form-input pr-10"
+				placeholder="Search..."
+			>
 			@if($search)
 				<button
 					wire:click="$set('search',null)"
 					type="button"
 					class="absolute inset-y-0 right-0 flex items-center pr-3"
 				>
-					<svg class="h-3 w-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<svg
+						class="h-3 w-3 text-gray-500"
+						fill="none" viewBox="0 0 24 24" stroke="currentColor"
+					>
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
+							stroke-width="2" d="M6 18L18 6M6 6l12 12"
 						></path>
 					</svg>
 				</button>

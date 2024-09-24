@@ -11,8 +11,11 @@ class BranchController extends Controller
      *
      * @return string The generated branch code.
      */
-    public static function generateCode()
+    public static function generateCode(): string
     {
-        return 'B'.str_pad(Branch::withTrashed()->count() + 1, 7, '0', STR_PAD_LEFT);
+        $countBranch = Branch::withTrashed()->count() + 1;
+
+        return 'B'.str_pad($countBranch, 5, '0', STR_PAD_LEFT);
+
     }
 }

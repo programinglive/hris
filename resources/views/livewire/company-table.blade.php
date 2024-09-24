@@ -3,6 +3,25 @@
 			open: $wire.entangle('showForm')
 		}"
 >
+	@error('messages')
+	<div
+		x-data="{ showError: true }"
+		x-show="showError"
+		class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg
+	                    dark:bg-red-200 dark:text-red-800"
+		role="alert"
+	>
+		<div class="flex justify-between">
+			{{ $message }}
+			<button
+				type="button"
+				@click="showError = false"
+				class="ml-auto"
+			>x
+			</button>
+		</div>
+	</div>
+	@enderror
 	<div class="flex justify-between pt-2" x-show="!open" >
 		<div>
 			<button type="button" class="btn bg-primary text-white" @click="open = true">+</button>
@@ -52,7 +71,6 @@
 				</button>
 			@endif
 		</div>
-	
 	</div>
 	<div x-show="open">
 		<livewire:company-form />

@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('code');
             $table->string('name');
             $table->enum('type', ['branch', 'partner'])->default('branch');
+            $table->string('company_code');
+            $table->string('company_name');
             $table->softDeletes();
             $table->timestamps();
         });

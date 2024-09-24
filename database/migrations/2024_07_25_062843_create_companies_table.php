@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('name');
             $table->string('npwp')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->text('address')->nullable();
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
