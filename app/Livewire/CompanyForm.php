@@ -56,7 +56,7 @@ class CompanyForm extends Component
     public function companyData(): array
     {
         return [
-            'code' => $this->code,
+            'code' => trim(preg_replace('/\s+/', '', $this->code)),
             'name' => $this->name,
             'npwp' => $this->npwp,
             'address' => $this->address,

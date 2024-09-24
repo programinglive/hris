@@ -50,6 +50,12 @@ class FormCompanyOption extends Component
         $this->dispatch('getDepartment', $companyCode);
     }
 
+    #[On('setCompany')]
+    public function setCompany($companyCode): void
+    {
+        $this->companyCode = $companyCode;
+    }
+
     /**
      * Resets the 'companyCode' property to its initial value.
      */
