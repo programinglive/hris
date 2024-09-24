@@ -20,6 +20,7 @@ class BranchFactory extends Factory
     public function definition(): array
     {
         $company = Company::factory()->create();
+
         return [
             'company_id' => $company->id,
             'code' => BranchController::generateCode(),
