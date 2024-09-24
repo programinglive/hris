@@ -12,7 +12,8 @@ Route::get('pinfo', function () {
     return phpinfo();
 });
 
-Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth','loggedIn']], function () {
+
     Route::get('dashboard', DashboardPage::class)->name('dashboard');
 
     Route::name('master.')->prefix('master')->group(function () {
