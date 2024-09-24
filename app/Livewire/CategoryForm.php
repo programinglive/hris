@@ -14,15 +14,21 @@ use Livewire\Component;
 class CategoryForm extends Component
 {
     public $company;
+
     public $companyId;
+
     #[Url(keep: true)]
     public $companyCode = 'all';
+
     public $companyName;
 
     public $branch;
+
     public $branchId;
+
     #[Url(keep: true)]
     public $branchCode = 'all';
+
     public $branchName;
 
     #[Validate('required|unique:categories|min:3')]

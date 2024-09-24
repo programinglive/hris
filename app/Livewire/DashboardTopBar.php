@@ -13,17 +13,18 @@ class DashboardTopBar extends Component
 
     #[Url(keep: true)]
     public $branchCode;
+
     public $branchName;
 
     public $company;
+
     #[Url(keep: true)]
     public $companyCode;
+
     public $companyName;
 
     /**
      * mount event
-     *
-     * @return void
      */
     public function mount(): void
     {
@@ -36,9 +37,6 @@ class DashboardTopBar extends Component
         $this->branchName = $this->branch->name;
     }
 
-    /**
-     * @param string $companyCode
-     */
     public function updatedCompanyCode(string $companyCode): void
     {
         $this->resetErrorBag();
@@ -56,10 +54,6 @@ class DashboardTopBar extends Component
         $this->dispatch('setCompany', $companyCode);
     }
 
-
-    /**
-     * @return void
-     */
     public function logout(): void
     {
         auth()->logout();
@@ -70,7 +64,7 @@ class DashboardTopBar extends Component
     {
         return view('livewire.dashboard-top-bar', [
             'companies' => Company::all(),
-            'branches' => $this->company->branches
+            'branches' => $this->company->branches,
         ]);
     }
 }
