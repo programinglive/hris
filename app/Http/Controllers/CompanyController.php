@@ -6,9 +6,6 @@ use App\Models\Company;
 
 class CompanyController extends Controller
 {
-    /**
-     * @return string
-     */
     public static function generateCode(): string
     {
         $countCompany = Company::withTrashed()->count() + 1;

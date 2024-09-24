@@ -6,9 +6,6 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    /**
-     * @return string
-     */
     public static function generateCode(): string
     {
         $countCompany = Category::withTrashed()->count() + 1;

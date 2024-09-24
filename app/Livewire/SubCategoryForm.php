@@ -16,17 +16,19 @@ class SubCategoryForm extends Component
 {
     #[Url(keep: true)]
     public $companyCode = 'all';
+
     public $companyName;
 
     #[Url(keep: true)]
     public $branchCode = 'all';
+
     public $branchName;
 
     #[Url(keep: true)]
-
     public $categories = [];
 
     public $categoryId;
+
     public $categoryCode;
 
     #[Validate('required|unique:categories|min:3')]

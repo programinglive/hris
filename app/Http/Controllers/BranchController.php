@@ -20,9 +20,7 @@ class BranchController extends Controller
     }
 
     /**
-     * @param $company
-     * @param null $name
-     * @return Branch
+     * @param  null  $name
      */
     public static function createByName($company, $name = null): Branch
     {
@@ -30,7 +28,7 @@ class BranchController extends Controller
             'name' => $name,
         ]);
 
-        if(!$branch->code){
+        if (! $branch->code) {
             $branch->company_id = $company->id;
             $branch->code = BranchController::generateCode();
             $branch->company_code = $company->code;

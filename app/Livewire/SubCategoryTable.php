@@ -21,7 +21,7 @@ use Spatie\SimpleExcel\SimpleExcelReader;
 
 class SubCategoryTable extends Component
 {
-    use withPagination, WithFileUploads;
+    use WithFileUploads, withPagination;
 
     public $showForm = false;
 
@@ -33,9 +33,6 @@ class SubCategoryTable extends Component
 
     public $import;
 
-    /**
-     * @return void
-     */
     public function importSubCategory(): void
     {
         $this->validate([
@@ -48,62 +45,60 @@ class SubCategoryTable extends Component
 
         SimpleExcelReader::create($this->import)->getRows()
             ->each(function (array $rowProperties) {
-            $name = trim(
-                strtolower(
-                    str_replace(' ', '', $rowProperties['name'])
-                )
-            );
+                $name = trim(
+                    strtolower(
+                        str_replace(' ', '', $rowProperties['name'])
+                    )
+                );
 
-            $company = Company::firstOrNew([
-                'name' => $rowProperties['company_name'],
-            ]);
+                $company = Company::firstOrNew([
+                    'name' => $rowProperties['company_name'],
+                ]);
 
-            if(!$company->code){
-                $company->code = CompanyController::generateCode();
-                $company->save();
-            }
+                if (! $company->code) {
+                    $company->code = CompanyController::generateCode();
+                    $company->save();
+                }
 
-            $branch = Branch::firstOrNew([
-                'name' => $rowProperties['branch_name'],
-            ]);
+                $branch = Branch::firstOrNew([
+                    'name' => $rowProperties['branch_name'],
+                ]);
 
-            if(!$branch->code){
-                $branch = BranchController::createByName($company, $rowProperties['branch_name']);
-            }
+                if (! $branch->code) {
+                    $branch = BranchController::createByName($company, $rowProperties['branch_name']);
+                }
 
-            $branch->save();
+                $branch->save();
 
-            $category = Category::firstOrNew([
-                'name' => $rowProperties['category_name'],
-            ]);
+                $category = Category::firstOrNew([
+                    'name' => $rowProperties['category_name'],
+                ]);
 
-            if(!$category->code){
-                $category->company_id = $company->id;
-                $category->branch_id = $branch->id ?? null;
-                $category->code = CategoryController::generateCode();
-                $category->company_code = $company->code;
-                $category->company_name = $company->name;
-            }
+                if (! $category->code) {
+                    $category->company_id = $company->id;
+                    $category->branch_id = $branch->id ?? null;
+                    $category->code = CategoryController::generateCode();
+                    $category->company_code = $company->code;
+                    $category->company_name = $company->name;
+                }
 
-            $category->save();
+                $category->save();
 
+                $subCategory = SubCategory::firstOrNew([
+                    'name' => $name,
+                ]);
 
+                if (! $subCategory->code) {
+                    $subCategory->company_id = $company->id;
+                    $subCategory->branch_id = $branch->id ?? null;
+                    $subCategory->category_id = $category->id;
+                    $subCategory->code = SubCategoryController::generateCode();
+                    $subCategory->company_code = $company->code;
+                    $subCategory->company_name = $company->name;
+                }
 
-            $subCategory = SubCategory::firstOrNew([
-                'name' => $name,
-            ]);
-
-            if(!$subCategory->code){
-                $subCategory->company_id = $company->id;
-                $subCategory->branch_id = $branch->id ?? null;
-                $subCategory->category_id = $category->id;
-                $subCategory->code = SubCategoryController::generateCode();
-                $subCategory->company_code = $company->code;
-                $subCategory->company_name = $company->name;
-            }
-
-            $subCategory->save();
-        });
+                $subCategory->save();
+            });
 
         redirect()->back();
     }

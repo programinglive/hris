@@ -6,9 +6,6 @@ use App\Models\SubCategory;
 
 class SubCategoryController extends Controller
 {
-    /**
-     * @return string
-     */
     public static function generateCode(): string
     {
         $countCompany = SubCategory::withTrashed()->count() + 1;
