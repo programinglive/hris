@@ -67,7 +67,6 @@ class UserFactory extends Factory
                 'phone' => $this->faker->phoneNumber(),
             ]);
 
-            $user->assignRole('root');
             echo "User [$user->name] created successfully.".PHP_EOL;
         });
     }

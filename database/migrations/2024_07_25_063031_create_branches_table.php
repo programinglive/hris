@@ -15,14 +15,15 @@ return new class extends Migration
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Company::class)
+                ->nullable()
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->string('code');
             $table->string('name');
             $table->enum('type', ['branch', 'partner'])->default('branch');
-            $table->string('company_code');
-            $table->string('company_name');
+            $table->string('company_code')->nullable();
+            $table->string('company_name')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
