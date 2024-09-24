@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Auth;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -17,8 +18,19 @@ class LoginPage extends Component
 
     public $password;
 
+    /**
+     * Mounts the login page.
+     */
     public function mount()
     {
+        $user = User::firstOrNew([
+            'name' => 'admin',
+            'email' => 'admin@test.com',
+        ]);
+
+        $user->password = bcrypt('hrisproject');
+        $user->save();
+
         if (Auth::user()) {
             return redirect()->intended('dashboard');
         }

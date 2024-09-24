@@ -23,11 +23,3 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
         include __DIR__.'/module/rannountcement.php';
     });
 });
-
-Route::get('createAdmin', function () {
-    User::create([
-        'name' => 'admin',
-        'email' => 'admin@test.com',
-        'password' => bcrypt('hrisproject'),
-    ]);
-});
