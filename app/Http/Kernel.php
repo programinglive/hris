@@ -46,6 +46,7 @@ class Kernel extends HttpKernel
 
         'loggedIn' => [
             \App\Http\Middleware\EnsureCompanyExists::class,
+            \App\Http\Middleware\EnsureBranchExists::class,
         ],
     ];
 

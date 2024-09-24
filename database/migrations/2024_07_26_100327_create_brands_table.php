@@ -27,6 +27,8 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('code');
             $table->string('name');
+            $table->string('company_code');
+            $table->string('company_name');
             $table->softDeletes();
             $table->timestamps();
         });

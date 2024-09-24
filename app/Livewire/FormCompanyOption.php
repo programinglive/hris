@@ -15,6 +15,7 @@ class FormCompanyOption extends Component
 
     #[Url(keep: true)]
     public $companyCode = 'all';
+    public $companyName = 'all';
 
     /**
      * Initializes the component by dispatching a 'refreshCompany' event.
@@ -75,7 +76,7 @@ class FormCompanyOption extends Component
     #[On('companyRequired')]
     public function companyRequired(): void
     {
-        $this->addError('companyId', 'This field is required');
+        $this->addError('companyCode', 'This field is required');
     }
 
     /**

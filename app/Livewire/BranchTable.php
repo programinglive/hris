@@ -143,14 +143,17 @@ class BranchTable extends Component
             abort(404);
         }
 
-        $branches = Branch::where(function ($query) {
-            $query->where('name', 'like', '%'.$this->search.'%')
-                ->orWhere('code', 'like', '%'.$this->search.'%');
-        });
+        $branches = new Branch();
+
+        if($this->search != '' || !$this->search){
+            $branches = Branch::where(function ($query) {
+                $query->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('code', 'like', '%'.$this->search.'%');
+            });
+        }
 
         if ($this->companyCode != 'all') {
-            $this->companyId = Company::where('code', $this->companyCode)->first()->id;
-            $branches = $branches->where('company_id', $this->companyId);
+            $branches->where('company_code', $this->companyCode);
         }
 
         return $branches->orderBy('id')->paginate(5);

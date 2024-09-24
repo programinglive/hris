@@ -14,10 +14,11 @@ use Livewire\Component;
 
 class BranchForm extends Component
 {
+    public $company;
     public $companyId;
-
     #[Url(keep: true)]
     public $companyCode = 'all';
+    public $companyName;
 
     #[Validate('required|unique:branches|min:3')]
     public $code;
@@ -68,7 +69,9 @@ class BranchForm extends Component
 
         if ($code != 'all') {
             $this->companyCode = $code;
-            $this->companyId = Company::where('code', $code)->first()->id;
+            $this->company = Company::where('code', $code)->first();
+            $this->companyId = $this->company->id;
+            $this->companyName = $this->company->name;
         }
 
     }
@@ -94,6 +97,8 @@ class BranchForm extends Component
             'code' => $this->code,
             'name' => $this->name,
             'type' => $this->type,
+            'company_code' => $this->companyCode,
+            'company_name' => $this->companyName,
         ];
     }
 
@@ -130,10 +135,14 @@ class BranchForm extends Component
     {
         $this->code = $code;
         $this->branch = Branch::where('code', $code)->first();
+
         $this->companyId = $this->branch->company_id;
         $this->dispatch('selectCompany', companyId: $this->companyId);
+
         $this->name = $this->branch->name;
         $this->type = $this->branch->type;
+        $this->companyCode = $this->branch->company->code;
+        $this->companyName = $this->branch->company->name;
 
         $this->actionForm = 'update';
 
