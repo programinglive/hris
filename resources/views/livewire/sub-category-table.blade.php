@@ -5,17 +5,87 @@
 >
 	<div class="flex justify-between pt-2" x-show="!open" >
 		<div>
-			<button type="button" class="btn bg-primary text-white" @click="open = true">+</button>
+			<button
+				type="button"
+				class="btn bg-primary text-white"
+				@click="open = true"
+			>+</button>
 		</div>
-		<div class="w-1/4 relative">
-			<input wire:model.live="search" type="text" id="search" class="form-input pr-10" placeholder="Search...">
+		<div
+			class="flex items-center gap-2
+							justify-between w-2/4 relative"
+		>
+			<a
+				href="{{ asset('sub_category_data.xlsx') }}"
+				class="
+			        px-4 py-2
+			        rounded-md
+			        text-blue-500
+			        hover:text-blue-600
+			        focus:outline-none
+			        focus:ring-2
+			        focus:ring-blue-300
+			        flex items-center gap-2
+			        text-nowrap
+			        "
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+		      class="w-6 h-6"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+			      d="M3 16.5v2.25A2.25 2.25 0 005.25
+			          21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12
+			          16.5m0 0L7.5 12m4.5 4.5V3"
+					/>
+				</svg>
+				Sub Category Template
+			</a>
+			<label for="import" class="inline">
+				<input
+					wire:model="import"
+					type="file"
+					id="import"
+					name="import"
+					accept=".csv,.xlsx"
+					class="form-input"
+				>
+			</label>
+			@error('import')
+			<div class="text-red-500 inline">{{ $message }}</div>
+			@enderror
+			<button
+				wire:click="importSubCategory"
+				type="button"
+				class="btn bg-green-500 text-white inline"
+			>
+				<i class="mgc_upload_line"></i>
+			</button>
+			<input
+				wire:model.live="search"
+				type="text"
+				id="search"
+				class="form-input pr-10"
+				placeholder="Search..."
+			>
 			@if($search)
 				<button
 					wire:click="$set('search',null)"
 					type="button"
 					class="absolute inset-y-0 right-0 flex items-center pr-3"
 				>
-					<svg class="h-3 w-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<svg
+						class="h-3 w-3 text-gray-500"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -33,23 +103,36 @@
 	<div class="overflow-x-auto" x-show="!open">
 		<div class="min-w-full inline-block align-middle">
 			<div class="overflow-hidden">
-				<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+				<table
+					class="min-w-full divide-y divide-gray-200
+									dark:divide-gray-700"
+				>
 					<thead>
 					<tr>
-						<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase"
+							class="px-6 py-3 text-left text-xs
+											font-medium text-gray-500 uppercase"
+						>Data</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-end text-xs
+											font-medium text-gray-500 uppercase"
 							style="width: 100px"
 						>
 							Action
 						</th>
 					</tr>
 					</thead>
-					<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+					<tbody
+						class="divide-y divide-gray-200 dark:divide-gray-700"
+					>
 					@forelse($subCategories as $subCategory)
 						<tr>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td
+								class="px-6 py-4 whitespace-nowrap
+												text-sm font-medium text-gray-500"
+							>
 								<div class="flex justify-between">
 									<div>Company</div>
 									<div>{{ $subCategory->company?->name }}</div>
@@ -67,7 +150,11 @@
 									<div>{{ $subCategory->type }}</div>
 								</div>
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex flex-col" style="width: 100px">
+							<td
+								class="px-6 py-4 whitespace-nowrap text-end
+												text-sm font-medium flex flex-col"
+								style="width: 100px"
+							>
 								<button
 									wire:click="$dispatch('edit', { code: '{{ $subCategory->code }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
@@ -75,7 +162,9 @@
 									Edit
 								</button>
 								<button
-									wire:click="$dispatch('delete', { code: '{{ $subCategory->code }}'})"
+									wire:click="$dispatch(
+										'delete', { code: '{{ $subCategory->code }}'}
+									)"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Delete
@@ -84,7 +173,10 @@
 						</tr>
 					@empty
 						<tr>
-							<td colspan="4" class="text-center text-gray-500 pt-4">Empty Data</td>
+							<td
+								colspan="4"
+								class="text-center text-gray-500 pt-4"
+							>Empty Data</td>
 						</tr>
 					@endforelse
 					</tbody>

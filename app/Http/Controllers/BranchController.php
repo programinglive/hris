@@ -18,4 +18,26 @@ class BranchController extends Controller
         return 'B'.str_pad($countBranch, 5, '0', STR_PAD_LEFT);
 
     }
+
+    /**
+     * @param $company
+     * @param null $name
+     * @return Branch
+     */
+    public static function createByName($company, $name = null): Branch
+    {
+        $branch = Branch::firstOrNew([
+            'name' => $name,
+        ]);
+
+        if(!$branch->code){
+            $branch->company_id = $company->id;
+            $branch->code = BranchController::generateCode();
+            $branch->company_code = $company->code;
+            $branch->company_name = $company->name;
+        }
+        $branch->save();
+
+        return $branch;
+    }
 }

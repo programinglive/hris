@@ -60,22 +60,10 @@ class CategoryTable extends Component
             $company->save();
 
             if($rowProperties['branch_name']){
-                $branch = Branch::firstOrNew([
-                    'name' => $rowProperties['branch_name'],
-                ]);
-
-                if(!$branch->code){
-                    $branch->company_id = $company->id;
-                    $branch->code = BranchController::generateCode();
-                    $branch->company_code = $company->code;
-                    $branch->company_name = $company->name;
-                }
-
-                $branch->save();
+                $branch = BranchController::createByName($company, $rowProperties['branch_name']);
             }
 
-
-                $category = Category::firstOrNew([
+            $category = Category::firstOrNew([
                 'name' => $name,
             ]);
 
@@ -92,6 +80,8 @@ class CategoryTable extends Component
 
             $category->save();
         });
+
+        redirect()->back();
     }
 
     /**

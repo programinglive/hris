@@ -21,6 +21,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignIdFor(Branch::class)
+                ->nullable()
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
@@ -28,9 +29,14 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->string('category_code');
             $table->string('code')->unique();
             $table->string('name');
+            $table->string('company_code')->nullable();
+            $table->string('company_name')->nullable();
+            $table->string('branch_code')->nullable();
+            $table->string('branch_name')->nullable();
+            $table->string('category_code')->nullable();
+            $table->string('category_name')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
