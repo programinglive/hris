@@ -44,7 +44,7 @@ class EmployeeForm extends Component
     public function employeeData(): array
     {
         return [
-            'company_id' => auth()->user()->details->company_id,
+            'company_id' => 1,
             'branch_id' => auth()->user()->details->branch_id,
             'code' => $this->code,
             'name' => strtolower(trim($this->name)),

@@ -39,7 +39,7 @@ class SubCategoryForm extends Component
      */
     public function mount(): void
     {
-        $this->categories = Category::where('company_id', auth()->user()->details->company_id)->get();
+        $this->categories = Category::where('company_id', 1)->get();
     }
 
     /**
@@ -64,7 +64,7 @@ class SubCategoryForm extends Component
     public function subCategoryData(): array
     {
         return [
-            'company_id' => auth()->user()->details->company_id,
+            'company_id' => 1,
             'branch_id' => auth()->user()->details->branch_id,
             'category_id' => $this->categoryId,
             'code' => $this->code,

@@ -68,7 +68,7 @@ class DivisionForm extends Component
     public function divisionData(): array
     {
         return [
-            'company_id' => auth()->user()->details->company_id,
+            'company_id' => 1,
             'branch_id' => auth()->user()->details->branch_id,
             'department_id' => $this->departmentId,
             'code' => $this->code,

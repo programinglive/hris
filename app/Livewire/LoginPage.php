@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Company;
 use App\Models\User;
 use Auth;
 use Illuminate\Contracts\View\Factory;
@@ -47,8 +48,13 @@ class LoginPage extends Component
             ? 'email'
             : 'name';
 
-        if (! Auth::attempt([$login_type => $this->loginAccount, 'password' => $this->password])) {
-            return back()->withErrors(['loginAccount' => 'The provided credentials do not match our records.']);
+        if (! Auth::attempt([
+                        $login_type => $this->loginAccount,
+                        'password' => $this->password])
+        ) {
+            return back()->withErrors([
+                'loginAccount' => 'The provided credentials do not match our records.'
+            ]);
         }
 
         return redirect()->intended('dashboard');

@@ -54,7 +54,7 @@ class LevelForm extends Component
     public function levelData(): array
     {
         return [
-            'company_id' => auth()->user()->details->company_id,
+            'company_id' => 1,
             'branch_id' => auth()->user()->details->branch_id,
             'department_id' => $this->departmentId,
             'division_id' => $this->divisionCode,
