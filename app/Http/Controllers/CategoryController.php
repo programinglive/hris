@@ -6,10 +6,13 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
+    /**
+     * @return string
+     */
     public static function generateCode(): string
     {
-        $latest = Category::withTrashed()->count() + 1;
+        $countCompany = Category::withTrashed()->count() + 1;
 
-        return 'CTG'.str_pad($latest, 4, '0', STR_PAD_LEFT);
+        return 'CAT'.str_pad($countCompany, 5, '0', STR_PAD_LEFT);
     }
 }

@@ -2,6 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Http\Controllers\BranchController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CompanyController;
+use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Company;
 use Illuminate\Contracts\View\View;
@@ -9,11 +13,13 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Spatie\SimpleExcel\SimpleExcelReader;
 
 class CategoryTable extends Component
 {
-    use withPagination;
+    use withPagination, WithFileUploads;
 
     public $showForm = false;
 
@@ -22,6 +28,71 @@ class CategoryTable extends Component
 
     #[Url(keep: true)]
     public $companyCode = 'all';
+    
+    public $import;
+
+    public function importCategory(): void
+    {
+        $this->validate([
+            'import' => 'required|mimes:csv,xlsx,xls',
+        ]);
+
+        $this->import->store(path: 'categories');
+
+        $this->import = $this->import->path();
+
+        SimpleExcelReader::create($this->import)->getRows()
+            ->each(function (array $rowProperties) {
+            $name = trim(
+                strtolower(
+                    str_replace(' ', '', $rowProperties['name'])
+                )
+            );
+
+            $company = Company::firstOrNew([
+                'name' => $rowProperties['company_name'],
+            ]);
+
+            if(!$company->code){
+                $company->code = CompanyController::generateCode();
+            }
+
+            $company->save();
+
+            if($rowProperties['branch_name']){
+                $branch = Branch::firstOrNew([
+                    'name' => $rowProperties['branch_name'],
+                ]);
+
+                if(!$branch->code){
+                    $branch->company_id = $company->id;
+                    $branch->code = BranchController::generateCode();
+                    $branch->company_code = $company->code;
+                    $branch->company_name = $company->name;
+                }
+
+                $branch->save();
+            }
+
+
+                $category = Category::firstOrNew([
+                'name' => $name,
+            ]);
+
+
+            if(!$category->code){
+                $category->company_id = $company->id;
+                $category->branch_id = $branch->id ?? null;
+                $category->code = CategoryController::generateCode();
+                $category->company_code = $company->code;
+                $category->company_name = $company->name;
+                $category->branch_code = $branch->code  ?? null;
+                $category->branch_name = $branch->name  ?? null;
+            }
+
+            $category->save();
+        });
+    }
 
     /**
      * Sets the company code.
