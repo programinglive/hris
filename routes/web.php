@@ -24,7 +24,7 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     });
 });
 
-Route::get('createAdmin', function(){
+Route::get('createAdmin', function () {
     User::create([
         'name' => 'admin',
         'email' => 'admin@test.com',

@@ -49,20 +49,22 @@ class UserTable extends Component
     {
         // check if a company exists
         $company = Company::first();
-        
-        if( !$company){
+
+        if (! $company) {
             $this->addError('messages', 'Company not found');
+
             return;
         }
 
         // check if a branch exists
         $branch = Branch::first();
 
-        if( !$branch){
+        if (! $branch) {
             $this->addError('messages', 'Branch not found');
+
             return;
         }
-        
+
         $this->validate([
             'import' => 'required|mimes:csv,xlsx,xls',
         ]);

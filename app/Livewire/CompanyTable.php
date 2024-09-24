@@ -2,17 +2,20 @@
 
 namespace App\Livewire;
 
+use App\Http\Controllers\CompanyController;
 use App\Models\Company;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Spatie\SimpleExcel\SimpleExcelReader;
 
 class CompanyTable extends Component
 {
-    use withPagination;
+    use WithFileUploads, withPagination;
 
     public $showForm = false;
 
@@ -21,6 +24,35 @@ class CompanyTable extends Component
 
     #[Url(keep: true)]
     public $companyCode = 'all';
+
+    public $import;
+
+    public function importCompany(): void
+    {
+        $this->validate([
+            'import' => 'required|mimes:csv,xlsx,xls',
+        ]);
+
+        $this->import->store(path: 'companies');
+
+        $this->import = $this->import->path();
+
+        SimpleExcelReader::create($this->import)->getRows()
+            ->each(function (array $rowProperties) {
+                $company = Company::firstOrNew([
+                    'code' => CompanyController::generateCode(),
+                    'phone' => $rowProperties['phone'],
+                ]);
+
+                $company->name = $rowProperties['name'];
+                $company->email = $rowProperties['email'];
+                $company->address = $rowProperties['address'];
+                $company->save();
+            }
+            );
+
+        redirect()->back();
+    }
 
     /**
      * Sets the value of the company code property to the given code.
