@@ -15,9 +15,12 @@ use Livewire\Component;
 class BranchForm extends Component
 {
     public $company;
+
     public $companyId;
+
     #[Url(keep: true)]
     public $companyCode = 'all';
+
     public $companyName;
 
     #[Validate('required|unique:branches|min:3')]

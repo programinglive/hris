@@ -143,9 +143,9 @@ class BranchTable extends Component
             abort(404);
         }
 
-        $branches = new Branch();
+        $branches = new Branch;
 
-        if($this->search != '' || !$this->search){
+        if ($this->search != '' || ! $this->search) {
             $branches = Branch::where(function ($query) {
                 $query->where('name', 'like', '%'.$this->search.'%')
                     ->orWhere('code', 'like', '%'.$this->search.'%');

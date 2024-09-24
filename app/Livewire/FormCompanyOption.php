@@ -15,6 +15,7 @@ class FormCompanyOption extends Component
 
     #[Url(keep: true)]
     public $companyCode = 'all';
+
     public $companyName = 'all';
 
     /**

@@ -12,7 +12,7 @@ Route::get('pinfo', function () {
     return phpinfo();
 });
 
-Route::group(['middleware' => ['auth','loggedIn']], function () {
+Route::group(['middleware' => ['auth', 'loggedIn']], function () {
 
     Route::get('dashboard', DashboardPage::class)->name('dashboard');
 

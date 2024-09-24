@@ -10,8 +10,8 @@ class EnsureCompanyExists
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!Company::exists() && auth()->check()
-            && !request()->routeIs('master.companies')
+        if (! Company::exists() && auth()->check()
+            && ! request()->routeIs('master.companies')
         ) {
             return redirect()->route('master.companies');
         }

@@ -12,8 +12,8 @@ class EnsureBranchExists
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Branch::exists() && auth()->check()
-            && !request()->routeIs('master.branches')
+        if (! Branch::exists() && auth()->check()
+            && ! request()->routeIs('master.branches')
             && Company::exists()
         ) {
             return redirect()->route('master.branches');
