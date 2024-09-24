@@ -13,11 +13,17 @@ use Livewire\Component;
 
 class CategoryForm extends Component
 {
+    public $company;
+    public $companyId;
     #[Url(keep: true)]
     public $companyCode = 'all';
+    public $companyName;
 
+    public $branch;
+    public $branchId;
     #[Url(keep: true)]
     public $branchCode = 'all';
+    public $branchName;
 
     #[Validate('required|unique:categories|min:3')]
     public $code;
@@ -55,6 +61,10 @@ class CategoryForm extends Component
             'branch_id' => 1,
             'code' => $this->code,
             'name' => $this->name,
+            'company_code' => $this->companyCode,
+            'company_name' => $this->companyName,
+            'branch_code' => $this->branchCode,
+            'branch_name' => $this->branchName,
         ];
     }
 
