@@ -17,7 +17,7 @@
 		>
 			
 			<a
-				href="{{ asset('attendance-time_data.xlsx') }}"
+				href="{{ asset('approval_data.xlsx') }}"
 				class="
 			        px-4 py-2
 			        rounded-md
@@ -45,7 +45,7 @@
 			          18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
 					/>
 				</svg>
-				Attendance Time Template
+				Approval Template
 			</a>
 			<label for="import" class="inline">
 				<input
@@ -61,7 +61,7 @@
 			<div class="text-red-500 inline">{{ $message }}</div>
 			@enderror
 			<button
-				wire:click="importAttendanceTime"
+				wire:click="importApproval"
 				type="button"
 				class="btn bg-green-500 text-white inline"
 			>
@@ -98,7 +98,7 @@
 		</div>
 	</div>
 	<div x-show="open">
-		<livewire:attendance-time-form />
+		<livewire:approval-form />
 	</div>
 	<div class="overflow-x-auto" x-show="!open">
 		<div class="min-w-full inline-block align-middle">
@@ -124,19 +124,31 @@
 							scope="col"
 							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
-							In
+							Code
 						</th>
 						<th
 							scope="col"
 							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
-							Out
+							Name
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+						>
+							Feature
 						</th>
 						<th
 							scope="col"
 							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Status
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+						>
+							Order
 						</th>
 						<th
 							scope="col"
@@ -148,32 +160,27 @@
 					</tr>
 					</thead>
 					<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-					@forelse($attendanceTimes as $attendanceTime)
+					@forelse($approvals as $approval)
 						<tr>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $attendanceTime->company_name }}
+								{{ $approval->company_name }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $attendanceTime->branch_name }}
+								{{ $approval->branch_name }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $attendanceTime->in }}
+								{{ $approval->code }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $attendanceTime->out }}
-							</td>
-							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
-							>
-								{{ $attendanceTime->status }}
+								{{ $approval->name }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-end text-sm
@@ -181,13 +188,13 @@
 								style="width: 100px"
 							>
 								<button
-									wire:click="$dispatch('edit', { code: '{{ $attendanceTime->code }}'})"
+									wire:click="$dispatch('edit', { code: '{{ $approval->code }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Edit
 								</button>
 								<button
-									wire:click="$dispatch('delete', { code: '{{ $attendanceTime->code }}'})"
+									wire:click="$dispatch('delete', { code: '{{ $approval->code }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Delete
@@ -197,7 +204,7 @@
 					@empty
 						<tr>
 							<td
-								colspan="6"
+								colspan="8"
 								class="text-center text-gray-500 pt-4"
 							>
 								Empty Data
@@ -209,6 +216,6 @@
 			</div>
 		</div>
 		<hr class="my-4 border-gray-300">
-		{{ $attendanceTimes->links() }}
+		{{ $approvals->links() }}
 	</div>
 </div>

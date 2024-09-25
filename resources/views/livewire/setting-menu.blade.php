@@ -7,13 +7,13 @@
 	
 	<ul class="sub-menu hidden">
 		<li class="menu-item">
-			<a href="#" class="menu-link">
-				<span class="menu-text">Setting 1</span>
+			<a href="{{ route('setting.approvals') }}" class="menu-link">
+				<span class="menu-text">Approval</span>
 			</a>
 		</li>
 		<li class="menu-item">
-			<a href="#" class="menu-link">
-				<span class="menu-text">Setting 2</span>
+			<a href="{{ route('setting.printers') }}" class="menu-link">
+				<span class="menu-text">Printer</span>
 			</a>
 		</li>
 	</ul>

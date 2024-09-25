@@ -8,11 +8,20 @@ use Illuminate\Database\Schema\Blueprint;
 
 class ToolController extends Controller
 {
+    /**
+     * Static utility methods.
+     */
     public static function sanitizeString($code): string
     {
         return strtoupper(trim(preg_replace('/\s+/', '', $code)));
     }
 
+    /**
+     * Add default columns to a table blueprint.
+     *
+     * @param Blueprint $table
+     * @return Blueprint
+     */
     public static function defaultTableSchema(Blueprint $table): Blueprint
     {
         $table->foreignIdFor(Company::class)
