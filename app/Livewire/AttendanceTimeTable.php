@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Http\Controllers\BranchController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CompanyController;
 use App\Models\Attendance;
 use App\Models\Company;

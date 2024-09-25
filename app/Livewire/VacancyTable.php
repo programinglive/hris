@@ -3,10 +3,10 @@
 namespace App\Livewire;
 
 use App\Http\Controllers\BranchController;
-use App\Http\Controllers\VacancyController;
 use App\Http\Controllers\CompanyController;
-use App\Models\Vacancy;
+use App\Http\Controllers\VacancyController;
 use App\Models\Company;
+use App\Models\Vacancy;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
@@ -96,7 +96,7 @@ class VacancyTable extends Component
     /**
      * Handles the event when a vacancy is created.
      *
-     * @param  int $vacancyId vacancyId The ID of the created vacancy.
+     * @param  int  $vacancyId  vacancyId The ID of the created vacancy.
      */
     #[On('vacancy-created')]
     public function vacancyAdded(int $vacancyId): void
@@ -107,7 +107,7 @@ class VacancyTable extends Component
     /**
      * Handles the event when a vacancy is updated.
      *
-     * @param  int $vacancyId vacancyId The ID of the updated vacancy.
+     * @param  int  $vacancyId  vacancyId The ID of the updated vacancy.
      */
     #[On('vacancy-updated')]
     public function vacancyUpdated(int $vacancyId): void
