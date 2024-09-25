@@ -2,10 +2,10 @@
 
 namespace App\Livewire;
 
-use App\Http\Controllers\ApprovalController;
+use App\Http\Controllers\AssetController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CompanyController;
-use App\Models\Approval;
+use App\Models\Asset;
 use App\Models\Company;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -16,7 +16,7 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
-class ApprovalTable extends Component
+class AssetTable extends Component
 {
     use WithFileUploads, withPagination;
 
@@ -30,13 +30,13 @@ class ApprovalTable extends Component
 
     public $import;
 
-    public function importApproval(): void
+    public function importAsset(): void
     {
         $this->validate([
             'import' => 'required|mimes:csv,xlsx,xls',
         ]);
 
-        $this->import->store(path: 'approvals');
+        $this->import->store(path: 'assets');
 
         $this->import = $this->import->path();
 
@@ -62,21 +62,21 @@ class ApprovalTable extends Component
                     $branch = BranchController::createByName($company, $rowProperties['branch_name']);
                 }
 
-                $approval = Approval::firstOrNew([
+                $asset = Asset::firstOrNew([
                     'name' => $name,
                 ]);
 
-                if (! $approval->code) {
-                    $approval->company_id = $company->id;
-                    $approval->branch_id = $branch->id ?? null;
-                    $approval->code = ApprovalController::generateCode();
-                    $approval->company_code = $company->code;
-                    $approval->company_name = $company->name;
-                    $approval->branch_code = $branch->code ?? null;
-                    $approval->branch_name = $branch->name ?? null;
+                if (! $asset->code) {
+                    $asset->company_id = $company->id;
+                    $asset->branch_id = $branch->id ?? null;
+                    $asset->code = AssetController::generateCode();
+                    $asset->company_code = $company->code;
+                    $asset->company_name = $company->name;
+                    $asset->branch_code = $branch->code ?? null;
+                    $asset->branch_name = $branch->name ?? null;
                 }
 
-                $approval->save();
+                $asset->save();
             });
 
         redirect()->back();
@@ -94,40 +94,40 @@ class ApprovalTable extends Component
     }
 
     /**
-     * Handles the event when a approval is created.
+     * Handles the event when a asset is created.
      *
-     * @param  int  $approvalId  The ID of the created approval.
+     * @param  int  $assetId  The ID of the created asset.
      */
-    #[On('approval-created')]
-    public function approvalAdded(int $approvalId): void
+    #[On('asset-created')]
+    public function assetAdded(int $assetId): void
     {
         $this->showForm = false;
     }
 
     /**
-     * Handles the event when a approval is updated.
+     * Handles the event when a asset is updated.
      *
-     * @param  int  $approvalId  The ID of the updated approval.
+     * @param  int  $assetId  The ID of the updated asset.
      */
-    #[On('approval-updated')]
-    public function approvalUpdated(int $approvalId): void
+    #[On('asset-updated')]
+    public function assetUpdated(int $assetId): void
     {
         $this->showForm = false;
     }
 
     /**
-     * Handles the event when a approval is deleted.
+     * Handles the event when a asset is deleted.
      */
-    #[On('approval-deleted')]
-    public function approvalDeleted(): void
+    #[On('asset-deleted')]
+    public function assetDeleted(): void
     {
         $this->showForm = false;
         $this->resetPage();
-        $this->getApprovals();
+        $this->getAsset();
     }
 
     /**
-     * Shows the form approval.
+     * Shows the form asset.
      */
     #[On('show-form')]
     public function showForm(): void
@@ -136,22 +136,22 @@ class ApprovalTable extends Component
     }
 
     /**
-     * Retrieves a paginated list of approvals based on a search query.
+     * Retrieves a paginated list of assets based on a search query.
      *
-     * @return LengthAwarePaginator The paginated list of approvals.
+     * @return LengthAwarePaginator The paginated list of assets.
      */
-    public function getApprovals(): LengthAwarePaginator
+    public function getAsset(): LengthAwarePaginator
     {
-        $approvals = Approval::where(function ($query) {
+        $assets = Asset::where(function ($query) {
             $query->where('code', 'like', '%'.$this->search.'%')
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
 
         if ($this->companyCode !== 'all') {
-            $approvals = $approvals->where('company_id', Company::where('code', $this->companyCode)->first()?->id);
+            $assets = $assets->where('company_id', Company::where('code', $this->companyCode)->first()?->id);
         }
 
-        return $approvals->orderBy('id')
+        return $assets->orderBy('id')
             ->paginate(5);
     }
 
@@ -160,8 +160,8 @@ class ApprovalTable extends Component
      */
     public function render(): View
     {
-        return view('livewire.approval-table', [
-            'approvals' => self::getApprovals(),
+        return view('livewire.asset-table', [
+            'assets' => self::getAsset(),
         ]);
     }
 }

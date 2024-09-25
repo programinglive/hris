@@ -12,14 +12,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('approvals', function (Blueprint $table) {
+        Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table = ToolController::defaultTableSchema($table);
             $table->string('code')->unique();
             $table->string('name')->nullable();
+            $table->string('description')->nullable();
             $table->string('feature')->nullable();
-            $table->tinyInteger('order')->default(1);
-            $table->string('status')->nullable();
+            $table->string('feature_id')->nullable();
+            $table->tinyInteger('request_by')->nullable();
+            $table->string('request_code')->nullable();
+            $table->string('request_name')->nullable();
+            $table->timestamp('request_at')->default(now());
         });
     }
 
@@ -28,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('approvals');
+        Schema::dropIfExists('assets');
     }
 };

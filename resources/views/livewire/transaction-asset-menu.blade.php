@@ -7,8 +7,8 @@
 	
 	<ul class="sub-menu hidden">
 		<li class="menu-item">
-			<a href="#" class="menu-link">
-				<span class="menu-text">Lists</span>
+			<a href="{{ route('transaction.assets') }}" class="menu-link">
+				<span class="menu-text">List</span>
 			</a>
 		</li>
 		<li class="menu-item">

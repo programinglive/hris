@@ -5,9 +5,9 @@ namespace App\Livewire;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
-class ApprovalPage extends Component
+class AssetPage extends Component
 {
-    public $moduleLabel = 'Approval';
+    public $moduleLabel = 'Asset';
 
     /**
      * Renders the view for the brand page.
@@ -16,7 +16,7 @@ class ApprovalPage extends Component
      */
     public function render(): View
     {
-        return view('livewire.approval-page')
+        return view('livewire.asset-page')
             ->layout('components.layouts.dashboard');
     }
 }

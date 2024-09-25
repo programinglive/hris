@@ -18,9 +18,6 @@ class ToolController extends Controller
 
     /**
      * Add default columns to a table blueprint.
-     *
-     * @param Blueprint $table
-     * @return Blueprint
      */
     public static function defaultTableSchema(Blueprint $table): Blueprint
     {

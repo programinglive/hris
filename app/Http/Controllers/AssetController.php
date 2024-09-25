@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class ApprovalController extends Controller
+class AssetController extends Controller
 {
     //
 }
