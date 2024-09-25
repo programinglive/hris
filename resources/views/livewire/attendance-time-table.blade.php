@@ -17,7 +17,7 @@
 		>
 			
 			<a
-				href="{{ asset('working_day_data.xlsx') }}"
+				href="{{ asset('attendance-time_data.xlsx') }}"
 				class="
 			        px-4 py-2
 			        rounded-md
@@ -45,7 +45,7 @@
 			          18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
 					/>
 				</svg>
-				Working Day Template
+				Category Template
 			</a>
 			<label for="import" class="inline">
 				<input
@@ -61,7 +61,7 @@
 			<div class="text-red-500 inline">{{ $message }}</div>
 			@enderror
 			<button
-				wire:click="importWorkingDay"
+				wire:click="importCategory"
 				type="button"
 				class="btn bg-green-500 text-white inline"
 			>
@@ -98,7 +98,7 @@
 		</div>
 	</div>
 	<div x-show="open">
-		<livewire:working-day-form />
+		<livewire:attendance-time-form />
 	</div>
 	<div class="overflow-x-auto" x-show="!open">
 		<div class="min-w-full inline-block align-middle">
@@ -124,19 +124,19 @@
 							scope="col"
 							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
-							Date
+							In
 						</th>
 						<th
 							scope="col"
 							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
-							Type
+							Out
 						</th>
 						<th
 							scope="col"
 							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
-							Description
+							Status
 						</th>
 						<th
 							scope="col"
@@ -148,27 +148,32 @@
 					</tr>
 					</thead>
 					<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-					@forelse($workingDays as $working_day)
+					@forelse($attendanceTimes as $attendanceTime)
 						<tr>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_day->company_name }}
+								{{ $attendanceTime->company_name }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_day->branch_name }}
+								{{ $attendanceTime->branch_name }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_day->code }}
+								{{ $attendanceTime->in }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_day->name }}
+								{{ $attendanceTime->out }}
+							</td>
+							<td
+								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+							>
+								{{ $attendanceTime->status }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-end text-sm
@@ -176,13 +181,13 @@
 								style="width: 100px"
 							>
 								<button
-									wire:click="$dispatch('edit', { code: '{{ $working_day->code }}'})"
+									wire:click="$dispatch('edit', { code: '{{ $attendanceTime->code }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Edit
 								</button>
 								<button
-									wire:click="$dispatch('delete', { code: '{{ $working_day->code }}'})"
+									wire:click="$dispatch('delete', { code: '{{ $attendanceTime->code }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Delete
@@ -192,7 +197,7 @@
 					@empty
 						<tr>
 							<td
-								colspan="6"
+								colspan="4"
 								class="text-center text-gray-500 pt-4"
 							>
 								Empty Data
@@ -204,6 +209,6 @@
 			</div>
 		</div>
 		<hr class="my-4 border-gray-300">
-		{{ $workingDays->links() }}
+		{{ $attendanceTimes->links() }}
 	</div>
 </div>

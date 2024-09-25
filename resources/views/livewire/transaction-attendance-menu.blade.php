@@ -7,7 +7,7 @@
 	
 	<ul class="sub-menu hidden">
 		<li class="menu-item">
-			<a href="#" class="menu-link">
+			<a href="{{ route('transaction.attendance_times') }}" class="menu-link">
 				<span class="menu-text">Time</span>
 			</a>
 		</li>
