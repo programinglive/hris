@@ -7,8 +7,8 @@
 	
 	<ul class="sub-menu hidden">
 		<li class="menu-item">
-			<a href="#" class="menu-link">
-				<span class="menu-text">Job</span>
+			<a href="{{ route('transaction.vacancies') }}" class="menu-link">
+				<span class="menu-text">Vacancy</span>
 			</a>
 		</li>
 		<li class="menu-item">
