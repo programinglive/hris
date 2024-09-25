@@ -13,7 +13,17 @@
 		</li>
 		<li class="menu-item">
 			<a href="#" class="menu-link">
-				<span class="menu-text">Leave / Time Off</span>
+				<span class="menu-text">Time Off</span>
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="#" class="menu-link">
+				<span class="menu-text">Leave</span>
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="#" class="menu-link">
+				<span class="menu-text">Confirm</span>
 			</a>
 		</li>
 	</ul>

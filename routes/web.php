@@ -20,6 +20,14 @@ Route::group(['middleware' => ['auth', 'loggedIn']], function () {
         include __DIR__.'/module/rbasedata.php';
         include __DIR__.'/module/rorganizationdata.php';
         include __DIR__.'/module/remployeedata.php';
+    });
+
+    Route::name('transaction.')->prefix('transaction')->group(function () {
         include __DIR__.'/module/rannountcement.php';
+        include __DIR__.'/module/rrecruitment.php';
+        include __DIR__.'/module/rattendance.php';
+        include __DIR__.'/module/rbusinesstrip.php';
+        include __DIR__.'/module/rasset.php';
+        include __DIR__.'/module/rpayrol.php';
     });
 });
