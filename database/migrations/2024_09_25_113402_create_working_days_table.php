@@ -18,8 +18,6 @@ return new class extends Migration
             $table->string('working_date')->nullable();
             $table->string('type')->nullable();
             $table->string('description')->nullable();
-            $table->string('created_by')->nullable();
-            $table->string('updated_by')->nullable();
         });
     }
 
