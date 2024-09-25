@@ -103,6 +103,7 @@ class BranchForm extends Component
             'type' => $this->type,
             'company_code' => $this->companyCode,
             'company_name' => $this->companyName,
+            'created_by' => auth()->user()->id,
         ];
     }
 
@@ -166,7 +167,10 @@ class BranchForm extends Component
         }
 
         DB::transaction(function () {
-            $this->branch->update($this->branchData());
+            $data = $this->branchData();
+            $data['updated_by'] = auth()->user()->id;
+
+            $this->branch->update($data);
         }, 5);
 
         $this->dispatch('branch-updated', branchId: $this->branch->id, refreshBranches: true);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Branch;
 use App\Models\Company;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,18 +13,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('branches', function (Blueprint $table) {
+        Schema::create('working_days', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Company::class)
                 ->nullable()
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->string('code');
-            $table->string('name');
-            $table->enum('type', ['branch', 'partner'])->default('branch');
-            $table->string('company_code')->nullable();
-            $table->string('company_name')->nullable();
+            $table->foreignIdFor(Branch::class)
+                ->nullable()
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->string('working_date')->nullable();
+            $table->string('type')->nullable();
+            $table->string('description')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->softDeletes();
@@ -36,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('branches');
+        Schema::dropIfExists('working_days');
     }
 };

@@ -25,8 +25,8 @@ return new class extends Migration
             $table->text('content')->nullable();
             $table->string('image')->nullable();
             $table->enum('status', [
-                    'active', 'inactive'
-                ])->default('active');
+                'active', 'inactive',
+            ])->default('active');
             $table->string('author')->nullable();
             $table->string('editor')->nullable();
             $table->string('type')->nullable();
@@ -34,6 +34,8 @@ return new class extends Migration
             $table->string('company_name')->nullable();
             $table->string('branch_code')->nullable();
             $table->string('branch_name')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

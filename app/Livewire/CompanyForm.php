@@ -63,6 +63,7 @@ class CompanyForm extends Component
             'address' => $this->address,
             'email' => $this->email,
             'phone' => $this->phone,
+            'created_by' => auth()->user()->id,
         ];
     }
 
@@ -109,7 +110,10 @@ class CompanyForm extends Component
     public function update(): void
     {
         DB::transaction(function () {
-            $this->company->update($this->companyData());
+            $data = $this->companyData();
+            $data['updated_by'] = auth()->user()->id;
+
+            $this->company->update($data);
         }, 5);
 
         $this->dispatch('company-updated', companyId: $this->company->id);
