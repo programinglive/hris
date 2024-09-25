@@ -3,10 +3,10 @@
 namespace App\Livewire;
 
 use App\Http\Controllers\BranchController;
-use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CompanyController;
-use App\Models\Item;
+use App\Http\Controllers\ItemController;
 use App\Models\Company;
+use App\Models\Item;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;

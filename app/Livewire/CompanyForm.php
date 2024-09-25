@@ -124,7 +124,8 @@ class CompanyForm extends Component
     public function destroy($code): void
     {
         $this->company = Company::where('code', $code)->first();
-        $this->company->code = $this->company->code.'-deleted';
+        $this->company->code = $this->company->code.time().'-deleted';
+        $this->company->phone = $this->company->phone.time().'-deleted';
         $this->company->save();
 
         $this->company->delete();

@@ -29,13 +29,13 @@ class DashboardTopBar extends Component
     public function mount(): void
     {
         $this->company = Company::first();
-        if($this->company){
+        if ($this->company) {
             $this->companyCode = $this->company->code;
             $this->companyName = $this->company->name;
         }
 
         $this->branch = $this->company?->branches()->first();
-        if($this->branch){
+        if ($this->branch) {
             $this->branchCode = $this->branch->code;
             $this->branchName = $this->branch->name;
         }
