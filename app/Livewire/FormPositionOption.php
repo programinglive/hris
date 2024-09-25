@@ -14,43 +14,41 @@ class FormPositionOption extends Component
 
     public $positions;
 
-    public $option = "disabled";
+    public $option = 'disabled';
 
     /**
      * Update the position ID and dispatch the 'setPosition' event with the new ID.
      *
-     * @param string $positionCode The new position ID.
-     * @return void
+     * @param  string  $positionCode  The new position ID.
      */
     public function updatedPositionId(string $positionCode): void
     {
-        $this->dispatch('setPosition',  positionCode: $positionCode );
+        $this->dispatch('setPosition', positionCode: $positionCode);
     }
 
     /**
      * Retrieves the position based on the given level code.
      *
-     * @param string $levelCode The code of the level.
-     * @return void
+     * @param  string  $levelCode  The code of the level.
      */
     #[On('getPosition')]
     public function getPosition(string $levelCode): void
     {
         $this->reset([
             'positions',
-            'option'
+            'option',
         ]);
 
         $level = Level::where('code', $levelCode)->first();
-        
-        if($level == null) {
+
+        if ($level == null) {
             return;
         }
 
         $positions = Position::where('level_id', $level->id);
 
-        if($positions->count() > 0) {
-            $this->option = "";
+        if ($positions->count() > 0) {
+            $this->option = '';
             $this->positions = $positions->get();
         }
     }

@@ -30,8 +30,6 @@ class LevelFormTest extends TestCase
      *    - division_id: 1
      *    - code: 'L001'
      *    - name: 'Level A'
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -49,6 +47,7 @@ class LevelFormTest extends TestCase
         ])->create();
 
     }
+
     /**
      * Test case for updating a level.
      *
@@ -57,7 +56,6 @@ class LevelFormTest extends TestCase
      *
      * @return void
      */
-
     #[Test]
     public function it_can_update()
     {

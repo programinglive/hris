@@ -14,46 +14,44 @@ class FormLevelOption extends Component
 
     public $levels;
 
-    public $option = "disabled";
+    public $option = 'disabled';
 
     /**
      * Update the level ID and dispatch the 'setLevel' event with the new ID.
      *
-     * @param string $levelCode The new level ID.
-     * @return void
+     * @param  string  $levelCode  The new level ID.
      */
     public function updatedLevelCode(string $levelCode): void
     {
         $this->resetErrorBag();
 
-        $this->dispatch('setLevel',  levelCode: $levelCode );
-        $this->dispatch('getPosition',  levelCode: $levelCode );
+        $this->dispatch('setLevel', levelCode: $levelCode);
+        $this->dispatch('getPosition', levelCode: $levelCode);
     }
 
     /**
      * Retrieves the levels associated with a given division code.
      *
-     * @param string $divisionCode The code of the division.
-     * @return void
+     * @param  string  $divisionCode  The code of the division.
      */
     #[On('getLevel')]
     public function getLevel(string $divisionCode): void
     {
         $this->reset([
             'levels',
-            'option'
+            'option',
         ]);
 
         $division = Division::where('code', $divisionCode)->first();
-        
-        if($division == null) {
+
+        if ($division == null) {
             return;
         }
 
         $levels = Level::where('division_id', $division->id);
 
-        if($levels->count() > 0) {
-            $this->option = "";
+        if ($levels->count() > 0) {
+            $this->option = '';
             $this->levels = $levels->get();
         }
     }

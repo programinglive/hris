@@ -16,6 +16,7 @@ class LevelForm extends Component
 {
     #[Validate('required|string|min:1')]
     public $departmentId;
+
     #[Validate('required|string|min:1')]
     public $divisionCode;
 
@@ -33,30 +34,28 @@ class LevelForm extends Component
      * Updates the specified property with the given value and performs validation if the property is 'code',
      * 'email', or 'phone'.
      *
-     * @param string $key The name of the property to be updated.
-     * @param mixed $value The new value for the property.
-     * @return void
+     * @param  string  $key  The name of the property to be updated.
+     * @param  mixed  $value  The new value for the property.
+     *
      * @throws ValidationException
      */
     public function updated(string $key, mixed $value): void
     {
         $this->resetErrorBag();
 
-        if($key == 'code' || $key == 'name'){
+        if ($key == 'code' || $key == 'name') {
             $this->validateOnly($key);
         }
     }
 
     /**
      * The default data for the form.
-     *
-     * @return array
      */
     public function levelData(): array
     {
         return [
-            'company_id' => auth()->user()->details->company_id,
-            'branch_id' => auth()->user()->details->branch_id,
+            'company_id' => 1,
+            'branch_id' => 1,
             'department_id' => $this->departmentId,
             'division_id' => $this->divisionCode,
             'code' => $this->code,
@@ -66,8 +65,6 @@ class LevelForm extends Component
 
     /**
      * Saves the level details to the database and dispatches a 'level-created' event.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -88,7 +85,7 @@ class LevelForm extends Component
     #[On('edit')]
     public function edit($code): void
     {
-        $this->level = Level::where('code',$code)->first();
+        $this->level = Level::where('code', $code)->first();
         $this->departmentId = $this->level->department_id;
         $this->divisionCode = $this->level->division_id;
         $this->code = $this->level->code;
@@ -109,15 +106,16 @@ class LevelForm extends Component
             'divisionCode',
         ];
 
-        foreach($organizations as $organization){
+        foreach ($organizations as $organization) {
 
-            if($this->{$organization} == ''){
-                $this->addError( $organization, 'Please select a ['. ucfirst(rtrim($organization, 'Id')).'].');
+            if ($this->{$organization} == '') {
+                $this->addError($organization, 'Please select a ['.ucfirst(rtrim($organization, 'Id')).'].');
+
                 return;
             }
         }
 
-        if($this->code != $this->level->code){
+        if ($this->code != $this->level->code) {
             $this->validateOnly('code');
         }
 
@@ -136,7 +134,7 @@ class LevelForm extends Component
     #[On('delete')]
     public function destroy($code): void
     {
-        $this->level = Level::where('code',$code)->first();
+        $this->level = Level::where('code', $code)->first();
         $this->level->code = $this->level->code.'-deleted';
         $this->level->save();
         $this->level->delete();
@@ -148,8 +146,6 @@ class LevelForm extends Component
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {

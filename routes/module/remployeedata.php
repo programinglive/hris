@@ -1,11 +1,11 @@
 <?php
 
-use App\Livewire\SubDivisionPage;
 use App\Livewire\DepartmentPage;
 use App\Livewire\DivisionPage;
 use App\Livewire\EmployeePage;
 use App\Livewire\LevelPage;
 use App\Livewire\PositionPage;
+use App\Livewire\SubDivisionPage;
 
 Route::get('employees', EmployeePage::class)->name('employees');
 Route::get('departments', DepartmentPage::class)->name('departments');

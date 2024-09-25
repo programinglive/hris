@@ -29,16 +29,16 @@ class SubDivisionForm extends Component
      * Updates the specified property with the given value and performs validation if the property is 'code',
      * 'email', or 'phone'.
      *
-     * @param string $key The name of the property to be updated.
-     * @param mixed $value The new value for the property.
-     * @return void
+     * @param  string  $key  The name of the property to be updated.
+     * @param  mixed  $value  The new value for the property.
+     *
      * @throws ValidationException
      */
     public function updated(string $key, mixed $value): void
     {
         $this->resetErrorBag();
 
-        if($key == 'code' || $key == 'name'){
+        if ($key == 'code' || $key == 'name') {
             $this->validateOnly($key);
         }
     }
@@ -46,16 +46,16 @@ class SubDivisionForm extends Component
     /**
      * Sets the department ID based on the provided department code.
      *
-     * @param string $departmentCode The code of the department.
-     * @return void
+     * @param  string  $departmentCode  The code of the department.
      */
     #[On('setDepartment')]
     public function setDepartment(string $departmentCode): void
     {
         $department = Department::where('code', $departmentCode)->first();
 
-        if(!$department){
+        if (! $department) {
             $this->dispatch('setErrorDepartment');
+
             return;
         }
 
@@ -64,14 +64,12 @@ class SubDivisionForm extends Component
 
     /**
      * The default data for the form.
-     *
-     * @return array
      */
     public function subDivisionData(): array
     {
         return [
-            'company_id' => auth()->user()->details->company_id,
-            'branch_id' => auth()->user()->details->branch_id,
+            'company_id' => 1,
+            'branch_id' => 1,
             'department_id' => $this->departmentId,
             'code' => $this->code,
             'name' => $this->name,
@@ -80,13 +78,12 @@ class SubDivisionForm extends Component
 
     /**
      * Saves the subDivision details to the database and dispatches a 'sub-division-created' event.
-     *
-     * @return void
      */
     public function save(): void
     {
-        if(!$this->departmentId){
+        if (! $this->departmentId) {
             $this->dispatch('setErrorDepartment');
+
             return;
         }
 
@@ -107,10 +104,10 @@ class SubDivisionForm extends Component
     #[On('edit')]
     public function edit($code): void
     {
-        $this->subDivision = SubDivision::where('code',$code)->first();
+        $this->subDivision = SubDivision::where('code', $code)->first();
         $this->departmentId = $this->subDivision->department_id;
 
-        $this->dispatch('selectDepartment', departmentId: $this->departmentId );
+        $this->dispatch('selectDepartment', departmentId: $this->departmentId);
 
         $this->code = $this->subDivision->code;
         $this->name = $this->subDivision->name;
@@ -125,8 +122,9 @@ class SubDivisionForm extends Component
      */
     public function update(): void
     {
-        if(!$this->departmentId){
+        if (! $this->departmentId) {
             $this->dispatch('setErrorDepartment');
+
             return;
         }
 
@@ -145,8 +143,8 @@ class SubDivisionForm extends Component
     #[On('delete')]
     public function destroy($code): void
     {
-        $this->subDivision = SubDivision::where('code',$code)->first();
-        $this->subDivision->code = $code . '-deleted';
+        $this->subDivision = SubDivision::where('code', $code)->first();
+        $this->subDivision->code = $code.'-deleted';
         $this->subDivision->save();
 
         $this->subDivision->delete();
@@ -156,8 +154,6 @@ class SubDivisionForm extends Component
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {

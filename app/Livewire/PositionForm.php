@@ -16,7 +16,9 @@ use Livewire\Component;
 class PositionForm extends Component
 {
     public $departmentId;
+
     public $divisionId;
+
     public $levelId;
 
     #[Validate('required|unique:positions|min:3')]
@@ -32,17 +34,17 @@ class PositionForm extends Component
     /**
      * Updates the specified property with the given value and performs validation if the property is 'code' or 'name'.
      *
-     * @param string $key The name of the property to be updated.
-     * @param mixed $value The new value for the property.
-     * @return void
+     * @param  string  $key  The name of the property to be updated.
+     * @param  mixed  $value  The new value for the property.
+     *
      * @throws ValidationException
      */
     public function updated(string $key, mixed $value): void
     {
         $this->resetErrorBag();
 
-        if($key == 'code' && $this->position){
-            if($value !== $this->position->code){
+        if ($key == 'code' && $this->position) {
+            if ($value !== $this->position->code) {
                 $this->validateOnly($key);
             }
         }
@@ -50,14 +52,12 @@ class PositionForm extends Component
 
     /**
      * The default data for the form.
-     *
-     * @return array
      */
     public function positionData(): array
     {
         return [
-            'company_id' => auth()->user()->details->company_id,
-            'branch_id' => auth()->user()->details->branch_id,
+            'company_id' => 1,
+            'branch_id' => 1,
             'department_id' => $this->departmentId,
             'division_id' => $this->divisionId,
             'level_id' => $this->levelId,
@@ -68,8 +68,6 @@ class PositionForm extends Component
 
     /**
      * Saves the position details to the database and dispatches a 'position-created' event.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -90,7 +88,7 @@ class PositionForm extends Component
     #[On('edit')]
     public function edit($code): void
     {
-        $this->position = Position::where('code',$code)->first();
+        $this->position = Position::where('code', $code)->first();
         $this->departmentId = (string) $this->position->department_id;
         $this->divisionId = (string) $this->position->division_id;
         $this->levelId = (string) $this->position->level_id;
@@ -113,15 +111,16 @@ class PositionForm extends Component
             'levelId',
         ];
 
-        foreach($organizations as $organization){
+        foreach ($organizations as $organization) {
 
-            if($this->{$organization} == ''){
-                $this->addError( $organization, 'Please select a ['. ucfirst(rtrim($organization, 'Id')).'].');
+            if ($this->{$organization} == '') {
+                $this->addError($organization, 'Please select a ['.ucfirst(rtrim($organization, 'Id')).'].');
+
                 return;
             }
         }
 
-        if($this->code != $this->position->code){
+        if ($this->code != $this->position->code) {
             $this->validateOnly('code');
         }
 
@@ -140,8 +139,8 @@ class PositionForm extends Component
     #[On('delete')]
     public function destroy($code): void
     {
-        $this->position = Position::where('code',$code)->first();
-        $this->position->code = $code . '-deleted';
+        $this->position = Position::where('code', $code)->first();
+        $this->position->code = $code.'-deleted';
         $this->position->save();
 
         $this->position->delete();
@@ -151,8 +150,6 @@ class PositionForm extends Component
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {

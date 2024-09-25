@@ -1,6 +1,6 @@
 <?php
 
-Namespace App\Livewire;
+namespace App\Livewire;
 
 use App\Models\Company;
 use App\Models\News;
@@ -15,8 +15,9 @@ use Livewire\Component;
 class NewsForm extends Component
 {
     public $companyId;
-    #[Url(keep:true)]
-    public $companyCode = "all";
+
+    #[Url(keep: true)]
+    public $companyCode = 'all';
 
     #[Validate('required|unique:news|min:3')]
     public $title;
@@ -32,14 +33,14 @@ class NewsForm extends Component
      * Updates the specified property with the given value and performs validation if the property is 'title',
      * 'email', or 'phone'.
      *
-     * @param string $key The content of the property to be updated.
-     * @param mixed $value The new value for the property.
-     * @return void
+     * @param  string  $key  The content of the property to be updated.
+     * @param  mixed  $value  The new value for the property.
+     *
      * @throws ValidationException
      */
     public function updated(string $key, mixed $value): void
     {
-        if($key == 'title' || $key == 'content'){
+        if ($key == 'title' || $key == 'content') {
             $this->validateOnly($key);
         }
     }
@@ -47,17 +48,16 @@ class NewsForm extends Component
     /**
      * Sets the value of the companyCode property to the given title.
      *
-     * @param string $title The title to set the companyCode property to.
-     * @return void
+     * @param  string  $title  The title to set the companyCode property to.
      */
     #[On('setCompany')]
     public function setCompany(string $title): void
     {
-        if($title == ""){
+        if ($title == '') {
             abort(404);
         }
 
-        if($title !== 'all'){
+        if ($title !== 'all') {
             $this->companyCode = $title;
 
             $this->companyId = Company::where('title', $title)->first()->id;
@@ -66,14 +66,12 @@ class NewsForm extends Component
 
     /**
      * The default data for the form.
-     *
-     * @return array
      */
     public function newsData(): array
     {
         return [
             'company_id' => $this->companyId,
-            'branch_id' => auth()->user()->details->branch_id,
+            'branch_id' => 1,
             'title' => $this->title,
             'content' => $this->content,
         ];
@@ -81,8 +79,6 @@ class NewsForm extends Component
 
     /**
      * Saves the news details to the database and dispatches a 'news-created' event.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -108,7 +104,7 @@ class NewsForm extends Component
     #[On('edit')]
     public function edit($title): void
     {
-        $this->news = News::where('title',$title)->first();
+        $this->news = News::where('title', $title)->first();
         $this->title = $this->news->title;
         $this->content = $this->news->content;
 
@@ -143,7 +139,7 @@ class NewsForm extends Component
     #[On('delete')]
     public function destroy($title): void
     {
-        $this->news = News::where('title',$title)->first();
+        $this->news = News::where('title', $title)->first();
         $this->news->title = $this->news->title.'-deleted';
         $this->news->save();
 
@@ -156,8 +152,6 @@ class NewsForm extends Component
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {

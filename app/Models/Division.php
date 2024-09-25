@@ -11,13 +11,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Division extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
+
     protected $guarded = ['id'];
 
     /**
      * Get the company that owns the division.
-     *
-     * @return BelongsTo
      */
     public function company(): BelongsTo
     {
@@ -26,8 +25,6 @@ class Division extends Model
 
     /**
      * Get the branch that owns the division.
-     *
-     * @return BelongsTo
      */
     public function branch(): BelongsTo
     {
@@ -36,17 +33,12 @@ class Division extends Model
 
     /**
      * Get the department that owns the division.
-     *
-     * @return BelongsTo
      */
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class);
     }
 
-    /**
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

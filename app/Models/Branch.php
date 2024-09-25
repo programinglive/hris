@@ -11,23 +11,18 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Branch extends Model
 {
-    use SoftDeletes, HasFactory, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $guarded = ['id'];
 
     /**
      * Get the company that the branch belongs to.
-     *
-     * @return BelongsTo
      */
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }
 
-    /**
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

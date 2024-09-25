@@ -1,3 +1,5 @@
-<div>
-    {{-- The best athlete wants his opponent at his best. --}}
+<div class="flex flex-col gap-4">
+	<livewire:breadcrumb :moduleLabel="$moduleLabel"/>
+	<livewire:page-filter />
+	<livewire:sub-category-table />
 </div>

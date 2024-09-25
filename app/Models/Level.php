@@ -12,14 +12,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Level extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $guarded = ['id'];
 
     /**
      * Get the company that owns the level.
-     *
-     * @return BelongsTo
      */
     public function company(): BelongsTo
     {
@@ -28,8 +26,6 @@ class Level extends Model
 
     /**
      * Get the branch that owns the level.
-     *
-     * @return BelongsTo
      */
     public function branch(): BelongsTo
     {
@@ -38,8 +34,6 @@ class Level extends Model
 
     /**
      * Get the department that owns the level.
-     *
-     * @return BelongsTo
      */
     public function department(): BelongsTo
     {
@@ -48,19 +42,14 @@ class Level extends Model
 
     /**
      * Get the division that owns the level.
-     *
-     * @return BelongsTo
      */
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
     }
 
-
     /**
      * Get the subDivision that owns the level.
-     *
-     * @return BelongsTo
      */
     public function subDivision(): BelongsTo
     {
@@ -69,17 +58,12 @@ class Level extends Model
 
     /**
      * Get the users for the level.
-     *
-     * @return HasMany
      */
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
 
-    /**
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

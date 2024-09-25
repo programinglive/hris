@@ -3,6 +3,24 @@
 			open: $wire.entangle('showForm')
 		}"
 >
+	@error('messages')
+	<div
+		x-data="{ showError: true }"
+		x-show="showError"
+		class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg
+						dark:bg-red-200 dark:text-red-800"
+		role="alert"
+	>
+		<div class="flex justify-between">
+			{{ $message }}
+			<button
+				type="button"
+				@click="showError = false"
+				class="ml-auto"
+			>x</button>
+		</div>
+	</div>
+	@enderror
 	<div class="flex justify-between pt-2" x-show="!open" >
 		<div>
 			<button
@@ -11,23 +29,49 @@
 				@click="open = true; $wire.dispatch('disableFilter')"
 			>+</button>
 		</div>
-		<div class="flex items-center gap-2 justify-between w-1/4 relative">
-			<form enctype="multipart/form-data">
-				@csrf
-				<label for="import" class="btn bg-green-500 text-white cursor-pointer">
-					<i class="mgc_attachment_2_line"></i>
-					<span class="ml-2">Import</span>
-					<input
-						wire:model="import"
-						type="file"
-						id="import"
-						name="import"
-						class="hidden"
-						accept=".csv,.xlsx"
-					>
-				</label>
-				@error('import') <div class="text-red-500">{{ $message }}</div> @enderror
-			</form>
+		<div
+			class="flex items-center gap-2
+							justify-between w-2/4 relative"
+		>
+			<a
+				href="{{ asset('employee_data.xlsx') }}"
+				class="
+          px-4 py-2
+	        rounded-md
+	        text-blue-500
+	        hover:text-blue-600
+	        focus:outline-none
+	        focus:ring-2
+	        focus:ring-blue-300
+	        flex items-center gap-2
+	        text-nowrap
+        "
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+				</svg>
+				Employee Template
+			</a>
+			<label for="import" class="inline">
+				<input
+					wire:model="import"
+					type="file"
+					id="import"
+					name="import"
+					accept=".csv,.xlsx"
+					class="form-input"
+				>
+			</label>
+			@error('import')
+				<div class="text-red-500 inline">{{ $message }}</div>
+			@enderror
+			<button
+				wire:click="importUser"
+				type="button"
+				class="btn bg-green-500 text-white inline"
+			>
+				<i class="mgc_upload_line"></i>
+			</button>
 			<input
 				wire:model.live="search"
 				type="text"
@@ -125,8 +169,13 @@
 										>
 											...
 										</button>
-										<div style="z-index: 9999" x-show="open" class="absolute right-0 top-0 bg-white dark:bg-slate-800 p-2 rounded-md shadow-lg "
-											@click.outside="open = false">
+										<div
+											style="z-index: 9999"
+								      x-show="open"
+											class="absolute right-0 top-0 bg-white
+															dark:bg-slate-800 p-2 rounded-md shadow-lg "
+											@click.outside="open = false"
+										>
 											<button
 												wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"
 												class="block w-full text-gray-500 hover:text-sky-700 text-end"

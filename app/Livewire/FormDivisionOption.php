@@ -14,46 +14,44 @@ class FormDivisionOption extends Component
 
     public $divisions;
 
-    public $option = "disabled";
+    public $option = 'disabled';
 
     /**
      * Update the division ID and dispatch the 'setDivision' event with the new ID.
      *
-     * @param string $divisionCode The new division ID.
-     * @return void
+     * @param  string  $divisionCode  The new division ID.
      */
     public function updatedDivisionCode(string $divisionCode): void
     {
         $this->resetErrorBag();
-        
-        $this->dispatch('setDivision',  divisionCode: $divisionCode );
-        $this->dispatch('getLevel',  divisionCode: $divisionCode );
+
+        $this->dispatch('setDivision', divisionCode: $divisionCode);
+        $this->dispatch('getLevel', divisionCode: $divisionCode);
     }
 
     /**
      * Retrieves the division based on the provided department code and updates the corresponding properties.
      *
-     * @param string $departmentCode The code of the department.
-     * @return void
+     * @param  string  $departmentCode  The code of the department.
      */
     #[On('getDivision')]
     public function getDivision(string $departmentCode): void
     {
         $this->reset([
-           'divisions',
-           'option'
+            'divisions',
+            'option',
         ]);
 
         $department = Department::where('code', $departmentCode)->first();
 
-        if($department == null) {
+        if ($department == null) {
             return;
         }
 
         $divisions = Division::where('department_id', $department->id);
 
-        if($divisions->count() > 0) {
-            $this->option = "";
+        if ($divisions->count() > 0) {
+            $this->option = '';
             $this->divisions = $divisions->get();
         }
     }

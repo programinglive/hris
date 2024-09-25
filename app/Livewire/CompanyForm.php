@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Http\Controllers\ToolController;
 use App\Models\Company;
 use DB;
 use Illuminate\Contracts\View\View;
@@ -19,7 +20,9 @@ class CompanyForm extends Component
 
     #[Validate('required|min:3')]
     public $name;
-    
+
+    public $npwp;
+
     public $address;
 
     #[Validate('required|email:unique:companies') ]
@@ -36,38 +39,36 @@ class CompanyForm extends Component
      * Updates the specified property with the given value and performs validation if the property is 'code',
      * 'email', or 'phone'.
      *
-     * @param string $key The name of the property to be updated.
-     * @param mixed $value The new value for the property.
-     * @return void
+     * @param  string  $key  The name of the property to be updated.
+     * @param  mixed  $value  The new value for the property.
+     *
      * @throws ValidationException
      */
     public function updated(string $key, mixed $value): void
     {
-        if($key == 'code' || $key == 'email' || $key = 'phone'){
+        if ($key == 'code' || $key == 'email' || $key = 'phone') {
             $this->validateOnly($key);
         }
     }
 
     /**
      * The default data for the form.
-     *
-     * @return array
      */
     public function companyData(): array
     {
         return [
-            'code' => $this->code,
+            'code' => ToolController::sanitizeString($this->code),
             'name' => $this->name,
+            'npwp' => $this->npwp,
             'address' => $this->address,
             'email' => $this->email,
-            'phone' => $this->phone
+            'phone' => $this->phone,
+            'created_by' => auth()->user()->id,
         ];
     }
 
     /**
      * Saves the company details to the database and dispatches a 'company-created' event.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -91,8 +92,9 @@ class CompanyForm extends Component
     public function edit($code): void
     {
         $this->code = $code;
-        $this->company = Company::where('code',$code)->first();
+        $this->company = Company::where('code', $code)->first();
         $this->name = $this->company->name;
+        $this->npwp = $this->company->npwp;
         $this->address = $this->company->address;
         $this->email = $this->company->email;
         $this->phone = $this->company->phone;
@@ -108,7 +110,10 @@ class CompanyForm extends Component
     public function update(): void
     {
         DB::transaction(function () {
-            $this->company->update($this->companyData());
+            $data = $this->companyData();
+            $data['updated_by'] = auth()->user()->id;
+
+            $this->company->update($data);
         }, 5);
 
         $this->dispatch('company-updated', companyId: $this->company->id);
@@ -122,8 +127,9 @@ class CompanyForm extends Component
     #[On('delete')]
     public function destroy($code): void
     {
-        $this->company = Company::where('code',$code)->first();
-        $this->company->code = $this->company->code . '-deleted';
+        $this->company = Company::where('code', $code)->first();
+        $this->company->code = $this->company->code.time().'-deleted';
+        $this->company->phone = $this->company->phone.time().'-deleted';
         $this->company->save();
 
         $this->company->delete();
@@ -133,11 +139,20 @@ class CompanyForm extends Component
         $this->dispatch('company-deleted', refreshCompanies: true);
     }
 
+    /**
+     * Resets the form by clearing all properties and error bag.
+     *
+     * This function is triggered when the 'refresh-form' event is dispatched.
+     */
+    #[On('refresh-form')]
+    public function refreshCompanyForm(): void
+    {
+        $this->reset();
+        $this->resetErrorBag();
+    }
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        exec('php artisan migrate:fresh');
-
         $this->call([
             CompanySeeder::class,
             BranchSeeder::class,
+            CategorySeeder::class,
+            SubCategorySeeder::class,
             BrandSeeder::class,
             DepartmentSeeder::class,
             DivisionSeeder::class,
@@ -24,7 +23,7 @@ class DatabaseSeeder extends Seeder
             LevelSeeder::class,
             PositionSeeder::class,
             UserSeeder::class,
-            NewsSeeder::class
+            NewsSeeder::class,
         ]);
     }
 }

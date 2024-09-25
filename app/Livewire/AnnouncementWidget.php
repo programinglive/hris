@@ -27,9 +27,6 @@ class AnnouncementWidget extends Component
         return view('livewire.announcement-widget');
     }
 
-    /**
-     * @return void
-     */
     public function checkIfCompanyOrBranchExists(): void
     {
         session()->forget('announcement');
@@ -37,30 +34,29 @@ class AnnouncementWidget extends Component
         $company = Company::first();
         $branch = Branch::first();
 
-
         if ($company) {
-            session()->forget('announcement.' . $company->title);
+            session()->forget('announcement.'.$company->title);
         }
 
         if ($branch) {
-            session()->forget('announcement.' . $branch->title);
+            session()->forget('announcement.'.$branch->title);
         }
 
-        if (!$branch) {
+        if (! $branch) {
             session()->flash('announcement', [
                 'title' => 'Branch',
                 'message' => 'You have not created a branch, please create a branch first',
                 'type' => 'warning',
-                'url' => route('master.branches')
+                'url' => route('master.branches'),
             ]);
         }
 
-        if (!$company) {
+        if (! $company) {
             session()->flash('announcement', [
                 'title' => 'Company',
                 'message' => 'You have not created a company, please create a company first',
                 'type' => 'warning',
-                'url' => route('master.companies')
+                'url' => route('master.companies'),
             ]);
         }
     }

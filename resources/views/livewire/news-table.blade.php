@@ -49,19 +49,46 @@
 		<table class="w-full text-sm">
 			<thead>
 			<tr>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th
+					scope="col"
+					class="px-4 py-2 text-left
+									font-medium text-gray-500 uppercase"
+				>
 					Date
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th
+					scope="col"
+					class="px-4 py-2 text-left
+									font-medium text-gray-500 uppercase"
+				>
 					Title
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th
+					scope="col"
+					class="px-4 py-2 text-left
+									font-medium text-gray-500 uppercase"
+				>
 					Content
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th
+					scope="col"
+					class="px-4 py-2 text-left
+									font-medium text-gray-500 uppercase"
+				>
 					Image
 				</th>
-				<th scope="col" class="px-4 py-2 text-end font-medium text-gray-500 uppercase">
+				<th
+					scope="col"
+					class="px-4 py-2 text-left
+									font-medium text-gray-500 uppercase"
+				>
+					Type
+				</th>
+				<th
+					scope="col"
+					class="px-4 py-2 text-end
+									font-medium text-gray-500 uppercase"
+				>
 					Action
 				</th>
 			</tr>
@@ -69,19 +96,40 @@
 			<tbody class="divide-y divide-gray-200">
 			@forelse($newsData as $news)
 				<tr>
-					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
+					<td
+						class="px-4 py-2 whitespace-nowrap
+										text-gray-500 truncate max-w-[150px]"
+					>
 						{{ $news->news_date }}
 					</td>
-					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
+					<td
+						class="px-4 py-2 whitespace-nowrap
+										text-gray-500 truncate max-w-[150px]"
+					>
 						{{ $news->title }}
 					</td>
-					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
+					<td
+						class="px-4 py-2 whitespace-nowrap
+										text-gray-500 truncate max-w-[150px]"
+					>
 						{{ $news->content }}
 					</td>
-					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
+					<td
+						class="px-4 py-2 whitespace-nowrap
+										text-gray-500 truncate max-w-[150px]"
+					>
 						<img src="{{ $news->image }}" class="w-14" alt="" />
 					</td>
-					<td class="px-4 py-2 whitespace-nowrap text-end flex flex-col space-y-2">
+					<td
+						class="px-4 py-2 whitespace-nowrap
+										text-gray-500 truncate max-w-[150px]"
+					>
+						{{ $news->type }}
+					</td>
+					<td
+						class="px-4 py-2 whitespace-nowrap
+										text-end flex flex-col space-y-2"
+					>
 						<button
 							wire:click="$dispatch('edit', { title: '{{ $news->title }}'})"
 							class="text-gray-500 text-end hover:text-sky-700"
@@ -98,7 +146,12 @@
 				</tr>
 			@empty
 				<tr>
-					<td colspan="11" class="text-center text-gray-500 pt-4">Empty Data</td>
+					<td
+						colspan="11"
+						class="text-center text-gray-500 pt-4"
+					>
+						Empty Data
+					</td>
 				</tr>
 			@endforelse
 			</tbody>

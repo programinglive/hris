@@ -26,15 +26,15 @@ class SetDeleted extends Command
     public function handle(): void
     {
         $model = $this->argument('model');
-        $model = app('App\Models\\' . ucfirst($model) );
+        $model = app('App\Models\\'.ucfirst($model));
 
         $models = $model->withTrashed()->get();
-        
-        foreach($models as $data) {
-            if($data->deleted_at){
-                $data->code = $data->code . '-deleted-';
+
+        foreach ($models as $data) {
+            if ($data->deleted_at) {
+                $data->code = $data->code.'-deleted-';
                 $data->save();
-                $this->info($data->code . ' deleted');
+                $this->info($data->code.' deleted');
             }
         }
 

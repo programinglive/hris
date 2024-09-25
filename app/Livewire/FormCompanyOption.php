@@ -13,13 +13,13 @@ class FormCompanyOption extends Component
 {
     public $companyId;
 
-    #[Url(keep:true)]
-    public $companyCode = "all";
+    #[Url(keep: true)]
+    public $companyCode = 'all';
+
+    public $companyName = 'all';
 
     /**
      * Initializes the component by dispatching a 'refreshCompany' event.
-     *
-     * @return void
      */
     public function mount(): void
     {
@@ -29,17 +29,17 @@ class FormCompanyOption extends Component
     /**
      * Updates the company ID and emits a 'setCompany' event.
      *
-     * @param mixed $companyCode The new value for the company ID.
-     * @return void
+     * @param  mixed  $companyCode  The new value for the company ID.
      */
     public function updatedCompanyCode(mixed $companyCode): void
     {
         $this->resetErrorBag();
 
-        if($companyCode == "") {
+        if ($companyCode == '') {
             $this->addError('companyCode', 'This field is required');
             $this->dispatch('resetCompanyId');
-            $this->companyCode = "all";
+            $this->companyCode = 'all';
+
             return;
         }
 
@@ -50,22 +50,25 @@ class FormCompanyOption extends Component
         $this->dispatch('getDepartment', $companyCode);
     }
 
+    #[On('setCompany')]
+    public function setCompany($companyCode): void
+    {
+        $this->companyCode = $companyCode;
+    }
+
     /**
      * Resets the 'companyCode' property to its initial value.
-     *
-     * @return void
      */
     #[On('refreshCompany')]
     public function refreshCompany(): void
     {
-        $this->companyCode = "all";
+        $this->companyCode = 'all';
     }
 
     /**
      * Selects the company with the given ID and emits a 'selectCompany' event.
      *
-     * @param int $companyId The ID of the company to select.
-     * @return void
+     * @param  int  $companyId  The ID of the company to select.
      */
     #[On('selectCompany')]
     public function selectCompany(int $companyId): void
@@ -76,20 +79,18 @@ class FormCompanyOption extends Component
 
     /**
      * Handles the 'companyRequired' event by adding an error message to the 'companyId' field.
-     *
-     * @return void
      */
     #[On('companyRequired')]
     public function companyRequired(): void
     {
-        $this->addError('companyId', 'This field is required');
+        $this->addError('companyCode', 'This field is required');
     }
 
     /**
      * Retrieves the company data based on the value of `$companyCode`.
      *
      * @return Collection The collection of company data if `$companyCode` is empty,
-     *                                        otherwise an empty collection.
+     *                    otherwise an empty collection.
      */
     public function getCompanyData(): Collection
     {
@@ -98,8 +99,6 @@ class FormCompanyOption extends Component
 
     /**
      * Clears the form by resetting all properties and error bag.
-     *
-     * @return void
      */
     #[On('clearFormCompanyOption')]
     public function clearFormCompanyOption(): void
@@ -110,8 +109,6 @@ class FormCompanyOption extends Component
 
     /**
      * Render the view for the form company option.
-     *
-     * @return View
      */
     public function render(): View
     {

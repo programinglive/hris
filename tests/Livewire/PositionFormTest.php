@@ -24,8 +24,6 @@ class PositionFormTest extends TestCase
      * implementation, it seeds the database with test data using the `DatabaseSeeder` class,
      * logs in the user using the `auth()->login()` method, and creates a new `Position` model
      * using the `Position::factory()->create()` method.
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -53,7 +51,7 @@ class PositionFormTest extends TestCase
             ->call('destroy', $this->position->code);
 
         $this->assertSoftDeleted('positions', [
-            'code' => $this->position->code . '-deleted'
+            'code' => $this->position->code.'-deleted',
         ]);
     }
 }

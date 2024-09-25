@@ -8,6 +8,9 @@
 	<meta content="Beautyworld HRIS" name="description">
 	<meta content="Beautyworld Team" name="author">
 	
+	<!-- CSRF Token -->
+	<meta name="csrf-token" content="{{ csrf_token() }}">
+	
 	<!-- App favicon -->
 	<link rel="shortcut icon" href="{{ asset('/images/favicon.ico')}}">
 	<link rel="apple-touch-icon" sizes="180x180" href="{{asset('/apple-touch-icon.png')}}">

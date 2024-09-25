@@ -21,37 +21,35 @@ class UserFactory extends Factory
     /**
      * Configures the factory to create a new user with associated company,
      * branch, department, division, level, position, and user detail.
-     *
-     * @return Factory|UserFactory
      */
     public function configure(): Factory|UserFactory
     {
         return $this->afterCreating(function (User $user) {
             $company = Company::first();
             $branch = Branch::factory()->create([
-                'company_id' => $company->id
+                'company_id' => $company->id,
             ]);
             $department = Department::factory()->create([
                 'company_id' => $company->id,
-                'branch_id' => $branch->id
+                'branch_id' => $branch->id,
             ]);
             $division = Division::factory()->create([
                 'company_id' => $company->id,
                 'branch_id' => $branch->id,
-                'department_id' => $department->id
+                'department_id' => $department->id,
             ]);
             $level = Level::factory([
                 'company_id' => $company->id,
                 'branch_id' => $branch->id,
                 'department_id' => $department->id,
-                'division_id' => $division->id
+                'division_id' => $division->id,
             ])->create();
             $position = Position::factory([
                 'company_id' => $company->id,
                 'branch_id' => $branch->id,
                 'department_id' => $department->id,
                 'division_id' => $division->id,
-                'level_id' => $level->id
+                'level_id' => $level->id,
             ])->create();
 
             UserDetail::create([
@@ -69,10 +67,10 @@ class UserFactory extends Factory
                 'phone' => $this->faker->phoneNumber(),
             ]);
 
-            $user->assignRole('root');
-            echo "User [$user->name] created successfully." . PHP_EOL;
+            echo "User [$user->name] created successfully.".PHP_EOL;
         });
     }
+
     /**
      * Define the model's default state.
      *

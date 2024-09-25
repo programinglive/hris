@@ -13,10 +13,10 @@ use Livewire\Component;
 
 class BrandForm extends Component
 {
-    #[Url(keep:true)]
+    #[Url(keep: true)]
     public $companyCode = 'all';
 
-    #[Url(keep:true)]
+    #[Url(keep: true)]
     public $branchCode = 'all';
 
     #[Validate('required|unique:brands|min:3')]
@@ -33,28 +33,26 @@ class BrandForm extends Component
      * Updates the specified property with the given value and performs validation if the property is 'code',
      * 'email', or 'phone'.
      *
-     * @param string $key The name of the property to be updated.
-     * @param mixed $value The new value for the property.
-     * @return void
+     * @param  string  $key  The name of the property to be updated.
+     * @param  mixed  $value  The new value for the property.
+     *
      * @throws ValidationException
      */
     public function updated(string $key, mixed $value): void
     {
-        if($key == 'name'){
+        if ($key == 'name') {
             $this->validateOnly($key);
         }
     }
 
     /**
      * The default data for the form.
-     *
-     * @return array
      */
     public function brandData(): array
     {
         return [
-            'company_id' => auth()->user()->details->company_id,
-            'branch_id' => auth()->user()->details->branch_id,
+            'company_id' => 1,
+            'branch_id' => 1,
             'code' => $this->code,
             'name' => $this->name,
         ];
@@ -62,8 +60,6 @@ class BrandForm extends Component
 
     /**
      * Saves the brand details to the database and dispatches a 'brand-created' event.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -84,7 +80,7 @@ class BrandForm extends Component
     #[On('edit')]
     public function edit($code): void
     {
-        $this->brand = Brand::where('code',$code)->first();
+        $this->brand = Brand::where('code', $code)->first();
         $this->code = $this->brand->code;
         $this->name = $this->brand->name;
 
@@ -113,8 +109,8 @@ class BrandForm extends Component
     #[On('delete')]
     public function destroy($code): void
     {
-        $this->brand = Brand::where('code',$code)->first();
-        $this->brand->code = $this->brand->code . '-deleted';
+        $this->brand = Brand::where('code', $code)->first();
+        $this->brand->code = $this->brand->code.'-deleted';
         $this->brand->save();
 
         $this->brand->delete();
@@ -126,8 +122,6 @@ class BrandForm extends Component
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {

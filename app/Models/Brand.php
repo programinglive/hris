@@ -11,12 +11,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Brand extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $guarded = ['id'];
 
     /**
-     * @return BelongsTo
+     * Get the company that owns the Brand
      */
     public function company(): BelongsTo
     {
@@ -24,7 +24,7 @@ class Brand extends Model
     }
 
     /**
-     * @return BelongsTo
+     * Get the branch that owns the Brand
      */
     public function branch(): BelongsTo
     {
@@ -32,7 +32,7 @@ class Brand extends Model
     }
 
     /**
-     * @return LogOptions
+     * Customize the activity log
      */
     public function getActivitylogOptions(): LogOptions
     {

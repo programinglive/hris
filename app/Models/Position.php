@@ -12,68 +12,45 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Position extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $guarded = ['id'];
 
-    /**
-     * @return BelongsTo
-     */
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class);
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function subDivision(): BelongsTo
     {
         return $this->belongsTo(SubDivision::class);
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function level(): BelongsTo
     {
         return $this->belongsTo(Level::class);
     }
 
-    /**
-     * @return HasMany
-     */
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
-    /**
-     * @return LogOptions
-     */
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

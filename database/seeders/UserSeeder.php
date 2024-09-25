@@ -11,12 +11,11 @@ class UserSeeder extends Seeder
 {
     /**
      * Run method to create an admin user and factory user.
-     *
-     * @return void
      */
     public function run(): void
     {
         User::truncate();
+
         $user = User::create([
             'name' => 'admin',
             'email' => 'admin@test.com',
@@ -24,14 +23,13 @@ class UserSeeder extends Seeder
         ]);
 
         $user->details()->create([
-           'company_id' => Company::factory()->create()->id,
-           'branch_id' => Branch::factory()->create()->id,
-           'code' => 'USR0001',
-           'user_id' => $user->id,
-           'first_name' => $user->name,
-           'role' => 'administrator',
+            'company_id' => Company::factory()->create()->id,
+            'branch_id' => Branch::factory()->create()->id,
+            'code' => 'USR0001',
+            'user_id' => $user->id,
+            'first_name' => $user->name,
+            'role' => 'administrator',
         ]);
-
     }
 
     public function uploadBulk(): void
@@ -47,12 +45,12 @@ class UserSeeder extends Seeder
             }
         }
 
-        foreach($data as $d) {
-            foreach($d as $userName){
-                $code = 'EMP' . str_pad(User::withTrashed()->count() + 1, 7, "0", STR_PAD_LEFT);
+        foreach ($data as $d) {
+            foreach ($d as $userName) {
+                $code = 'EMP'.str_pad(User::withTrashed()->count() + 1, 7, '0', STR_PAD_LEFT);
                 $user = User::create([
                     'name' => strtolower(trim($userName)),
-                    'email' => strtolower(trim($userName)) . '@test.com',
+                    'email' => strtolower(trim($userName)).'@test.com',
                     'password' => bcrypt('hrisproject'),
                 ]);
 
@@ -64,9 +62,8 @@ class UserSeeder extends Seeder
                     'first_name' => $userName,
                 ]);
 
-                echo 'User created: ' . $user->name . PHP_EOL;
+                echo 'User created: '.$user->name.PHP_EOL;
             }
         }
     }
-
 }

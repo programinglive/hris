@@ -13,6 +13,7 @@ use Livewire\WithPagination;
 class EmployeeTable extends Component
 {
     use withPagination;
+
     public $showForm = false;
 
     #[Url]
@@ -21,8 +22,7 @@ class EmployeeTable extends Component
     /**
      * Handles the event when a employee is created.
      *
-     * @param int $employeeId The ID of the created employee.
-     * @return void
+     * @param  int  $employeeId  The ID of the created employee.
      */
     #[On('employee-created')]
     public function employeeAdded(int $employeeId): void
@@ -33,8 +33,7 @@ class EmployeeTable extends Component
     /**
      * Handles the event when a employee is updated.
      *
-     * @param int $employeeId The ID of the updated employee.
-     * @return void
+     * @param  int  $employeeId  The ID of the updated employee.
      */
     #[On('employee-updated')]
     public function employeeUpdated(int $employeeId): void
@@ -44,7 +43,6 @@ class EmployeeTable extends Component
 
     /**
      * Handles the event when a employee is deleted.
-     * @return void
      */
     #[On('employee-deleted')]
     public function employeeDeleted(): void
@@ -56,8 +54,6 @@ class EmployeeTable extends Component
 
     /**
      * Shows the form employee.
-     *
-     * @return void
      */
     #[On('show-form')]
     public function showForm(): void
@@ -72,18 +68,16 @@ class EmployeeTable extends Component
      */
     public function getEmployees(): LengthAwarePaginator
     {
-        return User::where('name', 'like', '%' . $this->search . '%')->paginate(5);
+        return User::where('name', 'like', '%'.$this->search.'%')->paginate(5);
     }
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {
-        return view('livewire.employee-table',[
-            'employees' => self::getEmployees()
+        return view('livewire.employee-table', [
+            'employees' => self::getEmployees(),
         ]);
     }
 }

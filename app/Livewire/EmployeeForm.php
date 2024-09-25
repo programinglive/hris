@@ -26,28 +26,26 @@ class EmployeeForm extends Component
      * Updates the specified property with the given value and performs validation if the property is 'code',
      * 'email', or 'phone'.
      *
-     * @param string $key The name of the property to be updated.
-     * @param mixed $value The new value for the property.
-     * @return void
+     * @param  string  $key  The name of the property to be updated.
+     * @param  mixed  $value  The new value for the property.
+     *
      * @throws ValidationException
      */
     public function updated(string $key, mixed $value): void
     {
-        if($key == 'code' || $key == 'name'){
+        if ($key == 'code' || $key == 'name') {
             $this->validateOnly($key);
         }
     }
 
     /**
      * The default data for the form.
-     *
-     * @return array
      */
     public function employeeData(): array
     {
         return [
-            'company_id' => auth()->user()->details->company_id,
-            'branch_id' => auth()->user()->details->branch_id,
+            'company_id' => 1,
+            'branch_id' => 1,
             'code' => $this->code,
             'name' => strtolower(trim($this->name)),
         ];
@@ -55,8 +53,6 @@ class EmployeeForm extends Component
 
     /**
      * Saves the employee details to the database and dispatches a 'employee-created' event.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -77,7 +73,7 @@ class EmployeeForm extends Component
     #[On('edit')]
     public function edit($code): void
     {
-        $this->employee = User::join('user_details', 'user_details.user_id', '=', 'users.id')->where('user_details.code',$code)->first();
+        $this->employee = User::join('user_details', 'user_details.user_id', '=', 'users.id')->where('user_details.code', $code)->first();
         $this->code = $this->employee->details?->code;
         $this->name = $this->employee->name;
 
@@ -106,7 +102,7 @@ class EmployeeForm extends Component
     #[On('delete')]
     public function destroy($code): void
     {
-        $this->employee = User::where('code',$code)->first();
+        $this->employee = User::where('code', $code)->first();
         $this->employee->delete();
 
         $this->dispatch('employee-deleted', refreshCompanies: true);
@@ -114,8 +110,6 @@ class EmployeeForm extends Component
 
     /**
      * Render the livewire component.
-     *
-     * @return View
      */
     public function render(): View
     {

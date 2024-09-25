@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
                 && $request->user()->email == config('app.admin_email');
         });
 
-        if(config('app.env') === 'production') {
+        if (config('app.env') === 'production') {
             URL::forceScheme('https');
         }
     }

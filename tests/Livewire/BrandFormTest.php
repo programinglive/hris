@@ -22,8 +22,6 @@ class BrandFormTest extends TestCase
      * Set up the test environment before each test case.
      *
      * This function creates a new instance of the Brand model with the specified code and name.
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -40,7 +38,6 @@ class BrandFormTest extends TestCase
     /**
      * Test that the 'edit' method of the BrandForm component can successfully update the 'code' and 'name' fields.
      *
-     * @return void
      * @throws AssertionFailedError if the assertions fail
      */
     #[Test]
@@ -57,8 +54,6 @@ class BrandFormTest extends TestCase
      *
      * This test case verifies that the 'destroy' method of the BrandForm component
      * can successfully softly delete a brand with the provided code.
-     *
-     * @return void
      */
     #[Test]
     public function it_can_destroy_brand(): void
@@ -74,7 +69,6 @@ class BrandFormTest extends TestCase
      *
      * This test case verifies that the 'update' method of the BrandForm component
      * can successfully update a brand with the provided data.
-     *
      */
     #[Test]
     public function it_can_update_brand(): void
@@ -86,7 +80,7 @@ class BrandFormTest extends TestCase
             ->set('name', 'Brand B')
             ->call('update');
 
-        $this->brand = Brand::where('code','D002')->first();
+        $this->brand = Brand::where('code', 'D002')->first();
 
         $this->assertEquals('D002', $this->brand->code);
         $this->assertEquals('Brand B', $this->brand->name);
@@ -97,7 +91,6 @@ class BrandFormTest extends TestCase
      *
      * This test case verifies that the 'brandData' method of the BrandForm component
      * can successfully set the 'code' and 'name' fields.
-     *
      */
     #[Test]
     public function test_it_can_get_brand_data(): void
@@ -118,7 +111,6 @@ class BrandFormTest extends TestCase
      * This test case verifies that the 'save' method of the BrandForm component
      * can successfully save a brand with the provided data.
      *
-     * @return void
      * @throws AssertionFailedError if the assertions fail
      */
     #[Test]
@@ -139,8 +131,6 @@ class BrandFormTest extends TestCase
      *
      * This test case verifies that the BrandForm component can successfully render the form
      * with the expected fields (code and name).
-     *
-     * @return void
      */
     #[Test]
     public function it_can_render_brand_form(): void

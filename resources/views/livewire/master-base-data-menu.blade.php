@@ -26,5 +26,10 @@
 				<span class="menu-text">Item</span>
 			</a>
 		</li>
+		<li class="menu-item">
+			<a href="{{ route('master.working_days') }}" class="menu-link">
+				<span class="menu-text">Working Day</span>
+			</a>
+		</li>
 	</ul>
 </li>
