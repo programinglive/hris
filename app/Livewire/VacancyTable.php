@@ -144,7 +144,7 @@ class VacancyTable extends Component
     {
         $vacancies = Vacancy::where(function ($query) {
             $query->where('code', 'like', '%'.$this->search.'%')
-                ->orWhere('name', 'like', '%'.$this->search.'%');
+                ->orWhere('title', 'like', '%'.$this->search.'%');
         });
 
         if ($this->companyCode !== 'all') {
