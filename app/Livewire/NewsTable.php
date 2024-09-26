@@ -110,8 +110,8 @@ class NewsTable extends Component
     public function getNews(): LengthAwarePaginator
     {
         $news = News::where(function ($query) {
-            $query->where('code', 'like', '%'.$this->search.'%')
-                ->orWhere('name', 'like', '%'.$this->search.'%');
+            $query->where('title', 'like', '%'.$this->search.'%')
+                ->orWhere('content', 'like', '%'.$this->search.'%');
         })->orderBy('id');
 
         if ($this->companyCode == '') {
