@@ -123,7 +123,7 @@ class AttendanceTimeTable extends Component
     {
         $this->showForm = false;
         $this->resetPage();
-        $this->getCategories();
+        $this->getAttendanceTime();
     }
 
     /**
@@ -140,11 +140,11 @@ class AttendanceTimeTable extends Component
      *
      * @return LengthAwarePaginator The paginated list of attendanceTimes.
      */
-    public function getCategories(): LengthAwarePaginator
+    public function getAttendanceTime(): LengthAwarePaginator
     {
         $attendanceTimes = Attendance::where(function ($query) {
-            $query->where('code', 'like', '%'.$this->search.'%')
-                ->orWhere('name', 'like', '%'.$this->search.'%');
+            $query->where('in', 'like', '%'.$this->search.'%')
+                ->orWhere('out', 'like', '%'.$this->search.'%');
         });
 
         if ($this->companyCode !== 'all') {
@@ -161,7 +161,7 @@ class AttendanceTimeTable extends Component
     public function render(): View
     {
         return view('livewire.attendance-time-table', [
-            'attendanceTimes' => self::getCategories(),
+            'attendanceTimes' => self::getAttendanceTime(),
         ]);
     }
 }
