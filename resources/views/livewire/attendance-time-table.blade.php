@@ -17,7 +17,7 @@
 		>
 			
 			<a
-				href="{{ asset('attendance-time_data.xlsx') }}"
+				href="{{ asset('attendance_time_data.xlsx') }}"
 				class="
 			        px-4 py-2
 			        rounded-md
