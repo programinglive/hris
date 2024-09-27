@@ -2,12 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\WorkingCalendar;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\WorkingCalendar>
+ * @extends Factory<WorkingCalendar>
  */
-class WorkingDayFactory extends Factory
+class WorkingCalendarFactory extends Factory
 {
     /**
      * Define the model's default state.

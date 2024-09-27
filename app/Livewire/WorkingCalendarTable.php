@@ -62,21 +62,21 @@ class WorkingCalendarTable extends Component
                     $branch = BranchController::createByName($company, $rowProperties['branch_name']);
                 }
 
-                $category = WorkingCalendar::firstOrNew([
+                $workingCalendar = WorkingCalendar::firstOrNew([
                     'name' => $name,
                 ]);
 
-                if (! $category->code) {
-                    $category->company_id = $company->id;
-                    $category->branch_id = $branch->id ?? null;
-                    $category->code = WorkingCalendarController::generateCode();
-                    $category->company_code = $company->code;
-                    $category->company_name = $company->name;
-                    $category->branch_code = $branch->code ?? null;
-                    $category->branch_name = $branch->name ?? null;
+                if (! $workingCalendar->code) {
+                    $workingCalendar->company_id = $company->id;
+                    $workingCalendar->branch_id = $branch->id ?? null;
+                    $workingCalendar->code = WorkingCalendarController::generateCode();
+                    $workingCalendar->company_code = $company->code;
+                    $workingCalendar->company_name = $company->name;
+                    $workingCalendar->branch_code = $branch->code ?? null;
+                    $workingCalendar->branch_name = $branch->name ?? null;
                 }
 
-                $category->save();
+                $workingCalendar->save();
             });
 
         redirect()->back();
@@ -94,32 +94,32 @@ class WorkingCalendarTable extends Component
     }
 
     /**
-     * Handles the event when a category is created.
+     * Handles the event when a workingCalendar is created.
      *
-     * @param  int  $categoryId  The ID of the created category.
+     * @param  int  $workingCalendarId  The ID of the created workingCalendar.
      */
-    #[On('category-created')]
-    public function categoryAdded(int $categoryId): void
+    #[On('working-calendar-created')]
+    public function workingCalendarAdded(int $workingCalendarId): void
     {
         $this->showForm = false;
     }
 
     /**
-     * Handles the event when a category is updated.
+     * Handles the event when a workingCalendar is updated.
      *
-     * @param  int  $categoryId  The ID of the updated category.
+     * @param  int  $workingCalendarId  The ID of the updated workingCalendar.
      */
-    #[On('category-updated')]
-    public function categoryUpdated(int $categoryId): void
+    #[On('working-calendar-updated')]
+    public function workingCalendarUpdated(int $workingCalendarId): void
     {
         $this->showForm = false;
     }
 
     /**
-     * Handles the event when a category is deleted.
+     * Handles the event when a workingCalendar is deleted.
      */
-    #[On('category-deleted')]
-    public function categoryDeleted(): void
+    #[On('working-calendar-deleted')]
+    public function workingCalendarDeleted(): void
     {
         $this->showForm = false;
         $this->resetPage();
@@ -127,7 +127,7 @@ class WorkingCalendarTable extends Component
     }
 
     /**
-     * Shows the form category.
+     * Shows the form workingCalendar.
      */
     #[On('show-form')]
     public function showForm(): void
