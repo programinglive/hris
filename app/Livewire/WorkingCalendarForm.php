@@ -15,36 +15,26 @@ use Livewire\Component;
 class WorkingCalendarForm extends Component
 {
     public $company;
-
     public $companyId;
-
     #[Url(keep: true)]
     public $companyCode = 'all';
-
     public $companyName;
 
     public $branch;
-
     public $branchId;
-
     #[Url(keep: true)]
     public $branchCode = 'all';
-
     public $branchName;
 
     #[Validate('required|min:3')]
     public $date;
 
     public $start;
-
     public $end;
-
     public $type;
-
     public $description;
 
     public $createdBy;
-
     public $updatedBy;
 
     public $workingCalendar;
@@ -53,6 +43,7 @@ class WorkingCalendarForm extends Component
 
     /**
      * Mount the component
+     * @return void
      */
     public function mount(): void
     {
