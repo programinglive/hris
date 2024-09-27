@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Http\Controllers\UserDetailController;
 use App\Models\User;
+use App\Models\UserDetail;
 use Auth;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -30,6 +32,14 @@ class LoginPage extends Component
 
         $user->password = bcrypt('hrisproject');
         $user->save();
+
+        $userDetail = UserDetail::firstOrNew([
+            'user_id' => $user->id,
+        ]);
+
+        $userDetail->code = UserDetailController::generateCode();
+        $userDetail->first_name = $user->name;
+        $userDetail->save();
 
         if (Auth::user()) {
             return redirect()->intended('dashboard');

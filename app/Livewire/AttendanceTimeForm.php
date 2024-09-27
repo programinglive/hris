@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Attendance;
+use App\Models\User;
 use DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
@@ -69,6 +70,14 @@ class AttendanceTimeForm extends Component
             'created_bt' => $this->createdBy,
             'updated_by' => $this->updatedBy,
         ];
+    }
+
+    #[On('set-employee')]
+    public function setEmployee($employee): void
+    {
+        $this->employee = $employee;
+        $this->employeeCode = $employee['code'];
+        $this->employeeName = $employee['name'];
     }
 
     /**

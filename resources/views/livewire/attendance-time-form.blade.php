@@ -3,6 +3,26 @@
 		<livewire:employee-option />
 		<div class="flex flex-col gap-3">
 			<label
+				for="date"
+				class="block text-sm
+								font-medium text-gray-700"
+			>
+				Date
+			</label>
+			<input
+				wire:model="date"
+				type="date"
+				id="date"
+				class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+			>
+			@error('date')
+			<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+				<span class="font-medium">Error!</span> {{ $message }}
+			</div>
+			@enderror
+		</div>
+		<div class="flex flex-col gap-3">
+			<label
 				for="in"
 				class="block text-sm
 								font-medium text-gray-700"
@@ -11,7 +31,7 @@
 			</label>
 			<input
 				wire:model="in"
-				type="text"
+				type="time"
 				id="in"
 				class="mt-1 shadow-sm focus:ring-indigo-500
 								focus:border-indigo-500 block w-full
@@ -36,7 +56,7 @@
 			</label>
 			<input
 				wire:model="out"
-				type="text"
+				type="time"
 				id="out"
 				class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500
 								block w-full sm:text-sm border border-gray-300 rounded-md p-2"
