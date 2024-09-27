@@ -15,6 +15,9 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table = ToolController::defaultTableSchema($table);
+            $table->unsignedInteger('employee_id');
+            $table->string('employee_code');
+            $table->string('employee_name');
             $table->string('in');
             $table->string('out');
             $table->integer('duration');
