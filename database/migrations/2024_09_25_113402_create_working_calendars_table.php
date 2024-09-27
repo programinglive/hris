@@ -12,10 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('working_days', function (Blueprint $table) {
+        Schema::create('working_calendars', function (Blueprint $table) {
             $table->id();
             $table = ToolController::defaultTableSchema($table);
-            $table->string('working_date')->nullable();
+            $table->timestamp('working_date')->nullable();
+            $table->timestamp('start')->nullable();
+            $table->timestamp('end')->nullable();
             $table->string('type')->nullable();
             $table->string('description')->nullable();
         });
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('working_days');
+        Schema::dropIfExists('working_calendars');
     }
 };

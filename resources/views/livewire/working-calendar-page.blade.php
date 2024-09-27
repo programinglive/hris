@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-4">
 	<livewire:breadcrumb :moduleLabel="$moduleLabel"/>
 	<livewire:page-filter />
-	<livewire:working-day-table />
+	<livewire:working-calendar-table />
 </div>

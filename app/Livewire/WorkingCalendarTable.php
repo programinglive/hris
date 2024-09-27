@@ -4,9 +4,9 @@ namespace App\Livewire;
 
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\WorkingDayController;
+use App\Http\Controllers\WorkingCalendarController;
 use App\Models\Company;
-use App\Models\WorkingDay;
+use App\Models\WorkingCalendar;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
@@ -16,7 +16,7 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
-class WorkingDayTable extends Component
+class WorkingCalendarTable extends Component
 {
     use WithFileUploads, withPagination;
 
@@ -30,13 +30,13 @@ class WorkingDayTable extends Component
 
     public $import;
 
-    public function importWorkingDay(): void
+    public function importWorkingCalendar(): void
     {
         $this->validate([
             'import' => 'required|mimes:csv,xlsx,xls',
         ]);
 
-        $this->import->store(path: 'workingDays');
+        $this->import->store(path: 'workingCalendars');
 
         $this->import = $this->import->path();
 
@@ -62,14 +62,14 @@ class WorkingDayTable extends Component
                     $branch = BranchController::createByName($company, $rowProperties['branch_name']);
                 }
 
-                $category = WorkingDay::firstOrNew([
+                $category = WorkingCalendar::firstOrNew([
                     'name' => $name,
                 ]);
 
                 if (! $category->code) {
                     $category->company_id = $company->id;
                     $category->branch_id = $branch->id ?? null;
-                    $category->code = WorkingDayController::generateCode();
+                    $category->code = WorkingCalendarController::generateCode();
                     $category->company_code = $company->code;
                     $category->company_name = $company->name;
                     $category->branch_code = $branch->code ?? null;
@@ -123,7 +123,7 @@ class WorkingDayTable extends Component
     {
         $this->showForm = false;
         $this->resetPage();
-        $this->getWorkingDay();
+        $this->getWorkingCalendar();
     }
 
     /**
@@ -136,24 +136,24 @@ class WorkingDayTable extends Component
     }
 
     /**
-     * Retrieves a paginated list of workingDays based on a search query.
+     * Retrieves a paginated list of workingCalendars based on a search query.
      *
-     * @return LengthAwarePaginator The paginated list of workingDays.
+     * @return LengthAwarePaginator The paginated list of workingCalendars.
      */
-    public function getWorkingDay(): LengthAwarePaginator
+    public function getWorkingCalendar(): LengthAwarePaginator
     {
-        $workingDays = WorkingDay::where(function ($query) {
+        $workingCalendars = WorkingCalendar::where(function ($query) {
             $query->where('code', 'like', '%'.$this->search.'%')
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
 
         if ($this->companyCode !== 'all') {
             $company = Company::where('code', $this->companyCode)->first();
-            $workingDays = $workingDays->where(
+            $workingCalendars = $workingCalendars->where(
                 'company_id', $company?->id);
         }
 
-        return $workingDays->orderBy('id')
+        return $workingCalendars->orderBy('id')
             ->paginate(5);
     }
 
@@ -162,8 +162,8 @@ class WorkingDayTable extends Component
      */
     public function render(): View
     {
-        return view('livewire.working-day-table', [
-            'workingDays' => self::getWorkingDay(),
+        return view('livewire.working-calendar-table', [
+            'workingCalendars' => self::getWorkingCalendar(),
         ]);
     }
 }

@@ -17,7 +17,7 @@
 		>
 			
 			<a
-				href="{{ asset('working_day_data.xlsx') }}"
+				href="{{ asset('working_calendar_data.xlsx') }}"
 				class="
 			        px-4 py-2
 			        rounded-md
@@ -45,7 +45,7 @@
 			          18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
 					/>
 				</svg>
-				Working Day Template
+				Working Calendar Template
 			</a>
 			<label for="import" class="inline">
 				<input
@@ -61,7 +61,7 @@
 			<div class="text-red-500 inline">{{ $message }}</div>
 			@enderror
 			<button
-				wire:click="importWorkingDay"
+				wire:click="importWorkingCalendar"
 				type="button"
 				class="btn bg-green-500 text-white inline"
 			>
@@ -98,7 +98,7 @@
 		</div>
 	</div>
 	<div x-show="open">
-		<livewire:working-day-form />
+		<livewire:working-calendar-form />
 	</div>
 	<div class="overflow-x-auto" x-show="!open">
 		<div class="min-w-full inline-block align-middle">
@@ -148,27 +148,27 @@
 					</tr>
 					</thead>
 					<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-					@forelse($workingDays as $working_day)
+					@forelse($workingCalendars as $working_calendar)
 						<tr>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_day->company_name }}
+								{{ $working_calendar->company_name }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_day->branch_name }}
+								{{ $working_calendar->branch_name }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_day->code }}
+								{{ $working_calendar->code }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_day->name }}
+								{{ $working_calendar->name }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-end text-sm
@@ -176,13 +176,13 @@
 								style="width: 100px"
 							>
 								<button
-									wire:click="$dispatch('edit', { code: '{{ $working_day->code }}'})"
+									wire:click="$dispatch('edit', { code: '{{ $working_calendar->code }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Edit
 								</button>
 								<button
-									wire:click="$dispatch('delete', { code: '{{ $working_day->code }}'})"
+									wire:click="$dispatch('delete', { code: '{{ $working_calendar->code }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Delete
@@ -204,6 +204,6 @@
 			</div>
 		</div>
 		<hr class="my-4 border-gray-300">
-		{{ $workingDays->links() }}
+		{{ $workingCalendars->links() }}
 	</div>
 </div>
