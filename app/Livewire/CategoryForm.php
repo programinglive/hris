@@ -39,6 +39,9 @@ class CategoryForm extends Component
 
     public $category;
 
+    public $createdBy;
+    public $updatedBy;
+
     public $actionForm = 'save';
 
     /**
@@ -71,6 +74,8 @@ class CategoryForm extends Component
             'company_name' => $this->companyName,
             'branch_code' => $this->branchCode,
             'branch_name' => $this->branchName,
+            'created_bt' => $this->createdBy,
+            'updated_by' => $this->updatedBy,
         ];
     }
 

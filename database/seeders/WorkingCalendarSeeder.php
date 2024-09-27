@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class WorkingDaySeeder extends Seeder
+class WorkingCalendarSeeder extends Seeder
 {
     /**
      * Run the database seeds.

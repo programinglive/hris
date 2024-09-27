@@ -130,6 +130,18 @@
 							scope="col"
 							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
+							Start
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+						>
+							End
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+						>
 							Type
 						</th>
 						<th
@@ -163,12 +175,27 @@
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_calendar->code }}
+								{{ $working_calendar->date }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_calendar->name }}
+								{{ $working_calendar->start }}
+							</td>
+							<td
+								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+							>
+								{{ $working_calendar->end }}
+							</td>
+							<td
+								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+							>
+								{{ $working_calendar->type }}
+							</td>
+							<td
+								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+							>
+								{{ $working_calendar->description }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-end text-sm
@@ -176,13 +203,13 @@
 								style="width: 100px"
 							>
 								<button
-									wire:click="$dispatch('edit', { code: '{{ $working_calendar->code }}'})"
+									wire:click="$dispatch('edit', { date: '{{ $working_calendar->date }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Edit
 								</button>
 								<button
-									wire:click="$dispatch('delete', { code: '{{ $working_calendar->code }}'})"
+									wire:click="$dispatch('delete', { date: '{{ $working_calendar->date }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Delete

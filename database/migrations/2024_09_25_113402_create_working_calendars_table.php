@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('working_calendars', function (Blueprint $table) {
             $table->id();
             $table = ToolController::defaultTableSchema($table);
-            $table->timestamp('working_date')->nullable();
+            $table->timestamp('date')->nullable();
             $table->timestamp('start')->nullable();
             $table->timestamp('end')->nullable();
             $table->string('type')->nullable();
