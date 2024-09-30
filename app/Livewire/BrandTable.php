@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CompanyController;
 use App\Models\Brand;
 use App\Models\Company;
 use Illuminate\Contracts\View\View;
@@ -10,18 +12,68 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Spatie\SimpleExcel\SimpleExcelReader;
 
 class BrandTable extends Component
 {
     use withPagination;
 
     public $showForm = false;
+    public $import;
 
     #[Url]
     public $search;
 
     #[Url(keep: true)]
     public $companyCode = 'all';
+
+    public function importBrand(): void
+    {
+        $this->validate([
+            'import' => 'required|mimes:csv,xlsx,xls',
+        ]);
+
+        $this->import->store(path: 'branches');
+
+        $this->import = $this->import->path();
+
+        SimpleExcelReader::create($this->import)->getRows()
+            ->each(function (array $rowProperties) {
+
+                if (! array_key_exists('company_name', $rowProperties)) {
+                    $this->addError('messages', 'Company Name Required');
+
+                    return;
+                }
+
+                $branch = Brand::firstOrNew([
+                    'name' => $rowProperties['name'],
+                ]);
+
+                $company = Company::firstOrNew([
+                    'name' => $rowProperties['company_name'],
+                ]);
+
+                if (! $company->code) {
+                    $company->code = CompanyController::generateCode();
+                    $company->name = $rowProperties['company_name'];
+                    $company->save();
+                }
+
+                if (! $branch->code) {
+                    $branch->code = BrandController::generateCode();
+                }
+
+                $branch->company_id = $company->id;
+                $branch->company_name = $company->name;
+                $branch->company_code = $company->code;
+                $branch->save();
+            }
+            );
+
+        redirect()->back();
+
+    }
 
     /**
      * Sets the company code.

@@ -67,10 +67,13 @@ class CompanyFormTest extends TestCase
     #[Test]
     public function it_can_destroy_company(): void
     {
+        $code = 'D001' . time() . '-deleted';
         Livewire::test(CompanyForm::class)
             ->call('destroy', 'D001');
 
-        $this->assertSoftDeleted('companies', ['code' => 'D001-deleted']);
+
+
+        $this->assertSoftDeleted('companies', ['code' => $code]);
     }
 
     /**

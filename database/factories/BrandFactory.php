@@ -24,6 +24,12 @@ class BrandFactory extends Factory
             'branch_id' => Branch::first()->id,
             'code' => $this->faker->unique()->randomNumber(5),
             'name' => $this->faker->company(),
+            'company_code' => Company::first()->code,
+            'company_name' => Company::first()->name,
+            'branch_code' => Branch::first()->code,
+            'branch_name' => Branch::first()->name,
+            'created_by' => 1,
+            'updated_by' => 1,
         ];
     }
 }

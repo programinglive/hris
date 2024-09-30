@@ -19,15 +19,17 @@ class BranchFactory extends Factory
      */
     public function definition(): array
     {
-        $company = Company::factory()->create();
+        $company = Company::first();
 
         return [
             'company_id' => $company->id,
-            'code' => BranchController::generateCode(),
-            'name' => $this->faker->company(),
+            'code' => $this->faker->unique()->ean8,
+            'name' => $this->faker->name,
             'type' => 'branch',
             'company_code' => $company->code,
             'company_name' => $company->name,
+            'created_by' => 1,
+            'updated_by' => 1,
         ];
     }
 }

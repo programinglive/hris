@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ToolController;
 use App\Models\Branch;
 use App\Models\Company;
 use Illuminate\Database\Migrations\Migration;
@@ -15,22 +16,9 @@ return new class extends Migration
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Company::class)
-                ->nullable()
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-            $table->foreignIdFor(Branch::class)
-                ->nullable()
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table = ToolController::defaultTableSchema($table);
             $table->string('code');
             $table->string('name');
-            $table->string('company_code');
-            $table->string('company_name');
-            $table->softDeletes();
-            $table->timestamps();
         });
     }
 

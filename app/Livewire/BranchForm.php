@@ -166,6 +166,7 @@ class BranchForm extends Component
             return;
         }
 
+
         DB::transaction(function () {
             $data = $this->branchData();
             $data['updated_by'] = auth()->user()->id;
