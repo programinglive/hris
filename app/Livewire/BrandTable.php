@@ -19,6 +19,7 @@ class BrandTable extends Component
     use withPagination;
 
     public $showForm = false;
+
     public $import;
 
     #[Url]

@@ -3,13 +3,10 @@
 namespace App\Livewire;
 
 use App\Models\Attendance;
-use App\Models\User;
 use DB;
 use Illuminate\Contracts\View\View;
-use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class AttendanceTimeForm extends Component
@@ -33,11 +30,15 @@ class AttendanceTimeForm extends Component
     public $branchName;
 
     public $employee;
+
     public $employeeCode;
+
     public $employeeName;
 
     public $in;
+
     public $out;
+
     public $duration;
 
     public $attendanceTime;
@@ -45,6 +46,7 @@ class AttendanceTimeForm extends Component
     public $status;
 
     public $createdBy;
+
     public $updatedBy;
 
     public $actionForm = 'save';

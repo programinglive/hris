@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Http\Controllers\BranchController;
 use App\Models\Branch;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;

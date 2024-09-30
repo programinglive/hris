@@ -40,6 +40,7 @@ class CategoryForm extends Component
     public $category;
 
     public $createdBy;
+
     public $updatedBy;
 
     public $actionForm = 'save';

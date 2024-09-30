@@ -202,9 +202,8 @@ class UserForm extends Component
         $this->details = $this->user->details;
 
         $this->actionForm = 'update';
-        
 
-        if(!is_null($this->user->details->company_id)){
+        if (! is_null($this->user->details->company_id)) {
             $this->dispatch('selectCompany', $this->user->details->company_id);
         }
 

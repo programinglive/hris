@@ -10,6 +10,6 @@ class UserDetailController extends Controller
     {
         $count = UserDetail::withTrashed()->count() + 1;
 
-        return 'EMP' . str_pad( $count, 7, '0', STR_PAD_LEFT);
+        return 'EMP'.str_pad($count, 7, '0', STR_PAD_LEFT);
     }
 }

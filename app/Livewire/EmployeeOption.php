@@ -3,15 +3,17 @@
 namespace App\Livewire;
 
 use App\Models\User;
-use App\Models\UserDetail;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class EmployeeOption extends Component
 {
     public $search;
+
     public $employees;
+
     public $employee;
+
     public $employeeDetail;
 
     public function updated(): void
@@ -27,7 +29,7 @@ class EmployeeOption extends Component
         $this->employeeDetail = $this->employee->details->toArray();
 
         $this->employee = $this->employee->toArray();
-        
+
         $this->employee = array_merge($this->employee, $this->employeeDetail);
 
         $this->dispatch('set-employee', employee: $this->employee);
