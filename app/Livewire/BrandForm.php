@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Brand;
+use App\Models\Company;
 use DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
@@ -13,11 +14,15 @@ use Livewire\Component;
 
 class BrandForm extends Component
 {
+    public $company;
     #[Url(keep: true)]
     public $companyCode = 'all';
+    public $companyName;
 
+    public $branch;
     #[Url(keep: true)]
     public $branchCode = 'all';
+    public $branchName;
 
     #[Validate('required|unique:brands|min:3')]
     public $code;
@@ -27,7 +32,28 @@ class BrandForm extends Component
 
     public $brand;
 
+    public $createdBy;
+    public $updatedBy;
+
     public $actionForm = 'save';
+
+    /**
+     * Mount the component
+     *
+     * @return void
+     */
+    public function mount(): void
+    {
+        $this->company = Company::first();
+        $this->companyName = $this->company->name;
+
+        $this->branch = $this->company->branches()->first();
+
+        $this->branchCode = $this->branch->code;
+        $this->branchName = $this->branch->name;
+
+        $this->createdBy = auth()->user()->id;
+    }
 
     /**
      * Updates the specified property with the given value and performs validation if the property is 'code',
@@ -55,6 +81,12 @@ class BrandForm extends Component
             'branch_id' => 1,
             'code' => $this->code,
             'name' => $this->name,
+            'company_code' => $this->companyCode,
+            'company_name' => $this->companyName,
+            'branch_code' => $this->branchCode,
+            'branch_name' => $this->branchName,
+            'created_by' => $this->createdBy,
+            'updated_by' => $this->updatedBy,
         ];
     }
 
@@ -83,6 +115,7 @@ class BrandForm extends Component
         $this->brand = Brand::where('code', $code)->first();
         $this->code = $this->brand->code;
         $this->name = $this->brand->name;
+        $this->updatedBy = auth()->user()->id;
 
         $this->actionForm = 'update';
 
@@ -110,7 +143,7 @@ class BrandForm extends Component
     public function destroy($code): void
     {
         $this->brand = Brand::where('code', $code)->first();
-        $this->brand->code = $this->brand->code.'-deleted';
+        $this->brand->code = $this->brand->code.time().'-deleted';
         $this->brand->save();
 
         $this->brand->delete();

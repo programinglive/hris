@@ -17,6 +17,8 @@ class BrandFormTest extends TestCase
     use RefreshDatabase;
 
     public $brand;
+    public $code;
+    public $name;
 
     /**
      * Set up the test environment before each test case.
@@ -29,10 +31,9 @@ class BrandFormTest extends TestCase
 
         $this->seed(DatabaseSeeder::class);
 
-        $this->brand = Brand::factory([
-            'code' => 'D001',
-            'name' => 'Brand A',
-        ])->create();
+        $this->brand = Brand::factory()->create();
+        $this->code = $this->brand->code;
+        $this->name = $this->brand->name;
     }
 
     /**
@@ -43,10 +44,12 @@ class BrandFormTest extends TestCase
     #[Test]
     public function testItCanEditBrand(): void
     {
+        $this->actingAs(User::first());
+
         Livewire::test(BrandForm::class)
             ->call('edit', $this->brand->code)
-            ->assertSet('code', 'D001')
-            ->assertSet('name', 'Brand A');
+            ->assertSet('code', $this->code)
+            ->assertSet('name', $this->name);
     }
 
     /**
@@ -58,10 +61,13 @@ class BrandFormTest extends TestCase
     #[Test]
     public function it_can_destroy_brand(): void
     {
-        Livewire::test(BrandForm::class)
-            ->call('destroy', 'D001');
+        $this->actingAs(User::first());
 
-        $this->assertSoftDeleted('brands', ['code' => 'D001-deleted']);
+        $code = $this->code.time().'-deleted';
+        Livewire::test(BrandForm::class)
+            ->call('destroy', $this->code);
+
+        $this->assertSoftDeleted('brands', ['code' => $code]);
     }
 
     /**
@@ -74,6 +80,7 @@ class BrandFormTest extends TestCase
     public function it_can_update_brand(): void
     {
         $this->actingAs(User::first());
+
         Livewire::test(BrandForm::class)
             ->set('brand', $this->brand)
             ->set('code', 'D002')
@@ -101,8 +108,8 @@ class BrandFormTest extends TestCase
             ->set('name', 'Brand A')
             ->call('brandData');
 
-        $this->assertEquals('D001', $this->brand->code);
-        $this->assertEquals('Brand A', $this->brand->name);
+        $this->assertEquals($this->code, $this->brand->code);
+        $this->assertEquals($this->name, $this->brand->name);
     }
 
     /**
@@ -118,12 +125,10 @@ class BrandFormTest extends TestCase
     {
         $this->actingAs(User::first());
         Livewire::test(BrandForm::class)
-            ->set('code', 'D001')
-            ->set('name', 'Brand A')
             ->call('save');
 
-        $this->assertEquals('D001', $this->brand->code);
-        $this->assertEquals('Brand A', $this->brand->name);
+        $this->assertEquals($this->code, $this->brand->code);
+        $this->assertEquals($this->name, $this->brand->name);
     }
 
     /**
@@ -135,6 +140,7 @@ class BrandFormTest extends TestCase
     #[Test]
     public function it_can_render_brand_form(): void
     {
+        $this->actingAs(User::first());
         Livewire::test(BrandForm::class)
             ->assertSee('Code')
             ->assertSee('Name');
