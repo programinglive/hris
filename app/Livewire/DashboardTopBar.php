@@ -55,12 +55,6 @@ class DashboardTopBar extends Component
         $this->dispatch('setCompany', $companyCode);
     }
 
-    public function logout(): void
-    {
-        auth()->logout();
-        redirect('/');
-    }
-
     public function render(): View
     {
         return view('livewire.dashboard-top-bar', [

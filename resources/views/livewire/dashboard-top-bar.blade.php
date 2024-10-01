@@ -13,7 +13,12 @@
 		<livewire:dashboard-logo />
 		
 		<!-- Topbar Search Modal Button -->
-		<button type="button" data-fc-type="modal" data-fc-target="topbar-search-modal" class="nav-link p-2 me-auto">
+		<button
+			type="button"
+			data-fc-type="modal"
+			data-fc-target="topbar-search-modal"
+			class="nav-link p-2 me-auto"
+		>
 			<span class="sr-only">Search</span>
 			<span class="flex items-center justify-center h-6 w-6">
             <i class="mgc_search_line text-2xl"></i>
@@ -25,7 +30,8 @@
 			<div class="w-[180px] px-2">
 				<select
 					id="companyCode"
-					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500
+										block w-full sm:text-sm border border-gray-300 rounded-md p-2"
 					wire:model="companyCode"
 				>
 					<option value="all">Select Company</option>
@@ -37,7 +43,8 @@
 			<div class="w-[180px] px-2">
 				<select
 					id="branchCode"
-					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500
+									block w-full sm:text-sm border border-gray-300 rounded-md p-2"
 					wire:model="branchCode"
 				>
 					<option value="all">Select Branch</option>
