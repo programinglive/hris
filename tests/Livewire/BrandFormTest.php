@@ -4,6 +4,7 @@ namespace Tests\Livewire;
 
 use App\Livewire\BrandForm;
 use App\Models\Brand;
+use App\Models\Company;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,6 +21,8 @@ class BrandFormTest extends TestCase
     public $code;
     public $name;
 
+    public $companyCode;
+
     /**
      * Set up the test environment before each test case.
      *
@@ -30,6 +33,8 @@ class BrandFormTest extends TestCase
         parent::setUp();
 
         $this->seed(DatabaseSeeder::class);
+
+        $this->companyCode = Company::first()->code;
 
         $this->brand = Brand::factory()->create();
         $this->code = $this->brand->code;
@@ -83,6 +88,7 @@ class BrandFormTest extends TestCase
 
         Livewire::test(BrandForm::class)
             ->set('brand', $this->brand)
+            ->set('companyCode', $this->companyCode)
             ->set('code', 'D002')
             ->set('name', 'Brand B')
             ->call('update');

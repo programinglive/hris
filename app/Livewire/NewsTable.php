@@ -56,7 +56,7 @@ class NewsTable extends Component
     }
 
     /**
-     * Handles the event when a news is created.
+     * Handles the event when news is created.
      *
      * @param  int  $newsId  The ID of the created news.
      */
@@ -67,7 +67,7 @@ class NewsTable extends Component
     }
 
     /**
-     * Handles the event when a news is updated.
+     * Handles the event when news is updated.
      *
      * @param  int  $newsId  The ID of the updated news.
      */
@@ -78,7 +78,7 @@ class NewsTable extends Component
     }
 
     /**
-     * Handles the event when a news is deleted.
+     * Handles the event when news is deleted.
      */
     #[On('news-deleted')]
     public function newsDeleted(): void
@@ -99,9 +99,9 @@ class NewsTable extends Component
     }
 
     /**
-     * Retrieves a paginated list of newss based on a search query.
+     * Retrieves a paginated list of news based on a search query.
      *
-     * @return LengthAwarePaginator The paginated list of newss.
+     * @return LengthAwarePaginator The paginated list of news.
      */
     #[On('getDepartments')]
     public function getNews(): LengthAwarePaginator
