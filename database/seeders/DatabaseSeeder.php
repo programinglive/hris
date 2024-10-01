@@ -12,18 +12,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            UserSeeder::class,
             CompanySeeder::class,
             BranchSeeder::class,
-            CategorySeeder::class,
-            SubCategorySeeder::class,
-            BrandSeeder::class,
-            DepartmentSeeder::class,
-            DivisionSeeder::class,
-            SubDivisionSeeder::class,
-            LevelSeeder::class,
-            PositionSeeder::class,
-            UserSeeder::class,
-            NewsSeeder::class,
         ]);
     }
 }

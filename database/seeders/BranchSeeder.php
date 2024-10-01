@@ -13,17 +13,17 @@ class BranchSeeder extends Seeder
      */
     public function run(): void
     {
-        Branch::factory()->count(5)->create();
-        Branch::create([
-            'company_id' => Company::first()->id,
-            'code' => 'BR0001',
-            'name' => 'Main Branch',
-        ]);
+        $company = Company::first();
 
         Branch::create([
-            'company_id' => Company::orderBy('id', 'desc')->first()->id,
-            'code' => 'BR0002',
-            'name' => 'Branch 1',
+            'company_id' => $company->id,
+            'code' => fake()->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'name' => fake()->name,
+            'type' => fake()->randomElement(['branch', 'partner']),
+            'company_code' => $company->code,
+            'company_name' => $company->name,
+            'created_by' => 1,
+            'updated_by' => 1,
         ]);
     }
 }
