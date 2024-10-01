@@ -2,11 +2,12 @@
 
 namespace App\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class ProfileDropdown extends Component
 {
-    public function render()
+    public function render(): View
     {
         return view('livewire.profile-dropdown');
     }
