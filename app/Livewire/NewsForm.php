@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\Company;
 use App\Models\News;
 use DB;
 use Illuminate\Contracts\View\View;

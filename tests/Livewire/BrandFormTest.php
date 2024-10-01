@@ -18,7 +18,9 @@ class BrandFormTest extends TestCase
     use RefreshDatabase;
 
     public $brand;
+
     public $code;
+
     public $name;
 
     public $companyCode;

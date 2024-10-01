@@ -84,7 +84,7 @@ class CompanyForm extends Component
 
         // auto-set session company selected
         session([
-            'company' => $this->company->code
+            'company' => $this->company->code,
         ]);
 
         $this->reset();

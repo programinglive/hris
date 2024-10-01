@@ -15,13 +15,17 @@ use Livewire\Component;
 class BrandForm extends Component
 {
     public $company;
+
     #[Url(keep: true)]
     public $companyCode = 'all';
+
     public $companyName;
 
     public $branch;
+
     #[Url(keep: true)]
     public $branchCode = 'all';
+
     public $branchName;
 
     #[Validate('required|unique:brands|min:3')]
@@ -33,14 +37,13 @@ class BrandForm extends Component
     public $brand;
 
     public $createdBy;
+
     public $updatedBy;
 
     public $actionForm = 'save';
 
     /**
      * Mount the component
-     *
-     * @return void
      */
     public function mount(): void
     {
@@ -78,6 +81,7 @@ class BrandForm extends Component
     {
         if (is_null($this->companyCode) || $this->companyCode == 'all') {
             $this->dispatch('companyRequired');
+
             return;
         }
 
@@ -101,7 +105,7 @@ class BrandForm extends Component
     public function save(): void
     {
         $this->validate();
-        
+
         DB::transaction(function () {
             $this->brand = Brand::create($this->brandData());
         }, 5);

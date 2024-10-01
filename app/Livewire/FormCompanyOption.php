@@ -12,6 +12,7 @@ use Livewire\Component;
 class FormCompanyOption extends Component
 {
     public $company;
+
     public $companyId;
 
     #[Url(keep: true)]
@@ -71,14 +72,14 @@ class FormCompanyOption extends Component
     /**
      * Selects the company with the given ID and emits a 'selectCompany' event.
      *
-     * @param string $companyCode The ID of the company to select.
+     * @param  string  $companyCode  The ID of the company to select.
      */
     #[On('selectCompany')]
     public function selectCompany(string $companyCode): void
     {
         $this->company = Company::where('code', $companyCode)->first();
         $this->companyId = $this->company->id;
-        $this->companyCode =$companyCode;
+        $this->companyCode = $companyCode;
         $this->companyName = $this->company->name;
     }
 

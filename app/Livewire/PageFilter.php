@@ -30,7 +30,7 @@ class PageFilter extends Component
      */
     public function mount(): void
     {
-        $this->companyCode =  $this->companyCode == '' ? 'all' : $this->companyCode;
+        $this->companyCode = $this->companyCode == '' ? 'all' : $this->companyCode;
 
         if ($this->companyCode != 'all') {
 
