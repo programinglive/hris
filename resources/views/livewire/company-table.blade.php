@@ -223,7 +223,7 @@
 					@empty
 						<tr>
 							<td
-								colspan="4"
+								colspan="6"
 								class="text-center text-gray-500 pt-4"
 							>
 								Empty Data
