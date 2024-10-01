@@ -11,6 +11,7 @@ use Livewire\Component;
 
 class FormCompanyOption extends Component
 {
+    public $company;
     public $companyId;
 
     #[Url(keep: true)]
@@ -23,7 +24,7 @@ class FormCompanyOption extends Component
      */
     public function mount(): void
     {
-        $this->dispatch('refreshCompany');
+        $this->companyCode = session('companyCode');
     }
 
     /**
@@ -48,6 +49,8 @@ class FormCompanyOption extends Component
         $this->dispatch('setCompany', $companyCode);
         $this->dispatch('getBranch', $companyCode);
         $this->dispatch('getDepartment', $companyCode);
+
+        session(['companyCode' => $companyCode]);
     }
 
     #[On('setCompany')]
@@ -68,13 +71,15 @@ class FormCompanyOption extends Component
     /**
      * Selects the company with the given ID and emits a 'selectCompany' event.
      *
-     * @param  int  $companyId  The ID of the company to select.
+     * @param string $companyCode The ID of the company to select.
      */
     #[On('selectCompany')]
-    public function selectCompany(int $companyId): void
+    public function selectCompany(string $companyCode): void
     {
-        $this->companyId = $companyId;
-        $this->companyCode = Company::find($companyId)->code;
+        $this->company = Company::where('code', $companyCode)->first();
+        $this->companyId = $this->company->id;
+        $this->companyCode =$companyCode;
+        $this->companyName = $this->company->name;
     }
 
     /**

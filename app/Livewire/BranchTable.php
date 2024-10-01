@@ -140,7 +140,7 @@ class BranchTable extends Component
     public function getBranch(): LengthAwarePaginator
     {
         if ($this->companyCode == '') {
-            abort(404);
+            $this->companyCode = 'all';
         }
 
         $branches = new Branch;

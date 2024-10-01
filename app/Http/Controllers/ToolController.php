@@ -42,4 +42,18 @@ class ToolController extends Controller
 
         return $table;
     }
+
+    /**
+     * Set session value.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public static function setSession(string $key, mixed $value): void
+    {
+        session([$key => $value]);
+    }
+
+
 }

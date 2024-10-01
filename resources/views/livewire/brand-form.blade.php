@@ -1,5 +1,7 @@
 <form wire:submit.prevent="{{$actionForm}}">
 	<div class="flex flex-col gap-4">
+		<livewire:form-company-option />
+		<livewire:form-branch-option />
 		<div class="flex flex-col gap-3">
 			<label for="code" class="block text-sm font-medium text-gray-700">Code</label>
 			<input

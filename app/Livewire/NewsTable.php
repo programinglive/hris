@@ -45,9 +45,6 @@ class NewsTable extends Component
     #[On('setCompany')]
     public function setCompany(string $code): void
     {
-        if ($code == '') {
-            abort(404);
-        }
         if ($code != 'all') {
             $this->companyCode = $code;
             $this->companyId = Company::where('code', $code)->first()->id;
@@ -113,10 +110,6 @@ class NewsTable extends Component
             $query->where('title', 'like', '%'.$this->search.'%')
                 ->orWhere('content', 'like', '%'.$this->search.'%');
         })->orderBy('id');
-
-        if ($this->companyCode == '') {
-            abort(404);
-        }
 
         if ($this->companyCode != 'all') {
             $news = $news->where('company_id', $this->companyId);

@@ -53,10 +53,6 @@ class DepartmentForm extends Component
     #[On('setCompany')]
     public function setCompany(string $code): void
     {
-        if ($code == '') {
-            abort(404);
-        }
-
         if ($code !== 'all') {
             $this->companyCode = $code;
 

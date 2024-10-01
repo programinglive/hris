@@ -43,9 +43,6 @@ class DepartmentTable extends Component
     #[On('setCompany')]
     public function setCompany(string $code): void
     {
-        if ($code == '') {
-            abort(404);
-        }
         if ($code != 'all') {
             $this->companyCode = $code;
             $this->companyId = Company::where('code', $code)->first()->id;
@@ -113,7 +110,7 @@ class DepartmentTable extends Component
         })->orderBy('id');
 
         if ($this->companyCode == '') {
-            abort(404);
+            $this->companyCode = 'all';
         }
         if ($this->companyCode != 'all') {
             $departments = $departments->where('company_id', $this->companyId);

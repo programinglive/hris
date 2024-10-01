@@ -74,8 +74,13 @@ class BrandForm extends Component
     /**
      * The default data for the form.
      */
-    public function brandData(): array
+    public function brandData()
     {
+        if (is_null($this->companyCode) || $this->companyCode == 'all') {
+            $this->dispatch('companyRequired');
+            return;
+        }
+
         return [
             'company_id' => 1,
             'branch_id' => 1,
@@ -96,7 +101,7 @@ class BrandForm extends Component
     public function save(): void
     {
         $this->validate();
-
+        
         DB::transaction(function () {
             $this->brand = Brand::create($this->brandData());
         }, 5);

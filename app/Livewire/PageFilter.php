@@ -30,9 +30,10 @@ class PageFilter extends Component
      */
     public function mount(): void
     {
-        $this->dispatch('resetCompanyCode');
+        $this->companyCode =  $this->companyCode == '' ? 'all' : $this->companyCode;
 
         if ($this->companyCode != 'all') {
+
             if (! Company::where('code', $this->companyCode)->first()) {
                 abort(404);
             }
@@ -59,9 +60,7 @@ class PageFilter extends Component
      */
     public function updatedCompanyCode(string $code): void
     {
-        if ($code == '') {
-            abort(404);
-        } elseif ($code == 'all') {
+        if ($code == 'all') {
             $this->dispatch('setCompany', 'all');
         } else {
             $this->dispatch('setCompany', $code);

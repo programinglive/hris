@@ -82,6 +82,11 @@ class CompanyForm extends Component
 
         $this->dispatch('refreshAnnouncement');
 
+        // auto-set session company selected
+        session([
+            'company' => $this->company->code
+        ]);
+
         $this->reset();
     }
 

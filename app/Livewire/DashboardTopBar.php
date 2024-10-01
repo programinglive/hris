@@ -28,19 +28,16 @@ class DashboardTopBar extends Component
      */
     public function mount(): void
     {
-        $this->company = Company::first();
-        if ($this->company) {
-            $this->companyCode = $this->company->code;
-            $this->companyName = $this->company->name;
-        }
+        $this->companyCode = $this->companyCode == '' ? 'all' : $this->companyCode;
+        $this->branchCode = $this->branchCode == '' ? 'all' : $this->branchCode;
 
-        $this->branch = $this->company?->branches()->first();
-        if ($this->branch) {
-            $this->branchCode = $this->branch->code;
-            $this->branchName = $this->branch->name;
-        }
+        session()->put('companyCode', $this->companyCode);
+        session()->put('branchCode', $this->branchCode);
     }
 
+    /**
+     * Company code updated event
+     */
     public function updatedCompanyCode(string $companyCode): void
     {
         $this->resetErrorBag();

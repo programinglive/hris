@@ -46,25 +46,6 @@ class NewsForm extends Component
     }
 
     /**
-     * Sets the value of the companyCode property to the given title.
-     *
-     * @param  string  $title  The title to set the companyCode property to.
-     */
-    #[On('setCompany')]
-    public function setCompany(string $title): void
-    {
-        if ($title == '') {
-            abort(404);
-        }
-
-        if ($title !== 'all') {
-            $this->companyCode = $title;
-
-            $this->companyId = Company::where('title', $title)->first()->id;
-        }
-    }
-
-    /**
      * The default data for the form.
      */
     public function newsData(): array

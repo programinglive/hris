@@ -39,7 +39,10 @@ class BranchForm extends Component
     /**
      * Initializes the component by setting the companyCode property based on the user's role and company code.
      */
-    public function mount(): void {}
+    public function mount(): void
+    {
+        $this->companyCode = session('companyCode') ?? 'all';
+    }
 
     /**
      * Updates the specified property with the given value and performs validation if the property is 'code',
