@@ -3,6 +3,65 @@
 	<div class="flex justify-between gap-6">
 		<div class="flex flex-col gap-4 flex-1">
 			<div class="flex flex-col gap-3">
+				<label for="nik" class="block text-sm font-medium text-gray-700">NIK</label>
+				<input
+					wire:model="details.nik"
+					type="text"
+					id="nik"
+					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+				>
+				@error('details.nik')
+				<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+					<span class="font-medium">Error!</span> {{ $message }}
+				</div>
+				@enderror
+			</div>
+			<div class="flex flex-col gap-3">
+				<label for="date_in" class="block text-sm font-medium text-gray-700">Date In</label>
+				<input
+					wire:model="details.date_in"
+					type="date"
+					id="date_in"
+					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+				>
+				@error('details.date_in')
+				<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+					<span class="font-medium">Error!</span> {{ $message }}
+				</div>
+				@enderror
+			</div>
+			<div class="flex flex-col gap-3">
+				<label for="date_out" class="block text-sm font-medium text-gray-700">Date Out</label>
+				<input
+					wire:model="details.date_out"
+					type="date"
+					id="date_out"
+					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+				>
+				@error('details.date_out')
+				<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+					<span class="font-medium">Error!</span> {{ $message }}
+				</div>
+				@enderror
+			</div>
+			<div class="flex flex-col gap-3">
+				<label for="note" class="block text-sm font-medium text-gray-700">Note</label>
+				<textarea
+					wire:model="details.note"
+					id="note"
+					name="note"
+					rows="4"
+					class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+				></textarea>
+				@error('details.note')
+				<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+					<span class="font-medium">Error!</span> {{ $message }}
+				</div>
+				@enderror
+			</div>
+		</div>
+		<div class="flex flex-col gap-4 flex-1">
+			<div class="flex flex-col gap-3">
 				<label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
 				<input
 					wire:model="details.first_name"

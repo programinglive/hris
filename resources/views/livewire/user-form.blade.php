@@ -107,7 +107,7 @@
 				<livewire:form-position-option />
 			</div>
 		</div>
-		<livewire:form-user-detail />
+		<livewire:user-detail-form />
 		
 		<div class="flex flex-col gap-4 flex-1">
 			@error('errorMessage')
