@@ -27,6 +27,24 @@ class DashboardTopBar extends Component
 
     public $branchName;
 
+    public $branches;
+
+    public function mount(): void
+    {
+        if($this->companyCode != 'all') {
+            $this->setCompany($this->companyCode);
+        }
+
+        if($this->branchCode != 'all') {
+            $this->setBranch($this->branchCode);
+        }
+    }
+
+    public function updatedBranchCode($branchCode): void
+    {
+        $this->dispatch('setBranch', $branchCode);
+    }
+
     /**
      * Set the company based on the company code
      *
@@ -36,10 +54,16 @@ class DashboardTopBar extends Component
     #[On('setCompany')]
     public function setCompany(string $companyCode): void
     {
-        $this->company = Company::where('code', $companyCode)->first();
+        $this->dispatch('refreshBranches');
         $this->companyCode = $companyCode;
-    }
 
+        if ($companyCode != 'all') {
+            $this->company = Company::where('code', $companyCode)->first();
+            $this->companyId = $this->company->id;
+
+            $this->branches = $this->company->branches;
+        }
+    }
 
     /**
      * Set the branch based on the branch code
@@ -51,11 +75,22 @@ class DashboardTopBar extends Component
     public function setBranch(string $branchCode): void
     {
         $this->branchCode = $branchCode;
-
+        
         if ($branchCode != 'all') {
             $this->branch = Branch::where('code', $branchCode)->first();
             $this->branchId = $this->branch->id;
         }
+    }
+
+    /**
+     * Reset the branches when the company code is changed
+     *
+     * @return void
+     */
+    #[On('refreshBranches')]
+    public function refreshBranches(): void
+    {
+        $this->reset('branches');
     }
 
     /**

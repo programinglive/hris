@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Branch;
 use App\Models\Company;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
@@ -12,9 +13,13 @@ class FormBranchOption extends Component
 {
     public $companyId;
 
+    public $company;
     #[Url(keep: true)]
     public $companyCode;
 
+    public $branch;
+
+    #[Url(keep: true)]
     public $branchCode;
 
     public $option = 'disabled';
@@ -33,11 +38,58 @@ class FormBranchOption extends Component
                 $this->option = '';
                 $this->companyId = $company->id;
                 $this->branches = $company->branches;
+
             }
+        }
+
+        if ($this->branchCode != 'all') {
+            $this->setBranch($this->branchCode);
         }
     }
 
-    public function updatedBranchCode($branchCode): void
+    /**
+     * Set the company based on the company code
+     *
+     * @param string $companyCode
+     * @return void
+     */
+    #[On('setCompany')]
+    public function setCompany(string $companyCode): void
+    {
+        $this->dispatch('refreshBranches');
+        $this->companyCode = $companyCode;
+
+        if ($companyCode != 'all') {
+            $this->company = Company::where('code', $companyCode)->first();
+            $this->companyId = $this->company->id;
+
+            $this->branches = $this->company->branches;
+        }
+    }
+
+    /**
+     * Set the branch ID for the details.
+     *
+     * @param string $branchCode
+     */
+    #[On('setBranch')]
+    public function setBranch(string $branchCode): void
+    {
+        $this->branchCode = $branchCode;
+
+        if ($branchCode != 'all') {
+            $this->branch = Branch::where('code', $branchCode)->first();
+            $this->dispatch('setBranchId', $this->branch->id);
+        }
+    }
+
+    /**
+     * When the branch code is updated, set the branch code to the event dispatcher.
+     *
+     * @param string $branchCode
+     * @return void
+     */
+    public function updatedBranchCode(string $branchCode): void
     {
         $this->dispatch('setBranch', $branchCode);
     }

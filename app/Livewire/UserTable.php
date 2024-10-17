@@ -120,19 +120,6 @@ class UserTable extends Component
     }
 
     /**
-     * Sets the value of the company code property to the given code.
-     *
-     * @param string $companyCode  The code to set as the company code.
-     */
-    #[On('setCompany')]
-    public function setCompany(string $companyCode): void
-    {
-        $this->companyCode = $companyCode;
-        $this->company = Company::where('code', $companyCode)->first();
-        $this->companyId = $this->company->id;
-    }
-
-    /**
      * Handles the event when a user is created.
      *
      * @param  int  $userId  The ID of the created user.

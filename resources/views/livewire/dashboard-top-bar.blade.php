@@ -32,7 +32,7 @@
 					id="companyCode"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500
 										block w-full sm:text-sm border border-gray-300 rounded-md p-2"
-					wire:model="companyCode"
+					wire:model.live="companyCode"
 				>
 					<option value="all">Select Company</option>
 					@foreach ($companies as $company)
@@ -45,7 +45,7 @@
 					id="branchCode"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500
 									block w-full sm:text-sm border border-gray-300 rounded-md p-2"
-					wire:model="branchCode"
+					wire:model.live="branchCode"
 				>
 					<option value="all">Select Branch</option>
 					@if($branches)

@@ -80,17 +80,21 @@ class UserForm extends Component
         }
     }
 
+
     /**
-     * Sets the value of the company code property to the given code.
+     * Set the company based on the company code
      *
-     * @param string $companyCode  The code to set as the company code.
+     * @param  string  $companyCode  The code of the company.
      */
     #[On('setCompany')]
     public function setCompany(string $companyCode): void
     {
         $this->companyCode = $companyCode;
-        $this->company = Company::where('code', $companyCode)->first();
-        $this->companyId = $this->company->id;
+
+        if ($companyCode != 'all') {
+            $this->company = Company::where('code', $companyCode)->first();
+            $this->companyId = $this->company->id;
+        }
     }
 
     /**
