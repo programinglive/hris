@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Company;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -33,6 +34,19 @@ class DashboardTopBar extends Component
 
         session()->put('companyCode', $this->companyCode);
         session()->put('branchCode', $this->branchCode);
+    }
+
+    /**
+     * Set the company based on the company code
+     *
+     * @param string $companyCode
+     * @return void
+     */
+    #[On('setCompany')]
+    public function setCompany(string $companyCode): void
+    {
+        $this->company = Company::where('code', $companyCode)->first();
+        $this->companyCode = $companyCode;
     }
 
     /**
