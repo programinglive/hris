@@ -118,6 +118,12 @@
 							scope="col"
 							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
+							First Name
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+						>
 							Email
 						</th>
 						<th
@@ -144,6 +150,12 @@
 									class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
 								>
 										{{ $user->name }}
+								</td>
+								<td
+									wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"
+									class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+								>
+									{{ $user->details?->first_name }}
 								</td>
 								<td
 									wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"

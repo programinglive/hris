@@ -102,7 +102,7 @@
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
 						{{ $employee->email }}
 					</td>
-					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[120px]">
+					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
 						{{ $employee->details?->first_name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[120px]">
@@ -124,10 +124,10 @@
 						{{ $employee->details?->position?->name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
-						{{ $employee->details?->date_in }}
+						{{ $employee->details?->date_in ? date('Y-m-d' , strtotime($employee->details?->date_in)) : ''}}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
-						{{ $employee->details?->date_out }}
+						{{ $employee->details?->date_out ? date('Y-m-d' , strtotime($employee->details?->date_out)) : ''}}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-end flex flex-col space-y-2">
 						<button
