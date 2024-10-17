@@ -24,15 +24,11 @@ class UserDetailForm extends Component
         'bank_account' => null,
         'date_in' => null,
         'date_out' => null,
-        'note' => null
+        'note' => null,
     ];
 
     /**
      * Listen to the Livewire property change event and update the $details array.
-     *
-     * @param string $key
-     * @param  mixed  $value
-     * @return void
      */
     public function updated(string $key, mixed $value): void
     {

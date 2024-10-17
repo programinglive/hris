@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Http\Controllers\UserDetailController;
 use App\Models\Branch;
 use App\Models\Company;
 use App\Models\User;
@@ -33,12 +32,16 @@ class UserTable extends Component
 
     #[Url(keep: true)]
     public $companyCode;
+
     public $companyName;
 
     public $branch;
+
     public $branchId;
+
     #[Url(keep: true)]
     public $branchCode;
+
     public $branchName;
 
     public $employee;
@@ -96,17 +99,16 @@ class UserTable extends Component
 
                 $this->branch = Branch::where('code', $rowProperties['branch_code'])->first();
 
-
                 $checkUser = User::where('name', $rowProperties['name'])->first();
 
-                if($checkUser){
+                if ($checkUser) {
                     return;
                 }
 
                 if ($this->company && $this->branch) {
 
-                    if($rowProperties['email'] == ''){
-                        $rowProperties['email'] = time(). '@test.com';
+                    if ($rowProperties['email'] == '') {
+                        $rowProperties['email'] = time().'@test.com';
                     }
 
                     $user = User::create([

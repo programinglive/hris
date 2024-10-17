@@ -64,7 +64,7 @@ class AttendanceTimeTable extends Component
                 $this->branch = Branch::where('code', $rowProperties['branch_code'])->first();
 
                 $this->employee = UserDetail::where('nik', $rowProperties['nik'])->first();
-                
+
                 if ($this->company && $this->branch && $this->employee) {
                     Attendance::create([
                         'company_id' => $this->company->id,

@@ -12,7 +12,6 @@ use App\Models\User;
 use App\Models\UserDetail;
 use DB;
 use Illuminate\Contracts\View\View;
-use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
@@ -71,7 +70,7 @@ class UserForm extends Component
         'bank_account' => null,
         'date_in' => null,
         'date_out' => null,
-        'note' => null
+        'note' => null,
     ];
 
     public $actionForm = 'save';
@@ -255,7 +254,7 @@ class UserForm extends Component
             'bank_account' => $this->details['bank_account'],
             'date_in' => $this->details['date_in'],
             'date_out' => $this->details['date_out'],
-            'note' => $this->details['note']
+            'note' => $this->details['note'],
         ];
     }
 
