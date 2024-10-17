@@ -86,7 +86,6 @@ class AttendanceTimeTable extends Component
 
                 } else {
                     $this->addError('errorMessage', 'No data Submited');
-
                 }
 
             });

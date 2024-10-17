@@ -17,7 +17,7 @@ class BranchSeeder extends Seeder
 
         Branch::create([
             'company_id' => $company->id,
-            'code' => fake()->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'code' => 'B001',
             'name' => fake()->name,
             'type' => fake()->randomElement(['branch', 'partner']),
             'company_code' => $company->code,

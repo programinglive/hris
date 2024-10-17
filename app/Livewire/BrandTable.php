@@ -42,7 +42,7 @@ class BrandTable extends Component
             ->each(function (array $rowProperties) {
 
                 if (! array_key_exists('company_name', $rowProperties)) {
-                    $this->addError('messages', 'Company Name Required');
+                    $this->addError('errorMessage', 'Company Name Required');
 
                     return;
                 }

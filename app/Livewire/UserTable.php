@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Http\Controllers\UserDetailController;
 use App\Models\Branch;
 use App\Models\Company;
 use App\Models\User;
@@ -32,9 +33,15 @@ class UserTable extends Component
 
     #[Url(keep: true)]
     public $companyCode;
+    public $companyName;
 
+    public $branch;
+    public $branchId;
     #[Url(keep: true)]
     public $branchCode;
+    public $branchName;
+
+    public $employee;
 
     /**
      * Mount the component.
@@ -60,7 +67,7 @@ class UserTable extends Component
         $company = Company::first();
 
         if (! $company) {
-            $this->addError('messages', 'Company not found');
+            $this->addError('errorMessage', 'Company not found');
 
             return;
         }
@@ -69,7 +76,7 @@ class UserTable extends Component
         $branch = Branch::first();
 
         if (! $branch) {
-            $this->addError('messages', 'Branch not found');
+            $this->addError('errorMessage', 'Branch not found');
 
             return;
         }
@@ -84,35 +91,48 @@ class UserTable extends Component
 
         SimpleExcelReader::create($this->import)->getRows()
             ->each(function (array $rowProperties) {
-                $name = trim(
-                    strtolower(
-                        str_replace(' ', '', $rowProperties['name'])
-                    )
-                );
 
-                if (User::where('name', $name)->exists()) {
+                $this->company = Company::where('code', $rowProperties['comp_code'])->first();
+
+                $this->branch = Branch::where('code', $rowProperties['branch_code'])->first();
+
+
+                $checkUser = User::where('name', $rowProperties['name'])->first();
+
+                if($checkUser){
                     return;
                 }
 
-                $user = User::firstOrNew([
-                    'name' => $name,
-                    'email' => $name.'@beautyworld.co.id',
-                ]);
+                if ($this->company && $this->branch) {
 
-                $user->password = bcrypt('hrisproject');
+                    if($rowProperties['email'] == ''){
+                        $rowProperties['email'] = time(). '@test.com';
+                    }
 
-                $user->save();
+                    $user = User::create([
+                        'name' => $rowProperties['name'],
+                        'password' => bcrypt('hris123'),
+                        'email' => $rowProperties['email'],
+                    ]);
 
-                $userDetail = UserDetail::create([
-                    'company_id' => Company::first()->id,
-                    'branch_id' => Branch::first()->id,
-                    'code' => $this->generateEmployeeCode(),
-                    'user_id' => $user->id,
-                    'first_name' => $name,
-                ]);
+                    UserDetail::create([
+                        'company_id' => $this->company->id,
+                        'branch_id' => $this->branch->id,
+                        'user_id' => $user->id,
+                        'company_code' => $this->company->code,
+                        'company_name' => $this->company->name,
+                        'branch_code' => $this->branch->code,
+                        'branch_name' => $this->branch->name,
+                        'nik' => $rowProperties['nik'],
+                        'first_name' => $rowProperties['first_name'],
+                        'last_name' => $rowProperties['last_name'],
+                        'date_in' => $rowProperties['date_in'],
+                        'date_out' => $rowProperties['date_out'],
+                    ]);
 
-                $userDetail->phone = $rowProperties['phone'];
-                $userDetail->save();
+                } else {
+                    $this->addError('errorMessage', 'No data Submited');
+                }
             });
 
         redirect()->back();
@@ -178,17 +198,12 @@ class UserTable extends Component
     {
         $users = User::join('user_details', 'user_details.user_id', '=', 'users.id')
             ->where(function ($query) {
-                $query->where('user_details.code', 'like', '%'.$this->search.'%')
+                $query->where('user_details.nik', 'like', '%'.$this->search.'%')
                     ->orWhere('users.name', 'like', '%'.$this->search.'%');
+            })
+            ->where(function ($query) {
+                $query->whereNot('users.name', 'like', 'admin');
             });
-
-        if ($this->companyCode != 'all') {
-            $users = $users->where('user_details.company_id', Company::where('code', $this->companyCode)->first()->id);
-        }
-
-        if ($this->branchCode != 'all') {
-            $users = $users->where('user_details.branch_id', $this->branchCode);
-        }
 
         return $users->orderBy('users.id')
             ->paginate(5);
@@ -202,27 +217,5 @@ class UserTable extends Component
         return view('livewire.user-table', [
             'users' => self::getUsers(),
         ]);
-    }
-
-    /**
-     * Generate a new employee code.
-     *
-     * This function generates a new employee code in the format "YY-MM-XXXX".
-     * The "YY" represents the current year, the "MM" represents the current month,
-     * and the "XXXX" represents the incrementing number.
-     *
-     * @return string The new employee code.
-     */
-    public function generateEmployeeCode(): string
-    {
-        $now = now();
-        $year = $now->format('y');
-        $month = $now->format('m');
-        $lastUser = User::where('name', '!=', 'admin')->latest()->first();
-        $lastCode = $lastUser?->employee_code;
-        $lastIncrement = $lastCode ? (int) substr($lastCode, -4) : 0;
-        $increment = str_pad($lastIncrement + 1, 4, '0', STR_PAD_LEFT);
-
-        return "$year-$month-$increment";
     }
 }

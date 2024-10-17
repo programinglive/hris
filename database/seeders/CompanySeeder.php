@@ -13,7 +13,7 @@ class CompanySeeder extends Seeder
     public function run(): void
     {
         Company::create([
-            'code' => fake()->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'code' => 'C001',
             'name' => fake()->company(),
             'npwp' => fake()->regexify('[0-9]{15}'),
             'email' => fake()->unique()->safeEmail(),
