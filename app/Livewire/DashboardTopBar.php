@@ -67,6 +67,7 @@ class DashboardTopBar extends Component
         $this->companyCode = $companyCode;
 
         $this->dispatch('setCompany', $companyCode);
+        $this->dispatch('resetError');
     }
 
     public function render(): View

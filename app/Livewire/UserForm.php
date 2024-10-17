@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
 use App\Models\Level;
@@ -12,11 +13,24 @@ use DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class UserForm extends Component
 {
+    public $company;
+    public $companyId;
+
+    #[Url(keep: true)]
+    public $companyCode;
+
+    public $branch;
+    public $branchId;
+
+    #[Url('branchCode', keep: true)]
+    public $branchCode;
+
     #[Validate('required|unique:users|regex:/^\S+$/')]
     public $name;
 
@@ -54,6 +68,28 @@ class UserForm extends Component
     ];
 
     public $actionForm = 'save';
+
+    /**
+     * Initialize the component by setting the company based on the company code.
+     */
+    public function mount(): void
+    {
+        if ($this->companyCode != 'all') {
+            self::setCompany($this->companyCode);
+        }
+    }
+
+    /**
+     * Sets the value of the company code property to the given code.
+     *
+     * @param string $companyCode  The code to set as the company code.
+     */
+    #[On('setCompany')]
+    public function setCompany(string $companyCode): void
+    {
+        $this->company = Company::where('code', $companyCode)->first();
+        $this->companyId = $this->company->id;
+    }
 
     /**
      * @throws ValidationException
@@ -155,6 +191,7 @@ class UserForm extends Component
         return [
             'name' => $this->name,
             'email' => $this->email,
+            'password' => $this->password,
         ];
     }
 
@@ -178,6 +215,18 @@ class UserForm extends Component
      */
     public function save(): void
     {
+        if (is_null($this->companyId)) {
+            $this->addError('errorMessage', 'Please Select Company First');
+
+            return;
+        }
+
+        if (is_null($this->branchId)) {
+            $this->addError('errorMessage', 'Please Select Branch First');
+
+            return;
+        }
+
         $this->validate();
 
         DB::transaction(function () {
@@ -251,6 +300,12 @@ class UserForm extends Component
         $this->reset();
 
         $this->dispatch('hide-form');
+    }
+
+    #[On('resetError')]
+    public function resetError(): void
+    {
+        $this->resetErrorBag();
     }
 
     /**
