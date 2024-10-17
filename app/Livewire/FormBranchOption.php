@@ -14,6 +14,7 @@ class FormBranchOption extends Component
     public $companyId;
 
     public $company;
+
     #[Url(keep: true)]
     public $companyCode;
 
@@ -45,9 +46,6 @@ class FormBranchOption extends Component
 
     /**
      * When the branch code is updated, set the branch code to the event dispatcher.
-     *
-     * @param string $branchCode
-     * @return void
      */
     public function updatedBranchCode(string $branchCode): void
     {
@@ -56,9 +54,6 @@ class FormBranchOption extends Component
 
     /**
      * Set the company based on the company code
-     *
-     * @param string $companyCode
-     * @return void
      */
     #[On('setCompany')]
     public function setCompany(string $companyCode): void
@@ -75,8 +70,6 @@ class FormBranchOption extends Component
 
     /**
      * Set the branch ID for the details.
-     *
-     * @param string $branchCode
      */
     #[On('setBranch')]
     public function setBranch(string $branchCode): void

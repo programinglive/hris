@@ -27,6 +27,7 @@ class UserTable extends Component
     public $search;
 
     public $company;
+
     public $companyId;
 
     #[Url(keep: true)]
@@ -37,8 +38,6 @@ class UserTable extends Component
 
     /**
      * Mount the component.
-     *
-     * @return void
      */
     public function mount(): void
     {
@@ -223,6 +222,7 @@ class UserTable extends Component
         $lastCode = $lastUser?->employee_code;
         $lastIncrement = $lastCode ? (int) substr($lastCode, -4) : 0;
         $increment = str_pad($lastIncrement + 1, 4, '0', STR_PAD_LEFT);
+
         return "$year-$month-$increment";
     }
 }

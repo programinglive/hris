@@ -72,7 +72,6 @@ class PageFilter extends Component
 
     }
 
-
     /**
      * Sets the company ID based on the provided code.
      *

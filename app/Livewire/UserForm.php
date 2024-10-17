@@ -21,12 +21,14 @@ use Livewire\Component;
 class UserForm extends Component
 {
     public $company;
+
     public $companyId;
 
     #[Url(keep: true)]
     public $companyCode;
 
     public $branch;
+
     public $branchId;
 
     #[Url('branchCode', keep: true)]
@@ -79,7 +81,6 @@ class UserForm extends Component
             self::setCompany($this->companyCode);
         }
     }
-
 
     /**
      * Set the company based on the company code

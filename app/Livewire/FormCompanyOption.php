@@ -46,7 +46,7 @@ class FormCompanyOption extends Component
     /**
      * Set the company based on the company code.
      *
-     * @param string $companyCode The code of the company.
+     * @param  string  $companyCode  The code of the company.
      */
     #[On('setCompany')]
     public function setCompany(string $companyCode): void
