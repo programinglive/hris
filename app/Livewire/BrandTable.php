@@ -26,7 +26,7 @@ class BrandTable extends Component
     public $search;
 
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     public function importBrand(): void
     {

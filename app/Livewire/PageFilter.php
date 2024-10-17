@@ -12,10 +12,10 @@ use Livewire\Component;
 class PageFilter extends Component
 {
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     #[Url(keep: true)]
-    public $branchCode = 'all';
+    public $branchCode;
 
     public $filter = true;
 
@@ -72,23 +72,23 @@ class PageFilter extends Component
 
     }
 
+
     /**
-     * Sets the value of the company code property to the given code.
+     * Sets the company ID based on the provided code.
      *
-     * @param  string  $code  The code to set as the company code.
+     * @param  string  $code  The code of the company.
      */
     #[On('setCompany')]
     public function setCompany(string $code): void
     {
-        $this->companyCode = $code;
+        if ($code != 'all') {
+            $this->companyCode = $code;
+            $this->companyId = Company::where('code', $code)->first()->id;
+        } else {
+            $this->companyCode = 'all';
+        }
     }
 
-    /**
-     * Disables the filter by setting the 'filter' property to false.
-     */
-    /**
-     * Disables the filter by setting the 'filter' property to false.
-     */
     /**
      * Disables the filter by setting the 'filter' property to false.
      */

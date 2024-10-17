@@ -17,7 +17,7 @@ class DepartmentForm extends Component
     public $companyId;
 
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     #[Validate('required|unique:departments|min:3')]
     public $code;

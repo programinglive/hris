@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
@@ -74,7 +75,7 @@ class UserForm extends Component
      */
     public function mount(): void
     {
-        if ($this->companyCode != 'all') {
+        if ($this->companyCode != 'all' && ! empty($this->companyCode)) {
             self::setCompany($this->companyCode);
         }
     }
@@ -87,8 +88,25 @@ class UserForm extends Component
     #[On('setCompany')]
     public function setCompany(string $companyCode): void
     {
+        $this->companyCode = $companyCode;
         $this->company = Company::where('code', $companyCode)->first();
         $this->companyId = $this->company->id;
+    }
+
+    /**
+     * Set the branch ID for the details.
+     *
+     * @param  string  $branchCode  The ID of the branch.
+     */
+    #[On('setBranch')]
+    public function setBranch(string $branchCode): void
+    {
+        $this->branchCode = $branchCode;
+
+        if ($branchCode != 'all') {
+            $this->branch = Branch::where('code', $branchCode)->first();
+            $this->branchId = $this->branch->id;
+        }
     }
 
     /**

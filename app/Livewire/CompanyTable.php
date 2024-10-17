@@ -23,7 +23,7 @@ class CompanyTable extends Component
     public $search;
 
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     public $import;
 

@@ -15,12 +15,12 @@ use Livewire\Component;
 class SubCategoryForm extends Component
 {
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     public $companyName;
 
     #[Url(keep: true)]
-    public $branchCode = 'all';
+    public $branchCode;
 
     public $branchName;
 

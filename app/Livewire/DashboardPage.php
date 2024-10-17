@@ -11,7 +11,7 @@ use Livewire\Component;
 class DashboardPage extends Component
 {
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     /**
      * Render the view for the dashboard page.

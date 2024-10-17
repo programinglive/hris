@@ -16,7 +16,7 @@ class NewsForm extends Component
     public $companyId;
 
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     #[Validate('required|unique:news|min:3')]
     public $title;

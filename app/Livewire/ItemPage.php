@@ -9,7 +9,7 @@ use Livewire\Component;
 class ItemPage extends Component
 {
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     public $moduleLabel = 'Item';
 

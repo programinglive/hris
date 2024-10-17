@@ -20,7 +20,7 @@ class DepartmentTable extends Component
     public $companyId;
 
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     #[Url]
     public $search;

@@ -16,7 +16,7 @@ class FormDepartmentOption extends Component
     public $companyId;
 
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     public $option = 'disabled';
 
@@ -27,8 +27,6 @@ class FormDepartmentOption extends Component
      */
     public function mount(): void
     {
-        $this->reset();
-
         if ($this->companyCode != 'all') {
             $company = Company::where('code', $this->companyCode)->first();
 

@@ -11,7 +11,7 @@ class CompanyPage extends Component
     public $moduleLabel = 'Company';
 
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     /**
      * Renders the view for the company page.

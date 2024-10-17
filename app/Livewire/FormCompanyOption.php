@@ -16,17 +16,9 @@ class FormCompanyOption extends Component
     public $companyId;
 
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
-    public $companyName = 'all';
-
-    /**
-     * Initializes the component by dispatching a 'refreshCompany' event.
-     */
-    public function mount(): void
-    {
-        $this->companyCode = session('companyCode');
-    }
+    public $companyName;
 
     /**
      * Updates the company ID and emits a 'setCompany' event.
@@ -48,14 +40,19 @@ class FormCompanyOption extends Component
         $this->dispatch('setCompany', $companyCode);
         $this->dispatch('getBranch', $companyCode);
         $this->dispatch('getDepartment', $companyCode);
-
-        session(['companyCode' => $companyCode]);
     }
 
+    /**
+     * Sets the value of the company code property to the given code.
+     *
+     * @param string $companyCode  The code to set as the company code.
+     */
     #[On('setCompany')]
-    public function setCompany($companyCode): void
+    public function setCompany(string $companyCode): void
     {
         $this->companyCode = $companyCode;
+        $this->company = Company::where('code', $companyCode)->first();
+        $this->companyId = $this->company->id;
     }
 
     /**

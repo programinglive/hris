@@ -26,15 +26,25 @@ class UserTable extends Component
     #[Url]
     public $search;
 
-    #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $company;
+    public $companyId;
 
     #[Url(keep: true)]
-    public $branchCode = 'all';
+    public $companyCode;
 
+    #[Url(keep: true)]
+    public $branchCode;
+
+    /**
+     * Mount the component.
+     *
+     * @return void
+     */
     public function mount(): void
     {
-        $this->companyCode = 'all';
+        if (empty($this->companyCode)) {
+            $this->companyCode = 'all';
+        }
     }
 
     /**
@@ -112,12 +122,14 @@ class UserTable extends Component
     /**
      * Sets the value of the company code property to the given code.
      *
-     * @param  string  $code  The code to set as the company code.
+     * @param string $companyCode  The code to set as the company code.
      */
     #[On('setCompany')]
-    public function setCompany(string $code): void
+    public function setCompany(string $companyCode): void
     {
-        $this->companyCode = $code;
+        $this->companyCode = $companyCode;
+        $this->company = Company::where('code', $companyCode)->first();
+        $this->companyId = $this->company->id;
     }
 
     /**
@@ -206,8 +218,24 @@ class UserTable extends Component
         ]);
     }
 
+    /**
+     * Generate a new employee code.
+     *
+     * This function generates a new employee code in the format "YY-MM-XXXX".
+     * The "YY" represents the current year, the "MM" represents the current month,
+     * and the "XXXX" represents the incrementing number.
+     *
+     * @return string The new employee code.
+     */
     public function generateEmployeeCode(): string
     {
-        return 'EMP'.str_pad(UserDetail::withTrashed()->count() + 1, 7, '0', STR_PAD_LEFT);
+        $now = now();
+        $year = $now->format('y');
+        $month = $now->format('m');
+        $lastUser = User::where('name', '!=', 'admin')->latest()->first();
+        $lastCode = $lastUser?->employee_code;
+        $lastIncrement = $lastCode ? (int) substr($lastCode, -4) : 0;
+        $increment = str_pad($lastIncrement + 1, 4, '0', STR_PAD_LEFT);
+        return "$year-$month-$increment";
     }
 }

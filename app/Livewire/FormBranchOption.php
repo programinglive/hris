@@ -13,7 +13,7 @@ class FormBranchOption extends Component
     public $companyId;
 
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     public $branchCode;
 
@@ -21,10 +21,11 @@ class FormBranchOption extends Component
 
     public $branches;
 
+    /**
+     * Reset the component state.
+     */
     public function mount(): void
     {
-        $this->reset();
-
         if ($this->companyCode != 'all') {
             $company = Company::where('code', $this->companyCode)->first();
 
@@ -34,6 +35,11 @@ class FormBranchOption extends Component
                 $this->branches = $company->branches;
             }
         }
+    }
+
+    public function updatedBranchCode($branchCode): void
+    {
+        $this->dispatch('setBranch', $branchCode);
     }
 
     /**

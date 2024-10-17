@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Branch;
 use App\Models\Company;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
@@ -10,31 +11,21 @@ use Livewire\Component;
 
 class DashboardTopBar extends Component
 {
-    public $branch;
-
-    #[Url(keep: true)]
-    public $branchCode;
-
-    public $branchName;
-
     public $company;
+    public $companyId;
 
     #[Url(keep: true)]
     public $companyCode;
 
     public $companyName;
 
-    /**
-     * mount event
-     */
-    public function mount(): void
-    {
-        $this->companyCode = $this->companyCode == '' ? 'all' : $this->companyCode;
-        $this->branchCode = $this->branchCode == '' ? 'all' : $this->branchCode;
+    public $branch;
+    public $branchId;
 
-        session()->put('companyCode', $this->companyCode);
-        session()->put('branchCode', $this->branchCode);
-    }
+    #[Url(keep: true)]
+    public $branchCode;
+
+    public $branchName;
 
     /**
      * Set the company based on the company code
@@ -47,6 +38,24 @@ class DashboardTopBar extends Component
     {
         $this->company = Company::where('code', $companyCode)->first();
         $this->companyCode = $companyCode;
+    }
+
+
+    /**
+     * Set the branch based on the branch code
+     *
+     * @param string $branchCode
+     * @return void
+     */
+    #[On('setBranch')]
+    public function setBranch(string $branchCode): void
+    {
+        $this->branchCode = $branchCode;
+
+        if ($branchCode != 'all') {
+            $this->branch = Branch::where('code', $branchCode)->first();
+            $this->branchId = $this->branch->id;
+        }
     }
 
     /**

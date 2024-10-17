@@ -17,14 +17,14 @@ class BrandForm extends Component
     public $company;
 
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     public $companyName;
 
     public $branch;
 
     #[Url(keep: true)]
-    public $branchCode = 'all';
+    public $branchCode;
 
     public $branchName;
 
