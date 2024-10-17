@@ -29,13 +29,22 @@ class DashboardTopBar extends Component
 
     public $branches;
 
+    public $option = 'disabled';
+
     public function mount(): void
     {
-        if($this->companyCode != 'all') {
-            $this->setCompany($this->companyCode);
+        if ($this->companyCode != 'all') {
+            $company = Company::where('code', $this->companyCode)->first();
+
+            if ($company) {
+                $this->option = '';
+                $this->companyId = $company->id;
+                $this->branches = $company->branches;
+
+            }
         }
 
-        if($this->branchCode != 'all') {
+        if ($this->branchCode != 'all') {
             $this->setBranch($this->branchCode);
         }
     }
@@ -62,6 +71,12 @@ class DashboardTopBar extends Component
             $this->companyId = $this->company->id;
 
             $this->branches = $this->company->branches;
+
+            $this->option = '';
+
+            if($this->branchCode != 'all') {
+                $this->setBranch($this->branchCode);
+            }
         }
     }
 

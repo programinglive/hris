@@ -35,7 +35,6 @@ class FormBranchOption extends Component
             $company = Company::where('code', $this->companyCode)->first();
 
             if ($company) {
-                $this->option = '';
                 $this->companyId = $company->id;
                 $this->branches = $company->branches;
 
@@ -80,6 +79,7 @@ class FormBranchOption extends Component
         if ($branchCode != 'all') {
             $this->branch = Branch::where('code', $branchCode)->first();
             $this->dispatch('setBranchId', $this->branch->id);
+            $this->option = '';
         }
     }
 
