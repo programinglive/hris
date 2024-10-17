@@ -70,7 +70,10 @@ return new class extends Migration
             $table->string('last_education')->nullable();
             $table->string('marriage_status')->nullable();
             $table->string('place_of_birth')->nullable();
-            $table->date('date_of_birth')->nullable();
+            $table->timestamp('date_of_birth')->nullable();
+            $table->timestamp('date_of_birth')->nullable();
+            $table->timestamp('date_in')->nullable();
+            $table->date('date_out')->nullable();
             $table->string('ktp')->nullable();
             $table->string('npwp')->nullable();
             $table->enum('role', ['administrator', 'employee'])->default('employee');

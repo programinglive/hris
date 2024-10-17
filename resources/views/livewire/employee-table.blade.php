@@ -79,6 +79,12 @@
 				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
 					Position
 				</th>
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+		      Date In
+				</th>
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+			    Date Out
+				</th>
 				<th scope="col" class="px-4 py-2 text-end font-medium text-gray-500 uppercase">
 					Action
 				</th>
@@ -116,6 +122,12 @@
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
 						{{ $employee->details?->position?->name }}
+					</td>
+					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
+						{{ $employee->details?->date_in?->format('Y-m-d') }}
+					</td>
+					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
+						{{ $employee->details?->date_out?->format('Y-m-d') }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-end flex flex-col space-y-2">
 						<button

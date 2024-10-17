@@ -68,7 +68,9 @@ class EmployeeTable extends Component
      */
     public function getEmployees(): LengthAwarePaginator
     {
-        return User::where('name', 'like', '%'.$this->search.'%')->paginate(5);
+        return User::where('name', 'like', '%'.$this->search.'%')
+            ->whereNot('name','admin')
+            ->paginate(5);
     }
 
     /**
