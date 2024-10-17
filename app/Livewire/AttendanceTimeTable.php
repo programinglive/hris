@@ -2,11 +2,10 @@
 
 namespace App\Livewire;
 
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\BranchController;
-use App\Http\Controllers\CompanyController;
 use App\Models\Attendance;
+use App\Models\Branch;
 use App\Models\Company;
+use App\Models\UserDetail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
@@ -25,8 +24,25 @@ class AttendanceTimeTable extends Component
     #[Url]
     public $search;
 
+    public $employee;
+
+    public $company;
+
+    public $companyId;
+
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
+
+    public $companyName;
+
+    public $branch;
+
+    public $branchId;
+
+    #[Url(keep: true)]
+    public $branchCode;
+
+    public $branchName;
 
     public $import;
 
@@ -42,41 +58,37 @@ class AttendanceTimeTable extends Component
 
         SimpleExcelReader::create($this->import)->getRows()
             ->each(function (array $rowProperties) {
-                $name = trim(
-                    strtolower(
-                        str_replace(' ', '', $rowProperties['name'])
-                    )
-                );
 
-                $company = Company::firstOrNew([
-                    'name' => $rowProperties['company_name'],
-                ]);
+                $this->company = Company::where('code', $rowProperties['comp_code'])->first();
 
-                if (! $company->code) {
-                    $company->code = CompanyController::generateCode();
+                $this->branch = Branch::where('code', $rowProperties['branch_code'])->first();
+
+                $this->employee = UserDetail::where('nik', $rowProperties['nik'])->first();
+                
+                if ($this->company && $this->branch && $this->employee) {
+                    Attendance::create([
+                        'company_id' => $this->company->id,
+                        'branch_id' => $this->branch->id,
+                        'company_code' => $this->company->code,
+                        'company_name' => $this->company->name,
+                        'branch_code' => $this->branch->code,
+                        'branch_name' => $this->branch->name,
+                        'employee_id' => $this->employee->id,
+                        'employee_nik' => $rowProperties['nik'],
+                        'employee_name' => $this->employee->first_name,
+                        'created_by' => auth()->user()->id,
+                        'date' => $rowProperties['date'],
+                        'in' => $rowProperties['in'],
+                        'out' => $rowProperties['out'],
+                        'duration' => (strtotime($rowProperties['out']) - strtotime($rowProperties['in'])) / 60,
+                        'status' => $rowProperties['status'],
+                    ]);
+
+                } else {
+                    $this->addError('errorMessage', 'No data Submited');
+
                 }
 
-                $company->save();
-
-                if ($rowProperties['branch_name']) {
-                    $branch = BranchController::createByName($company, $rowProperties['branch_name']);
-                }
-
-                $attendanceTime = Attendance::firstOrNew([
-                    'name' => $name,
-                ]);
-
-                if (! $attendanceTime->code) {
-                    $attendanceTime->company_id = $company->id;
-                    $attendanceTime->branch_id = $branch->id ?? null;
-                    $attendanceTime->code = AttendanceController::generateCode();
-                    $attendanceTime->company_code = $company->code;
-                    $attendanceTime->company_name = $company->name;
-                    $attendanceTime->branch_code = $branch->code ?? null;
-                    $attendanceTime->branch_name = $branch->name ?? null;
-                }
-
-                $attendanceTime->save();
             });
 
         redirect()->back();
@@ -94,7 +106,7 @@ class AttendanceTimeTable extends Component
     }
 
     /**
-     * Handles the event when a attendanceTime is created.
+     * Handles the event when an attendanceTime is created.
      *
      * @param  int  $attendanceTimeId  The ID of the created attendanceTime.
      */
@@ -115,8 +127,14 @@ class AttendanceTimeTable extends Component
         $this->showForm = false;
     }
 
+    #[On('resetError')]
+    public function resetError(): void
+    {
+        $this->resetErrorBag();
+    }
+
     /**
-     * Handles the event when a attendanceTime is deleted.
+     * Handles the event when an attendanceTime is deleted.
      */
     #[On('attendanceTime-deleted')]
     public function attendanceTimeDeleted(): void
@@ -146,10 +164,6 @@ class AttendanceTimeTable extends Component
             $query->where('in', 'like', '%'.$this->search.'%')
                 ->orWhere('out', 'like', '%'.$this->search.'%');
         });
-
-        if ($this->companyCode !== 'all') {
-            $attendanceTimes = $attendanceTimes->where('company_id', Company::where('code', $this->companyCode)->first()?->id);
-        }
 
         return $attendanceTimes->orderBy('id')
             ->paginate(5);

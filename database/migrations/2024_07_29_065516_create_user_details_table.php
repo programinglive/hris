@@ -60,7 +60,7 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->string('code')->unique();
+            $table->string('nik')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('address')->nullable();
@@ -71,13 +71,13 @@ return new class extends Migration
             $table->string('marriage_status')->nullable();
             $table->string('place_of_birth')->nullable();
             $table->timestamp('date_of_birth')->nullable();
-            $table->timestamp('date_of_birth')->nullable();
             $table->timestamp('date_in')->nullable();
             $table->date('date_out')->nullable();
             $table->string('ktp')->nullable();
             $table->string('npwp')->nullable();
             $table->enum('role', ['administrator', 'employee'])->default('employee');
             $table->string('bank_account')->nullable();
+            $table->text('note')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -16,7 +16,7 @@ class AttendanceTimeForm extends Component
     public $companyId;
 
     #[Url(keep: true)]
-    public $companyCode = 'all';
+    public $companyCode;
 
     public $companyName;
 
@@ -25,7 +25,7 @@ class AttendanceTimeForm extends Component
     public $branchId;
 
     #[Url(keep: true)]
-    public $branchCode = 'all';
+    public $branchCode;
 
     public $branchName;
 

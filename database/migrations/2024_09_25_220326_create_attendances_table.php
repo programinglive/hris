@@ -16,12 +16,14 @@ return new class extends Migration
             $table->id();
             $table = ToolController::defaultTableSchema($table);
             $table->unsignedInteger('employee_id');
-            $table->string('employee_code');
+            $table->string('employee_nik');
             $table->string('employee_name');
-            $table->string('in');
-            $table->string('out');
+            $table->timestamp('date');
+            $table->timestamp('in');
+            $table->timestamp('out');
             $table->integer('duration');
-            $table->string('status');
+            $table->string('status')->nullable();
+            $table->text('note')->nullable();
         });
     }
 
