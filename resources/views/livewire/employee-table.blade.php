@@ -43,7 +43,7 @@
 		</div>
 	</div>
 	<div x-show="open">
-		<livewire:employee-form />
+		<livewire:user-form />
 	</div>
 	<div class="relative overflow-x-auto" x-show="!open">
 		<table class="w-full text-sm">
@@ -146,7 +146,7 @@
 				</tr>
 			@empty
 				<tr>
-					<td colspan="11" class="text-center text-gray-500 pt-4">Empty Data</td>
+					<td colspan="13" class="text-center text-gray-500 pt-4">Empty Data</td>
 				</tr>
 			@endforelse
 			</tbody>
