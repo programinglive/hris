@@ -29,24 +29,33 @@ class DashboardTopBar extends Component
 
     public $branches;
 
-    public $option = 'disabled';
-
+    /**
+     * Mount the component
+     *
+     * @return void
+     */
     public function mount(): void
     {
         if ($this->companyCode != 'all' || $this->companyCode != '') {
             $company = Company::where('code', $this->companyCode)->first();
 
             if ($company) {
-                $this->option = '';
                 $this->companyId = $company->id;
                 $this->branches = $company->branches;
-
             }
         }
 
         if ($this->branchCode) {
             $this->setBranch($this->branchCode);
         }
+    }
+
+    /**
+     * Company code updated event
+     */
+    public function updatedCompanyCode(string $companyCode): void
+    {
+        $this->dispatch('setCompany', $companyCode);
     }
 
     public function updatedBranchCode($branchCode): void
@@ -63,20 +72,14 @@ class DashboardTopBar extends Component
     #[On('setCompany')]
     public function setCompany(string $companyCode): void
     {
-        $this->dispatch('refreshBranches');
         $this->companyCode = $companyCode;
+
+        $this->reset('branches');
 
         if ($companyCode != 'all') {
             $this->company = Company::where('code', $companyCode)->first();
             $this->companyId = $this->company->id;
-
             $this->branches = $this->company->branches;
-
-            $this->option = '';
-
-            if($this->branchCode != 'all') {
-                $this->setBranch($this->branchCode);
-            }
         }
     }
 
@@ -97,43 +100,10 @@ class DashboardTopBar extends Component
         }
     }
 
-    /**
-     * Reset the branches when the company code is changed
-     *
-     * @return void
-     */
-    #[On('refreshBranches')]
-    public function refreshBranches(): void
-    {
-        $this->reset('branches');
-    }
-
-    /**
-     * Company code updated event
-     */
-    public function updatedCompanyCode(string $companyCode): void
-    {
-        $this->resetErrorBag();
-
-        if ($companyCode == '') {
-            $this->addError('companyCode', 'This field is required');
-            $this->dispatch('resetCompanyId');
-            $this->companyCode = 'all';
-
-            return;
-        }
-
-        $this->companyCode = $companyCode;
-
-        $this->dispatch('setCompany', $companyCode);
-        $this->dispatch('resetError');
-    }
-
     public function render(): View
     {
         return view('livewire.dashboard-top-bar', [
             'companies' => Company::all(),
-            'branches' => $this->company?->branches,
         ]);
     }
 }

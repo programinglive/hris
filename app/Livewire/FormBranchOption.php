@@ -22,8 +22,6 @@ class FormBranchOption extends Component
     #[Url(keep: true)]
     public $branchCode;
 
-    public $option = 'disabled';
-
     public $branches;
 
     /**
@@ -31,19 +29,29 @@ class FormBranchOption extends Component
      */
     public function mount(): void
     {
-        if ($this->companyCode != 'all') {
+        if ($this->companyCode != 'all' || $this->companyCode != '') {
             $company = Company::where('code', $this->companyCode)->first();
 
             if ($company) {
                 $this->companyId = $company->id;
                 $this->branches = $company->branches;
-
             }
         }
 
         if ($this->branchCode) {
             $this->setBranch($this->branchCode);
         }
+    }
+
+    /**
+     * When the branch code is updated, set the branch code to the event dispatcher.
+     *
+     * @param string $branchCode
+     * @return void
+     */
+    public function updatedBranchCode(string $branchCode): void
+    {
+        $this->dispatch('setBranch', $branchCode);
     }
 
     /**
@@ -55,7 +63,6 @@ class FormBranchOption extends Component
     #[On('setCompany')]
     public function setCompany(string $companyCode): void
     {
-        $this->dispatch('refreshBranches');
         $this->companyCode = $companyCode;
 
         if ($companyCode != 'all') {
@@ -78,49 +85,6 @@ class FormBranchOption extends Component
 
         if ($branchCode != 'all') {
             $this->branch = Branch::where('code', $branchCode)->first();
-            $this->dispatch('setBranchId', $this->branch->id);
-            $this->option = '';
-        }
-    }
-
-    /**
-     * When the branch code is updated, set the branch code to the event dispatcher.
-     *
-     * @param string $branchCode
-     * @return void
-     */
-    public function updatedBranchCode(string $branchCode): void
-    {
-        $this->dispatch('setBranch', $branchCode);
-    }
-
-    /**
-     * Retrieves the branch information for a given company code.
-     *
-     * @param  string  $companyCode  The code of the company.
-     */
-    #[On('getBranch')]
-    public function getBranch(string $companyCode): void
-    {
-        $this->reset([
-            'branches',
-            'option',
-        ]);
-
-        $company = Company::where('code', $companyCode)->first();
-
-        if (! $company) {
-            $this->option = 'disabled';
-
-            return;
-        }
-
-        $this->option = '';
-        $this->companyId = $company->id;
-
-        if ($company->branches()->count() > 0) {
-            $this->option = '';
-            $this->branches = $company->branches;
         }
     }
 

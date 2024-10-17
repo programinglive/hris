@@ -7,7 +7,6 @@
 						focus:border-indigo-500 block w-full
 						sm:text-sm border border-gray-300
 						rounded-md p-2"
-		{{$option}}
 	>
 		<option value="all">Select Branch</option>
 		@if($branches)
