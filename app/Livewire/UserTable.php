@@ -123,8 +123,8 @@ class UserTable extends Component
                         'nik' => $rowProperties['nik'],
                         'first_name' => $rowProperties['first_name'],
                         'last_name' => $rowProperties['last_name'],
-                        'date_in' => $rowProperties['date_in'],
-                        'date_out' => $rowProperties['date_out'],
+                        'date_in' => $rowProperties['date_in'] == '' ? null : $rowProperties['date_in'],
+                        'date_out' => $rowProperties['date_out'] == '' ? null : $rowProperties['date_out'],
                     ]);
 
                 } else {
