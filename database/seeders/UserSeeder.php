@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
         ]);
 
         $user->details()->create([
-            'code' => 'USR0001',
+            'nik' => 'USR0001',
             'user_id' => $user->id,
             'first_name' => $user->name,
             'role' => 'administrator',

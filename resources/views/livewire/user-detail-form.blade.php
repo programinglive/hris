@@ -5,7 +5,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="nik" class="block text-sm font-medium text-gray-700">NIK</label>
 				<input
-					wire:model="details.nik"
+					wire:model.live.debounce.500ms="details.nik"
 					type="text"
 					id="nik"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -19,7 +19,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="date_in" class="block text-sm font-medium text-gray-700">Date In</label>
 				<input
-					wire:model="details.date_in"
+					wire:model.live.debounce.500ms="details.date_in"
 					type="date"
 					id="date_in"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -33,7 +33,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="date_out" class="block text-sm font-medium text-gray-700">Date Out</label>
 				<input
-					wire:model="details.date_out"
+					wire:model.live.debounce.500ms="details.date_out"
 					type="date"
 					id="date_out"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -47,7 +47,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="note" class="block text-sm font-medium text-gray-700">Note</label>
 				<textarea
-					wire:model="details.note"
+					wire:model.live.debounce.500ms="details.note"
 					id="note"
 					name="note"
 					rows="4"
@@ -64,7 +64,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
 				<input
-					wire:model="details.first_name"
+					wire:model.live.debounce.500ms="details.first_name"
 					type="text"
 					id="first_name"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -79,7 +79,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
 				<input
-					wire:model="details.last_name"
+					wire:model.live.debounce.500ms="details.last_name"
 					type="text"
 					id="last_name"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -94,7 +94,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
 				<input
-					wire:model="details.gender"
+					wire:model.live.debounce.500ms="details.gender"
 					type="text"
 					id="gender"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -109,7 +109,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="last_education" class="block text-sm font-medium text-gray-700">Last Education</label>
 				<input
-					wire:model="details.last_education"
+					wire:model.live.debounce.500ms="details.last_education"
 					type="text"
 					id="last_education"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -124,7 +124,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="date_of_birth" class="block text-sm font-medium text-gray-700">Date of Birth</label>
 				<input
-					wire:model="details.date_of_birth"
+					wire:model.live.debounce.500ms="details.date_of_birth"
 					type="date"
 					id="date_of_birth"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -139,7 +139,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="address" class="block text-sm font-medium text-gray-700">Address</label>
 				<textarea
-					wire:model="details.address"
+					wire:model.live.debounce.500ms="details.address"
 					id="address"
 					name="address"
 					rows="4"
@@ -156,7 +156,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
 				<input
-					wire:model="details.phone"
+					wire:model.live.debounce.500ms="details.phone"
 					type="text"
 					id="phone"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -171,7 +171,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="religion" class="block text-sm font-medium text-gray-700">Religion</label>
 				<input
-					wire:model="details.religion"
+					wire:model.live.debounce.500ms="details.religion"
 					type="text"
 					id="religion"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -186,7 +186,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="marriage_status" class="block text-sm font-medium text-gray-700">Marriage</label>
 				<input
-					wire:model="details.marriage_status"
+					wire:model.live.debounce.500ms="details.marriage_status"
 					type="text"
 					id="marriage_status"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -201,7 +201,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="place_of_birth" class="block text-sm font-medium text-gray-700">Place of Birth</label>
 				<input
-					wire:model="details.place_of_birth"
+					wire:model.live.debounce.500ms="details.place_of_birth"
 					type="text"
 					id="place_of_birth"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -216,7 +216,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="npwp" class="block text-sm font-medium text-gray-700">NPWP</label>
 				<input
-					wire:model="details.npwp"
+					wire:model.live.debounce.500ms="details.npwp"
 					type="text"
 					id="npwp"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -231,7 +231,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="ktp" class="block text-sm font-medium text-gray-700">KTP</label>
 				<input
-					wire:model="details.ktp"
+					wire:model.live.debounce.500ms="details.ktp"
 					type="text"
 					id="ktp"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
@@ -246,7 +246,7 @@
 			<div class="flex flex-col gap-3">
 				<label for="bank_account" class="block text-sm font-medium text-gray-700">Bank Account</label>
 				<input
-					wire:model="details.bank_account"
+					wire:model.live.debounce.500ms="details.bank_account"
 					type="text"
 					id="bank_account"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"

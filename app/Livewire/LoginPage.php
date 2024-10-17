@@ -37,7 +37,7 @@ class LoginPage extends Component
             'user_id' => $user->id,
         ]);
 
-        $userDetail->code = UserDetailController::generateCode();
+        $userDetail->nik = UserDetailController::generateNik();
         $userDetail->first_name = $user->name;
         $userDetail->save();
 

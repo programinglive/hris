@@ -42,7 +42,6 @@ class UserForm extends Component
 
     public $password;
 
-    #[Validate('same:password')]
     public $password_confirmation;
 
     public $newPassword = false;
@@ -50,24 +49,29 @@ class UserForm extends Component
     public $user;
 
     public $details = [
-        'company_id',
-        'branch_id',
-        'department_id',
-        'level_id',
-        'position_id',
-        'first_name',
-        'last_name',
-        'phone',
-        'address',
-        'gender',
-        'religion',
-        'last_education',
-        'marriage_status',
-        'place_of_birth',
-        'date_of_birth',
-        'ktp',
-        'npwp',
-        'bank_account',
+        'company_id' => null,
+        'branch_id' => null,
+        'division_id' => null,
+        'department_id' => null,
+        'level_id' => null,
+        'position_id' => null,
+        'nik' => null,
+        'first_name' => null,
+        'last_name' => null,
+        'phone' => null,
+        'address' => null,
+        'gender' => null,
+        'religion' => null,
+        'last_education' => null,
+        'marriage_status' => null,
+        'place_of_birth' => null,
+        'date_of_birth' => null,
+        'ktp' => null,
+        'npwp' => null,
+        'bank_account' => null,
+        'date_in' => null,
+        'date_out' => null,
+        'note' => null
     ];
 
     public $actionForm = 'save';
@@ -80,6 +84,16 @@ class UserForm extends Component
         if ($this->companyCode != 'all' && ! empty($this->companyCode)) {
             self::setCompany($this->companyCode);
         }
+
+        if ($this->branchCode != 'all' && ! empty($this->branchCode)) {
+            self::setBranch($this->branchCode);
+        }
+    }
+
+    #[On('setDetail')]
+    public function setDetail($details): void
+    {
+        $this->details = $details;
     }
 
     /**
@@ -111,16 +125,6 @@ class UserForm extends Component
         if ($branchCode != 'all') {
             $this->branch = Branch::where('code', $branchCode)->first();
             $this->branchId = $this->branch->id;
-        }
-    }
-
-    /**
-     * @throws ValidationException
-     */
-    public function updated(string $key, mixed $value): void
-    {
-        if ($key == 'name') {
-            $this->validateOnly($key);
         }
     }
 
@@ -214,7 +218,7 @@ class UserForm extends Component
         return [
             'name' => $this->name,
             'email' => $this->email,
-            'password' => $this->password,
+            'password' => $this->password ?? 'beautyworld',
         ];
     }
 
@@ -230,6 +234,28 @@ class UserForm extends Component
             'company_id' => $this->companyId,
             'branch_id' => $this->branchId,
             'user_id' => $this->user->id,
+            'department_id' => $this->departmentId ?? null,
+            'division_id' => $this->divisionId ?? null,
+            'sub_division_id' => $this->subDivisionId ?? null,
+            'position_id' => $this->positionId ?? null,
+            'level_id' => $this->levelId ?? null,
+            'nik' => $this->details['nik'],
+            'first_name' => $this->details['first_name'],
+            'last_name' => $this->details['last_name'],
+            'phone' => $this->details['phone'],
+            'address' => $this->details['address'],
+            'gender' => $this->details['gender'],
+            'religion' => $this->details['religion'],
+            'last_education' => $this->details['last_education'],
+            'marriage_status' => $this->details['marriage_status'],
+            'place_of_birth' => $this->details['place_of_birth'],
+            'date_of_birth' => $this->details['date_of_birth'],
+            'ktp' => $this->details['ktp'],
+            'npwp' => $this->details['npwp'],
+            'bank_account' => $this->details['bank_account'],
+            'date_in' => $this->details['date_in'],
+            'date_out' => $this->details['date_out'],
+            'note' => $this->details['note']
         ];
     }
 

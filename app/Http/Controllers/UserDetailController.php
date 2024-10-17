@@ -6,7 +6,12 @@ use App\Models\UserDetail;
 
 class UserDetailController extends Controller
 {
-    public static function generateCode(): string
+    /**
+     * Generate NIK of employee
+     *
+     * @return string NIK of employee
+     */
+    public static function generateNik(): string
     {
         $count = UserDetail::withTrashed()->count() + 1;
 

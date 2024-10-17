@@ -50,7 +50,7 @@
 			<thead>
 			<tr>
 				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
-					Code
+					NIK
 				</th>
 				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
 					Username
@@ -94,7 +94,7 @@
 			@forelse($employees as $employee)
 				<tr>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
-						{{ $employee->details?->code }}
+						{{ $employee->details?->nik }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
 						{{ $employee->name }}
@@ -124,20 +124,20 @@
 						{{ $employee->details?->position?->name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
-						{{ $employee->details?->date_in?->format('Y-m-d') }}
+						{{ $employee->details?->date_in }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
-						{{ $employee->details?->date_out?->format('Y-m-d') }}
+						{{ $employee->details?->date_out }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-end flex flex-col space-y-2">
 						<button
-							wire:click="$dispatch('edit', { code: '{{ $employee->details?->code }}'})"
+							wire:click="$dispatch('edit', { nik: '{{ $employee->details?->nik }}'})"
 							class="text-gray-500 hover:text-sky-700"
 						>
 							Edit
 						</button>
 						<button
-							wire:click="$dispatch('delete', { code: '{{ $employee->details?->code }}'})"
+							wire:click="$dispatch('delete', { nik: '{{ $employee->details?->nik }}'})"
 							class="text-gray-500 hover:text-sky-700"
 						>
 							Delete
