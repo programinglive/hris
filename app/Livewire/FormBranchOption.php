@@ -41,7 +41,7 @@ class FormBranchOption extends Component
             }
         }
 
-        if ($this->branchCode != 'all') {
+        if ($this->branchCode) {
             $this->setBranch($this->branchCode);
         }
     }

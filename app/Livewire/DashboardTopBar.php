@@ -33,7 +33,7 @@ class DashboardTopBar extends Component
 
     public function mount(): void
     {
-        if ($this->companyCode != 'all') {
+        if ($this->companyCode != 'all' || $this->companyCode != '') {
             $company = Company::where('code', $this->companyCode)->first();
 
             if ($company) {
@@ -44,7 +44,7 @@ class DashboardTopBar extends Component
             }
         }
 
-        if ($this->branchCode != 'all') {
+        if ($this->branchCode) {
             $this->setBranch($this->branchCode);
         }
     }

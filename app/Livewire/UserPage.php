@@ -18,6 +18,11 @@ class UserPage extends Component
 
     public $moduleLabel = 'User';
 
+    public function mount()
+    {
+        $this->companyCode = 'all';
+        $this->branchCode = 'all';
+    }
 
     /**
      * Renders the view for the user page.
