@@ -12,17 +12,22 @@
 			</a>
 		</li>
 		<li class="menu-item">
-			<a href="#" class="menu-link">
+		    <a href="{{ route('transaction.attendance_overtimes') }}" class="menu-link">
+		        <span class="menu-text">Overtime</span>
+		    </a>
+		</li>
+		<li class="menu-item">
+			<a href="{{ route('transaction.attendance_time_offs') }}" class="menu-link">
 				<span class="menu-text">Time Off</span>
 			</a>
 		</li>
 		<li class="menu-item">
-			<a href="#" class="menu-link">
+			<a href="{{ route('transaction.attendance_leaves') }}" class="menu-link">
 				<span class="menu-text">Leave</span>
 			</a>
 		</li>
 		<li class="menu-item">
-			<a href="#" class="menu-link">
+			<a href="{{ route('transaction.attendance_confirms') }}" class="menu-link">
 				<span class="menu-text">Confirm</span>
 			</a>
 		</li>
