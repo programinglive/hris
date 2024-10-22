@@ -61,6 +61,12 @@ class EmployeeTable extends Component
         $this->showForm = true;
     }
 
+    #[On('refresh')]
+    public function refresh()
+    {
+
+    }
+
     /**
      * Retrieves a paginated list of employees based on a search query.
      *

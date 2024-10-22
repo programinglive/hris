@@ -11,12 +11,17 @@
 				+
 			</button>
 		</div>
-		<div class="w-full md:w-1/4 relative">
+		
+		<div
+			class="flex items-center gap-2
+							justify-between w-2/4 relative"
+		>
+			<livewire:import-user />
 			<input
 				wire:model.live="search"
 				type="text"
 				id="search"
-				class="form-input w-full pr-10"
+				class="form-input pr-10 w-2/3"
 				placeholder="Search..."
 			>
 			@if($search)
