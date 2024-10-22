@@ -62,10 +62,7 @@ class EmployeeTable extends Component
     }
 
     #[On('refresh')]
-    public function refresh()
-    {
-
-    }
+    public function refresh() {}
 
     /**
      * Retrieves a paginated list of employees based on a search query.
@@ -76,7 +73,7 @@ class EmployeeTable extends Component
     {
         return User::where('name', 'like', '%'.$this->search.'%')
             ->whereNot('name', 'admin')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

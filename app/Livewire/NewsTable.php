@@ -115,7 +115,7 @@ class NewsTable extends Component
             $news = $news->where('company_id', $this->companyId);
         }
 
-        return $news->paginate(5);
+        return $news->paginate(10);
     }
 
     public function render(): Application|Factory|View|\Illuminate\View\View

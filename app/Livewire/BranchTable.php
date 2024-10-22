@@ -156,7 +156,7 @@ class BranchTable extends Component
             $branches->where('company_code', $this->companyCode);
         }
 
-        return $branches->orderBy('id')->paginate(5);
+        return $branches->orderBy('id')->paginate(10);
 
     }
 

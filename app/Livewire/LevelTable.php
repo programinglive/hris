@@ -73,7 +73,7 @@ class LevelTable extends Component
                 ->orWhere('code', 'like', '%'.$this->search.'%');
         })
             ->orderBy('id', 'asc')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

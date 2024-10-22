@@ -198,7 +198,7 @@ class AttendanceOvertimeTable extends Component
         });
 
         return $attendanceOvertimes->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

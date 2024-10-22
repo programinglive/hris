@@ -146,7 +146,7 @@ class BrandTable extends Component
         }
 
         return $brands->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

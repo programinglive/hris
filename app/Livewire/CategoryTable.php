@@ -152,7 +152,7 @@ class CategoryTable extends Component
         }
 
         return $categories->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

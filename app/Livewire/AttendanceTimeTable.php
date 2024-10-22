@@ -198,7 +198,7 @@ class AttendanceTimeTable extends Component
         });
 
         return $attendanceTimes->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

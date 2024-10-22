@@ -135,7 +135,7 @@ class CompanyTable extends Component
 
         return $companies
             ->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

@@ -152,7 +152,7 @@ class ItemTable extends Component
         }
 
         return $items->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

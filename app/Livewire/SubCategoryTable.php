@@ -176,7 +176,7 @@ class SubCategoryTable extends Component
         }
 
         return $subCategories->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

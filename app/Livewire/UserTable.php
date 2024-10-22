@@ -120,7 +120,7 @@ class UserTable extends Component
             });
 
         return $users->orderBy('users.id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

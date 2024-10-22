@@ -70,7 +70,7 @@ class EmployeeLeavePlafondTable extends Component
     {
         return User::where('name', 'like', '%'.$this->search.'%')
             ->whereNot('name', 'admin')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

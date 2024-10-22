@@ -116,7 +116,7 @@ class DepartmentTable extends Component
             $departments = $departments->where('company_id', $this->companyId);
         }
 
-        return $departments->paginate(5);
+        return $departments->paginate(10);
     }
 
     /**

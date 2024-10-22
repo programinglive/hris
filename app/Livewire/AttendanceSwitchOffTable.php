@@ -198,7 +198,7 @@ class AttendanceSwitchOffTable extends Component
         });
 
         return $attendanceSwitchOffs->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

@@ -154,7 +154,7 @@ class WorkingShiftTable extends Component
         }
 
         return $workingShifts->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

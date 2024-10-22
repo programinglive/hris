@@ -152,7 +152,7 @@ class AssetTable extends Component
         }
 
         return $assets->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

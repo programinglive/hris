@@ -152,7 +152,7 @@ class ApprovalTable extends Component
         }
 
         return $approvals->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

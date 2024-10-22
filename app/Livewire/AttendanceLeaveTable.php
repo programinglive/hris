@@ -198,7 +198,7 @@ class AttendanceLeaveTable extends Component
         });
 
         return $attendanceLeaves->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

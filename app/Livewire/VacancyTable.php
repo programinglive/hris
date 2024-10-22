@@ -152,7 +152,7 @@ class VacancyTable extends Component
         }
 
         return $vacancies->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

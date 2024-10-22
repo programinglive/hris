@@ -73,7 +73,7 @@ class PositionTable extends Component
                 ->where('code', 'like', '%'.$this->search.'%')
                 ->where('name', 'like', '%'.$this->search.'%');
         })
-            ->orderBy('id', 'asc')->paginate(5);
+            ->orderBy('id', 'asc')->paginate(10);
     }
 
     /**
