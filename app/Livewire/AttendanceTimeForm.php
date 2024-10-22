@@ -141,7 +141,6 @@ class AttendanceTimeForm extends Component
             'branch_code' => $this->branchCode,
             'branch_name' => $this->branchName,
             'created_by' => $this->createdBy,
-            'updated_by' => $this->updatedBy,
         ];
     }
 
@@ -203,6 +202,8 @@ class AttendanceTimeForm extends Component
             'branchId',
             'branchCode',
             'branchName',
+            'createdBy',
+            'updatedBy'
         ]);
 
         $this->dispatch('hide-form');
