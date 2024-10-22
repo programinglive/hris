@@ -72,6 +72,9 @@ class AttendanceTimeForm extends Component
         if ($this->branchCode != 'all' && ! empty($this->branchCode)) {
             self::setBranch($this->branchCode);
         }
+
+        $this->createdBy = auth()->user()->id;
+        $this->updatedBy = auth()->user()->id;
     }
 
     /**
@@ -137,7 +140,7 @@ class AttendanceTimeForm extends Component
             'company_name' => $this->companyName,
             'branch_code' => $this->branchCode,
             'branch_name' => $this->branchName,
-            'created_bt' => $this->createdBy,
+            'created_by' => $this->createdBy,
             'updated_by' => $this->updatedBy,
         ];
     }
