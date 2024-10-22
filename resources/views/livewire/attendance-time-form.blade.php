@@ -11,7 +11,7 @@
 				Date
 			</label>
 			<input
-				wire:model="date"
+				wire:model.live.debounce.500ms="date"
 				type="date"
 				id="date"
 				class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500

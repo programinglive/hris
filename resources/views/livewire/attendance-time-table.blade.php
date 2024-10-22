@@ -1,4 +1,4 @@
-<div class="rounded bg-white flex flex-col gap-4 px-5 pb-4"
+<div class="rounded bg-white flex flex-col gap-4 px-5 py-4"
      x-data="{
 			open: $wire.entangle('showForm')
 		}"

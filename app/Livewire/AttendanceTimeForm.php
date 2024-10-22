@@ -31,10 +31,14 @@ class AttendanceTimeForm extends Component
     public $branchName;
 
     public $employee;
+    public $employeeId;
 
-    public $employeeCode;
+    public $employeeNik;
 
     public $employeeName;
+
+    #[Rule('required')]
+    public $date;
 
     #[Rule('required')]
     public $in;
@@ -68,7 +72,7 @@ class AttendanceTimeForm extends Component
             'company_id' => $this->companyId,
             'branch_id' => $this->branchId,
             'employee_id' => $this->employeeId,
-            'employee_code' => $this->employeeCode,
+            'employee_nik' => $this->employeeNik,
             'employee_name' => $this->employeeName,
             'in' => $this->in,
             'out' => $this->out,
@@ -104,7 +108,8 @@ class AttendanceTimeForm extends Component
     public function setEmployee(array $employee): void
     {
         $this->employee = $employee;
-        $this->employeeCode = $employee['code'];
+        $this->employeeId = $employee['id'];
+        $this->employeeNik = $employee['nik'];
         $this->employeeName = $employee['name'];
     }
 
@@ -113,12 +118,23 @@ class AttendanceTimeForm extends Component
      */
     public function save(): void
     {
-        if (!$this->employee) {
-            $this->addError('errorMessage', 'Employee is required');
+        if (!$this->company) {
+            $this->dispatch('errorMessage', 'Company is required');
 
             return;
         }
 
+        if (!$this->branch) {
+            $this->dispatch('errorMessage', 'Branch is required');
+
+            return;
+        }
+
+        if (!$this->employee) {
+            $this->dispatch('errorMessage', 'Employee is required');
+
+            return;
+        }
 
         $this->validate();
 

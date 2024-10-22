@@ -166,10 +166,19 @@ class AttendanceTimeTable extends Component
         $this->showForm = true;
     }
 
+    /**
+     * Hides the form attendanceTime.
+     */
     #[On('hide-form')]
     public function hideForm(): void
     {
         $this->showForm = false;
+    }
+
+    #[On('errorMessage')]
+    public function errorMessage($message): void
+    {
+        $this->addError('errorMessage', $message);
     }
 
     /**

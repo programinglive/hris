@@ -9,13 +9,15 @@
 			placeholder="Search Employee..."
 		>
 	</div>
-	@if ($employees)
+	@if($employees)
 		<ul class="list-none bg-gray-100">
 			@foreach ($employees as $employee)
-				<li class="px-4 py-2 hover:bg-gray-100">
-					<a href="#" wire:click="selectEmployee('{{ $employee->id }}')">
-						{{ $employee->name }}
-					</a>
+				<li
+					wire:click="setEmployee('{{ $employee->id }}')"
+					class="px-4 py-2 hover:bg-gray-100 cursor-pointer
+					{{ !$loop->first ? 'border-t' : '' }} {{ !$loop->last ? 'border-b' : '' }}"
+				>
+					{{ $employee->name }}
 				</li>
 			@endforeach
 		</ul>
