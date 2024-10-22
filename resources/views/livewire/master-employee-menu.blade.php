@@ -12,6 +12,11 @@
 			</a>
 		</li>
 		<li class="menu-item">
+			<a href="{{ route('master.leave_plafonds') }}" class="menu-link">
+				<span class="menu-text">Leave Plafond</span>
+			</a>
+		</li>
+		<li class="menu-item">
 			<a href="{{ route('master.departments') }}" class="menu-link">
 				<span class="menu-text">Department</span>
 			</a>
