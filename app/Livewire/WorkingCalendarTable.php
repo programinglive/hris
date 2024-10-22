@@ -94,45 +94,28 @@ class WorkingCalendarTable extends Component
     }
 
     /**
-     * Handles the event when a workingCalendar is created.
-     *
-     * @param  int  $workingCalendarId  The ID of the created workingCalendar.
-     */
-    #[On('working-calendar-created')]
-    public function workingCalendarAdded(int $workingCalendarId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a workingCalendar is updated.
-     *
-     * @param  int  $workingCalendarId  The ID of the updated workingCalendar.
-     */
-    #[On('working-calendar-updated')]
-    public function workingCalendarUpdated(int $workingCalendarId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a workingCalendar is deleted.
-     */
-    #[On('working-calendar-deleted')]
-    public function workingCalendarDeleted(): void
-    {
-        $this->showForm = false;
-        $this->resetPage();
-        $this->getWorkingCalendar();
-    }
-
-    /**
      * Shows the form workingCalendar.
      */
     #[On('show-form')]
     public function showForm(): void
     {
+        $this->resetPage();
         $this->showForm = true;
+    }
+
+    /**
+     * Hides the form workingCalendar.
+     */
+    #[On('hide-form')]
+    public function hideForm(): void
+    {
+        $this->resetPage();
+        $this->showForm = false;
+    }
+
+    #[On('refresh')]
+    public function refresh(): void
+    {
     }
 
     /**
@@ -154,7 +137,7 @@ class WorkingCalendarTable extends Component
         }
 
         return $workingCalendars->orderBy('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     /**

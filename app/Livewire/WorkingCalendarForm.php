@@ -32,13 +32,10 @@ class WorkingCalendarForm extends Component
 
     public $branchName;
 
-    #[Validate('required|min:3')]
+    #[Validate('required')]
     public $date;
 
-    public $start;
-
-    public $end;
-
+    #[Validate('required')]
     public $type;
 
     public $description;
@@ -93,8 +90,6 @@ class WorkingCalendarForm extends Component
             'company_id' => 1,
             'branch_id' => 1,
             'date' => $this->date,
-            'start' => $this->start,
-            'end' => $this->end,
             'type' => $this->type,
             'description' => $this->description,
             'company_date' => $this->companyCode,
@@ -111,27 +106,36 @@ class WorkingCalendarForm extends Component
      */
     public function save(): void
     {
+        foreach ([
+                     'company' => 'Company',
+                     'branch' => 'Branch',
+                 ] as $property => $label) {
+            if (! $this->$property) {
+                $this->dispatch('error-message', "$label is required");
+
+                return;
+            }
+        }
+
         $this->validate();
 
         DB::transaction(function () {
             $this->workingCalendar = WorkingCalendar::create($this->workingCalendarData());
         }, 5);
 
-        $this->dispatch('working-calendar-created', workingCalendarId: $this->workingCalendar->id);
+        $this->getResetExcept();
 
-        $this->reset();
+        $this->dispatch('hide-form');
     }
 
     /**
      * Edit the workingCalendar details.
      */
     #[On('edit')]
-    public function edit($date): void
+    public function edit($id): void
     {
-        $this->workingCalendar = WorkingCalendar::where('date', $date)->first();
+        $this->workingCalendar = WorkingCalendar::find($id);
         $this->date = $this->workingCalendar->date;
-        $this->start = $this->workingCalendar->start;
-        $this->end = $this->workingCalendar->end;
         $this->type = $this->workingCalendar->type;
         $this->description = $this->workingCalendar->description;
 
@@ -145,27 +149,37 @@ class WorkingCalendarForm extends Component
      */
     public function update(): void
     {
+        foreach ([
+                  'company' => 'Company',
+                  'branch' => 'Branch',
+              ] as $property => $label) {
+            if (!$this->$property) {
+                $this->dispatch('error-message', "$label is required");
+
+                return;
+            }
+        }
+
         DB::transaction(function () {
             $this->workingCalendar->update($this->workingCalendarData());
         }, 5);
 
-        $this->dispatch('working-calendar-updated', workingCalendarId: $this->workingCalendar->id);
+        $this->getResetExcept();
 
-        $this->reset();
+        $this->dispatch('hide-form');
+
     }
 
     /**
      * Deletes the workingCalendar from the database.
      */
     #[On('delete')]
-    public function destroy($date): void
+    public function destroy($id): void
     {
-        $this->workingCalendar = WorkingCalendar::where('date', $date)->first();
+        $this->workingCalendar = WorkingCalendar::find($id);
         $this->workingCalendar->delete();
 
-        $this->reset();
-
-        $this->dispatch('working-calendar-deleted', refreshCompanies: true);
+        $this->dispatch('refresh');
     }
 
     /**
@@ -174,5 +188,24 @@ class WorkingCalendarForm extends Component
     public function render(): View
     {
         return view('livewire.working-calendar-form');
+    }
+
+    /**
+     * @return void
+     */
+    public function getResetExcept(): void
+    {
+        $this->resetExcept([
+            'createdBy',
+            'updatedBy',
+            'company',
+            'companyId',
+            'companyCode',
+            'companyName',
+            'branch',
+            'branchId',
+            'branchCode',
+            'branchName',
+        ]);
     }
 }

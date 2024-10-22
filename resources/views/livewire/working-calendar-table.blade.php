@@ -181,13 +181,13 @@
 								style="width: 100px"
 							>
 								<button
-									wire:click="$dispatch('edit', { date: '{{ $working_calendar->date }}'})"
+									wire:click="$dispatch('edit', { id: '{{ $working_calendar->id }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Edit
 								</button>
 								<button
-									wire:click="$dispatch('delete', { date: '{{ $working_calendar->date }}'})"
+									wire:click="$dispatch('delete', { id: '{{ $working_calendar->id }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Delete

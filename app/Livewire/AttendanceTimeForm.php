@@ -231,8 +231,6 @@ class AttendanceTimeForm extends Component
         }, 5);
 
         $this->dispatch('attendance-time-updated', attendanceTimeId: $this->attendanceTime->id);
-
-        $this->reset();
     }
 
     /**
@@ -246,10 +244,12 @@ class AttendanceTimeForm extends Component
         $this->attendanceTime->save();
 
         $this->attendanceTime->delete();
+    }
 
-        $this->reset();
-
-        $this->dispatch('attendance-time-deleted', refreshCompanies: true);
+    #[On('error-message')]
+    public function errorMessage($message): void
+    {
+        $this->add('errorMessage', $message);
     }
 
     /**
