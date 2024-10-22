@@ -24,6 +24,8 @@ class EmployeeOption extends Component
         $this->employees = User::where(
             'name', 'like', '%'.$this->search.'%'
         )->get();
+
+        $this->dispatch('clear-error');
     }
 
     /**

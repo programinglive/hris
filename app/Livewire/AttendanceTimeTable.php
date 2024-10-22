@@ -175,10 +175,16 @@ class AttendanceTimeTable extends Component
         $this->showForm = false;
     }
 
-    #[On('errorMessage')]
+    #[On('error-message')]
     public function errorMessage($message): void
     {
         $this->addError('errorMessage', $message);
+    }
+
+    #[On('clear-error')]
+    public function clearError(): void
+    {
+        $this->resetErrorBag();
     }
 
     /**

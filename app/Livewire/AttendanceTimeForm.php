@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Attendance;
+use App\Models\Branch;
+use App\Models\Company;
 use DB;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
@@ -57,6 +59,52 @@ class AttendanceTimeForm extends Component
     public $updatedBy;
 
     public $actionForm = 'save';
+
+    /**
+     * Initialize the component by setting the company based on the company code.
+     */
+    public function mount(): void
+    {
+        if ($this->companyCode != 'all' && ! empty($this->companyCode)) {
+            self::setCompany($this->companyCode);
+        }
+
+        if ($this->branchCode != 'all' && ! empty($this->branchCode)) {
+            self::setBranch($this->branchCode);
+        }
+    }
+
+    /**
+     * Set the company based on the company code
+     *
+     * @param  string  $companyCode  The code of the company.
+     */
+    #[On('setCompany')]
+    public function setCompany(string $companyCode): void
+    {
+        $this->companyCode = $companyCode;
+
+        if ($companyCode != 'all') {
+            $this->company = Company::where('code', $companyCode)->first();
+            $this->companyId = $this->company->id;
+        }
+    }
+
+    /**
+     * Set the branch ID for the details.
+     *
+     * @param  string  $branchCode  The ID of the branch.
+     */
+    #[On('setBranch')]
+    public function setBranch(string $branchCode): void
+    {
+        $this->branchCode = $branchCode;
+
+        if ($branchCode != 'all') {
+            $this->branch = Branch::where('code', $branchCode)->first();
+            $this->branchId = $this->branch->id;
+        }
+    }
 
     /**
      * The default data for the form.
@@ -118,22 +166,15 @@ class AttendanceTimeForm extends Component
      */
     public function save(): void
     {
-        if (!$this->company) {
-            $this->dispatch('errorMessage', 'Company is required');
-
-            return;
-        }
-
-        if (!$this->branch) {
-            $this->dispatch('errorMessage', 'Branch is required');
-
-            return;
-        }
-
-        if (!$this->employee) {
-            $this->dispatch('errorMessage', 'Employee is required');
-
-            return;
+        foreach ([
+            'company' => 'Company',
+            'branch' => 'Branch',
+            'employee' => 'Employee'
+        ] as $property => $label) {
+            if (!$this->$property) {
+                $this->dispatch('error-message', "$label is required");
+                return;
+            }
         }
 
         $this->validate();
