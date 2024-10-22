@@ -31,5 +31,10 @@
 				<span class="menu-text">Working Calendar</span>
 			</a>
 		</li>
+		<li class="menu-item">
+			<a href="{{ route('master.working_shifts') }}" class="menu-link">
+				<span class="menu-text">Working Shift</span>
+			</a>
+		</li>
 	</ul>
 </li>

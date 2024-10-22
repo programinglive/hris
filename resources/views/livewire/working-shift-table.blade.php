@@ -17,7 +17,7 @@
 		>
 			
 			<a
-				href="{{ asset('working_calendar_data.xlsx') }}"
+				href="{{ asset('working_shift_data.xlsx') }}"
 				class="
 			        px-4 py-2
 			        rounded-md
@@ -45,7 +45,7 @@
 			          18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
 					/>
 				</svg>
-				Working Calendar Template
+				Working Shift Template
 			</a>
 			<label for="import" class="inline">
 				<input
@@ -61,7 +61,7 @@
 			<div class="text-red-500 inline">{{ $message }}</div>
 			@enderror
 			<button
-				wire:click="importWorkingCalendar"
+				wire:click="importWorkingShift"
 				type="button"
 				class="btn bg-green-500 text-white inline"
 			>
@@ -98,7 +98,7 @@
 		</div>
 	</div>
 	<div x-show="open">
-		<livewire:working-calendar-form />
+		<livewire:working-shift-form />
 	</div>
 	<div class="overflow-x-auto" x-show="!open">
 		<div class="min-w-full inline-block align-middle">
@@ -124,13 +124,19 @@
 							scope="col"
 							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
-							Date
+							Name
 						</th>
 						<th
 							scope="col"
 							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
-							Type
+							Start Time
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+						>
+							End Time
 						</th>
 						<th
 							scope="col"
@@ -148,32 +154,32 @@
 					</tr>
 					</thead>
 					<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-					@forelse($workingCalendars as $working_calendar)
+					@forelse($workingShifts as $working_shift)
 						<tr>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_calendar->company_name }}
+								{{ $working_shift->company_name }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_calendar->branch_name }}
+								{{ $working_shift->branch_name }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_calendar->date }}
+								{{ $working_shift->date }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_calendar->type }}
+								{{ $working_shift->type }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_calendar->description }}
+								{{ $working_shift->description }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-end text-sm
@@ -181,13 +187,13 @@
 								style="width: 100px"
 							>
 								<button
-									wire:click="$dispatch('edit', { date: '{{ $working_calendar->date }}'})"
+									wire:click="$dispatch('edit', { date: '{{ $working_shift->date }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Edit
 								</button>
 								<button
-									wire:click="$dispatch('delete', { date: '{{ $working_calendar->date }}'})"
+									wire:click="$dispatch('delete', { date: '{{ $working_shift->date }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Delete
@@ -209,6 +215,6 @@
 			</div>
 		</div>
 		<hr class="my-4 border-gray-300">
-		{{ $workingCalendars->links() }}
+		{{ $workingShifts->links() }}
 	</div>
 </div>

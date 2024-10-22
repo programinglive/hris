@@ -4,9 +4,9 @@ namespace App\Livewire;
 
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\WorkingCalendarController;
+use App\Http\Controllers\WorkingShiftController;
 use App\Models\Company;
-use App\Models\WorkingCalendar;
+use App\Models\WorkingShift;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
@@ -16,7 +16,7 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
-class WorkingCalendarTable extends Component
+class WorkingShiftTable extends Component
 {
     use WithFileUploads, withPagination;
 
@@ -30,13 +30,13 @@ class WorkingCalendarTable extends Component
 
     public $import;
 
-    public function importWorkingCalendar(): void
+    public function importWorkingShift(): void
     {
         $this->validate([
             'import' => 'required|mimes:csv,xlsx,xls',
         ]);
 
-        $this->import->store(path: 'workingCalendars');
+        $this->import->store(path: 'workingShifts');
 
         $this->import = $this->import->path();
 
@@ -62,21 +62,21 @@ class WorkingCalendarTable extends Component
                     $branch = BranchController::createByName($company, $rowProperties['branch_name']);
                 }
 
-                $workingCalendar = WorkingCalendar::firstOrNew([
+                $workingShift = WorkingShift::firstOrNew([
                     'name' => $name,
                 ]);
 
-                if (! $workingCalendar->code) {
-                    $workingCalendar->company_id = $company->id;
-                    $workingCalendar->branch_id = $branch->id ?? null;
-                    $workingCalendar->code = WorkingCalendarController::generateCode();
-                    $workingCalendar->company_code = $company->code;
-                    $workingCalendar->company_name = $company->name;
-                    $workingCalendar->branch_code = $branch->code ?? null;
-                    $workingCalendar->branch_name = $branch->name ?? null;
+                if (! $workingShift->code) {
+                    $workingShift->company_id = $company->id;
+                    $workingShift->branch_id = $branch->id ?? null;
+                    $workingShift->code = WorkingShiftController::generateCode();
+                    $workingShift->company_code = $company->code;
+                    $workingShift->company_name = $company->name;
+                    $workingShift->branch_code = $branch->code ?? null;
+                    $workingShift->branch_name = $branch->name ?? null;
                 }
 
-                $workingCalendar->save();
+                $workingShift->save();
             });
 
         redirect()->back();
@@ -94,40 +94,40 @@ class WorkingCalendarTable extends Component
     }
 
     /**
-     * Handles the event when a workingCalendar is created.
+     * Handles the event when a workingShift is created.
      *
-     * @param  int  $workingCalendarId  The ID of the created workingCalendar.
+     * @param  int  $workingShiftId  The ID of the created workingShift.
      */
-    #[On('working-calendar-created')]
-    public function workingCalendarAdded(int $workingCalendarId): void
+    #[On('working-shift-created')]
+    public function workingShiftAdded(int $workingShiftId): void
     {
         $this->showForm = false;
     }
 
     /**
-     * Handles the event when a workingCalendar is updated.
+     * Handles the event when a workingShift is updated.
      *
-     * @param  int  $workingCalendarId  The ID of the updated workingCalendar.
+     * @param  int  $workingShiftId  The ID of the updated workingShift.
      */
-    #[On('working-calendar-updated')]
-    public function workingCalendarUpdated(int $workingCalendarId): void
+    #[On('working-shift-updated')]
+    public function workingShiftUpdated(int $workingShiftId): void
     {
         $this->showForm = false;
     }
 
     /**
-     * Handles the event when a workingCalendar is deleted.
+     * Handles the event when a workingShift is deleted.
      */
-    #[On('working-calendar-deleted')]
-    public function workingCalendarDeleted(): void
+    #[On('working-shift-deleted')]
+    public function workingShiftDeleted(): void
     {
         $this->showForm = false;
         $this->resetPage();
-        $this->getWorkingCalendar();
+        $this->getWorkingShift();
     }
 
     /**
-     * Shows the form workingCalendar.
+     * Shows the form workingShift.
      */
     #[On('show-form')]
     public function showForm(): void
@@ -136,24 +136,24 @@ class WorkingCalendarTable extends Component
     }
 
     /**
-     * Retrieves a paginated list of workingCalendars based on a search query.
+     * Retrieves a paginated list of workingShifts based on a search query.
      *
-     * @return LengthAwarePaginator The paginated list of workingCalendars.
+     * @return LengthAwarePaginator The paginated list of workingShifts.
      */
-    public function getWorkingCalendar(): LengthAwarePaginator
+    public function getWorkingShift(): LengthAwarePaginator
     {
-        $workingCalendars = WorkingCalendar::where(function ($query) {
+        $workingShifts = WorkingShift::where(function ($query) {
             $query->where('code', 'like', '%'.$this->search.'%')
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
 
         if ($this->companyCode !== 'all') {
             $company = Company::where('code', $this->companyCode)->first();
-            $workingCalendars = $workingCalendars->where(
+            $workingShifts = $workingShifts->where(
                 'company_id', $company?->id);
         }
 
-        return $workingCalendars->orderBy('id')
+        return $workingShifts->orderBy('id')
             ->paginate(5);
     }
 
@@ -162,8 +162,8 @@ class WorkingCalendarTable extends Component
      */
     public function render(): View
     {
-        return view('livewire.working-calendar-table', [
-            'workingCalendars' => self::getWorkingCalendar(),
+        return view('livewire.working-shift-table', [
+            'workingShifts' => self::getWorkingShift(),
         ]);
     }
 }
