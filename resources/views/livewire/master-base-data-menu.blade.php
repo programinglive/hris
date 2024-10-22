@@ -36,5 +36,10 @@
 				<span class="menu-text">Working Shift</span>
 			</a>
 		</li>
+		<li class="menu-item">
+			<a href="{{ route('master.leave_types') }}" class="menu-link">
+				<span class="menu-text">Leave Type</span>
+			</a>
+		</li>
 	</ul>
 </li>

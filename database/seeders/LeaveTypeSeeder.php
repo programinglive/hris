@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class LeavePlafondSeeder extends Seeder
+class LeaveTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.

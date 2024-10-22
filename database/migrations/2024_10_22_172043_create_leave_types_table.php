@@ -12,14 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('leave_plafonds', function (Blueprint $table) {
+        Schema::create('leave_types', function (Blueprint $table) {
             $table->id();
             $table = ToolController::defaultTableSchema($table);
-            $table->string('employee_id');
-            $table->string('employee_nik');
-            $table->string('employee_code')->nullable();
-            $table->string('employee_name')->nullable();
+            $table->string('name');
             $table->decimal('amount')->nullable();
+            $table->text('description')->nullable();
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('leave_plafonds');
+        Schema::dropIfExists('leave_types');
     }
 };

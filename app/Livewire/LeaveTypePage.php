@@ -5,18 +5,18 @@ namespace App\Livewire;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
-class EmployeeLeavePlafondPage extends Component
+class LeaveTypePage extends Component
 {
-    public $moduleLabel = 'Employee Leave Plafond';
+    public $moduleLabel = 'Leave Type';
 
     /**
-     * Renders the view for the employee page.
+     * Renders the view for the brand page.
      *
      * @return View The rendered view.
      */
     public function render(): View
     {
-        return view('livewire.employee-leave-plafond-page')
+        return view('livewire.leave-type-page')
             ->layout('components.layouts.dashboard');
     }
 }

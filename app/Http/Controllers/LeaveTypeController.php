@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class LeavePlafondController extends Controller
+class LeaveTypeController extends Controller
 {
     //
 }
