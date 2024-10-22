@@ -125,6 +125,7 @@ class WorkingCalendarForm extends Component
 
         $this->getResetExcept();
 
+        $this->dispatch('refresh');
         $this->dispatch('hide-form');
     }
 
@@ -166,8 +167,8 @@ class WorkingCalendarForm extends Component
 
         $this->getResetExcept();
 
+        $this->dispatch('refresh');
         $this->dispatch('hide-form');
-
     }
 
     /**

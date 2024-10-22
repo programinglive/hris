@@ -28,9 +28,9 @@
 								block w-full sm:text-sm border border-gray-300 rounded-md p-2"
 			>
 				<option value="">Select Type</option>
-				<option value="Working Day">Working Day</option>
-				<option value="Holiday">Holiday</option>
-				<option value="Event">Event</option>
+				<option value="working day">Working Day</option>
+				<option value="holiday">Holiday</option>
+				<option value="event">Event</option>
 			</select>
 			@error('type')
 			<div

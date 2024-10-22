@@ -33,7 +33,6 @@ class ImportUser extends Component
 
     public $branchName;
 
-
     /**
      * Handles the event when the import field is updated.
      *

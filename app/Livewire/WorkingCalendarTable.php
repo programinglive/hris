@@ -2,9 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Http\Controllers\BranchController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\WorkingCalendarController;
 use App\Models\Company;
 use App\Models\WorkingCalendar;
 use Illuminate\Contracts\View\View;
@@ -14,7 +11,6 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use Spatie\SimpleExcel\SimpleExcelReader;
 
 class WorkingCalendarTable extends Component
 {
@@ -27,60 +23,6 @@ class WorkingCalendarTable extends Component
 
     #[Url(keep: true)]
     public $companyCode;
-
-    public $import;
-
-    public function importWorkingCalendar(): void
-    {
-        $this->validate([
-            'import' => 'required|mimes:csv,xlsx,xls',
-        ]);
-
-        $this->import->store(path: 'workingCalendars');
-
-        $this->import = $this->import->path();
-
-        SimpleExcelReader::create($this->import)->getRows()
-            ->each(function (array $rowProperties) {
-                $name = trim(
-                    strtolower(
-                        str_replace(' ', '', $rowProperties['name'])
-                    )
-                );
-
-                $company = Company::firstOrNew([
-                    'name' => $rowProperties['company_name'],
-                ]);
-
-                if (! $company->code) {
-                    $company->code = CompanyController::generateCode();
-                }
-
-                $company->save();
-
-                if ($rowProperties['branch_name']) {
-                    $branch = BranchController::createByName($company, $rowProperties['branch_name']);
-                }
-
-                $workingCalendar = WorkingCalendar::firstOrNew([
-                    'name' => $name,
-                ]);
-
-                if (! $workingCalendar->code) {
-                    $workingCalendar->company_id = $company->id;
-                    $workingCalendar->branch_id = $branch->id ?? null;
-                    $workingCalendar->code = WorkingCalendarController::generateCode();
-                    $workingCalendar->company_code = $company->code;
-                    $workingCalendar->company_name = $company->name;
-                    $workingCalendar->branch_code = $branch->code ?? null;
-                    $workingCalendar->branch_name = $branch->name ?? null;
-                }
-
-                $workingCalendar->save();
-            });
-
-        redirect()->back();
-    }
 
     /**
      * Sets the company code.
@@ -124,8 +66,8 @@ class WorkingCalendarTable extends Component
     public function getWorkingCalendar(): LengthAwarePaginator
     {
         $workingCalendars = WorkingCalendar::where(function ($query) {
-            $query->where('code', 'like', '%'.$this->search.'%')
-                ->orWhere('name', 'like', '%'.$this->search.'%');
+            $query->where('date', 'like', '%'.$this->search.'%')
+                ->orWhere('type', 'like', '%'.$this->search.'%');
         });
 
         if ($this->companyCode !== 'all') {
