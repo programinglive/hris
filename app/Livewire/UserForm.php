@@ -25,6 +25,7 @@ class UserForm extends Component
 
     #[Url(keep: true)]
     public $companyCode;
+    public $companyName;
 
     public $branch;
 
@@ -32,6 +33,7 @@ class UserForm extends Component
 
     #[Url('branchCode', keep: true)]
     public $branchCode;
+    public $branchName;
 
     #[Validate('required|unique:users|regex:/^\S+$/')]
     public $name;
@@ -108,6 +110,8 @@ class UserForm extends Component
         if ($companyCode != 'all') {
             $this->company = Company::where('code', $companyCode)->first();
             $this->companyId = $this->company->id;
+            $this->companyCode = $this->company->code;
+            $this->companyName = $this->company->name;
         }
     }
 
@@ -124,6 +128,8 @@ class UserForm extends Component
         if ($branchCode != 'all') {
             $this->branch = Branch::where('code', $branchCode)->first();
             $this->branchId = $this->branch->id;
+            $this->branchCode = $this->branch->code;
+            $this->branchName = $this->branch->name;
         }
     }
 

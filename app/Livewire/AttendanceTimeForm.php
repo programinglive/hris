@@ -87,6 +87,8 @@ class AttendanceTimeForm extends Component
         if ($companyCode != 'all') {
             $this->company = Company::where('code', $companyCode)->first();
             $this->companyId = $this->company->id;
+            $this->companyCode = $this->company->code;
+            $this->companyName = $this->company->name;
         }
     }
 
@@ -103,6 +105,8 @@ class AttendanceTimeForm extends Component
         if ($branchCode != 'all') {
             $this->branch = Branch::where('code', $branchCode)->first();
             $this->branchId = $this->branch->id;
+            $this->branchCode = $this->branch->code;
+            $this->branchName = $this->branch->name;
         }
     }
 
@@ -116,18 +120,22 @@ class AttendanceTimeForm extends Component
      */
     public function attendanceTimeData(): array
     {
+        $this->duration = (strtotime($this->out) - strtotime($this->in)) / 60;
+
         return [
             'company_id' => $this->companyId,
             'branch_id' => $this->branchId,
             'employee_id' => $this->employeeId,
             'employee_nik' => $this->employeeNik,
             'employee_name' => $this->employeeName,
+            'date' => $this->date,
             'in' => $this->in,
             'out' => $this->out,
             'duration' => $this->duration,
-            'company_in' => $this->companyCode,
+            'status' => $this->status,
+            'company_code' => $this->companyCode,
             'company_name' => $this->companyName,
-            'branch_in' => $this->branchCode,
+            'branch_code' => $this->branchCode,
             'branch_name' => $this->branchName,
             'created_bt' => $this->createdBy,
             'updated_by' => $this->updatedBy,
@@ -183,9 +191,18 @@ class AttendanceTimeForm extends Component
             $this->attendanceTime = Attendance::create($this->attendanceTimeData());
         }, 5);
 
-        $this->dispatch('attendance-time-created', attendanceTimeId: $this->attendanceTime->id);
+        $this->resetExcept([
+            'company',
+            'companyId',
+            'companyCode',
+            'companyName',
+            'branch',
+            'branchId',
+            'branchCode',
+            'branchName',
+        ]);
 
-        $this->reset();
+        $this->dispatch('hide-form');
     }
 
     /**
