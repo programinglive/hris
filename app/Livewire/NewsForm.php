@@ -70,7 +70,7 @@ class NewsForm extends Component
 
         $this->dispatch('news-created', newsId: $this->news->id);
 
-        $this->dispatch('setCompany', $this->companyCode);
+        $this->dispatch('set-company', $this->companyCode);
         $this->dispatch('selectCompany', $this->companyId);
 
         $this->dispatch('enableFilter');

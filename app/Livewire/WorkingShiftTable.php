@@ -136,6 +136,21 @@ class WorkingShiftTable extends Component
     }
 
     /**
+     * Hides the form workingShift.
+     */
+    #[On('hide-form')]
+    public function hideForm(): void
+    {
+        $this->showForm = false;
+    }
+
+    /**
+     * Refreshes the working shift data.
+     */
+    #[On('refresh')]
+    public function refresh(): void {}
+
+    /**
      * Retrieves a paginated list of workingShifts based on a search query.
      *
      * @return LengthAwarePaginator The paginated list of workingShifts.

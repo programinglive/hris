@@ -55,12 +55,12 @@ class DashboardTopBar extends Component
      */
     public function updatedCompanyCode(string $companyCode): void
     {
-        $this->dispatch('setCompany', $companyCode);
+        $this->dispatch('set-company', $companyCode);
     }
 
     public function updatedBranchCode($branchCode): void
     {
-        $this->dispatch('setBranch', $branchCode);
+        $this->dispatch('set-branch', $branchCode);
     }
 
     /**
@@ -83,7 +83,7 @@ class DashboardTopBar extends Component
     /**
      * Set the branch based on the branch code
      */
-    #[On('setBranch')]
+    #[On('set-branch')]
     public function setBranch(string $branchCode): void
     {
         $this->branchCode = $branchCode;

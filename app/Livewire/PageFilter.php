@@ -61,9 +61,9 @@ class PageFilter extends Component
     public function updatedCompanyCode(string $code): void
     {
         if ($code == 'all') {
-            $this->dispatch('setCompany', 'all');
+            $this->dispatch('set-company', 'all');
         } else {
-            $this->dispatch('setCompany', $code);
+            $this->dispatch('set-company', $code);
 
             $this->companyId = Company::where('code', $code)->first()->id;
 

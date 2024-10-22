@@ -122,7 +122,7 @@ class UserForm extends Component
      *
      * @param  string  $branchCode  The ID of the branch.
      */
-    #[On('setBranch')]
+    #[On('set-branch')]
     public function setBranch(string $branchCode): void
     {
         $this->branchCode = $branchCode;

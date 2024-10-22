@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Branch;
 use App\Models\Company;
 use App\Models\WorkingCalendar;
 use DB;
@@ -22,6 +23,8 @@ class WorkingCalendarForm extends Component
     public $companyCode;
 
     public $companyName;
+
+    public $branches;
 
     public $branch;
 
@@ -82,13 +85,53 @@ class WorkingCalendarForm extends Component
     }
 
     /**
+     * Set the company based on the company code.
+     *
+     * @param  string  $companyCode  The code of the company.
+     */
+    #[On('setCompany')]
+    public function setCompany(string $companyCode): void
+    {
+        $this->reset('company');
+        $this->companyCode = $companyCode;
+
+        if ($companyCode != 'all') {
+            $this->company = Company::where('code', $companyCode)->first();
+            $this->companyId = $this->company->id;
+            $this->companyCode = $this->company->code;
+            $this->companyName = $this->company->name;
+
+            $this->branches = $this->company->branches;
+        }
+    }
+
+    /**
+     * Set the branch based on the branch code.
+     *
+     * @param  string  $branchCode  The code of the branch.
+     */
+    #[On('set-branch')]
+    public function setBranch(string $branchCode): void
+    {
+        $this->reset('branch');
+        $this->branchCode = $branchCode;
+
+        if ($branchCode != 'all') {
+            $this->branch = Branch::where('code', $branchCode)->first();
+            $this->branchId = $this->branch->id;
+            $this->branchCode = $this->branch->code;
+            $this->branchName = $this->branch->name;
+        }
+    }
+
+    /**
      * The default data for the form.
      */
     public function workingCalendarData(): array
     {
         return [
-            'company_id' => 1,
-            'branch_id' => 1,
+            'company_id' => $this->companyId,
+            'branch_id' => $this->branchId,
             'date' => $this->date,
             'type' => $this->type,
             'description' => $this->description,
@@ -184,13 +227,8 @@ class WorkingCalendarForm extends Component
     }
 
     /**
-     * Render the livewire component.
+     * Resets the form values except for the given properties.
      */
-    public function render(): View
-    {
-        return view('livewire.working-calendar-form');
-    }
-
     public function getResetExcept(): void
     {
         $this->resetExcept([
@@ -205,5 +243,22 @@ class WorkingCalendarForm extends Component
             'branchCode',
             'branchName',
         ]);
+    }
+
+    /**
+     * Dispatches an 'error-message' event with the given message.
+     */
+    #[On('error-message')]
+    public function errorMessage(string $message): void
+    {
+        $this->addError('errorMessage', $message);
+    }
+
+    /**
+     * Render the livewire component.
+     */
+    public function render(): View
+    {
+        return view('livewire.working-calendar-form');
     }
 }

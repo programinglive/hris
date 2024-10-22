@@ -169,12 +169,17 @@
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_shift->date }}
+								{{ $working_shift->name }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
-								{{ $working_shift->type }}
+								{{ $working_shift->start_time }}
+							</td>
+							<td
+								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+							>
+								{{ $working_shift->end_time }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
@@ -187,13 +192,13 @@
 								style="width: 100px"
 							>
 								<button
-									wire:click="$dispatch('edit', { date: '{{ $working_shift->date }}'})"
+									wire:click="$dispatch('edit', { id: '{{ $working_shift->id }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Edit
 								</button>
 								<button
-									wire:click="$dispatch('delete', { date: '{{ $working_shift->date }}'})"
+									wire:click="$dispatch('delete', { id: '{{ $working_shift->id }}'})"
 									class="text-gray-500 hover:text-sky-700 text-end"
 								>
 									Delete

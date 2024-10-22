@@ -38,7 +38,7 @@ class FormCompanyOption extends Component
         }
 
         $this->companyCode = $companyCode;
-        $this->dispatch('setCompany', $companyCode);
+        $this->dispatch('set-company', $companyCode);
         $this->dispatch('getBranch', $companyCode);
         $this->dispatch('getDepartment', $companyCode);
     }

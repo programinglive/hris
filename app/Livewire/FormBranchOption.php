@@ -49,7 +49,7 @@ class FormBranchOption extends Component
      */
     public function updatedBranchCode(string $branchCode): void
     {
-        $this->dispatch('setBranch', $branchCode);
+        $this->dispatch('set-branch', $branchCode);
     }
 
     /**
@@ -71,7 +71,7 @@ class FormBranchOption extends Component
     /**
      * Set the branch ID for the details.
      */
-    #[On('setBranch')]
+    #[On('set-branch')]
     public function setBranch(string $branchCode): void
     {
         $this->branchCode = $branchCode;
