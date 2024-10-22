@@ -20,7 +20,7 @@
 				wire:model.live="search"
 				type="text"
 				id="search"
-				class="form-input pr-10 w-2/3"
+				class="form-input pr-10 w-1/2"
 				placeholder="Search..."
 			>
 			@if($search)

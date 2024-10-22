@@ -2,10 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Http\Controllers\BranchController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\WorkingShiftController;
-use App\Models\Company;
 use App\Models\WorkingShift;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -14,7 +10,6 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use Spatie\SimpleExcel\SimpleExcelReader;
 
 class WorkingShiftTable extends Component
 {
@@ -27,60 +22,6 @@ class WorkingShiftTable extends Component
 
     #[Url(keep: true)]
     public $companyCode;
-
-    public $import;
-
-    public function importWorkingShift(): void
-    {
-        $this->validate([
-            'import' => 'required|mimes:csv,xlsx,xls',
-        ]);
-
-        $this->import->store(path: 'workingShifts');
-
-        $this->import = $this->import->path();
-
-        SimpleExcelReader::create($this->import)->getRows()
-            ->each(function (array $rowProperties) {
-                $name = trim(
-                    strtolower(
-                        str_replace(' ', '', $rowProperties['name'])
-                    )
-                );
-
-                $company = Company::firstOrNew([
-                    'name' => $rowProperties['company_name'],
-                ]);
-
-                if (! $company->code) {
-                    $company->code = CompanyController::generateCode();
-                }
-
-                $company->save();
-
-                if ($rowProperties['branch_name']) {
-                    $branch = BranchController::createByName($company, $rowProperties['branch_name']);
-                }
-
-                $workingShift = WorkingShift::firstOrNew([
-                    'name' => $name,
-                ]);
-
-                if (! $workingShift->code) {
-                    $workingShift->company_id = $company->id;
-                    $workingShift->branch_id = $branch->id ?? null;
-                    $workingShift->code = WorkingShiftController::generateCode();
-                    $workingShift->company_code = $company->code;
-                    $workingShift->company_name = $company->name;
-                    $workingShift->branch_code = $branch->code ?? null;
-                    $workingShift->branch_name = $branch->name ?? null;
-                }
-
-                $workingShift->save();
-            });
-
-        redirect()->back();
-    }
 
     /**
      * Sets the company code.
@@ -161,12 +102,6 @@ class WorkingShiftTable extends Component
             $query->where('code', 'like', '%'.$this->search.'%')
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
-
-        if ($this->companyCode !== 'all') {
-            $company = Company::where('code', $this->companyCode)->first();
-            $workingShifts = $workingShifts->where(
-                'company_id', $company?->id);
-        }
 
         return $workingShifts->orderBy('id')
             ->paginate(10);
