@@ -1,5 +1,4 @@
 <div>
-	<h2 class="text-2xl font-bold mb-4">Employee Form</h2>
 	<div class="flex flex-col gap-3">
 		<label for="search">Search Employee</label>
 		<input

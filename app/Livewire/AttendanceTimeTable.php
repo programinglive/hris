@@ -46,6 +46,20 @@ class AttendanceTimeTable extends Component
 
     public $import;
 
+    /**
+     * Import attendance time data from an uploaded file.
+     *
+     * This function validates the uploaded file to ensure it is in the correct format
+     * (CSV, XLSX, or XLS) and stores it in the 'attendanceTimes' directory.
+     * It then uses
+     * the SimpleExcelReader to read the uploaded file and iterates through each row to
+     * find the corresponding company, branch, and employee based on the row data.
+     * If all
+     * entities are found, it creates a new attendance record in the Attendance model
+     * with the necessary details.
+     *
+     * @return void
+     */
     public function importAttendanceTime(): void
     {
         $this->validate([
@@ -116,7 +130,7 @@ class AttendanceTimeTable extends Component
     }
 
     /**
-     * Handles the event when a attendanceTime is updated.
+     * Handles the event when an attendanceTime is updated.
      *
      * @param  int  $attendanceTimeId  The ID of the updated attendanceTime.
      */
@@ -150,6 +164,12 @@ class AttendanceTimeTable extends Component
     public function showForm(): void
     {
         $this->showForm = true;
+    }
+
+    #[On('hide-form')]
+    public function hideForm(): void
+    {
+        $this->showForm = false;
     }
 
     /**

@@ -16,7 +16,7 @@ class EmployeeTable extends Component
 
     public $showForm = false;
 
-    #[Url]
+    #[Url(keep: true)]
     public $search;
 
     /**

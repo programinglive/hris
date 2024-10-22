@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use DB;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -35,8 +36,10 @@ class AttendanceTimeForm extends Component
 
     public $employeeName;
 
+    #[Rule('required')]
     public $in;
 
+    #[Rule('required')]
     public $out;
 
     public $duration;
@@ -54,12 +57,17 @@ class AttendanceTimeForm extends Component
     /**
      * The default data for the form.
      */
+    /**
+     * Get the default data for the form.
+     *
+     * @return array
+     */
     public function attendanceTimeData(): array
     {
         return [
-            'company_id' => 1,
-            'branch_id' => 1,
-            'employee_id' => 1,
+            'company_id' => $this->companyId,
+            'branch_id' => $this->branchId,
+            'employee_id' => $this->employeeId,
             'employee_code' => $this->employeeCode,
             'employee_name' => $this->employeeName,
             'in' => $this->in,
@@ -74,8 +82,26 @@ class AttendanceTimeForm extends Component
         ];
     }
 
+    /**
+     * Resets the error bag when an update is made to the form.
+     *
+     * This function is automatically triggered when any of the form's properties
+     * are updated, ensuring that any validation errors are cleared.
+     *
+     * @return void
+     */
+    public function updated(): void
+    {
+        $this->resetErrorBag();
+    }
+
+    /**
+     * Sets the employee data.
+     *
+     * @param array $employee  The employee data.
+     */
     #[On('set-employee')]
-    public function setEmployee($employee): void
+    public function setEmployee(array $employee): void
     {
         $this->employee = $employee;
         $this->employeeCode = $employee['code'];
@@ -83,10 +109,17 @@ class AttendanceTimeForm extends Component
     }
 
     /**
-     * Saves the attendanceTime details to the database and dispatches a 'attendanceTime-created' event.
+     * Saves the attendanceTime details to the database and dispatches an 'attendanceTime-created' event.
      */
     public function save(): void
     {
+        if (!$this->employee) {
+            $this->addError('errorMessage', 'Employee is required');
+
+            return;
+        }
+
+
         $this->validate();
 
         DB::transaction(function () {

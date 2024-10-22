@@ -1,5 +1,6 @@
 <form wire:submit.prevent="{{$actionForm}}">
 	<div class="flex flex-col gap-4">
+		<h1 class="text-2xl font-bold">Attendance Time Form</h1>
 		<livewire:employee-option />
 		<div class="flex flex-col gap-3">
 			<label
@@ -13,10 +14,15 @@
 				wire:model="date"
 				type="date"
 				id="date"
-				class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+				class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500
+								block w-full sm:text-sm border border-gray-300 rounded-md p-2"
 			>
 			@error('date')
-			<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+			<div
+				class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg
+								dark:bg-red-200 dark:text-red-800"
+	     role="alert"
+			>
 				<span class="font-medium">Error!</span> {{ $message }}
 			</div>
 			@enderror
@@ -30,7 +36,7 @@
 				In
 			</label>
 			<input
-				wire:model="in"
+				wire:model.live.debounce.500ms="in"
 				type="time"
 				id="in"
 				class="mt-1 shadow-sm focus:ring-indigo-500
@@ -55,7 +61,7 @@
 				Out
 			</label>
 			<input
-				wire:model="out"
+				wire:model.live.debounce.500ms="out"
 				type="time"
 				id="out"
 				class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500
@@ -99,10 +105,17 @@
 			</div>
 			@enderror
 		</div>
-		<div>
+		<div class="flex gap-3 justify-end">
+			<button
+				type="button"
+				class="btn bg-secondary text-white"
+				wire:click="$dispatch('hide-form')"
+			>
+				Cancel
+			</button>
 			<button
 				type="submit"
-				class="btn bg-primary text-white float-end"
+				class="btn bg-primary text-white"
 			>
 				Save
 			</button>
