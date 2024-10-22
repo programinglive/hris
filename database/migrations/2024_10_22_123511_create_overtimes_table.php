@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('employee_nik');
             $table->string('employee_code')->nullable();
             $table->string('employee_name')->nullable();
+            $table->string('phone')->nullable();
             $table->string('reason')->nullable();
             $table->timestamp('date')->nullable();
             $table->decimal('amount')->nullable();

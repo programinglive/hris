@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class WorkingShiftController extends Controller
+class SwitchOffController extends Controller
 {
     //
 }

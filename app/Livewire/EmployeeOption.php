@@ -16,9 +16,6 @@ class EmployeeOption extends Component
 
     public $employeeDetail;
 
-    /**
-     * @return void
-     */
     public function updated(): void
     {
         $this->employees = User::where(
@@ -30,9 +27,6 @@ class EmployeeOption extends Component
 
     /**
      * Set the employee
-     *
-     * @param int $employeeId
-     * @return void
      */
     public function setEmployee(int $employeeId): void
     {
@@ -42,7 +36,7 @@ class EmployeeOption extends Component
         $this->employee = $this->employee->toArray();
 
         $this->employee = array_merge($this->employee, $this->employeeDetail);
-        
+
         $this->dispatch('set-employee', employee: $this->employee);
 
         $this->search = $this->employee['name'];

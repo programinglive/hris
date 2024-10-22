@@ -5,9 +5,9 @@ namespace App\Livewire;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
-class WorkingShiftPage extends Component
+class AttendanceSwitchOffPage extends Component
 {
-    public $moduleLabel = 'Working Shift';
+    public $moduleLabel = 'Switch Off';
 
     /**
      * Renders the view for the brand page.
@@ -16,7 +16,7 @@ class WorkingShiftPage extends Component
      */
     public function render(): View
     {
-        return view('livewire.working-shift-page')
+        return view('livewire.attendance-switch-off-page')
             ->layout('components.layouts.dashboard');
     }
 }

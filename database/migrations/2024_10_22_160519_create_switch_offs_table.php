@@ -12,18 +12,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('leaves', function (Blueprint $table) {
+        Schema::create('switch_offs', function (Blueprint $table) {
             $table->id();
             $table = ToolController::defaultTableSchema($table);
             $table->string('employee_id');
             $table->string('employee_nik');
             $table->string('employee_code')->nullable();
             $table->string('employee_name')->nullable();
-            $table->timestamp('date')->nullable();
-            $table->timestamp('start_date')->nullable();
-            $table->timestamp('end_date')->nullable();
-            $table->integer('duration')->nullable();
-            $table->string('phone')->nullable();
+            $table->timestamp('from_date')->nullable();
+            $table->timestamp('to_date')->nullable();
+            $table->decimal('amount')->nullable();
             $table->string('reason')->nullable();
             $table->string('status')->nullable();
         });
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('leaves');
+        Schema::dropIfExists('switch_offs');
     }
 };

@@ -101,7 +101,7 @@ class UserTable extends Component
 
                 $checkUser = User::where('name', $rowProperties['name'])->first();
 
-                if (!$checkUser) {
+                if (! $checkUser) {
                     if ($rowProperties['email'] == '') {
                         $rowProperties['email'] = time().'@test.com';
                     }
@@ -109,7 +109,7 @@ class UserTable extends Component
                     $user = User::create([
                         'name' => $rowProperties['name'],
                         'password' => bcrypt('hris123'),
-                        'email' => $rowProperties['email'] == '' ? time() . '@test.com' : $rowProperties['name'] . '@test.com',
+                        'email' => $rowProperties['email'] == '' ? time().'@test.com' : $rowProperties['name'].'@test.com',
                     ]);
 
                     UserDetail::create([

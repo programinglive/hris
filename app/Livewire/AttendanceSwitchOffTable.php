@@ -15,7 +15,7 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
-class AttendanceTimeTable extends Component
+class AttendanceSwitchOffTable extends Component
 {
     use WithFileUploads, withPagination;
 
@@ -50,7 +50,7 @@ class AttendanceTimeTable extends Component
      * Import attendance time data from an uploaded file.
      *
      * This function validates the uploaded file to ensure it is in the correct format
-     * (CSV, XLSX, or XLS) and stores it in the 'attendanceTimes' directory.
+     * (CSV, XLSX, or XLS) and stores it in the 'attendanceSwitchOffs' directory.
      * It then uses
      * the SimpleExcelReader to read the uploaded file and iterates through each row to
      * find the corresponding company, branch, and employee based on the row data.
@@ -58,13 +58,13 @@ class AttendanceTimeTable extends Component
      * entities are found, it creates a new attendance record in the Attendance model
      * with the necessary details.
      */
-    public function importAttendanceTime(): void
+    public function importAttendanceSwitchOff(): void
     {
         $this->validate([
             'import' => 'required|mimes:csv,xlsx,xls',
         ]);
 
-        $this->import->store(path: 'attendanceTimes');
+        $this->import->store(path: 'attendanceSwitchOffs');
 
         $this->import = $this->import->path();
 
@@ -117,23 +117,23 @@ class AttendanceTimeTable extends Component
     }
 
     /**
-     * Handles the event when an attendanceTime is created.
+     * Handles the event when an attendanceSwitchOff is created.
      *
-     * @param  int  $attendanceTimeId  The ID of the created attendanceTime.
+     * @param  int  $attendanceSwitchOffId  The ID of the created attendanceSwitchOff.
      */
-    #[On('attendanceTime-created')]
-    public function attendanceTimeAdded(int $attendanceTimeId): void
+    #[On('attendanceSwitchOff-created')]
+    public function attendanceSwitchOffAdded(int $attendanceSwitchOffId): void
     {
         $this->showForm = false;
     }
 
     /**
-     * Handles the event when an attendanceTime is updated.
+     * Handles the event when an attendanceSwitchOff is updated.
      *
-     * @param  int  $attendanceTimeId  The ID of the updated attendanceTime.
+     * @param  int  $attendanceSwitchOffId  The ID of the updated attendanceSwitchOff.
      */
-    #[On('attendanceTime-updated')]
-    public function attendanceTimeUpdated(int $attendanceTimeId): void
+    #[On('attendanceSwitchOff-updated')]
+    public function attendanceSwitchOffUpdated(int $attendanceSwitchOffId): void
     {
         $this->showForm = false;
     }
@@ -145,18 +145,18 @@ class AttendanceTimeTable extends Component
     }
 
     /**
-     * Handles the event when an attendanceTime is deleted.
+     * Handles the event when an attendanceSwitchOff is deleted.
      */
-    #[On('attendanceTime-deleted')]
-    public function attendanceTimeDeleted(): void
+    #[On('attendanceSwitchOff-deleted')]
+    public function attendanceSwitchOffDeleted(): void
     {
         $this->showForm = false;
         $this->resetPage();
-        $this->getAttendanceTime();
+        $this->getAttendanceSwitchOff();
     }
 
     /**
-     * Shows the form attendanceTime.
+     * Shows the form attendanceSwitchOff.
      */
     #[On('show-form')]
     public function showForm(): void
@@ -165,7 +165,7 @@ class AttendanceTimeTable extends Component
     }
 
     /**
-     * Hides the form attendanceTime.
+     * Hides the form attendanceSwitchOff.
      */
     #[On('hide-form')]
     public function hideForm(): void
@@ -186,18 +186,18 @@ class AttendanceTimeTable extends Component
     }
 
     /**
-     * Retrieves a paginated list of attendanceTimes based on a search query.
+     * Retrieves a paginated list of attendanceSwitchOffs based on a search query.
      *
-     * @return LengthAwarePaginator The paginated list of attendanceTimes.
+     * @return LengthAwarePaginator The paginated list of attendanceSwitchOffs.
      */
-    public function getAttendanceTime(): LengthAwarePaginator
+    public function getAttendanceSwitchOff(): LengthAwarePaginator
     {
-        $attendanceTimes = Attendance::where(function ($query) {
+        $attendanceSwitchOffs = Attendance::where(function ($query) {
             $query->where('in', 'like', '%'.$this->search.'%')
                 ->orWhere('out', 'like', '%'.$this->search.'%');
         });
 
-        return $attendanceTimes->orderBy('id')
+        return $attendanceSwitchOffs->orderBy('id')
             ->paginate(5);
     }
 
@@ -206,8 +206,8 @@ class AttendanceTimeTable extends Component
      */
     public function render(): View
     {
-        return view('livewire.attendance-time-table', [
-            'attendanceTimes' => self::getAttendanceTime(),
+        return view('livewire.attendance-switch-off-table', [
+            'attendanceSwitchOffs' => self::getAttendanceSwitchOff(),
         ]);
     }
 }

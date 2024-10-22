@@ -57,8 +57,6 @@ class AttendanceOvertimeTable extends Component
      * If all
      * entities are found, it creates a new attendance record in the Attendance model
      * with the necessary details.
-     *
-     * @return void
      */
     public function importAttendanceOvertime(): void
     {

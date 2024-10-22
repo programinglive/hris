@@ -33,6 +33,7 @@ class AttendanceTimeForm extends Component
     public $branchName;
 
     public $employee;
+
     public $employeeId;
 
     public $employeeNik;
@@ -118,8 +119,6 @@ class AttendanceTimeForm extends Component
      */
     /**
      * Get the default data for the form.
-     *
-     * @return array
      */
     public function attendanceTimeData(): array
     {
@@ -149,8 +148,6 @@ class AttendanceTimeForm extends Component
      *
      * This function is automatically triggered when any of the form's properties
      * are updated, ensuring that any validation errors are cleared.
-     *
-     * @return void
      */
     public function updated(): void
     {
@@ -160,7 +157,7 @@ class AttendanceTimeForm extends Component
     /**
      * Sets the employee data.
      *
-     * @param array $employee  The employee data.
+     * @param  array  $employee  The employee data.
      */
     #[On('set-employee')]
     public function setEmployee(array $employee): void
@@ -179,10 +176,11 @@ class AttendanceTimeForm extends Component
         foreach ([
             'company' => 'Company',
             'branch' => 'Branch',
-            'employee' => 'Employee'
+            'employee' => 'Employee',
         ] as $property => $label) {
-            if (!$this->$property) {
+            if (! $this->$property) {
                 $this->dispatch('error-message', "$label is required");
+
                 return;
             }
         }
@@ -203,7 +201,7 @@ class AttendanceTimeForm extends Component
             'branchCode',
             'branchName',
             'createdBy',
-            'updatedBy'
+            'updatedBy',
         ]);
 
         $this->dispatch('hide-form');

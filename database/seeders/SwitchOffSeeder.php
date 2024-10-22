@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class OvertimeSeeder extends Seeder
+class SwitchOffSeeder extends Seeder
 {
     /**
      * Run the database seeds.

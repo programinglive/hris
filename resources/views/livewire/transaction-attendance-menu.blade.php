@@ -17,8 +17,8 @@
 		    </a>
 		</li>
 		<li class="menu-item">
-			<a href="{{ route('transaction.attendance_time_offs') }}" class="menu-link">
-				<span class="menu-text">Time Off</span>
+			<a href="{{ route('transaction.attendance_switch_offs') }}" class="menu-link">
+				<span class="menu-text">Switch Off</span>
 			</a>
 		</li>
 		<li class="menu-item">

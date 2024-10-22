@@ -25,6 +25,7 @@ class UserForm extends Component
 
     #[Url(keep: true)]
     public $companyCode;
+
     public $companyName;
 
     public $branch;
@@ -33,6 +34,7 @@ class UserForm extends Component
 
     #[Url('branchCode', keep: true)]
     public $branchCode;
+
     public $branchName;
 
     #[Validate('required|unique:users|regex:/^\S+$/')]
