@@ -107,9 +107,9 @@ class WorkingCalendarForm extends Component
     public function save(): void
     {
         foreach ([
-                     'company' => 'Company',
-                     'branch' => 'Branch',
-                 ] as $property => $label) {
+            'company' => 'Company',
+            'branch' => 'Branch',
+        ] as $property => $label) {
             if (! $this->$property) {
                 $this->dispatch('error-message', "$label is required");
 
@@ -150,10 +150,10 @@ class WorkingCalendarForm extends Component
     public function update(): void
     {
         foreach ([
-                  'company' => 'Company',
-                  'branch' => 'Branch',
-              ] as $property => $label) {
-            if (!$this->$property) {
+            'company' => 'Company',
+            'branch' => 'Branch',
+        ] as $property => $label) {
+            if (! $this->$property) {
                 $this->dispatch('error-message', "$label is required");
 
                 return;
@@ -190,9 +190,6 @@ class WorkingCalendarForm extends Component
         return view('livewire.working-calendar-form');
     }
 
-    /**
-     * @return void
-     */
     public function getResetExcept(): void
     {
         $this->resetExcept([

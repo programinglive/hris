@@ -114,9 +114,7 @@ class WorkingCalendarTable extends Component
     }
 
     #[On('refresh')]
-    public function refresh(): void
-    {
-    }
+    public function refresh(): void {}
 
     /**
      * Retrieves a paginated list of workingCalendars based on a search query.

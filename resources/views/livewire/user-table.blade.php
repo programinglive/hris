@@ -52,26 +52,7 @@
 				</svg>
 				Employee Template
 			</a>
-			<label for="import" class="inline">
-				<input
-					wire:model="import"
-					type="file"
-					id="import"
-					name="import"
-					accept=".csv,.xlsx"
-					class="form-input"
-				>
-			</label>
-			@error('import')
-				<div class="text-red-500 inline">{{ $message }}</div>
-			@enderror
-			<button
-				wire:click="importUser"
-				type="button"
-				class="btn bg-green-500 text-white inline"
-			>
-				<i class="mgc_upload_line"></i>
-			</button>
+			<livewire:import-user />
 			<input
 				wire:model.live="search"
 				type="text"
