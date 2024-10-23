@@ -100,6 +100,12 @@ class FormCompanyOption extends Component
         $this->resetErrorBag();
     }
 
+    #[On('refresh')]
+    public function refresh(): void
+    {
+        $this->resetPage();
+    }
+
     /**
      * Render the view for the form company option.
      */

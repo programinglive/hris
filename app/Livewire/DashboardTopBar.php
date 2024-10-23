@@ -80,6 +80,12 @@ class DashboardTopBar extends Component
         }
     }
 
+    #[On('refresh')]
+    public function refresh()
+    {
+        
+    }
+
     /**
      * Set the branch based on the branch code
      */

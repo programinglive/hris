@@ -78,16 +78,10 @@ class CompanyForm extends Component
             $this->company = Company::create($this->companyData());
         }, 5);
 
-        $this->dispatch('company-created', companyId: $this->company->id);
+        $this->dispatch('refresh');
+        $this->dispatch('clear-form');
 
-        $this->dispatch('refreshAnnouncement');
-
-        // auto-set session company selected
-        session([
-            'company' => $this->company->code,
-        ]);
-
-        $this->reset();
+        $this->dispatch('hide-form');
     }
 
     /**
@@ -121,9 +115,8 @@ class CompanyForm extends Component
             $this->company->update($data);
         }, 5);
 
-        $this->dispatch('company-updated', companyId: $this->company->id);
-
-        $this->reset();
+        $this->dispatch('refresh');
+        $this->dispatch('hide-form');
     }
 
     /**
@@ -136,25 +129,13 @@ class CompanyForm extends Component
         $this->company->code = $this->company->code.time().'-deleted';
         $this->company->phone = $this->company->phone.time().'-deleted';
         $this->company->save();
-
+        
         $this->company->delete();
 
-        $this->dispatch('refreshAnnouncement');
-
-        $this->dispatch('company-deleted', refreshCompanies: true);
+        $this->dispatch('refresh');
     }
 
-    /**
-     * Resets the form by clearing all properties and error bag.
-     *
-     * This function is triggered when the 'refresh-form' event is dispatched.
-     */
-    #[On('refresh-form')]
-    public function refreshCompanyForm(): void
-    {
-        $this->reset();
-        $this->resetErrorBag();
-    }
+    #[On('refresh')]
 
     /**
      * Render the livewire component.
