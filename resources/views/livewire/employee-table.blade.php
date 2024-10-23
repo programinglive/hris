@@ -14,8 +14,9 @@
 		
 		<div
 			class="flex items-center gap-2
-							justify-between w-2/4 relative"
+							justify-between w-4/6 relative"
 		>
+			<livewire:download-user />
 			<livewire:import-user />
 			<input
 				wire:model.live="search"
@@ -50,7 +51,7 @@
 	<div x-show="open">
 		<livewire:user-form />
 	</div>
-	<div class="relative overflow-x-auto" x-show="!open">
+	<div class="relative overflow-x-auto flex flex-col gap-4" x-show="!open">
 		<table class="w-full text-sm">
 			<thead>
 			<tr>
@@ -168,7 +169,6 @@
 			@endforelse
 			</tbody>
 		</table>
-		<hr class="my-4 border-gray-300">
 		{{ $employees->links() }}
 	</div>
 </div>

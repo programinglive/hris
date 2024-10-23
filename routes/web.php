@@ -34,4 +34,8 @@ Route::group(['middleware' => ['auth', 'loggedIn']], function () {
     Route::name('setting.')->prefix('transaction')->group(function () {
         include __DIR__.'/module/rapplication.php';
     });
+
+    Route::name('download.')->prefix('download')->group(function () {
+        include __DIR__.'/download/demployee.php';
+    });
 });
