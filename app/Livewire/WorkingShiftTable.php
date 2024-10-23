@@ -99,7 +99,8 @@ class WorkingShiftTable extends Component
     public function getWorkingShift(): LengthAwarePaginator
     {
         $workingShifts = WorkingShift::where(function ($query) {
-            $query->where('code', 'like', '%'.$this->search.'%')
+            $query->where('start_time', 'like', '%'.$this->search.'%')
+                ->orWhere('end_time', 'like', '%'.$this->search.'%')
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
 
