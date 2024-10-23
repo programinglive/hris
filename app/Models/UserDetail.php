@@ -31,6 +31,14 @@ class UserDetail extends Model
         return $this->belongsTo(Company::class);
     }
 
+    /**
+     * Get the branch that owns the user detail.
+     */
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

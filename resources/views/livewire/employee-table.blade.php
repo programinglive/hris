@@ -55,6 +55,12 @@
 			<thead>
 			<tr>
 				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+					Company
+				</th>
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+					Branch
+				</th>
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
 					NIK
 				</th>
 				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
@@ -98,6 +104,12 @@
 			<tbody class="divide-y divide-gray-200">
 			@forelse($employees as $employee)
 				<tr>
+					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
+						{{ $employee->details?->company?->name }}
+					</td>
+					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
+						{{ $employee->details?->branch?->name }}
+					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
 						{{ $employee->details?->nik }}
 					</td>

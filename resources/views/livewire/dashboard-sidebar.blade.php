@@ -1,4 +1,4 @@
-<div class="app-menu">
+<div class="app-menu w-100">
 	
 	<!-- Sidenav Brand Logo -->
 	<livewire:dashboard-logo />

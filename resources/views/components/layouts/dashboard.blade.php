@@ -27,13 +27,12 @@
 
 <body>
 
-<div class="flex wrapper">
+<div class="grid grid-cols-6 wrapper">
 	@livewire('dashboard-sidebar')
 	
-	<div class="page-content">
+	<div class="page-content col-span-5">
 		@livewire('dashboard-top-bar')
-		
-		
+
 		<main class="flex-grow p-6 bg-gray-100">
 			<livewire:announcement-widget />
 			{{ $slot ?? '' }}
