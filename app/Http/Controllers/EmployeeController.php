@@ -20,11 +20,15 @@ class EmployeeController extends Controller
             'user_details.date_in',
             'user_details.date_out',
         ])
-            ->join('user_details', 'users.id', '=', 'user_details.user_id')->get();
+            ->join('user_details', 'users.id', '=', 'user_details.user_id')
+            ->where('users.name', '!=', 'admin')
+            ->get();
 
         $writer = SimpleExcelWriter::streamDownload('all_employee_data.xlsx');
 
         foreach ($employees as $employee) {
+            $employee['date_in'] = date('Y-m-d', strtotime($employee['date_in']));
+            $employee['date_out'] = date('Y-m-d', strtotime($employee['date_out']));
             $writer
                 ->addRow($employee->toArray());
         }
