@@ -27,8 +27,8 @@ class EmployeeController extends Controller
         $writer = SimpleExcelWriter::streamDownload('all_employee_data.xlsx');
 
         foreach ($employees as $employee) {
-            $employee['date_in'] = date('Y-m-d', strtotime($employee['date_in']));
-            $employee['date_out'] = date('Y-m-d', strtotime($employee['date_out']));
+            $employee['date_in'] = $employee['date_in'] != '' ? date('Y-m-d', strtotime($employee['date_in'])) : '';
+            $employee['date_out'] = $employee['date_out'] != '' ? date('Y-m-d', strtotime($employee['date_out'])) : '';
             $writer
                 ->addRow($employee->toArray());
         }
