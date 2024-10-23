@@ -81,7 +81,7 @@ class BrandTable extends Component
      *
      * @param  string  $code  The code to set as the company code.
      */
-    #[On('setCompany')]
+    #[On('set-company')]
     public function setCompany(string $code): void
     {
         $this->companyCode = $code;

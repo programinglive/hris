@@ -77,7 +77,7 @@ class PageFilter extends Component
      *
      * @param  string  $code  The code of the company.
      */
-    #[On('setCompany')]
+    #[On('set-company')]
     public function setCompany(string $code): void
     {
         if ($code != 'all') {
@@ -91,7 +91,7 @@ class PageFilter extends Component
     /**
      * Disables the filter by setting the 'filter' property to false.
      */
-    #[On('disableFilter')]
+    #[On('disable-filter')]
     public function disableFilter(): void
     {
         $this->filter = false;

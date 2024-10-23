@@ -31,7 +31,7 @@ class FormCompanyOption extends Component
 
         if ($companyCode == '') {
             $this->addError('companyCode', 'This field is required');
-            $this->dispatch('resetCompanyId');
+            $this->dispatch('clear-company');
             $this->companyCode = 'all';
 
             return;
@@ -48,7 +48,7 @@ class FormCompanyOption extends Component
      *
      * @param  string  $companyCode  The code of the company.
      */
-    #[On('setCompany')]
+    #[On('set-company')]
     public function setCompany(string $companyCode): void
     {
         $this->companyCode = $companyCode;
@@ -93,8 +93,8 @@ class FormCompanyOption extends Component
     /**
      * Clears the form by resetting all properties and error bag.
      */
-    #[On('clearFormCompanyOption')]
-    public function clearFormCompanyOption(): void
+    #[On('clear-form')]
+    public function clearForm(): void
     {
         $this->reset();
         $this->resetErrorBag();

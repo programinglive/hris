@@ -42,7 +42,7 @@ class NewsTable extends Component
      *
      * @param  string  $code  The code of the company.
      */
-    #[On('setCompany')]
+    #[On('set-company')]
     public function setCompany(string $code): void
     {
         if ($code != 'all') {

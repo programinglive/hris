@@ -27,7 +27,7 @@ class BranchTable extends Component
     public $companyId;
 
     #[Url(keep: true)]
-    public ?string $companyCode = 'all';
+    public $companyCode;
 
     public $import;
 
@@ -84,43 +84,10 @@ class BranchTable extends Component
      *
      * @param  string  $code  The new value for the companyCode property.
      */
-    #[On('setCompany')]
+    #[On('set-company')]
     public function setCompany(string $code): void
     {
         $this->companyCode = $code;
-    }
-
-    /**
-     * Handles the event when a branch is created.
-     *
-     * @param  int  $branchId  The ID of the created branch.
-     */
-    #[On('branch-created')]
-    public function branchAdded(int $branchId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a branch is updated.
-     *
-     * @param  int  $branchId  The ID of the updated branch.
-     */
-    #[On('branch-updated')]
-    public function branchUpdated(int $branchId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a branch is deleted.
-     */
-    #[On('branch-deleted')]
-    public function branchDeleted(): void
-    {
-        $this->showForm = false;
-        $this->resetPage();
-        $this->getBranch();
     }
 
     /**
@@ -130,6 +97,21 @@ class BranchTable extends Component
     public function showForm(): void
     {
         $this->showForm = true;
+    }
+
+    /**
+     * Hide the form branch.
+     */
+    #[On('hide-form')]
+    public function hideForm(): void
+    {
+        $this->showForm = false;
+    }
+
+    #[On('refresh')]
+    public function refresh(): void
+    {
+        $this->resetPage();
     }
 
     /**

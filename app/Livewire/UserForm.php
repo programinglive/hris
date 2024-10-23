@@ -104,7 +104,7 @@ class UserForm extends Component
      *
      * @param  string  $companyCode  The code of the company.
      */
-    #[On('setCompany')]
+    #[On('set-company')]
     public function setCompany(string $companyCode): void
     {
         $this->companyCode = $companyCode;

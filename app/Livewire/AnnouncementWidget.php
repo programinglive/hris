@@ -10,23 +10,30 @@ use Livewire\Component;
 
 class AnnouncementWidget extends Component
 {
+    /**
+     * Mount the component
+     */
     public function mount(): void
     {
         $this->checkIfCompanyOrBranchExists();
     }
 
-    #[On('refreshAnnouncement')]
+    /**
+     * Refresh the announcement widget by checking if the company or branch exists.
+     */
+    #[On('refresh-announcement')]
     public function refreshAnnouncement(): void
     {
         $this->checkIfCompanyOrBranchExists();
         $this->dispatch('$refresh');
     }
 
-    public function render(): View
-    {
-        return view('livewire.announcement-widget');
-    }
-
+    /**
+     * Check if the company or branch exists.
+     *
+     * This method checks if the company or branch exists, and if so, removes the
+     * session key for the announcement.
+     */
     public function checkIfCompanyOrBranchExists(): void
     {
         session()->forget('announcement');
@@ -59,5 +66,13 @@ class AnnouncementWidget extends Component
                 'url' => route('master.companies'),
             ]);
         }
+    }
+
+    /**
+     * Render the component
+     */
+    public function render(): View
+    {
+        return view('livewire.announcement-widget');
     }
 }

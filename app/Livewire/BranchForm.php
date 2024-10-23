@@ -65,7 +65,7 @@ class BranchForm extends Component
      *
      * @param  string  $code  The code to set the companyCode property to.
      */
-    #[On('setCompany')]
+    #[On('set-company')]
     public function setCompany(string $code): void
     {
         if ($code == '') {
@@ -78,20 +78,22 @@ class BranchForm extends Component
             $this->companyCode = $code;
             $this->company = Company::where('code', $code)->first();
             $this->companyId = $this->company->id;
+            $this->companyCode = $this->company->code;
             $this->companyName = $this->company->name;
         }
 
     }
 
-    /**
-     * Resets the 'companyId' property to its initial value.
-     *
-     * This function is triggered when the 'resetCompanyId' event is dispatched.
-     */
-    #[On('resetCompanyId')]
-    public function resetCompanyId(): void
+    /** Clears the company data. */
+    #[On('clear-company')]
+    public function clearCompany(): void
     {
-        $this->reset('companyId');
+        $this->reset([
+            'company',
+            'companyId',
+            'companyCode',
+            'companyName',
+        ]);
     }
 
     /**
@@ -127,8 +129,10 @@ class BranchForm extends Component
             $this->branch = Branch::create($this->branchData());
         }, 5);
 
-        $this->dispatch('branch-created', branchId: $this->branch->id, refreshBranches: true);
-        $this->dispatch('clearFormCompanyOption');
+        $this->dispatch('hide-form');
+        $this->dispatch('refresh');
+
+        $this->dispatch('clear-form');
 
         $this->dispatch('refreshAnnouncement');
 
@@ -144,17 +148,16 @@ class BranchForm extends Component
         $this->code = $code;
         $this->branch = Branch::where('code', $code)->first();
 
-        $this->companyId = $this->branch->company_id;
-        $this->dispatch('selectCompany', companyId: $this->companyId);
+        $this->dispatch('set-company', $this->branch->company_code);
 
         $this->name = $this->branch->name;
         $this->type = $this->branch->type;
-        $this->companyCode = $this->branch->company->code;
-        $this->companyName = $this->branch->company->name;
+        $this->companyCode = $this->branch->company_code;
+        $this->companyName = $this->branch->company_name;
 
         $this->actionForm = 'update';
 
-        $this->dispatch('disableFilter');
+        $this->dispatch('disable-filter');
         $this->dispatch('show-form');
     }
 
@@ -176,8 +179,9 @@ class BranchForm extends Component
             $this->branch->update($data);
         }, 5);
 
-        $this->dispatch('branch-updated', branchId: $this->branch->id, refreshBranches: true);
-        $this->dispatch('clearFormCompanyOption');
+        $this->dispatch('clear-form');
+
+        $this->dispatch('hide-form');
 
         $this->dispatch('refresh');
 
@@ -191,15 +195,15 @@ class BranchForm extends Component
     public function destroy($code): void
     {
         $this->branch = Branch::where('code', $code)->first();
-        $this->branch->code = $this->branch->code.'-deleted';
+        $this->branch->code = $this->branch->code.time().'-deleted';
         $this->branch->save();
 
         $this->branch->delete();
 
         $this->dispatch('refreshAnnouncement');
 
-        $this->dispatch('branch-deleted', refreshBranches: true);
-        $this->dispatch('clearFormCompanyOption');
+        $this->dispatch('refresh');
+        $this->dispatch('clear-form');
     }
 
     /**

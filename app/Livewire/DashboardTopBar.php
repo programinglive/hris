@@ -66,7 +66,7 @@ class DashboardTopBar extends Component
     /**
      * Set the company based on the company code
      */
-    #[On('setCompany')]
+    #[On('set-company')]
     public function setCompany(string $companyCode): void
     {
         $this->companyCode = $companyCode;

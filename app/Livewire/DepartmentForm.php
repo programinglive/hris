@@ -50,7 +50,7 @@ class DepartmentForm extends Component
      *
      * @param  string  $code  The code to set the companyCode property to.
      */
-    #[On('setCompany')]
+    #[On('set-company')]
     public function setCompany(string $code): void
     {
         if ($code !== 'all') {
