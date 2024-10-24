@@ -32,6 +32,10 @@ class BranchForm extends Component
 
     public $type = 'branch';
 
+    public $phone;
+
+    public $address;
+
     public $branch;
 
     public $actionForm = 'save';
@@ -105,6 +109,8 @@ class BranchForm extends Component
             'company_id' => $this->companyId,
             'code' => ToolController::sanitizeString($this->code),
             'name' => $this->name,
+            'phone' => $this->phone,
+            'address' => $this->address,
             'type' => $this->type,
             'company_code' => $this->companyCode,
             'company_name' => $this->companyName,
@@ -152,6 +158,8 @@ class BranchForm extends Component
 
         $this->name = $this->branch->name;
         $this->type = $this->branch->type;
+        $this->phone = $this->branch->phone;
+        $this->address = $this->branch->address;
         $this->companyCode = $this->branch->company_code;
         $this->companyName = $this->branch->company_name;
 
