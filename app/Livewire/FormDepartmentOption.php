@@ -12,6 +12,8 @@ use Livewire\Component;
 
 class FormDepartmentOption extends Component
 {
+    public $department;
+
     public $departmentCode;
 
     public $company;
@@ -67,11 +69,10 @@ class FormDepartmentOption extends Component
     }
 
     #[On('set-department')]
-    public function setDepartment($companyCode, $branchCode): void
+    public function setDepartment($departmentCode): void
     {
-        $this->departments = Department::where('company_code', $companyCode)
-            ->where('branch_code', $branchCode)
-            ->get();
+        $this->department = Department::where('code', $departmentCode)->first();
+        $this->departmentCode = $departmentCode;
     }
 
     #[On('clear-department')]

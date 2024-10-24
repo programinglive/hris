@@ -11,17 +11,23 @@ use Livewire\Component;
 
 class FormBranchOption extends Component
 {
-    public $companyId;
-
     public $company;
+
+    public $companyId;
 
     #[Url(keep: true)]
     public $companyCode;
 
+    public $companyName;
+
     public $branch;
+
+    public $branchId;
 
     #[Url(keep: true)]
     public $branchCode;
+
+    public $branchName;
 
     public $branches;
 
@@ -91,6 +97,10 @@ class FormBranchOption extends Component
 
         if ($branchCode != 'all') {
             $this->branch = Branch::where('code', $branchCode)->first();
+            $this->branchId = $this->branch->id;
+
+            $this->branchCode = $this->branch->code;
+            $this->branchName = $this->branch->name;
         }
     }
 

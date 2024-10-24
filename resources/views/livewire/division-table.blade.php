@@ -75,6 +75,13 @@
 							class="px-6 py-3 text-left text-xs font-medium
 											text-gray-500 uppercase"
 						>
+							Department
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium
+											text-gray-500 uppercase"
+						>
 							Code
 						</th>
 						<th
@@ -111,6 +118,9 @@
 								<div>{{ $division->branch_name }}</div>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+								<div>{{ $division->department_name }}</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
 								<div>{{ $division->code }}</div>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
@@ -140,7 +150,7 @@
 						</tr>
 					@empty
 						<tr>
-							<td colspan="6" class="text-center text-gray-500 pt-4">Empty Data</td>
+							<td colspan="7" class="text-center text-gray-500 pt-4">Empty Data</td>
 						</tr>
 					@endforelse
 					</tbody>

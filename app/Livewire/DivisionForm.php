@@ -162,12 +162,17 @@ class DivisionForm extends Component
         $this->companyId = $this->division->company_id;
         $this->companyCode = $this->division->company_code;
         $this->companyName = $this->division->company_name;
-        $this->dispatch('setCompany', $this->companyCode);
+        $this->dispatch('set-company', $this->companyCode);
 
         $this->branchId = $this->division->branch_id;
         $this->branchCode = $this->division->branch_code;
         $this->branchName = $this->division->branch_name;
-        $this->dispatch('setBranch', $this->branchCode);
+        $this->dispatch('set-branch', $this->branchCode);
+
+        $this->departmentId = $this->division->department_id;
+        $this->departmentCode = $this->division->department_code;
+        $this->departmentName = $this->division->department_name;
+        $this->dispatch('set-department', $this->departmentCode);
 
         $this->actionForm = 'update';
 
