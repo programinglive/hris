@@ -49,7 +49,19 @@ class FormBranchOption extends Component
      */
     public function updatedBranchCode(string $branchCode): void
     {
+        if($branchCode == '' || $branchCode == 'all'){
+            $this->dispatch('clear-department');
+            return;
+        }
+
+        $this->branch = Branch::where('code', $branchCode)->first();
+        if($this->branch){
+            $this->companyCode = $this->branch->company->code;
+        }
+
         $this->dispatch('set-branch', $branchCode);
+        $this->dispatch('get-department', $this->companyCode, $this->branchCode);
+
     }
 
     /**

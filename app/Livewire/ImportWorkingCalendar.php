@@ -86,6 +86,11 @@ class ImportWorkingCalendar extends Component
         $this->dispatch('refresh');
     }
 
+    /**
+     * Render the component
+     *
+     * @return View
+     */
     public function render(): View
     {
         return view('livewire.import-working-calendar');

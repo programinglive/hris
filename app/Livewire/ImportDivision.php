@@ -5,14 +5,17 @@ namespace App\Livewire;
 use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Department;
+use App\Models\Division;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
-class ImportDepartment extends Component
+class ImportDivision extends Component
 {
     use WithFileUploads;
+
+    public $division;
 
     public $department;
 
@@ -35,9 +38,9 @@ class ImportDepartment extends Component
     public $import;
 
     /**
-     * Handle the import of a department.
+     * Import division data from file.
      */
-    public function importDepartment(): void
+    public function importDivision(): void
     {
         $this->validate([
             'import' => 'required|mimes:csv,xlsx,xls',
@@ -69,23 +72,33 @@ class ImportDepartment extends Component
                 $this->branchId = $this->branch->id;
                 $this->branchCode = $this->branch->code;
                 $this->branchName = $this->branch->name;
-
-                $this->department = Department::firstOrNew([
+                
+                $this->division = Division::firstOrNew([
                     'code' => $rowProperties['code'],
                 ]);
 
-                $this->department->company_id = $this->companyId;
-                $this->department->company_code = $this->companyCode;
-                $this->department->company_name = $this->companyName;
+                $this->division->company_id = $this->companyId;
+                $this->division->company_code = $this->companyCode;
+                $this->division->company_name = $this->companyName;
 
-                $this->department->branch_id = $this->branchId;
-                $this->department->branch_code = $this->branchCode;
-                $this->department->branch_name = $this->branchName;
+                $this->division->branch_id = $this->branchId;
+                $this->division->branch_code = $this->branchCode;
+                $this->division->branch_name = $this->branchName;
 
-                $this->department->code = $rowProperties['code'];
-                $this->department->name = $rowProperties['name'];
-                $this->department->description = $rowProperties['description'];
-                $this->department->save();
+                $this->department = Department::where(
+                    'code', $rowProperties[ 'department_code' ])
+                    ->first();
+
+                if($this->department){
+                    $this->division->department_id = $this->department->id;
+                    $this->division->department_code = $this->department->code;
+                    $this->division->department_name = $this->department->name;
+                }
+
+                $this->division->code = $rowProperties['code'];
+                $this->division->name = $rowProperties['name'];
+                $this->division->description = $rowProperties['description'];
+                $this->division->save();
             });
 
         $this->dispatch('refresh');
@@ -93,6 +106,6 @@ class ImportDepartment extends Component
 
     public function render(): View
     {
-        return view('livewire.import-department');
+        return view('livewire.import-division');
     }
 }

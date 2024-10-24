@@ -110,7 +110,7 @@ class CompanyForm extends Component
     {
         DB::transaction(function () {
             $data = $this->companyData();
-            $data['updated_by'] = auth()->user()->id;
+            $data['updated_by'] = $this->updatedBy;
 
             $this->company->update($data);
         }, 5);

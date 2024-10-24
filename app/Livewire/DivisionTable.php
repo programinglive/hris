@@ -20,45 +20,30 @@ class DivisionTable extends Component
     public $search;
 
     /**
-     * Handles the event when a division is created.
-     *
-     * @param  int  $divisionId  The ID of the created division.
-     */
-    #[On('division-created')]
-    public function divisionAdded(int $divisionId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a division is updated.
-     *
-     * @param  int  $divisionId  The ID of the updated division.
-     */
-    #[On('division-updated')]
-    public function divisionUpdated(int $divisionId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a division is deleted.
-     */
-    #[On('division-deleted')]
-    public function divisionDeleted(): void
-    {
-        $this->showForm = false;
-        $this->resetPage();
-        $this->getDivisions();
-    }
-
-    /**
      * Shows the form division.
      */
     #[On('show-form')]
     public function showForm(): void
     {
         $this->showForm = true;
+    }
+
+    /**
+     * Hides the form division.
+     */
+    #[On('hide-form')]
+    public function hideForm(): void
+    {
+        $this->showForm = false;
+    }
+
+    /**
+     * Refreshes the component when the refresh event is triggered.
+     */
+    #[On('refresh')]
+    public function refresh(): void
+    {
+        $this->resetPage();
     }
 
     /**
@@ -72,7 +57,7 @@ class DivisionTable extends Component
             $query->where('name', 'like', '%'.$this->search.'%')
                 ->orWhere('code', 'like', '%'.$this->search.'%');
         })
-            ->orderBy('id', 'asc')
+            ->orderBy('id')
             ->paginate(10);
     }
 

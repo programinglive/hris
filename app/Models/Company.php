@@ -24,14 +24,6 @@ class Company extends Model
     }
 
     /**
-     * Returns a HasMany relationship between the current model and the Department model.
-     */
-    public function departments(): HasMany
-    {
-        return $this->hasMany(Department::class);
-    }
-
-    /**
      * Retrieve the users associated with this company.
      */
     public function users(): HasMany

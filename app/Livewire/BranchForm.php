@@ -179,7 +179,7 @@ class BranchForm extends Component
 
         DB::transaction(function () {
             $data = $this->branchData();
-            $data['updated_by'] = auth()->user()->id;
+            $data['updated_by'] = $this->updatedBy;
 
             $this->branch->update($data);
         }, 5);

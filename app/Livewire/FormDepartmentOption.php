@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Department;
 use Illuminate\Contracts\View\View;
@@ -13,12 +14,17 @@ class FormDepartmentOption extends Component
 {
     public $departmentCode;
 
+    public $company;
     public $companyId;
 
     #[Url(keep: true)]
     public $companyCode;
 
-    public $option = 'disabled';
+    public $branch;
+    public $branchId;
+
+    #[Url(keep: true)]
+    public $branchCode;
 
     public $departments;
 
@@ -31,22 +37,17 @@ class FormDepartmentOption extends Component
             $company = Company::where('code', $this->companyCode)->first();
 
             if ($company) {
-                $this->option = '';
                 $this->companyId = $company->id;
-                $this->departments = $company->departments;
+
+                $this->branch = Branch::where('code', $this->branchCode)->first();
+
+                if($this->branch) {
+                    $this->branchId = $this->branch->id;
+                    $this->departments = Department::where('company_id', $this->companyId)
+                                        ->where('branch_id', $this->branchId)->get();
+                }
             }
         }
-    }
-
-    /**
-     * Update the option value based on the provided option.
-     *
-     * @param  mixed  $option  The new option value.
-     */
-    #[On('departmentOption')]
-    public function departmentOption(mixed $option): void
-    {
-        $this->option = $option;
     }
 
     /**
@@ -63,15 +64,18 @@ class FormDepartmentOption extends Component
 
     }
 
-    /**
-     * Update the department ID based on the provided department ID.
-     *
-     * @param  int  $departmentCode  The ID of the department.
-     */
-    #[On('selectDepartment')]
-    public function selectDepartment(int $departmentCode): void
+    #[On('set-department')]
+    public function setDepartment($companyCode, $branchCode): void
     {
-        $this->departmentCode = Department::where('code', $departmentCode)->id;
+        $this->departments = Department::where('company_code', $companyCode)
+            ->where('branch_code', $branchCode)
+            ->get();
+    }
+
+    #[On('clear-department')]
+    public function clearDepartment(): void
+    {
+        $this->reset(['departments', 'departmentCode']);
     }
 
     /**
@@ -87,27 +91,20 @@ class FormDepartmentOption extends Component
      * Get the departments based on the provided company code.
      *
      * @param  string  $companyCode  The company code.
+     * @param  string  $branchCode  The branch code.
+     *
+     *
      */
-    #[On('getDepartment')]
-    public function getDepartment(string $companyCode): void
+    #[On('get-department')]
+    public function getDepartment(string $companyCode, string $branchCode): void
     {
         $this->reset([
             'departments',
-            'option',
         ]);
 
-        $company = Company::where('code', $companyCode)->first();
-
-        if (! $company) {
-            $this->option = 'disabled';
-
-            return;
-        }
-
-        if ($company->departments()->count() > 0) {
-            $this->option = '';
-            $this->departments = $company->departments;
-        }
+        $this->departments = Department::where('company_code', $companyCode)
+            ->where('branch_code', $branchCode)
+            ->get();
     }
 
     /**

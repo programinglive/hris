@@ -1,6 +1,6 @@
 <div class="flex gap-2">
 	<a
-		href="{{ asset('department_data.xlsx') }}"
+		href="{{ asset('division_data.xlsx') }}"
 		class="
 			        px-4 py-2
 			        rounded-md
@@ -28,7 +28,7 @@
 			          18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
 			/>
 		</svg>
-		Department Template
+		Division Template
 	</a>
 	<div class="flex gap-2 h-10">
 		<label for="import" class="inline">
@@ -45,7 +45,7 @@
 		<div class="text-red-500 inline">{{ $message }}</div>
 		@enderror
 		<button
-			wire:click="importDepartment"
+			wire:click="importDivision"
 			type="button"
 			class="btn bg-green-500 text-white inline"
 		>
