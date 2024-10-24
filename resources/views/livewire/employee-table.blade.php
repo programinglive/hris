@@ -55,49 +55,52 @@
 		<table class="w-full text-sm">
 			<thead>
 			<tr>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Company
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Branch
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					NIK
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Username
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Email
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
+					Phone
+				</th>
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					First Name
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Last Name
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Department
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Division
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Sub Division
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Level
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Position
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 		      Date In
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 			    Date Out
 				</th>
-				<th scope="col" class="px-4 py-2 text-end font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-end font-medium text-gray-500 uppercase whitespace-nowrap">
 					Action
 				</th>
 			</tr>

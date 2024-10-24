@@ -49,19 +49,19 @@
 		<table class="w-full text-sm">
 			<thead>
 			<tr>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Company
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Branch
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					NIK
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Name
 				</th>
-				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase">
+				<th scope="col" class="px-4 py-2 text-left font-medium text-gray-500 uppercase  whitespace-nowrap">
 					Amount
 				</th>
 				<th scope="col" class="px-4 py-2 text-end font-medium text-gray-500 uppercase">

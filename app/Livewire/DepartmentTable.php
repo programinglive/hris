@@ -17,23 +17,26 @@ class DepartmentTable extends Component
 
     public $showForm = false;
 
+    public $company;
+
     public $companyId;
 
     #[Url(keep: true)]
     public $companyCode;
 
+    public $companyName;
+
+    public $branch;
+
+    public $branchId;
+
+    #[Url(keep: true)]
+    public $branchCode;
+
+    public $branchName;
+
     #[Url]
     public $search;
-
-    /**
-     * Initializes the component by setting the company ID based on the provided code.
-     */
-    public function mount(): void
-    {
-        if ($this->companyCode != 'all') {
-            $this->companyId = Company::where('code', $this->companyCode)->first()->id;
-        }
-    }
 
     /**
      * Sets the company ID based on the provided code.
@@ -45,46 +48,12 @@ class DepartmentTable extends Component
     {
         if ($code != 'all') {
             $this->companyCode = $code;
-            $this->companyId = Company::where('code', $code)->first()->id;
-        } else {
-            $this->companyCode = 'all';
+            $this->company = Company::where('code', $code)->first();
+            $this->companyId = $this->company->id;
+            $this->companyName = $this->company->name;
         }
 
         $this->resetPage();
-    }
-
-    /**
-     * Handles the event when a department is created.
-     *
-     * @param  int  $departmentId  The ID of the created department.
-     */
-    #[On('department-created')]
-    public function departmentAdded(int $departmentId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a department is updated.
-     *
-     * @param  int  $departmentId  The ID of the updated department.
-     */
-    #[On('department-updated')]
-    public function departmentUpdated(int $departmentId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a department is deleted.
-     */
-    #[On('department-deleted')]
-    public function departmentDeleted(): void
-    {
-        $this->showForm = false;
-
-        $this->resetPage();
-        $this->getDepartments();
     }
 
     /**
@@ -94,6 +63,24 @@ class DepartmentTable extends Component
     public function showForm(): void
     {
         $this->showForm = true;
+    }
+
+    /**
+     * Hides the form department.
+     */
+    #[On('hide-form')]
+    public function hideForm(): void
+    {
+        $this->showForm = false;
+    }
+
+    /**
+     * Refresh the component and reset the page.
+     */
+    #[On('refresh')]
+    public function refresh(): void
+    {
+        $this->resetPage();
     }
 
     /**
@@ -108,13 +95,6 @@ class DepartmentTable extends Component
             $query->where('code', 'like', '%'.$this->search.'%')
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         })->orderBy('id');
-
-        if ($this->companyCode == '') {
-            $this->companyCode = 'all';
-        }
-        if ($this->companyCode != 'all') {
-            $departments = $departments->where('company_id', $this->companyId);
-        }
 
         return $departments->paginate(10);
     }

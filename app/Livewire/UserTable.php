@@ -40,16 +40,6 @@ class UserTable extends Component
     public $employee;
 
     /**
-     * Mount the component.
-     */
-    public function mount(): void
-    {
-        if (empty($this->companyCode)) {
-            $this->companyCode = 'all';
-        }
-    }
-
-    /**
      * Handles the event when a user is created.
      *
      * @param  int  $userId  The ID of the created user.
