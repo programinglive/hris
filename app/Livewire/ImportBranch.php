@@ -48,7 +48,7 @@ class ImportBranch extends Component
                     }
                 }
             }
-            );
+        );
 
         $this->dispatch('refresh');
     }
