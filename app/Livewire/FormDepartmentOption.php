@@ -15,12 +15,14 @@ class FormDepartmentOption extends Component
     public $departmentCode;
 
     public $company;
+
     public $companyId;
 
     #[Url(keep: true)]
     public $companyCode;
 
     public $branch;
+
     public $branchId;
 
     #[Url(keep: true)]
@@ -41,10 +43,10 @@ class FormDepartmentOption extends Component
 
                 $this->branch = Branch::where('code', $this->branchCode)->first();
 
-                if($this->branch) {
+                if ($this->branch) {
                     $this->branchId = $this->branch->id;
                     $this->departments = Department::where('company_id', $this->companyId)
-                                        ->where('branch_id', $this->branchId)->get();
+                        ->where('branch_id', $this->branchId)->get();
                 }
             }
         }
@@ -92,8 +94,6 @@ class FormDepartmentOption extends Component
      *
      * @param  string  $companyCode  The company code.
      * @param  string  $branchCode  The branch code.
-     *
-     *
      */
     #[On('get-department')]
     public function getDepartment(string $companyCode, string $branchCode): void

@@ -72,7 +72,7 @@ class ImportDivision extends Component
                 $this->branchId = $this->branch->id;
                 $this->branchCode = $this->branch->code;
                 $this->branchName = $this->branch->name;
-                
+
                 $this->division = Division::firstOrNew([
                     'code' => $rowProperties['code'],
                 ]);
@@ -86,10 +86,10 @@ class ImportDivision extends Component
                 $this->division->branch_name = $this->branchName;
 
                 $this->department = Department::where(
-                    'code', $rowProperties[ 'department_code' ])
+                    'code', $rowProperties['department_code'])
                     ->first();
 
-                if($this->department){
+                if ($this->department) {
                     $this->division->department_id = $this->department->id;
                     $this->division->department_code = $this->department->code;
                     $this->division->department_name = $this->department->name;
