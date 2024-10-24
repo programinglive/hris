@@ -21,6 +21,8 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('code');
             $table->string('name');
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
             $table->enum('type', ['branch', 'partner'])->default('branch');
             $table->string('company_code')->nullable();
             $table->string('company_name')->nullable();

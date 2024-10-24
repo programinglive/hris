@@ -2,10 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Http\Controllers\BranchController;
-use App\Http\Controllers\CompanyController;
 use App\Models\Branch;
-use App\Models\Company;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
@@ -13,7 +10,6 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use Spatie\SimpleExcel\SimpleExcelReader;
 
 class BranchTable extends Component
 {
@@ -28,56 +24,6 @@ class BranchTable extends Component
 
     #[Url(keep: true)]
     public $companyCode;
-
-    public $import;
-
-    public function importBranch(): void
-    {
-        $this->validate([
-            'import' => 'required|mimes:csv,xlsx,xls',
-        ]);
-
-        $this->import->store(path: 'branches');
-
-        $this->import = $this->import->path();
-
-        SimpleExcelReader::create($this->import)->getRows()
-            ->each(function (array $rowProperties) {
-
-                if (! array_key_exists('company_name', $rowProperties)) {
-                    $this->addError('errorMessage', 'Company Name Required');
-
-                    return;
-                }
-
-                $branch = Branch::firstOrNew([
-                    'name' => $rowProperties['name'],
-                ]);
-
-                $company = Company::firstOrNew([
-                    'name' => $rowProperties['company_name'],
-                ]);
-
-                if (! $company->code) {
-                    $company->code = CompanyController::generateCode();
-                    $company->name = $rowProperties['company_name'];
-                    $company->save();
-                }
-
-                if (! $branch->code) {
-                    $branch->code = BranchController::generateCode();
-                }
-
-                $branch->company_id = $company->id;
-                $branch->company_name = $company->name;
-                $branch->company_code = $company->code;
-                $branch->save();
-            }
-            );
-
-        redirect()->back();
-
-    }
 
     /**
      * Sets the value of the companyCode property.

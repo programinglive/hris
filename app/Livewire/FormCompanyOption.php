@@ -101,10 +101,7 @@ class FormCompanyOption extends Component
     }
 
     #[On('refresh')]
-    public function refresh(): void
-    {
-        $this->resetPage();
-    }
+    public function refresh(): void {}
 
     /**
      * Render the view for the form company option.
