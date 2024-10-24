@@ -22,7 +22,6 @@ class BrandTable extends Component
     #[Url(keep: true)]
     public $companyCode;
 
-
     /**
      * Sets the company code.
      *

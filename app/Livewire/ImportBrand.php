@@ -40,7 +40,7 @@ class ImportBrand extends Component
                             'code', $rowProperties['branch_code']
                         )->first();
 
-                        if($branch) {
+                        if ($branch) {
                             $brand = Brand::firstOrNew([
                                 'code' => $rowProperties['code'],
                             ]);
@@ -57,7 +57,7 @@ class ImportBrand extends Component
                     }
                 }
             }
-        );
+            );
 
         $this->dispatch('refresh');
 
