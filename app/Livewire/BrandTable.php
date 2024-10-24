@@ -85,39 +85,7 @@ class BrandTable extends Component
     public function setCompany(string $code): void
     {
         $this->companyCode = $code;
-    }
-
-    /**
-     * Handles the event when a brand is created.
-     *
-     * @param  int  $brandId  The ID of the created brand.
-     */
-    #[On('brand-created')]
-    public function brandAdded(int $brandId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a brand is updated.
-     *
-     * @param  int  $brandId  The ID of the updated brand.
-     */
-    #[On('brand-updated')]
-    public function brandUpdated(int $brandId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a brand is deleted.
-     */
-    #[On('brand-deleted')]
-    public function brandDeleted(): void
-    {
-        $this->showForm = false;
-        $this->resetPage();
-        $this->getBrands();
+        $this->dispatch('refresh');
     }
 
     /**
@@ -130,6 +98,21 @@ class BrandTable extends Component
     }
 
     /**
+     * Hides the form brand.
+     */
+    #[On('hide-form')]
+    public function hideForm(): void
+    {
+        $this->showForm = false;
+    }
+
+    /**
+     * Refreshes the list of brands.
+     */
+    #[On('refresh')]
+    public function refresh(): void {}
+
+    /**
      * Retrieves a paginated list of brands based on a search query.
      *
      * @return LengthAwarePaginator The paginated list of brands.
@@ -140,10 +123,6 @@ class BrandTable extends Component
             $query->where('code', 'like', '%'.$this->search.'%')
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
-
-        if ($this->companyCode !== 'all') {
-            $brands = $brands->where('company_id', Company::where('code', $this->companyCode)->first()?->id);
-        }
 
         return $brands->orderBy('id')
             ->paginate(10);

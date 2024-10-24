@@ -85,7 +85,6 @@ class BranchForm extends Component
             $this->companyCode = $this->company->code;
             $this->companyName = $this->company->name;
         }
-
     }
 
     /** Clears the company data. */
@@ -138,11 +137,9 @@ class BranchForm extends Component
         $this->dispatch('hide-form');
         $this->dispatch('refresh');
 
-        $this->dispatch('clear-form');
+        $this->dispatch('refresh-announcement');
 
-        $this->dispatch('refreshAnnouncement');
-
-        $this->reset();
+        $this->getResetExcept();
     }
 
     /**
@@ -187,13 +184,11 @@ class BranchForm extends Component
             $this->branch->update($data);
         }, 5);
 
-        $this->dispatch('clear-form');
-
         $this->dispatch('hide-form');
 
         $this->dispatch('refresh');
 
-        $this->reset();
+        $this->getResetExcept();
     }
 
     /**
@@ -208,10 +203,28 @@ class BranchForm extends Component
 
         $this->branch->delete();
 
-        $this->dispatch('refreshAnnouncement');
+        $this->dispatch('refresh-announcement');
 
         $this->dispatch('refresh');
-        $this->dispatch('clear-form');
+    }
+
+    /**
+     * Resets the form values except for the given properties.
+     */
+    public function getResetExcept(): void
+    {
+        $this->resetExcept([
+            'createdBy',
+            'updatedBy',
+            'company',
+            'companyId',
+            'companyCode',
+            'companyName',
+            'branch',
+            'branchId',
+            'branchCode',
+            'branchName',
+        ]);
     }
 
     /**

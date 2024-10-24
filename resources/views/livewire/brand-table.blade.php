@@ -159,6 +159,13 @@
 						</th>
 						<th
 							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium
+											text-gray-500 uppercase"
+						>
+							Description
+						</th>
+						<th
+							scope="col"
 							class="px-6 py-3 text-end text-xs
 											font-medium text-gray-500 uppercase"
 							style="width: 100px"
@@ -198,6 +205,12 @@
 								{{ $brand->name }}
 							</td>
 							<td
+								class="px-6 py-4 whitespace-nowrap
+												text-sm font-medium text-gray-500"
+							>
+								{{ $brand->description }}
+							</td>
+							<td
 								class="px-6 py-4 whitespace-nowrap text-end
 												text-sm font-medium flex flex-col"
 								style="width: 100px"
@@ -225,7 +238,7 @@
 					@empty
 						<tr>
 							<td
-								colspan="4"
+								colspan="6"
 								class="text-center text-gray-500 pt-4"
 							>
 								Empty Data

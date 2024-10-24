@@ -79,9 +79,9 @@ class CompanyForm extends Component
         }, 5);
 
         $this->dispatch('refresh');
-        $this->dispatch('clear-form');
-
         $this->dispatch('hide-form');
+
+        $this->getResetExcept();
     }
 
     /**
@@ -117,6 +117,8 @@ class CompanyForm extends Component
 
         $this->dispatch('refresh');
         $this->dispatch('hide-form');
+
+        $this->getResetExcept();
     }
 
     /**
@@ -133,6 +135,26 @@ class CompanyForm extends Component
         $this->company->delete();
 
         $this->dispatch('refresh');
+        $this->getResetExcept();
+    }
+
+    /**
+     * Resets the form values except for the given properties.
+     */
+    public function getResetExcept(): void
+    {
+        $this->resetExcept([
+            'createdBy',
+            'updatedBy',
+            'company',
+            'companyId',
+            'companyCode',
+            'companyName',
+            'branch',
+            'branchId',
+            'branchCode',
+            'branchName',
+        ]);
     }
 
     #[On('refresh')]

@@ -4,9 +4,8 @@ namespace App\Livewire;
 
 use App\Models\Branch;
 use App\Models\Company;
-use Livewire\Component;
-
 use Illuminate\Contracts\View\View;
+use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
@@ -29,14 +28,13 @@ class ImportBranch extends Component
         SimpleExcelReader::create($this->import)->getRows()
             ->each(function (array $rowProperties) {
 
-                if($rowProperties['company_code'] != ''){
+                if ($rowProperties['company_code'] != '') {
 
                     $company = Company::where(
                         'code', $rowProperties['company_code']
                     )->first();
 
-
-                    if($company){
+                    if ($company) {
                         $branch = Branch::firstOrNew([
                             'code' => $rowProperties['code'],
                         ]);
@@ -50,7 +48,7 @@ class ImportBranch extends Component
                     }
                 }
             }
-        );
+            );
 
         $this->dispatch('refresh');
     }

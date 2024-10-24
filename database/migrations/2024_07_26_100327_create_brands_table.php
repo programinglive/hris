@@ -17,6 +17,7 @@ return new class extends Migration
             $table = ToolController::defaultTableSchema($table);
             $table->string('code');
             $table->string('name');
+            $table->string('description')->nullable();
         });
     }
 

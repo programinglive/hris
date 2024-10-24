@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Branch;
 use App\Models\Brand;
 use App\Models\Company;
 use DB;
@@ -16,12 +17,16 @@ class BrandForm extends Component
 {
     public $company;
 
+    public $companyId;
+
     #[Url(keep: true)]
     public $companyCode;
 
     public $companyName;
 
     public $branch;
+
+    public $branchId;
 
     #[Url(keep: true)]
     public $branchCode;
@@ -33,6 +38,8 @@ class BrandForm extends Component
 
     #[Validate('required|unique:brands|min:3')]
     public $name;
+
+    public $description;
 
     public $brand;
 
@@ -48,14 +55,61 @@ class BrandForm extends Component
     public function mount(): void
     {
         $this->company = Company::first();
+        $this->companyId = $this->company->id;
         $this->companyName = $this->company->name;
 
         $this->branch = $this->company->branches()->first();
-
+        $this->branchId = $this->branch->id;
         $this->branchCode = $this->branch->code;
         $this->branchName = $this->branch->name;
 
         $this->createdBy = auth()->user()->id;
+    }
+
+    /**
+     * Sets the value of the companyCode property to the given code.
+     *
+     * @param  string  $code  The code to set the companyCode property to.
+     */
+    #[On('set-company')]
+    public function setCompany(string $code): void
+    {
+        if ($code == '') {
+            $this->reset('companyId');
+
+            return;
+        }
+
+        if ($code != 'all') {
+            $this->companyCode = $code;
+            $this->company = Company::where('code', $code)->first();
+            $this->companyId = $this->company->id;
+            $this->companyCode = $this->company->code;
+            $this->companyName = $this->company->name;
+        }
+    }
+
+    /**
+     * Sets the value of the branchCode property to the given code.
+     *
+     * @param  string  $code  The code to set the branchCode property to.
+     */
+    #[On('set-branch')]
+    public function setBranch(string $code): void
+    {
+        if ($code == '') {
+            $this->reset('branchId');
+
+            return;
+        }
+
+        if ($code != 'all') {
+            $this->branchCode = $code;
+            $this->branch = $this->company->branches()->where('code', $code)->first();
+            $this->branchId = $this->branch->id;
+            $this->branchCode = $this->branch->code;
+            $this->branchName = $this->branch->name;
+        }
     }
 
     /**
@@ -90,6 +144,7 @@ class BrandForm extends Component
             'branch_id' => 1,
             'code' => $this->code,
             'name' => $this->name,
+            'description' => $this->description,
             'company_code' => $this->companyCode,
             'company_name' => $this->companyName,
             'branch_code' => $this->branchCode,
@@ -110,8 +165,8 @@ class BrandForm extends Component
             $this->brand = Brand::create($this->brandData());
         }, 5);
 
-        $this->dispatch('brand-created', brandId: $this->brand->id);
-
+        $this->dispatch('refresh');
+        $this->dispatch('hide-form');
         $this->reset();
     }
 
@@ -122,8 +177,13 @@ class BrandForm extends Component
     public function edit($code): void
     {
         $this->brand = Brand::where('code', $code)->first();
+        $company = Company::where('code', $this->brand->company_code)->first();
+        $this->dispatch('set-company', $company->code);
+        $branch = Branch::where('code', $this->brand->branch_code)->first();
+        $this->dispatch('set-branch', $branch->code);
         $this->code = $this->brand->code;
         $this->name = $this->brand->name;
+        $this->description = $this->brand->description;
         $this->updatedBy = auth()->user()->id;
 
         $this->actionForm = 'update';
@@ -140,9 +200,10 @@ class BrandForm extends Component
             $this->brand->update($this->brandData());
         }, 5);
 
-        $this->dispatch('brand-updated', brandId: $this->brand->id);
+        $this->dispatch('refresh');
+        $this->dispatch('hide-form');
 
-        $this->reset();
+        $this->getResetExcept();
     }
 
     /**
@@ -157,9 +218,29 @@ class BrandForm extends Component
 
         $this->brand->delete();
 
-        $this->reset();
+        $this->dispatch('refresh');
+        $this->dispatch('hide-form');
 
-        $this->dispatch('brand-deleted', refreshCompanies: true);
+        $this->getResetExcept();
+    }
+
+    /**
+     * Resets the form values except for the given properties.
+     */
+    public function getResetExcept(): void
+    {
+        $this->resetExcept([
+            'createdBy',
+            'updatedBy',
+            'company',
+            'companyId',
+            'companyCode',
+            'companyName',
+            'branch',
+            'branchId',
+            'branchCode',
+            'branchName',
+        ]);
     }
 
     /**

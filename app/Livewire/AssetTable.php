@@ -91,6 +91,7 @@ class AssetTable extends Component
     public function setCompany(string $code): void
     {
         $this->companyCode = $code;
+        $this->dispatch('refresh');
     }
 
     /**
