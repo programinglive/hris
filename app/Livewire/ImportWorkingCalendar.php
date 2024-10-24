@@ -67,17 +67,20 @@ class ImportWorkingCalendar extends Component
                 $this->branchCode = $this->branch->code;
                 $this->branchName = $this->branch->name;
 
-                WorkingCalendar::create([
-                    'company_id' => $this->companyId,
-                    'company_code' => $this->companyCode,
-                    'company_name' => $this->companyName,
-                    'branch_id' => $this->branchId,
-                    'branch_code' => $this->branchCode,
-                    'branch_name' => $this->branchName,
+                $this->workingCalendar = WorkingCalendar::firstOrNew([
                     'date' => $rowProperties['date'],
-                    'type' => $rowProperties['type'],
-                    'description' => $rowProperties['description'],
                 ]);
+
+                $this->workingCalendar->company_id = $this->companyId;
+                $this->workingCalendar->company_code = $this->companyCode;
+                $this->workingCalendar->company_name = $this->companyName;
+                $this->workingCalendar->branch_id = $this->branchId;
+                $this->workingCalendar->branch_code = $this->branchCode;
+                $this->workingCalendar->branch_name = $this->branchName;
+                $this->workingCalendar->type = $rowProperties['type'];
+                $this->workingCalendar->description = $rowProperties['description'];
+                $this->workingCalendar->created_by = auth()->user()->id;
+                $this->workingCalendar->save();
             });
 
         $this->dispatch('refresh');
