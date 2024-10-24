@@ -4,17 +4,17 @@ namespace App\Livewire;
 
 use App\Models\Branch;
 use App\Models\Company;
-use App\Models\WorkingCalendar;
+use App\Models\Department;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
-class ImportWorkingCalendar extends Component
+class ImportDepartment extends Component
 {
     use WithFileUploads;
 
-    public $workingCalendar;
+    public $department;
 
     public $company;
 
@@ -34,13 +34,13 @@ class ImportWorkingCalendar extends Component
 
     public $import;
 
-    public function importWorkingCalendar(): void
+    public function importDepartment(): void
     {
         $this->validate([
             'import' => 'required|mimes:csv,xlsx,xls',
         ]);
 
-        $this->import->store(path: 'workingCalendars');
+        $this->import->store(path: 'departments');
 
         $this->import = $this->import->path();
 
@@ -67,17 +67,22 @@ class ImportWorkingCalendar extends Component
                 $this->branchCode = $this->branch->code;
                 $this->branchName = $this->branch->name;
 
-                WorkingCalendar::create([
-                    'company_id' => $this->companyId,
-                    'company_code' => $this->companyCode,
-                    'company_name' => $this->companyName,
-                    'branch_id' => $this->branchId,
-                    'branch_code' => $this->branchCode,
-                    'branch_name' => $this->branchName,
-                    'date' => $rowProperties['date'],
-                    'type' => $rowProperties['type'],
-                    'description' => $rowProperties['description'],
+                $this->department = Department::firstOrNew([
+                    'code' => $rowProperties['code'],
                 ]);
+
+                $this->department->company_id = $this->companyId;
+                $this->department->company_code = $this->companyCode;
+                $this->department->company_name = $this->companyName;
+
+                $this->department->branch_id = $this->branchId;
+                $this->department->branch_code = $this->branchCode;
+                $this->department->branch_name = $this->branchName;
+
+                $this->department->code = $rowProperties['code'];
+                $this->department->name = $rowProperties['name'];
+                $this->department->description = $rowProperties['description'];
+                $this->department->save();
             });
 
         $this->dispatch('refresh');
@@ -85,6 +90,6 @@ class ImportWorkingCalendar extends Component
 
     public function render(): View
     {
-        return view('livewire.import-working-calendar');
+        return view('livewire.import-department');
     }
 }

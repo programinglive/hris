@@ -150,12 +150,12 @@ class DepartmentForm extends Component
         $this->companyId = $this->department->company_id;
         $this->companyCode = $this->department->company_code;
         $this->companyName = $this->department->company_name;
-        $this->dispatch('selectCompany', $this->companyId);
+        $this->dispatch('setCompany', $this->companyCode);
 
         $this->branchId = $this->department->branch_id;
         $this->branchCode = $this->department->branch_code;
         $this->branchName = $this->department->branch_name;
-        $this->dispatch('selectBranch', $this->branchId);
+        $this->dispatch('setBranch', $this->branchCode);
 
         $this->actionForm = 'update';
 
