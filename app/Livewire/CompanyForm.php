@@ -129,7 +129,7 @@ class CompanyForm extends Component
         $this->company->code = $this->company->code.time().'-deleted';
         $this->company->phone = $this->company->phone.time().'-deleted';
         $this->company->save();
-        
+
         $this->company->delete();
 
         $this->dispatch('refresh');

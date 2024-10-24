@@ -53,12 +53,9 @@ class CompanyTable extends Component
         $this->showForm = false;
         $this->resetPage();
     }
-    
+
     #[On('refresh')]
-    public function refresh()
-    {
-        
-    }
+    public function refresh() {}
 
     /**
      * Retrieves a paginated list of companies based on a search query.

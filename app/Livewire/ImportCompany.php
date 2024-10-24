@@ -2,17 +2,21 @@
 
 namespace App\Livewire;
 
-use App\Http\Controllers\CompanyController;
 use App\Models\Company;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
 class ImportCompany extends Component
 {
+    use WithFileUploads;
 
     public $import;
 
+    /**
+     * Handle import company
+     */
     public function importCompany(): void
     {
         $this->validate([
@@ -26,16 +30,18 @@ class ImportCompany extends Component
         SimpleExcelReader::create($this->import)->getRows()
             ->each(function (array $rowProperties) {
                 $company = Company::firstOrNew([
-                    'code' => CompanyController::generateCode(),
-                    'phone' => $rowProperties['phone'],
+                    'code' => $rowProperties['code'],
                 ]);
-
                 $company->name = $rowProperties['name'];
+                $company->npwp = $rowProperties['npwp'];
                 $company->email = $rowProperties['email'];
                 $company->address = $rowProperties['address'];
+                $company->phone = $rowProperties['phone'];
                 $company->save();
             }
-        );
+            );
+
+        $this->dispatch('refresh');
 
     }
 
