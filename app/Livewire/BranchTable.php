@@ -55,7 +55,7 @@ class BranchTable extends Component
     /**
      * Filter the branch.
      *
-     * @param string $companyCode  The code of the company to filter.
+     * @param  string  $companyCode  The code of the company to filter.
      */
     #[On('filter-company')]
     public function filterCompany(string $companyCode): void
@@ -67,7 +67,7 @@ class BranchTable extends Component
     /**
      * Filter the branch.
      *
-     * @param string $branchCode  The code of the branch to filter.
+     * @param  string  $branchCode  The code of the branch to filter.
      */
     public function filterBranch(string $branchCode): void
     {
@@ -90,11 +90,11 @@ class BranchTable extends Component
             });
         }
 
-        if($this->filterCompanyCode != ''){
+        if ($this->filterCompanyCode != '') {
             $branches = Branch::where('company_code', $this->filterCompanyCode);
         }
 
-        if($this->filterBranchCode != ''){
+        if ($this->filterBranchCode != '') {
             $branches = Branch::where('code', $this->filterBranchCode);
         }
 

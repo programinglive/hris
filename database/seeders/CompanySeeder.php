@@ -12,15 +12,19 @@ class CompanySeeder extends Seeder
      */
     public function run(): void
     {
-        Company::create([
-            'code' => 'C001',
-            'name' => fake()->company(),
-            'npwp' => fake()->regexify('[0-9]{15}'),
-            'email' => fake()->unique()->safeEmail(),
-            'address' => fake()->streetAddress(),
-            'phone' => fake()->phoneNumber(),
-            'created_by' => 1,
-            'updated_by' => 1,
-        ]);
+        $companies = [
+            [
+                'code' => 'C001',
+            ],
+            [
+                'code' => 'C002',
+            ],
+        ];
+
+        foreach($companies as $company) {
+            Company::factory([
+                'code' => $company['code'],
+            ])->create();
+        }
     }
 }

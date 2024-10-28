@@ -18,11 +18,14 @@ class CompanyFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => $this->faker->unique()->ean8(),
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'address' => $this->faker->address(),
-            'phone' => $this->faker->phoneNumber(),
+            'code' => 'C001',
+            'name' => fake()->company(),
+            'npwp' => fake()->regexify('[0-9]{15}'),
+            'email' => fake()->unique()->safeEmail(),
+            'address' => fake()->streetAddress(),
+            'phone' => fake()->phoneNumber(),
+            'created_by' => 1,
+            'updated_by' => 1,
         ];
     }
 }
