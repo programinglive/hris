@@ -21,19 +21,7 @@ class CompanyTable extends Component
     public $search;
 
     #[Url(keep: true)]
-    public $companyCode;
-
-    /**
-     * Sets the value of the company code property to the given code.
-     *
-     * @param  string  $code  The code to set as the company code.
-     */
-    #[On('set-company')]
-    public function setCompany(string $code): void
-    {
-        $this->companyCode = $code;
-        $this->dispatch('refresh');
-    }
+    public $filterCompanyCode;
 
     /**
      * Shows the form company.
@@ -59,6 +47,26 @@ class CompanyTable extends Component
     public function refresh() {}
 
     /**
+     * Shows an error message that the company has branches.
+     */
+    #[On('company-has-branch')]
+    public function companyHasBranch(): void
+    {
+        $this->addError('errorMessages', 'Company has a Branch.');
+    }
+
+    #[On('filter-company')]
+    /**
+     * Filter the company.
+     *
+     * @param string $companyCode  The code of the company to filter.
+     */
+    public function filterCompany(string $companyCode): void
+    {
+        $this->filterCompanyCode = $companyCode;
+    }
+
+    /**
      * Retrieves a paginated list of companies based on a search query.
      *
      * @return LengthAwarePaginator The paginated list of companies.
@@ -70,8 +78,8 @@ class CompanyTable extends Component
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
 
-        if ($this->companyCode != 'all' && $this->companyCode != '') {
-            $companies = Company::where('code', $this->companyCode);
+        if ($this->filterCompanyCode != '') {
+            $companies = Company::where('code', $this->filterCompanyCode);
         }
 
         return $companies
