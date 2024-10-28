@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Http\Controllers\ToolController;
+use App\Models\Branch;
 use App\Models\Company;
 use DB;
 use Illuminate\Contracts\View\View;
@@ -107,6 +108,13 @@ class CompanyForm extends Component
     public function destroy($code): void
     {
         $this->company = Company::where('code', $code)->first();
+
+        if (Branch::where('company_id', $this->company->id)->exists()) {
+            $this->dispatch('company-has-branch');
+
+            return;
+        }
+
         $this->company->code = $this->company->code.time().'-deleted';
         $this->company->phone = $this->company->phone.time().'-deleted';
         $this->company->save();
