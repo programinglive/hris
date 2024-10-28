@@ -3,7 +3,7 @@
 			open: $wire.entangle('showForm')
 		}"
 >
-	@error('messages')
+	@error('errorMessages')
 	<div
 		x-data="{ showError: true }"
 		x-show="showError"
