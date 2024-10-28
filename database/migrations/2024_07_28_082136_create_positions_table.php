@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Branch;
-use App\Models\Company;
+use App\Http\Controllers\ToolController;
 use App\Models\Department;
 use App\Models\Division;
 use App\Models\Level;
@@ -19,16 +18,7 @@ return new class extends Migration
     {
         Schema::create('positions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Company::class)
-                ->nullable()
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-            $table->foreignIdFor(Branch::class)
-                ->nullable()
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table = ToolController::defaultTableSchema($table);
             $table->foreignIdFor(Department::class)
                 ->constrained()
                 ->cascadeOnUpdate()
@@ -45,10 +35,17 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->string('department_code')->nullable();
+            $table->string('department_name')->nullable();
+            $table->string('division_code')->nullable();
+            $table->string('division_name')->nullable();
+            $table->string('sub_division_code')->nullable();
+            $table->string('sub_division_name')->nullable();
+            $table->string('level_code')->nullable();
+            $table->string('level_name')->nullable();
             $table->string('code')->unique();
             $table->string('name');
-            $table->softDeletes();
-            $table->timestamps();
+            $table->text('description');
         });
     }
 
