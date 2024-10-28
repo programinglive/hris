@@ -29,12 +29,12 @@
 		<div class="flex items-center gap-2">
 			<div class="w-[180px] px-2">
 				<select
-					id="companyCode"
+					id="filterCompanyCode"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500
 										block w-full sm:text-sm border border-gray-300 rounded-md p-2"
-					wire:model.live="companyCode"
+					wire:model.live="filterCompanyCode"
 				>
-					<option value="all">Select Company</option>
+					<option value="">Select Company</option>
 					@foreach ($companies as $company)
 						<option value="{{ $company->code }}">{{ $company->name }}</option>
 					@endforeach
@@ -42,12 +42,12 @@
 			</div>
 			<div class="w-[180px] px-2">
 				<select
-					id="branchCode"
+					id="filterBranchCode"
 					class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500
 									block w-full sm:text-sm border border-gray-300 rounded-md p-2"
-					wire:model.live="branchCode"
+					wire:model.live="filterBranchCode"
 				>
-					<option value="all">Select Branch</option>
+					<option value="">Select Branch</option>
 					@if($branches)
 						@foreach ($branches as $branch)
 							<option value="{{ $branch->code }}">{{ $branch->name }}</option>
