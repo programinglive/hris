@@ -43,6 +43,14 @@ class DashboardTopBar extends Component
     }
 
     /**
+     * Triggered when the user changes the selected branch
+     */
+    public function updatedFilterBranchCode(string $branchCode): void
+    {
+        $this->dispatch('filter-branch', $branchCode);
+    }
+
+    /**
      * Render the component.
      */
     public function render(): View

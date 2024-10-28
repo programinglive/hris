@@ -25,6 +25,9 @@ class BranchTable extends Component
     #[Url(keep: true)]
     public $filterCompanyCode;
 
+    #[Url(keep: true)]
+    public $filterBranchCode;
+
     /**
      * Shows the form branch.
      */
@@ -60,6 +63,17 @@ class BranchTable extends Component
         $this->filterCompanyCode = $companyCode;
     }
 
+    #[On('filter-branch')]
+    /**
+     * Filter the branch.
+     *
+     * @param string $branchCode  The code of the branch to filter.
+     */
+    public function filterBranch(string $branchCode): void
+    {
+        $this->filterBranchCode = $branchCode;
+    }
+
     /**
      * Retrieves the branch records based on the search criteria.
      *
@@ -78,6 +92,10 @@ class BranchTable extends Component
 
         if($this->filterCompanyCode != ''){
             $branches = Branch::where('company_code', $this->filterCompanyCode);
+        }
+
+        if($this->filterBranchCode != ''){
+            $branches = Branch::where('code', $this->filterBranchCode);
         }
 
         return $branches->orderBy('id')->paginate(10);
