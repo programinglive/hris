@@ -8,13 +8,13 @@ use App\Models\Company;
 use DB;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class CompanyForm extends Component
 {
-    #[Url]
+    public $oldCompanyCode;
+
     #[Validate('required|unique:companies|min:3')]
     public $code;
 
@@ -72,6 +72,7 @@ class CompanyForm extends Component
     #[On('edit')]
     public function edit($code): void
     {
+        $this->oldCompanyCode = $code;
         $this->code = $code;
         $this->company = Company::where('code', $code)->first();
         $this->name = $this->company->name;
@@ -95,10 +96,14 @@ class CompanyForm extends Component
             $data['updated_by'] = auth()->user()->id;
 
             $this->company->update($data);
+
+            if ($this->oldCompanyCode != $this->company->code) {
+                $this->dispatch('company-updated', $this->company->id);
+            }
         }, 5);
 
-        $this->dispatch('refresh');
         $this->dispatch('hide-form');
+        $this->dispatch('refresh');
     }
 
     /**
@@ -124,7 +129,33 @@ class CompanyForm extends Component
         $this->dispatch('refresh');
     }
 
-    #[On('refresh')]
+    /**
+     * Dispatches a 'company-updated' event.
+     */
+    #[On('company-updated')]
+    public function companyUpdated(): void
+    {
+        $tables = [
+            'branches',
+            'brands',
+            'departments',
+            'divisions',
+            'sub_divisions',
+            'levels',
+            'positions',
+            'user_details',
+            'leave_plafonds',
+            'leave_types',
+        ];
+
+        foreach ($tables as $table) {
+            DB::table($table)->where('company_id', $this->company->id)->update([
+                'company_code' => $this->company->code,
+                'company_name' => $this->company->name,
+                'updated_by' => auth()->user()->id,
+            ]);
+        }
+    }
 
     /**
      * Render the livewire component.

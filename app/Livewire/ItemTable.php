@@ -148,10 +148,6 @@ class ItemTable extends Component
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
 
-        if ($this->companyCode !== 'all') {
-            $items = $items->where('company_id', Company::where('code', $this->companyCode)->first()?->id);
-        }
-
         return $items->orderBy('id')
             ->paginate(10);
     }

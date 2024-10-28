@@ -24,6 +24,7 @@ class DashboardTopBar extends Component
     public function mount(): void
     {
         if ($this->filterCompanyCode != '') {
+
             $this->branches = Branch::where(
                 'company_code', $this->filterCompanyCode
             )->get();
@@ -35,6 +36,8 @@ class DashboardTopBar extends Component
      */
     public function updatedFilterCompanyCode(string $companyCode): void
     {
+        $this->reset('filterBranchCode');
+
         $this->branches = Branch::where(
             'company_code', $companyCode
         )->get();

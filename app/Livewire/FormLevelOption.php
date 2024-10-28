@@ -14,8 +14,6 @@ class FormLevelOption extends Component
 
     public $levels;
 
-    public $option = 'disabled';
-
     /**
      * Update the level ID and dispatch the 'setLevel' event with the new ID.
      *
@@ -23,10 +21,8 @@ class FormLevelOption extends Component
      */
     public function updatedLevelCode(string $levelCode): void
     {
-        $this->resetErrorBag();
-
-        $this->dispatch('setLevel', levelCode: $levelCode);
-        $this->dispatch('getPosition', levelCode: $levelCode);
+        $this->dispatch('setLevel', $levelCode);
+        $this->dispatch('getPosition', $levelCode);
     }
 
     /**
@@ -51,7 +47,6 @@ class FormLevelOption extends Component
         $levels = Level::where('division_id', $division->id);
 
         if ($levels->count() > 0) {
-            $this->option = '';
             $this->levels = $levels->get();
         }
     }

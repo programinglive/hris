@@ -74,6 +74,18 @@
 							scope="col"
 							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
+							Company
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+						>
+							Branch
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+						>
 							Name
 						</th>
 						<th
@@ -107,6 +119,18 @@
 					@forelse($users as $user)
 						@if($user->name != 'root')
 							<tr>
+								<td
+									wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"
+									class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+								>
+									{{ $user->details?->company_name }}
+								</td>
+								<td
+									wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"
+									class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+								>
+									{{ $user->details?->branch_name }}
+								</td>
 								<td
 									wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"
 									class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
@@ -169,7 +193,7 @@
 						@endif
 					@empty
 						<tr>
-							<td colspan="4" class="text-center text-gray-500 pt-4">Empty Data</td>
+							<td colspan="7" class="text-center text-gray-500 pt-4">Empty Data</td>
 						</tr>
 					@endforelse
 					</tbody>

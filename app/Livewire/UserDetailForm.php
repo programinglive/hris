@@ -35,7 +35,7 @@ class UserDetailForm extends Component
         $keyArray = explode('.', $key);
         $this->details[$keyArray[1]] = $value;
 
-        $this->dispatch('setDetail', $this->details);
+        $this->dispatch('set-detail', $this->details);
     }
 
     public function render(): View

@@ -17,21 +17,13 @@ class BrandForm extends Component
 {
     public $company;
 
-    public $companyId;
-
     #[Url(keep: true)]
     public $companyCode;
 
-    public $companyName;
-
     public $branch;
-
-    public $branchId;
 
     #[Url(keep: true)]
     public $branchCode;
-
-    public $branchName;
 
     #[Validate('required|unique:brands|min:3')]
     public $code;
@@ -55,13 +47,9 @@ class BrandForm extends Component
     public function mount(): void
     {
         $this->company = Company::first();
-        $this->companyId = $this->company->id;
-        $this->companyName = $this->company->name;
 
         $this->branch = $this->company->branches()->first();
-        $this->branchId = $this->branch->id;
         $this->branchCode = $this->branch->code;
-        $this->branchName = $this->branch->name;
 
         $this->createdBy = auth()->user()->id;
     }
@@ -187,13 +175,9 @@ class BrandForm extends Component
             'createdBy',
             'updatedBy',
             'company',
-            'companyId',
             'companyCode',
-            'companyName',
             'branch',
-            'branchId',
             'branchCode',
-            'branchName',
         ]);
     }
 

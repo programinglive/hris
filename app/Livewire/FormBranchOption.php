@@ -49,6 +49,19 @@ class FormBranchOption extends Component
     }
 
     /**
+     * Set the company code
+     *
+     * @param  string  $companyCode  the new value for the company code
+     */
+    #[On('set-company')]
+    public function setCompany(string $companyCode): void
+    {
+        $this->companyCode = $companyCode;
+
+        $this->dispatch('get-branch', $this->companyCode);
+    }
+
+    /**
      * Set the branch code
      *
      * @param  string  $branchCode  the new value for the branch code
@@ -81,6 +94,7 @@ class FormBranchOption extends Component
         $this->reset([
             'branchCode',
         ]);
+
         $this->resetErrorBag();
         $this->dispatch('clear-department-option');
     }

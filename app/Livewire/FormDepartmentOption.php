@@ -2,8 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\Branch;
-use App\Models\Company;
 use App\Models\Department;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
@@ -12,45 +10,28 @@ use Livewire\Component;
 
 class FormDepartmentOption extends Component
 {
-    public $department;
-
-    public $departmentCode;
-
-    public $company;
-
-    public $companyId;
-
     #[Url(keep: true)]
     public $companyCode;
-
-    public $branch;
-
-    public $branchId;
 
     #[Url(keep: true)]
     public $branchCode;
 
     public $departments;
 
+    public $department;
+
+    #[Url(keep: true)]
+    public $departmentCode;
+
     /**
-     * Mount the component and retrieve departments if the company code is not "all".
+     * Mount the component
      */
     public function mount(): void
     {
-        if ($this->companyCode != 'all') {
-            $company = Company::where('code', $this->companyCode)->first();
-
-            if ($company) {
-                $this->companyId = $company->id;
-
-                $this->branch = Branch::where('code', $this->branchCode)->first();
-
-                if ($this->branch) {
-                    $this->branchId = $this->branch->id;
-                    $this->departments = Department::where('company_id', $this->companyId)
-                        ->where('branch_id', $this->branchId)->get();
-                }
-            }
+        if ($this->companyCode != '' && $this->branchCode != '') {
+            $this->departments = Department::where('company_code', $this->companyCode)
+                ->where('branch_code', $this->branchCode)
+                ->get();
         }
     }
 
@@ -63,9 +44,8 @@ class FormDepartmentOption extends Component
     {
         $this->resetErrorBag();
 
-        $this->dispatch('setDepartment', departmentCode: $departmentCode);
-        $this->dispatch('getDivision', departmentCode: $departmentCode);
-
+        $this->dispatch('set-department', $departmentCode);
+        $this->dispatch('get-division', $departmentCode);
     }
 
     #[On('set-department')]
@@ -73,18 +53,14 @@ class FormDepartmentOption extends Component
     {
         $this->department = Department::where('code', $departmentCode)->first();
         $this->departmentCode = $departmentCode;
-    }
 
-    #[On('clear-department')]
-    public function clearDepartment(): void
-    {
-        $this->reset(['departments', 'departmentCode']);
+        $this->dispatch('get-division', $departmentCode);
     }
 
     /**
-     * Dispatch the 'setErrorDepartment' event.
+     * Dispatch the 'set-error-department' event.
      */
-    #[On('setErrorDepartment')]
+    #[On('set-error-department')]
     public function setErrorDepartment(): void
     {
         $this->addError('departmentCode', 'Please select department');
@@ -106,6 +82,14 @@ class FormDepartmentOption extends Component
         $this->departments = Department::where('company_code', $companyCode)
             ->where('branch_code', $branchCode)
             ->get();
+    }
+
+    #[On('clear-department-option')]
+    public function clearDepartmentOption(): void
+    {
+        $this->reset([
+            'departmentCode',
+        ]);
     }
 
     /**

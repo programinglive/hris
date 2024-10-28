@@ -8,7 +8,7 @@
 						sm:text-sm border border-gray-300
 						rounded-md p-2"
 	>
-		<option value="all">Select Branch</option>
+		<option value="">Select Branch</option>
 		@if($branches)
 			@foreach ($branches as $branch)
 				<option value="{{ $branch->code }}">{{ $branch->name }}</option>

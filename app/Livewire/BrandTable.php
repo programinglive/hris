@@ -25,6 +25,13 @@ class BrandTable extends Component
     #[Url(keep: true)]
     public $filterBranchCode;
 
+    public function mount(): void
+    {
+        if($this->filterCompanyCode != '') {
+            $this->dispatch('filterBranchCode');
+        }
+    }
+
     /**
      * Shows the form brand.
      */

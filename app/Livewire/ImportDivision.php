@@ -46,7 +46,7 @@ class ImportDivision extends Component
             'import' => 'required|mimes:csv,xlsx,xls',
         ]);
 
-        $this->import->store(path: 'departments');
+        $this->import->store(path: 'divisions');
 
         $this->import = $this->import->path();
 

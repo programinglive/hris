@@ -19,58 +19,19 @@ class UserTable extends Component
     #[Url]
     public $search;
 
-    public $company;
-
-    public $companyId;
+    #[Url(keep: true)]
+    public $filterCompanyCode;
 
     #[Url(keep: true)]
     public $companyCode;
 
-    public $companyName;
-
-    public $branch;
-
-    public $branchId;
+    #[Url(keep: true)]
+    public $filterBranchCode;
 
     #[Url(keep: true)]
     public $branchCode;
 
-    public $branchName;
-
     public $employee;
-
-    /**
-     * Handles the event when a user is created.
-     *
-     * @param  int  $userId  The ID of the created user.
-     */
-    #[On('user-created')]
-    public function userAdded(int $userId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a user is updated.
-     *
-     * @param  int  $userId  The ID of the updated user.
-     */
-    #[On('user-updated')]
-    public function userUpdated(int $userId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a user is deleted.
-     */
-    #[On('user-deleted')]
-    public function userDeleted(): void
-    {
-        $this->showForm = false;
-        $this->resetPage();
-        $this->getUsers();
-    }
 
     /**
      * Shows the form user.
@@ -100,7 +61,11 @@ class UserTable extends Component
      */
     public function getUsers(): LengthAwarePaginator
     {
-        $users = User::join('user_details', 'user_details.user_id', '=', 'users.id')
+        $users = User::join(
+            'user_details',
+            'user_details.user_id',
+            '=', 'users.id'
+        )
             ->where(function ($query) {
                 $query->where('user_details.nik', 'like', '%'.$this->search.'%')
                     ->orWhere('users.name', 'like', '%'.$this->search.'%');
@@ -108,6 +73,18 @@ class UserTable extends Component
             ->where(function ($query) {
                 $query->whereNot('users.name', 'like', 'admin');
             });
+
+        if ($this->filterCompanyCode != '') {
+            $users->where(function ($query) {
+                $query->where('user_details.company_code', $this->filterCompanyCode);
+            });
+        }
+
+        if ($this->filterBranchCode != '') {
+            $users->where(function ($query) {
+                $query->where('user_details.branch_code', $this->filterBranchCode);
+            });
+        }
 
         return $users->orderBy('users.id')
             ->paginate(10);

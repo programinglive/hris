@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-3">
 	<label for="companyCode" class="block text-sm font-medium text-gray-700">Company</label>
 	<select wire:model.live="companyCode" id="companyCode" class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2">
-		<option value="all">Select Company</option>
+		<option value="">Select Company</option>
 		@foreach ($companies as $company)
 			<option value="{{ $company->code }}">{{ $company->name }}</option>
 		@endforeach

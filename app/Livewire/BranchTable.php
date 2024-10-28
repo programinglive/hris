@@ -60,6 +60,10 @@ class BranchTable extends Component
     #[On('filter-company')]
     public function filterCompany(string $companyCode): void
     {
+        $this->reset([
+            'filterBranchCode'
+        ]);
+
         $this->filterCompanyCode = $companyCode;
     }
 

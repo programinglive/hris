@@ -7,9 +7,8 @@
 					focus:border-indigo-500 block w-full
 					sm:text-sm border border-gray-300
 					rounded-md p-2"
-		{{$option}}
 	>
-		<option value="0">Select Division</option>
+		<option value="">Select Division</option>
 		@if($divisions)
 			@foreach ($divisions as $division)
 				<option value="{{ $division->code }}">{{ $division->name }}</option>

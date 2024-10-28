@@ -71,12 +71,6 @@ class WorkingCalendarTable extends Component
                 ->orWhere('type', 'like', '%'.$this->search.'%');
         });
 
-        if ($this->companyCode !== 'all') {
-            $company = Company::where('code', $this->companyCode)->first();
-            $workingCalendars = $workingCalendars->where(
-                'company_id', $company?->id);
-        }
-
         return $workingCalendars->orderBy('id')
             ->paginate(10);
     }

@@ -21,8 +21,6 @@ class UserForm extends Component
 {
     public $company;
 
-    public $companyId;
-
     #[Url(keep: true)]
     public $companyCode;
 
@@ -30,12 +28,8 @@ class UserForm extends Component
 
     public $branch;
 
-    public $branchId;
-
     #[Url('branchCode', keep: true)]
     public $branchCode;
-
-    public $branchName;
 
     #[Validate('required|unique:users|regex:/^\S+$/')]
     public $name;
@@ -49,15 +43,12 @@ class UserForm extends Component
 
     public $newPassword = false;
 
-    public $user;
-
     public $details = [
-        'company_id' => null,
-        'branch_id' => null,
-        'division_id' => null,
         'department_id' => null,
-        'level_id' => null,
+        'division_id' => null,
+        'sub_division_id' => null,
         'position_id' => null,
+        'level_id' => null,
         'nik' => null,
         'first_name' => null,
         'last_name' => null,
@@ -77,61 +68,29 @@ class UserForm extends Component
         'note' => null,
     ];
 
+    public $user;
+
     public $actionForm = 'save';
 
     /**
-     * Initialize the component by setting the company based on the company code.
+     * Mount the component
      */
     public function mount(): void
     {
-        if ($this->companyCode != 'all' && ! empty($this->companyCode)) {
-            self::setCompany($this->companyCode);
+        if ($this->companyCode != '') {
+            $this->company = Company::where('code', $this->companyCode)->first();
         }
 
-        if ($this->branchCode != 'all' && ! empty($this->branchCode)) {
-            self::setBranch($this->branchCode);
+        if ($this->branchCode != '') {
+            $this->branch = Branch::where('code', $this->branchCode)->first();
         }
     }
 
-    #[On('setDetail')]
+    #[On('set-detail')]
     public function setDetail($details): void
     {
-        $this->details = $details;
-    }
-
-    /**
-     * Set the company based on the company code
-     *
-     * @param  string  $companyCode  The code of the company.
-     */
-    #[On('set-company')]
-    public function setCompany(string $companyCode): void
-    {
-        $this->companyCode = $companyCode;
-
-        if ($companyCode != 'all') {
-            $this->company = Company::where('code', $companyCode)->first();
-            $this->companyId = $this->company->id;
-            $this->companyCode = $this->company->code;
-            $this->companyName = $this->company->name;
-        }
-    }
-
-    /**
-     * Set the branch ID for the details.
-     *
-     * @param  string  $branchCode  The ID of the branch.
-     */
-    #[On('set-branch')]
-    public function setBranch(string $branchCode): void
-    {
-        $this->branchCode = $branchCode;
-
-        if ($branchCode != 'all') {
-            $this->branch = Branch::where('code', $branchCode)->first();
-            $this->branchId = $this->branch->id;
-            $this->branchCode = $this->branch->code;
-            $this->branchName = $this->branch->name;
+        foreach ($details as $key => $value) {
+            $this->details[$key] = $value;
         }
     }
 
@@ -140,16 +99,11 @@ class UserForm extends Component
      *
      * @param  string  $departmentCode  The ID of the department.
      */
-    #[On('setDepartment')]
+    #[On('set-department')]
     public function setDepartment(string $departmentCode): void
     {
-        if ($departmentCode != 0) {
+        if ($departmentCode != '') {
             $department = Department::where('code', $departmentCode)->first();
-            if (! $department) {
-                $this->dispatch('setErrorDepartment');
-
-                return;
-            }
             $this->details['department_id'] = $department->id;
         }
     }
@@ -238,14 +192,18 @@ class UserForm extends Component
     public function userDetailData(User $user): array
     {
         return [
-            'company_id' => $this->companyId,
-            'branch_id' => $this->branchId,
+            'company_id' => $this->company->id,
+            'branch_id' => $this->branch->id,
+            'company_code' => $this->company->code,
+            'company_name' => $this->company->name,
+            'branch_code' => $this->branch->code,
+            'branch_name' => $this->branch->name,
             'user_id' => $this->user->id,
-            'department_id' => $this->departmentId ?? null,
-            'division_id' => $this->divisionId ?? null,
-            'sub_division_id' => $this->subDivisionId ?? null,
-            'position_id' => $this->positionId ?? null,
-            'level_id' => $this->levelId ?? null,
+            'department_id' => $this->details['department_id'],
+            'division_id' => $this->details['division_id'],
+            'sub_division_id' => $this->details['sub_division_id'],
+            'position_id' => $this->details['position_id'],
+            'level_id' => $this->details['level_id'],
             'nik' => $this->details['nik'],
             'first_name' => $this->details['first_name'],
             'last_name' => $this->details['last_name'],
@@ -271,13 +229,13 @@ class UserForm extends Component
      */
     public function save(): void
     {
-        if (is_null($this->companyId)) {
+        if (! $this->company) {
             $this->addError('errorMessage', 'Please Select Company First');
 
             return;
         }
 
-        if (is_null($this->branchId)) {
+        if (! $this->branch) {
             $this->addError('errorMessage', 'Please Select Branch First');
 
             return;
@@ -290,9 +248,9 @@ class UserForm extends Component
             UserDetail::create(self::UserDetailData($this->user));
         }, 5);
 
-        $this->dispatch('user-created', userId: $this->user->id);
+        $this->dispatch('hide-form');
+        $this->dispatch('refresh');
 
-        $this->reset();
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\Company;
 use App\Models\News;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
@@ -28,16 +27,6 @@ class NewsTable extends Component
     public $search;
 
     /**
-     * Initializes the component by setting the company ID based on the provided code.
-     */
-    public function mount(): void
-    {
-        if ($this->companyCode != 'all') {
-            $this->companyId = Company::where('code', $this->companyCode)->first()->id;
-        }
-    }
-
-    /**
      * Sets the company ID based on the provided code.
      *
      * @param  string  $code  The code of the company.
@@ -45,13 +34,6 @@ class NewsTable extends Component
     #[On('set-company')]
     public function setCompany(string $code): void
     {
-        if ($code != 'all') {
-            $this->companyCode = $code;
-            $this->companyId = Company::where('code', $code)->first()->id;
-        } else {
-            $this->companyCode = 'all';
-        }
-
         $this->resetPage();
     }
 
@@ -110,10 +92,6 @@ class NewsTable extends Component
             $query->where('title', 'like', '%'.$this->search.'%')
                 ->orWhere('content', 'like', '%'.$this->search.'%');
         })->orderBy('id');
-
-        if ($this->companyCode != 'all') {
-            $news = $news->where('company_id', $this->companyId);
-        }
 
         return $news->paginate(10);
     }

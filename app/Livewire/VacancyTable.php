@@ -148,10 +148,6 @@ class VacancyTable extends Component
                 ->orWhere('title', 'like', '%'.$this->search.'%');
         });
 
-        if ($this->companyCode !== 'all') {
-            $vacancies = $vacancies->where('company_id', Company::where('code', $this->companyCode)->first()?->id);
-        }
-
         return $vacancies->orderBy('id')
             ->paginate(10);
     }

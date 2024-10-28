@@ -2,19 +2,37 @@
 
 namespace App\Livewire;
 
-use App\Models\Department;
 use App\Models\Division;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class FormDivisionOption extends Component
 {
-    public $divisionCode;
+    #[Url(keep: true)]
+    public $companyCode;
+
+    #[Url(keep: true)]
+    public $branchCode;
+
+    #[Url(keep: true)]
+    public $departmentCode;
 
     public $divisions;
 
-    public $option = 'disabled';
+    #[Url(keep: true)]
+    public $divisionCode;
+
+    public function mount(): void
+    {
+        if ($this->companyCode != '' && $this->branchCode != '' && $this->departmentCode != '') {
+            $this->divisions = Division::where('company_code', $this->companyCode)
+                ->where('branch_code', $this->branchCode)
+                ->where('department_code', $this->departmentCode)
+                ->get();
+        }
+    }
 
     /**
      * Update the division ID and dispatch the 'setDivision' event with the new ID.
@@ -25,8 +43,19 @@ class FormDivisionOption extends Component
     {
         $this->resetErrorBag();
 
-        $this->dispatch('setDivision', divisionCode: $divisionCode);
-        $this->dispatch('getLevel', divisionCode: $divisionCode);
+        $this->dispatch('set-division', $divisionCode);
+        $this->dispatch('getLevel', $divisionCode);
+    }
+
+    /**
+     * Set the division code.
+     *
+     * @param  string  $divisionCode  The division code.
+     */
+    #[On('set-division')]
+    public function setDivision(string $divisionCode): void
+    {
+        $this->divisionCode = $divisionCode;
     }
 
     /**
@@ -34,26 +63,22 @@ class FormDivisionOption extends Component
      *
      * @param  string  $departmentCode  The code of the department.
      */
-    #[On('getDivision')]
+    #[On('get-division')]
     public function getDivision(string $departmentCode): void
     {
         $this->reset([
             'divisions',
-            'option',
         ]);
 
-        $department = Department::where('code', $departmentCode)->first();
+        $this->divisions = Division::where('department_code', $departmentCode)->get();
+    }
 
-        if ($department == null) {
-            return;
-        }
-
-        $divisions = Division::where('department_id', $department->id);
-
-        if ($divisions->count() > 0) {
-            $this->option = '';
-            $this->divisions = $divisions->get();
-        }
+    #[On('clear-division-option')]
+    public function clearDivisionOption(): void
+    {
+        $this->reset([
+            'divisionCode',
+        ]);
     }
 
     /**

@@ -169,13 +169,6 @@ class SubCategoryTable extends Component
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
 
-        if ($this->companyCode !== 'all') {
-            $subCategories = $subCategories->where(
-                'company_id', Company::where('code', $this->companyCode
-                )->first()?->id
-            );
-        }
-
         return $subCategories->orderBy('id')
             ->paginate(10);
     }

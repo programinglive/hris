@@ -3,8 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Attendance;
-use App\Models\Branch;
-use App\Models\Company;
 use DB;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
@@ -66,52 +64,8 @@ class AttendanceTimeForm extends Component
      */
     public function mount(): void
     {
-        if ($this->companyCode != 'all' && ! empty($this->companyCode)) {
-            self::setCompany($this->companyCode);
-        }
-
-        if ($this->branchCode != 'all' && ! empty($this->branchCode)) {
-            self::setBranch($this->branchCode);
-        }
-
         $this->createdBy = auth()->user()->id;
         $this->updatedBy = auth()->user()->id;
-    }
-
-    /**
-     * Set the company based on the company code
-     *
-     * @param  string  $companyCode  The code of the company.
-     */
-    #[On('set-company')]
-    public function setCompany(string $companyCode): void
-    {
-        $this->companyCode = $companyCode;
-
-        if ($companyCode != 'all') {
-            $this->company = Company::where('code', $companyCode)->first();
-            $this->companyId = $this->company->id;
-            $this->companyCode = $this->company->code;
-            $this->companyName = $this->company->name;
-        }
-    }
-
-    /**
-     * Set the branch ID for the details.
-     *
-     * @param  string  $branchCode  The ID of the branch.
-     */
-    #[On('set-branch')]
-    public function setBranch(string $branchCode): void
-    {
-        $this->branchCode = $branchCode;
-
-        if ($branchCode != 'all') {
-            $this->branch = Branch::where('code', $branchCode)->first();
-            $this->branchId = $this->branch->id;
-            $this->branchCode = $this->branch->code;
-            $this->branchName = $this->branch->name;
-        }
     }
 
     /**

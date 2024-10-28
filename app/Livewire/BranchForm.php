@@ -44,12 +44,6 @@ class BranchForm extends Component
         $this->company = Company::where('code', $this->companyCode)->first();
     }
 
-    #[On('set-company')]
-    public function setCompany($companyCode): void
-    {
-        $this->company = Company::where('code', $companyCode)->first();
-    }
-
     /**
      * Updates the specified property with the given value and performs validation if the property is 'code',
      * 'email', or 'phone'.
@@ -64,6 +58,17 @@ class BranchForm extends Component
         if ($key == 'code') {
             $this->validateOnly($key);
         }
+    }
+
+    /**
+     * Sets the company code to the given value and dispatches a 'get-branch' event.
+     *
+     * @param string $companyCode  The company code to set.
+     */
+    #[On('set-company')]
+    public function setCompany(string $companyCode): void
+    {
+        $this->companyCode = $companyCode;
     }
 
     /**

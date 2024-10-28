@@ -148,10 +148,6 @@ class CategoryTable extends Component
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
 
-        if ($this->companyCode !== 'all') {
-            $categories = $categories->where('company_id', Company::where('code', $this->companyCode)->first()?->id);
-        }
-
         return $categories->orderBy('id')
             ->paginate(10);
     }

@@ -148,10 +148,6 @@ class AssetTable extends Component
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
 
-        if ($this->companyCode !== 'all') {
-            $assets = $assets->where('company_id', Company::where('code', $this->companyCode)->first()?->id);
-        }
-
         return $assets->orderBy('id')
             ->paginate(10);
     }

@@ -148,10 +148,6 @@ class ApprovalTable extends Component
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
 
-        if ($this->companyCode !== 'all') {
-            $approvals = $approvals->where('company_id', Company::where('code', $this->companyCode)->first()?->id);
-        }
-
         return $approvals->orderBy('id')
             ->paginate(10);
     }
