@@ -6,7 +6,6 @@ use App\Http\Controllers\ToolController;
 use App\Models\Company;
 use DB;
 use Illuminate\Contracts\View\View;
-use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
@@ -34,22 +33,6 @@ class CompanyForm extends Component
     public $company;
 
     public $actionForm = 'save';
-
-    /**
-     * Updates the specified property with the given value and performs validation if the property is 'code',
-     * 'email', or 'phone'.
-     *
-     * @param  string  $key  The name of the property to be updated.
-     * @param  mixed  $value  The new value for the property.
-     *
-     * @throws ValidationException
-     */
-    public function updated(string $key, mixed $value): void
-    {
-        if ($key == 'code' || $key == 'email' || $key = 'phone') {
-            $this->validateOnly($key);
-        }
-    }
 
     /**
      * The default data for the form.
@@ -80,8 +63,6 @@ class CompanyForm extends Component
 
         $this->dispatch('refresh');
         $this->dispatch('hide-form');
-
-        $this->getResetExcept();
     }
 
     /**
@@ -110,15 +91,13 @@ class CompanyForm extends Component
     {
         DB::transaction(function () {
             $data = $this->companyData();
-            $data['updated_by'] = $this->updatedBy;
+            $data['updated_by'] = auth()->user()->id;
 
             $this->company->update($data);
         }, 5);
 
         $this->dispatch('refresh');
         $this->dispatch('hide-form');
-
-        $this->getResetExcept();
     }
 
     /**
@@ -135,26 +114,6 @@ class CompanyForm extends Component
         $this->company->delete();
 
         $this->dispatch('refresh');
-        $this->getResetExcept();
-    }
-
-    /**
-     * Resets the form values except for the given properties.
-     */
-    public function getResetExcept(): void
-    {
-        $this->resetExcept([
-            'createdBy',
-            'updatedBy',
-            'company',
-            'companyId',
-            'companyCode',
-            'companyName',
-            'branch',
-            'branchId',
-            'branchCode',
-            'branchName',
-        ]);
     }
 
     #[On('refresh')]

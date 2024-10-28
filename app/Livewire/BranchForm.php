@@ -17,12 +17,8 @@ class BranchForm extends Component
 {
     public $company;
 
-    public $companyId;
-
     #[Url(keep: true)]
     public $companyCode;
-
-    public $companyName;
 
     #[Validate('required|unique:branches|min:3')]
     public $code;
@@ -41,11 +37,17 @@ class BranchForm extends Component
     public $actionForm = 'save';
 
     /**
-     * Initializes the component by setting the companyCode property based on the user's role and company code.
+     * Mount the component
      */
     public function mount(): void
     {
-        $this->companyCode = session('companyCode') ?? 'all';
+        $this->company = Company::where('code', $this->companyCode)->first();
+    }
+
+    #[On('set-company')]
+    public function setCompany($companyCode): void
+    {
+        $this->company = Company::where('code', $companyCode)->first();
     }
 
     /**
@@ -65,54 +67,19 @@ class BranchForm extends Component
     }
 
     /**
-     * Sets the value of the companyCode property to the given code.
-     *
-     * @param  string  $code  The code to set the companyCode property to.
-     */
-    #[On('set-company')]
-    public function setCompany(string $code): void
-    {
-        if ($code == '') {
-            $this->reset('companyId');
-
-            return;
-        }
-
-        if ($code != 'all') {
-            $this->companyCode = $code;
-            $this->company = Company::where('code', $code)->first();
-            $this->companyId = $this->company->id;
-            $this->companyCode = $this->company->code;
-            $this->companyName = $this->company->name;
-        }
-    }
-
-    /** Clears the company data. */
-    #[On('clear-company')]
-    public function clearCompany(): void
-    {
-        $this->reset([
-            'company',
-            'companyId',
-            'companyCode',
-            'companyName',
-        ]);
-    }
-
-    /**
      * The default data for the form.
      */
     public function branchData(): array
     {
         return [
-            'company_id' => $this->companyId,
+            'company_id' => $this->company->id,
             'code' => ToolController::sanitizeString($this->code),
             'name' => $this->name,
             'phone' => $this->phone,
             'address' => $this->address,
             'type' => $this->type,
-            'company_code' => $this->companyCode,
-            'company_name' => $this->companyName,
+            'company_code' => $this->company->code,
+            'company_name' => $this->company->name,
             'created_by' => auth()->user()->id,
         ];
     }
@@ -122,7 +89,7 @@ class BranchForm extends Component
      */
     public function save(): void
     {
-        if (! $this->companyId) {
+        if (! $this->company) {
             $this->dispatch('companyRequired');
 
             return;
@@ -158,11 +125,9 @@ class BranchForm extends Component
         $this->phone = $this->branch->phone;
         $this->address = $this->branch->address;
         $this->companyCode = $this->branch->company_code;
-        $this->companyName = $this->branch->company_name;
 
         $this->actionForm = 'update';
 
-        $this->dispatch('disable-filter');
         $this->dispatch('show-form');
     }
 
