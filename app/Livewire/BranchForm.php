@@ -136,7 +136,7 @@ class BranchForm extends Component
      */
     public function update(): void
     {
-        if (! $this->companyId) {
+        if (! $this->company) {
             $this->dispatch('companyRequired');
 
             return;
@@ -144,7 +144,7 @@ class BranchForm extends Component
 
         DB::transaction(function () {
             $data = $this->branchData();
-            $data['updated_by'] = $this->updatedBy;
+            $data['updated_by'] = auth()->user()->id;
 
             $this->branch->update($data);
         }, 5);
@@ -179,16 +179,9 @@ class BranchForm extends Component
     public function getResetExcept(): void
     {
         $this->resetExcept([
-            'createdBy',
-            'updatedBy',
-            'company',
-            'companyId',
             'companyCode',
-            'companyName',
+            'company',
             'branch',
-            'branchId',
-            'branchCode',
-            'branchName',
         ]);
     }
 

@@ -19,6 +19,8 @@ class BranchSeeder extends Seeder
             'company_id' => $company->id,
             'code' => 'B001',
             'name' => fake()->name,
+            'phone' => fake()->phoneNumber,
+            'address' => fake()->streetAddress,
             'type' => fake()->randomElement(['branch', 'partner']),
             'company_code' => $company->code,
             'company_name' => $company->name,

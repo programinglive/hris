@@ -68,10 +68,6 @@ class BranchTable extends Component
      */
     public function getBranch(): LengthAwarePaginator
     {
-        if ($this->companyCode == '') {
-            $this->companyCode = 'all';
-        }
-
         $branches = new Branch;
 
         if ($this->search != '' || ! $this->search) {
@@ -79,10 +75,6 @@ class BranchTable extends Component
                 $query->where('name', 'like', '%'.$this->search.'%')
                     ->orWhere('code', 'like', '%'.$this->search.'%');
             });
-        }
-
-        if ($this->companyCode != 'all') {
-            $branches->where('company_code', $this->companyCode);
         }
 
         return $branches->orderBy('id')->paginate(10);
