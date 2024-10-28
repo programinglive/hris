@@ -13,19 +13,24 @@ class BranchSeeder extends Seeder
      */
     public function run(): void
     {
-        $company = Company::first();
+        $companies = Company::all();
 
-        Branch::create([
-            'company_id' => $company->id,
-            'code' => 'B001',
-            'name' => fake()->name,
-            'phone' => fake()->phoneNumber,
-            'address' => fake()->streetAddress,
-            'type' => fake()->randomElement(['branch', 'partner']),
-            'company_code' => $company->code,
-            'company_name' => $company->name,
-            'created_by' => 1,
-            'updated_by' => 1,
-        ]);
+        foreach ($companies as $company) {
+            Branch::factory([
+                'company_id' => $company->id,
+                'company_code' => $company->code,
+                'company_name' => $company->name,
+                'code' => 'B'.str_pad((Branch::count() + 1), 3, '0', STR_PAD_LEFT),
+            ])->create();
+        }
+
+        foreach ($companies as $company) {
+            Branch::factory([
+                'company_id' => $company->id,
+                'company_code' => $company->code,
+                'company_name' => $company->name,
+                'code' => 'B'.str_pad((Branch::count() + 1), 3, '0', STR_PAD_LEFT),
+            ])->create();
+        }
     }
 }

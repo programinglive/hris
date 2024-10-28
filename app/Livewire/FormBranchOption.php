@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Branch;
-use App\Models\Company;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -11,42 +10,30 @@ use Livewire\Component;
 
 class FormBranchOption extends Component
 {
-    public $company;
-
-    public $companyId;
-
     #[Url(keep: true)]
     public $companyCode;
-
-    public $companyName;
-
-    public $branch;
-
-    public $branchId;
 
     #[Url(keep: true)]
     public $branchCode;
 
-    public $branchName;
-
     public $branches;
 
     /**
-     * Reset the component state.
+     * Mount the component
      */
     public function mount(): void
     {
-        if ($this->companyCode != 'all' || $this->companyCode != '') {
-            $company = Company::where('code', $this->companyCode)->first();
-
-            if ($company) {
-                $this->companyId = $company->id;
-                $this->branches = $company->branches;
-            }
+        if ($this->companyCode != '') {
+            $this->branches = Branch::where(
+                'company_code', $this->companyCode
+            )->get();
         }
 
-        if ($this->branchCode) {
-            $this->setBranch($this->branchCode);
+        $branch = Branch::where('code', $this->branchCode)->first();
+
+        if (! $branch) {
+            $this->dispatch('clear-branch-option');
+            $this->dispatch('clear-department-option');
         }
     }
 
@@ -55,53 +42,47 @@ class FormBranchOption extends Component
      */
     public function updatedBranchCode(string $branchCode): void
     {
-        if ($branchCode == '' || $branchCode == 'all') {
-            $this->dispatch('clear-department');
-
-            return;
-        }
-
-        $this->branch = Branch::where('code', $branchCode)->first();
-        if ($this->branch) {
-            $this->companyCode = $this->branch->company->code;
-        }
+        $this->dispatch('clear-department-option');
 
         $this->dispatch('set-branch', $branchCode);
         $this->dispatch('get-department', $this->companyCode, $this->branchCode);
-
     }
 
     /**
-     * Set the company based on the company code
-     */
-    #[On('set-company')]
-    public function setCompany(string $companyCode): void
-    {
-        $this->companyCode = $companyCode;
-
-        if ($companyCode != 'all') {
-            $this->company = Company::where('code', $companyCode)->first();
-            $this->companyId = $this->company->id;
-
-            $this->branches = $this->company->branches;
-        }
-    }
-
-    /**
-     * Set the branch ID for the details.
+     * Set the branch code
+     *
+     * @param  string  $branchCode  the new value for the branch code
      */
     #[On('set-branch')]
     public function setBranch(string $branchCode): void
     {
         $this->branchCode = $branchCode;
 
-        if ($branchCode != 'all') {
-            $this->branch = Branch::where('code', $branchCode)->first();
-            $this->branchId = $this->branch->id;
+        $this->dispatch('get-department', $this->companyCode, $this->branchCode);
+    }
 
-            $this->branchCode = $this->branch->code;
-            $this->branchName = $this->branch->name;
-        }
+    #[On('get-branch')]
+    /**
+     * Get the branch data.
+     */
+    public function getBranch(string $companyCode): void
+    {
+        $this->branches = Branch::where(
+            'company_code', $companyCode
+        )->get();
+    }
+
+    /**
+     * Clear the branch option and reset the error bag.
+     */
+    #[On('clear-branch-option')]
+    public function clearBranchOption(): void
+    {
+        $this->reset([
+            'branchCode',
+        ]);
+        $this->resetErrorBag();
+        $this->dispatch('clear-department-option');
     }
 
     /**

@@ -62,7 +62,7 @@ class CompanyTable extends Component
     /**
      * Filter the company.
      *
-     * @param string $companyCode  The code of the company to filter.
+     * @param  string  $companyCode  The code of the company to filter.
      */
     public function filterCompany(string $companyCode): void
     {

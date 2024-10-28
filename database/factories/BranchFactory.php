@@ -21,12 +21,11 @@ class BranchFactory extends Factory
         $company = Company::first();
 
         return [
-            'company_id' => $company->id,
-            'code' => $this->faker->unique()->ean8,
-            'name' => $this->faker->name,
-            'type' => 'branch',
-            'company_code' => $company->code,
-            'company_name' => $company->name,
+            'code' => 'B001',
+            'name' => fake()->name,
+            'phone' => fake()->phoneNumber,
+            'address' => fake()->streetAddress,
+            'type' => fake()->randomElement(['branch', 'partner']),
             'created_by' => 1,
             'updated_by' => 1,
         ];

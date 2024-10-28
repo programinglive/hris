@@ -11,14 +11,24 @@ use Livewire\Component;
 
 class FormCompanyOption extends Component
 {
-    public $company;
-
-    public $companyId;
-
     #[Url(keep: true)]
     public $companyCode;
 
-    public $companyName;
+    #[Url(keep: true)]
+    public $branchCode;
+
+    /**
+     * Mount the component
+     */
+    public function mount(): void
+    {
+        $company = Company::where('code', $this->companyCode)->first();
+
+        if (! $company) {
+            $this->dispatch('clear-company-option');
+            $this->dispatch('clear-branch-option');
+        }
+    }
 
     /**
      * Updates the company ID and emits a 'setCompany' event.
@@ -29,18 +39,13 @@ class FormCompanyOption extends Component
     {
         $this->resetErrorBag();
 
-        if ($companyCode == '') {
-            $this->addError('companyCode', 'This field is required');
-            $this->dispatch('clear-company');
-            $this->companyCode = 'all';
-
-            return;
-        }
-
-        $this->companyCode = $companyCode;
         $this->dispatch('set-company', $companyCode);
-        $this->dispatch('getBranch', $companyCode);
-        $this->dispatch('getDepartment', $companyCode);
+        $this->dispatch('get-branch', $companyCode);
+
+        if ($this->companyCode == '') {
+            $this->reset('branchCode');
+            $this->dispatch('clear-branch-option');
+        }
     }
 
     /**
@@ -52,22 +57,6 @@ class FormCompanyOption extends Component
     public function setCompany(string $companyCode): void
     {
         $this->companyCode = $companyCode;
-
-        if ($companyCode != 'all') {
-            $this->company = Company::where('code', $companyCode)->first();
-            $this->companyId = $this->company->id;
-        }
-
-        $this->dispatch('refreshBranches');
-    }
-
-    /**
-     * Resets the 'companyCode' property to its initial value.
-     */
-    #[On('refreshCompany')]
-    public function refreshCompany(): void
-    {
-        $this->companyCode = 'all';
     }
 
     /**
@@ -93,8 +82,8 @@ class FormCompanyOption extends Component
     /**
      * Clears the form by resetting all properties and error bag.
      */
-    #[On('clear-form')]
-    public function clearForm(): void
+    #[On('clear-company-option')]
+    public function clearCompanyOption(): void
     {
         $this->reset();
         $this->resetErrorBag();

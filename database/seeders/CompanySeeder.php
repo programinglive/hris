@@ -21,7 +21,7 @@ class CompanySeeder extends Seeder
             ],
         ];
 
-        foreach($companies as $company) {
+        foreach ($companies as $company) {
             Company::factory([
                 'code' => $company['code'],
             ])->create();
