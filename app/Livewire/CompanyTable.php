@@ -44,7 +44,10 @@ class CompanyTable extends Component
     }
 
     #[On('refresh')]
-    public function refresh() {}
+    public function refresh(): void
+    {
+        $this->resetPage();
+    }
 
     /**
      * Shows an error message that the company has branches.

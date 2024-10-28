@@ -23,19 +23,7 @@ class BranchTable extends Component
     public $companyId;
 
     #[Url(keep: true)]
-    public $companyCode;
-
-    /**
-     * Sets the value of the companyCode property.
-     *
-     * @param  string  $code  The new value for the companyCode property.
-     */
-    #[On('set-company')]
-    public function setCompany(string $code): void
-    {
-        $this->companyCode = $code;
-        $this->dispatch('refresh');
-    }
+    public $filterCompanyCode;
 
     /**
      * Shows the form branch.
@@ -62,6 +50,17 @@ class BranchTable extends Component
     }
 
     /**
+     * Filter the branch.
+     *
+     * @param string $companyCode  The code of the company to filter.
+     */
+    #[On('filter-company')]
+    public function filterCompany(string $companyCode): void
+    {
+        $this->filterCompanyCode = $companyCode;
+    }
+
+    /**
      * Retrieves the branch records based on the search criteria.
      *
      * @return LengthAwarePaginator The paginated branch records.
@@ -75,6 +74,10 @@ class BranchTable extends Component
                 $query->where('name', 'like', '%'.$this->search.'%')
                     ->orWhere('code', 'like', '%'.$this->search.'%');
             });
+        }
+
+        if($this->filterCompanyCode != ''){
+            $branches = Branch::where('company_code', $this->filterCompanyCode);
         }
 
         return $branches->orderBy('id')->paginate(10);
