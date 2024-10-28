@@ -15,24 +15,44 @@ class DivisionSeeder extends Seeder
      */
     public function run(): void
     {
-        $company = Company::first();
-        $branch = Branch::first();
-        $department = Department::first();
+        $companies = Company::all();
 
-        Division::create([
-            'company_id' => $company->id,
-            'branch_id' => $branch->id,
-            'department_id' => $department->id,
-            'company_code' => $company->code,
-            'company_name' => $company->name,
-            'branch_code' => $branch->code,
-            'branch_name' => $branch->name,
-            'department_code' => $department->code,
-            'department_name' => $department->name,
-            'code' => 'DIV001',
-            'name' => 'Division A',
-            'description' => fake()->text(100),
-            'created_by' => 1,
-        ]);
+        foreach ($companies as $company) {
+
+            $branch = Branch::first();
+            $department = Department::first();
+
+            Division::factory()->create([
+                'company_id' => $company->id,
+                'company_code' => $company->code,
+                'company_name' => $company->name,
+                'branch_id' => $branch->id,
+                'branch_code' => $branch->code,
+                'branch_name' => $branch->name,
+                'department_id' => $department->id,
+                'department_code' => $department->code,
+                'department_name' => $department->name,
+                'code' => 'DIV'.str_pad((Division::count() + 1), 3, '0', STR_PAD_LEFT),
+            ]);
+        }
+
+        foreach ($companies as $company) {
+
+            $branch = Branch::orderBy('id', 'desc')->first();
+            $department = Department::orderBy('id', 'desc')->first();
+
+            Division::factory()->create([
+                'company_id' => $company->id,
+                'company_code' => $company->code,
+                'company_name' => $company->name,
+                'branch_id' => $branch->id,
+                'branch_code' => $branch->code,
+                'branch_name' => $branch->name,
+                'department_id' => $department->id,
+                'department_code' => $department->code,
+                'department_name' => $department->name,
+                'code' => 'DIV'.str_pad((Division::count() + 1), 3, '0', STR_PAD_LEFT),
+            ]);
+        }
     }
 }

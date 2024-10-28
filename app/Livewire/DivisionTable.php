@@ -16,7 +16,13 @@ class DivisionTable extends Component
 
     public $showForm = false;
 
-    #[Url]
+    #[Url(keep: true)]
+    public $filterCompanyCode;
+
+    #[Url(keep: true)]
+    public $filterBranchCode;
+
+    #[Url(keep: true)]
     public $search;
 
     /**
@@ -47,18 +53,44 @@ class DivisionTable extends Component
     }
 
     /**
+     * Handles the refresh event.
+     */
+    #[On('filter-company')]
+    public function filterCompany($companyCode): void
+    {
+        $this->filterCompanyCode = $companyCode;
+    }
+
+    /**
+     * Filters the division by the given branch code.
+     */
+    #[On('filter-branch')]
+    public function filterBranch($branchCode): void
+    {
+        $this->filterBranchCode = $branchCode;
+    }
+
+    /**
      * Retrieves a paginated list of divisions based on a search query.
      *
      * @return LengthAwarePaginator The paginated list of divisions.
      */
     public function getDivisions(): LengthAwarePaginator
     {
-        return Division::where(function ($query) {
-            $query->where('name', 'like', '%'.$this->search.'%')
-                ->orWhere('code', 'like', '%'.$this->search.'%');
-        })
-            ->orderBy('id')
-            ->paginate(10);
+        $departments = Division::where(function ($query) {
+            $query->where('code', 'like', '%'.$this->search.'%')
+                ->orWhere('name', 'like', '%'.$this->search.'%');
+        })->orderBy('id');
+
+        if ($this->filterCompanyCode) {
+            $departments->where('company_code', $this->filterCompanyCode);
+        }
+
+        if ($this->filterBranchCode) {
+            $departments->where('branch_code', $this->filterBranchCode);
+        }
+
+        return $departments->paginate(10);
     }
 
     /**

@@ -2,9 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Branch;
-use App\Models\Company;
-use App\Models\Department;
 use App\Models\Division;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,11 +18,11 @@ class DivisionFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_id' => Company::first()->id,
-            'branch_id' => Branch::first()->id,
-            'department_id' => Department::first()->id,
-            'code' => fake()->ean8(),
-            'name' => fake()->name(),
+            'code' => 'DIV001',
+            'name' => 'Division A',
+            'description' => fake()->text(100),
+            'created_by' => 1,
+            'updated_by' => 1,
         ];
     }
 }

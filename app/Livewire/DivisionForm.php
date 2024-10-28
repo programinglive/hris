@@ -2,8 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\Branch;
-use App\Models\Company;
 use App\Models\Division;
 use DB;
 use Illuminate\Contracts\View\View;
@@ -63,52 +61,6 @@ class DivisionForm extends Component
     {
         $this->createdBy = auth()->user()->id;
         $this->updatedBy = auth()->user()->id;
-    }
-
-    /**
-     * Sets the value of the companyCode property to the given code.
-     *
-     * @param  string  $code  The code to set the companyCode property to.
-     */
-    #[On('set-company')]
-    public function setCompany(string $code): void
-    {
-        if ($code == '') {
-            $this->reset('companyId');
-
-            return;
-        }
-
-        if ($code != 'all') {
-            $this->companyCode = $code;
-            $this->company = Company::where('code', $code)->first();
-            $this->companyId = $this->company->id;
-            $this->companyCode = $this->company->code;
-            $this->companyName = $this->company->name;
-        }
-    }
-
-    /**
-     * Sets the value of the brandCode property to the given code.
-     *
-     * @param  string  $code  The code to set the brandCode property to.
-     */
-    #[On('set-branch')]
-    public function setBranch(string $code): void
-    {
-        if ($code == '') {
-            $this->reset('branchId');
-
-            return;
-        }
-
-        if ($code != 'all') {
-            $this->branchCode = $code;
-            $this->branch = Branch::where('code', $code)->first();
-            $this->branchId = $this->branch->id;
-            $this->branchCode = $this->branch->code;
-            $this->branchName = $this->branch->name;
-        }
     }
 
     /**
