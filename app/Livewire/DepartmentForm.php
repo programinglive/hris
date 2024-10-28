@@ -70,13 +70,11 @@ class DepartmentForm extends Component
             return;
         }
 
-        if ($code != 'all') {
-            $this->companyCode = $code;
-            $this->company = Company::where('code', $code)->first();
-            $this->companyId = $this->company->id;
-            $this->companyCode = $this->company->code;
-            $this->companyName = $this->company->name;
-        }
+        $this->companyCode = $code;
+        $this->company = Company::where('code', $code)->first();
+        $this->companyId = $this->company->id;
+        $this->companyCode = $this->company->code;
+        $this->companyName = $this->company->name;
     }
 
     /**
@@ -93,13 +91,11 @@ class DepartmentForm extends Component
             return;
         }
 
-        if ($code != 'all') {
-            $this->branchCode = $code;
-            $this->branch = Branch::where('code', $code)->first();
-            $this->branchId = $this->branch->id;
-            $this->branchCode = $this->branch->code;
-            $this->branchName = $this->branch->name;
-        }
+        $this->branchCode = $code;
+        $this->branch = Branch::where('code', $code)->first();
+        $this->branchId = $this->branch->id;
+        $this->branchCode = $this->branch->code;
+        $this->branchName = $this->branch->name;
     }
 
     /**

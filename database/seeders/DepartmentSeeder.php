@@ -14,20 +14,36 @@ class DepartmentSeeder extends Seeder
      */
     public function run(): void
     {
-        $company = Company::first();
-        $branch = Branch::first();
+        $companies = Company::all();
 
-        Department::create([
-            'company_id' => $company->id,
-            'branch_id' => $branch->id,
-            'company_code' => $company->code,
-            'company_name' => $company->name,
-            'branch_code' => $branch->code,
-            'branch_name' => $branch->name,
-            'code' => 'D001',
-            'name' => 'Department A',
-            'description' => fake()->text(100),
-            'created_by' => 1,
-        ]);
+        foreach ($companies as $company) {
+
+            $branch = Branch::first();
+
+            Department::factory()->create([
+                'company_id' => $company->id,
+                'company_code' => $company->code,
+                'company_name' => $company->name,
+                'branch_id' => $branch->id,
+                'branch_code' => $branch->code,
+                'branch_name' => $branch->name,
+                'code' => 'DEP'.str_pad((Department::count() + 1), 3, '0', STR_PAD_LEFT),
+            ]);
+        }
+
+        foreach ($companies as $company) {
+
+            $branch = Branch::orderBy('id', 'desc')->first();
+
+            Department::factory()->create([
+                'company_id' => $company->id,
+                'company_code' => $company->code,
+                'company_name' => $company->name,
+                'branch_id' => $branch->id,
+                'branch_code' => $branch->code,
+                'branch_name' => $branch->name,
+                'code' => 'DEP'.str_pad((Department::count() + 1), 3, '0', STR_PAD_LEFT),
+            ]);
+        }
     }
 }

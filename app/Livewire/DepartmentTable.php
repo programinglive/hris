@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\Company;
 use App\Models\Department;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
@@ -19,42 +18,16 @@ class DepartmentTable extends Component
 
     public $company;
 
-    public $companyId;
-
     #[Url(keep: true)]
-    public $companyCode;
-
-    public $companyName;
+    public $filterCompanyCode;
 
     public $branch;
 
-    public $branchId;
-
     #[Url(keep: true)]
-    public $branchCode;
-
-    public $branchName;
+    public $filterBranchCode;
 
     #[Url]
     public $search;
-
-    /**
-     * Sets the company ID based on the provided code.
-     *
-     * @param  string  $code  The code of the company.
-     */
-    #[On('set-company')]
-    public function setCompany(string $code): void
-    {
-        if ($code != 'all') {
-            $this->companyCode = $code;
-            $this->company = Company::where('code', $code)->first();
-            $this->companyId = $this->company->id;
-            $this->companyName = $this->company->name;
-        }
-
-        $this->resetPage();
-    }
 
     /**
      * Shows the form department.
@@ -84,6 +57,24 @@ class DepartmentTable extends Component
     }
 
     /**
+     * Filters the department by the given company code.
+     */
+    #[On('filter-company')]
+    public function filterCompany($companyCode): void
+    {
+        $this->filterCompanyCode = $companyCode;
+    }
+
+    /**
+     * Filters the department by the given branch code.
+     */
+    #[On('filter-branch')]
+    public function filterBranch($branchCode): void
+    {
+        $this->filterBranchCode = $branchCode;
+    }
+
+    /**
      * Retrieves a paginated list of departments based on a search query.
      *
      * @return LengthAwarePaginator The paginated list of departments.
@@ -95,6 +86,14 @@ class DepartmentTable extends Component
             $query->where('code', 'like', '%'.$this->search.'%')
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         })->orderBy('id');
+
+        if ($this->filterCompanyCode) {
+            $departments->where('company_code', $this->filterCompanyCode);
+        }
+
+        if ($this->filterBranchCode) {
+            $departments->where('branch_code', $this->filterBranchCode);
+        }
 
         return $departments->paginate(10);
     }
