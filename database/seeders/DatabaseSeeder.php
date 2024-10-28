@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             BranchSeeder::class,
             BrandSeeder::class,
+            DepartmentSeeder::class,
         ]);
     }
 }
