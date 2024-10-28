@@ -16,21 +16,13 @@ class DepartmentForm extends Component
 {
     public $company;
 
-    public $companyId;
-
     #[Url(keep: true)]
     public $companyCode;
 
-    public $companyName;
-
     public $branch;
-
-    public $branchId;
 
     #[Url(keep: true)]
     public $branchCode;
-
-    public $branchName;
 
     #[Validate('required|min:3')]
     public $code;
@@ -42,19 +34,7 @@ class DepartmentForm extends Component
 
     public $department;
 
-    public $createdBy;
-
-    public $updatedBy;
-
     public $actionForm = 'save';
-
-    /**
-     * Mount the component
-     */
-    public function mount(): void
-    {
-        $this->createdBy = auth()->user()->id;
-    }
 
     /**
      * Sets the value of the companyCode property to the given code.
@@ -72,9 +52,7 @@ class DepartmentForm extends Component
 
         $this->companyCode = $code;
         $this->company = Company::where('code', $code)->first();
-        $this->companyId = $this->company->id;
         $this->companyCode = $this->company->code;
-        $this->companyName = $this->company->name;
     }
 
     /**
@@ -93,9 +71,7 @@ class DepartmentForm extends Component
 
         $this->branchCode = $code;
         $this->branch = Branch::where('code', $code)->first();
-        $this->branchId = $this->branch->id;
         $this->branchCode = $this->branch->code;
-        $this->branchName = $this->branch->name;
     }
 
     /**
@@ -104,16 +80,16 @@ class DepartmentForm extends Component
     public function departmentData(): array
     {
         return [
-            'company_id' => $this->companyId,
-            'branch_id' => $this->branchId,
+            'company_id' => $this->company->id,
+            'branch_id' => $this->branch->id,
             'code' => $this->code,
             'name' => $this->name,
             'description' => $this->description,
             'company_code' => $this->companyCode,
-            'company_name' => $this->companyName,
+            'company_name' => $this->company->name,
             'branch_code' => $this->branchCode,
-            'branch_name' => $this->branchName,
-            'created_by' => $this->createdBy,
+            'branch_name' => $this->branch->name,
+            'created_by' => auth()->user()->id,
         ];
     }
 
@@ -143,15 +119,11 @@ class DepartmentForm extends Component
         $this->name = $this->department->name;
         $this->description = $this->department->description;
 
-        $this->companyId = $this->department->company_id;
         $this->companyCode = $this->department->company_code;
-        $this->companyName = $this->department->company_name;
-        $this->dispatch('setCompany', $this->companyCode);
+        $this->dispatch('set-company', $this->companyCode);
 
-        $this->branchId = $this->department->branch_id;
         $this->branchCode = $this->department->branch_code;
-        $this->branchName = $this->department->branch_name;
-        $this->dispatch('setBranch', $this->branchCode);
+        $this->dispatch('set-branch', $this->branchCode);
 
         $this->actionForm = 'update';
 
@@ -181,7 +153,7 @@ class DepartmentForm extends Component
     public function destroy($code): void
     {
         $this->department = Department::where('code', $code)->first();
-        $this->department->code = $this->department->code.'-deleted';
+        $this->department->code = $this->department->code.time().'-deleted';
         $this->department->save();
 
         $this->department->delete();
@@ -195,16 +167,10 @@ class DepartmentForm extends Component
     public function getResetExcept(): void
     {
         $this->resetExcept([
-            'createdBy',
-            'updatedBy',
             'company',
-            'companyId',
             'companyCode',
-            'companyName',
             'branch',
-            'branchId',
             'branchCode',
-            'branchName',
         ]);
     }
 

@@ -2,8 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Branch;
-use App\Models\Company;
 use App\Models\Department;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,7 +22,7 @@ class DepartmentFactory extends Factory
             'name' => 'Department A',
             'description' => fake()->text(100),
             'created_by' => 1,
-            'updated_by' => 1
+            'updated_by' => 1,
         ];
     }
 }

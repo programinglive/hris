@@ -77,20 +77,20 @@ class DivisionTable extends Component
      */
     public function getDivisions(): LengthAwarePaginator
     {
-        $departments = Division::where(function ($query) {
+        $divisions = Division::where(function ($query) {
             $query->where('code', 'like', '%'.$this->search.'%')
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         })->orderBy('id');
 
         if ($this->filterCompanyCode) {
-            $departments->where('company_code', $this->filterCompanyCode);
+            $divisions->where('company_code', $this->filterCompanyCode);
         }
 
         if ($this->filterBranchCode) {
-            $departments->where('branch_code', $this->filterBranchCode);
+            $divisions->where('branch_code', $this->filterBranchCode);
         }
 
-        return $departments->paginate(10);
+        return $divisions->paginate(10);
     }
 
     /**
