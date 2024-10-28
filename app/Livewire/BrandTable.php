@@ -20,19 +20,10 @@ class BrandTable extends Component
     public $search;
 
     #[Url(keep: true)]
-    public $companyCode;
+    public $filterCompanyCode;
 
-    /**
-     * Sets the company code.
-     *
-     * @param  string  $code  The code to set as the company code.
-     */
-    #[On('set-company')]
-    public function setCompany(string $code): void
-    {
-        $this->companyCode = $code;
-        $this->dispatch('refresh');
-    }
+    #[Url(keep: true)]
+    public $filterBranchCode;
 
     /**
      * Shows the form brand.
@@ -56,7 +47,32 @@ class BrandTable extends Component
      * Refreshes the list of brands.
      */
     #[On('refresh')]
-    public function refresh(): void {}
+    public function refresh(): void
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * Filters the list of brands by company code.
+     *
+     * @param  string  $companyCode  The company code to filter by.
+     */
+    #[On('filter-company')]
+    public function filterCompany(string $companyCode): void
+    {
+        $this->filterCompanyCode = $companyCode;
+    }
+
+    /**
+     * Filters the list of brands by branch code.
+     *
+     * @param  string  $branchCode  The branch code to filter by.
+     */
+    #[On('filter-branch')]
+    public function filterBranch(string $branchCode): void
+    {
+        $this->filterBranchCode = $branchCode;
+    }
 
     /**
      * Retrieves a paginated list of brands based on a search query.
@@ -69,6 +85,14 @@ class BrandTable extends Component
             $query->where('code', 'like', '%'.$this->search.'%')
                 ->orWhere('name', 'like', '%'.$this->search.'%');
         });
+
+        if ($this->filterCompanyCode) {
+            $brands->where('company_code', $this->filterCompanyCode);
+        }
+
+        if ($this->filterBranchCode) {
+            $brands->where('branch_code', $this->filterBranchCode);
+        }
 
         return $brands->orderBy('id')
             ->paginate(10);

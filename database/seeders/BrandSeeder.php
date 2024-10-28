@@ -14,20 +14,36 @@ class BrandSeeder extends Seeder
      */
     public function run(): void
     {
-        $company = Company::first();
-        $branch = Branch::first();
+        $companies = Company::all();
 
-        Brand::create([
-            'company_id' => $company->id,
-            'branch_id' => $branch->id,
-            'company_code' => $company->code,
-            'company_name' => $company->name,
-            'branch_code' => $branch->code,
-            'branch_name' => $branch->name,
-            'code' => 'B001',
-            'name' => fake()->name,
-            'created_by' => 1,
-            'updated_by' => 1,
-        ]);
+        foreach ($companies as $company) {
+
+            $branch = Branch::first();
+
+            Brand::factory()->create([
+                'company_id' => $company->id,
+                'company_code' => $company->code,
+                'company_name' => $company->name,
+                'branch_id' => $branch->id,
+                'branch_code' => $branch->code,
+                'branch_name' => $branch->name,
+                'code' => 'BR'.str_pad((Brand::count() + 1), 3, '0', STR_PAD_LEFT),
+            ]);
+        }
+
+        foreach ($companies as $company) {
+
+            $branch = Branch::orderBy('id', 'desc')->first();
+
+            Brand::factory()->create([
+                'company_id' => $company->id,
+                'company_code' => $company->code,
+                'company_name' => $company->name,
+                'branch_id' => $branch->id,
+                'branch_code' => $branch->code,
+                'branch_name' => $branch->name,
+                'code' => 'BR'.str_pad((Brand::count() + 1), 3, '0', STR_PAD_LEFT),
+            ]);
+        }
     }
 }
