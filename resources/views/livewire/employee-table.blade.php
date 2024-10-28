@@ -123,6 +123,9 @@
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
 						{{ $employee->email }}
 					</td>
+					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
+						{{ $employee->phone }}
+					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
 						{{ $employee->details?->first_name }}
 					</td>

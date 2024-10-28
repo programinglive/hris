@@ -2,115 +2,142 @@
 
 namespace App\Livewire;
 
-use App\Models\Department;
 use App\Models\SubDivision;
 use DB;
 use Illuminate\Contracts\View\View;
-use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class SubDivisionForm extends Component
 {
-    public $departmentId;
+    public $company;
 
-    #[Validate('required|unique:sub_divisions|min:3')]
+    public $companyId;
+
+    #[Url(keep: true)]
+    public $companyCode;
+
+    public $companyName;
+
+    public $branch;
+
+    public $branchId;
+
+    #[Url(keep: true)]
+    public $branchCode;
+
+    public $branchName;
+
+    #[Validate('required|min:3')]
     public $code;
 
     #[Validate('required|min:3')]
     public $name;
 
-    public $subDivision;
+    public $description;
+
+    public $subSubDivision;
+
+    public $department;
+
+    public $departmentId;
+
+    public $departmentCode;
+
+    public $departmentName;
+
+    public $division;
+
+    public $divisionId;
+
+    public $divisionCode;
+
+    public $divisionName;
+
+    public $createdBy;
+
+    public $updatedBy;
 
     public $actionForm = 'save';
 
     /**
-     * Updates the specified property with the given value and performs validation if the property is 'code',
-     * 'email', or 'phone'.
-     *
-     * @param  string  $key  The name of the property to be updated.
-     * @param  mixed  $value  The new value for the property.
-     *
-     * @throws ValidationException
+     * Mount the component
      */
-    public function updated(string $key, mixed $value): void
+    public function mount(): void
     {
-        $this->resetErrorBag();
-
-        if ($key == 'code' || $key == 'name') {
-            $this->validateOnly($key);
-        }
-    }
-
-    /**
-     * Sets the department ID based on the provided department code.
-     *
-     * @param  string  $departmentCode  The code of the department.
-     */
-    #[On('setDepartment')]
-    public function setDepartment(string $departmentCode): void
-    {
-        $department = Department::where('code', $departmentCode)->first();
-
-        if (! $department) {
-            $this->dispatch('setErrorDepartment');
-
-            return;
-        }
-
-        $this->departmentId = $department->id;
+        $this->createdBy = auth()->user()->id;
+        $this->updatedBy = auth()->user()->id;
     }
 
     /**
      * The default data for the form.
      */
-    public function subDivisionData(): array
+    public function subSubDivisionData(): array
     {
         return [
-            'company_id' => 1,
-            'branch_id' => 1,
+            'company_id' => $this->companyId,
+            'branch_id' => $this->branchId,
             'department_id' => $this->departmentId,
             'code' => $this->code,
             'name' => $this->name,
+            'description' => $this->description,
+            'department_code' => $this->departmentCode,
+            'department_name' => $this->departmentName,
+            'company_code' => $this->companyCode,
+            'company_name' => $this->companyName,
+            'branch_code' => $this->branchCode,
+            'branch_name' => $this->branchName,
+            'created_by' => $this->createdBy,
         ];
     }
 
     /**
-     * Saves the subDivision details to the database and dispatches a 'sub-division-created' event.
+     * Saves the subSubDivision details to the database and dispatches a 'subSubDivision-created' event.
      */
     public function save(): void
     {
-        if (! $this->departmentId) {
-            $this->dispatch('setErrorDepartment');
-
-            return;
-        }
-
         $this->validate();
 
         DB::transaction(function () {
-            $this->subDivision = SubDivision::create($this->subDivisionData());
+            $this->subSubDivision = SubDivision::create($this->subSubDivisionData());
         }, 5);
 
-        $this->dispatch('sub-division-created', subDivisionId: $this->subDivision->id);
-
-        $this->reset();
+        $this->dispatch('refresh');
+        $this->dispatch('hide-form');
     }
 
     /**
-     * Edit the subDivision details.
+     * Edit the subSubDivision details.
      */
     #[On('edit')]
     public function edit($code): void
     {
-        $this->subDivision = SubDivision::where('code', $code)->first();
-        $this->departmentId = $this->subDivision->department_id;
+        $this->subSubDivision = SubDivision::where('code', $code)->first();
+        $this->code = $this->subSubDivision->code;
+        $this->name = $this->subSubDivision->name;
+        $this->description = $this->subSubDivision->description;
 
-        $this->dispatch('selectDepartment', departmentId: $this->departmentId);
+        $this->companyId = $this->subSubDivision->company_id;
+        $this->companyCode = $this->subSubDivision->company_code;
+        $this->companyName = $this->subSubDivision->company_name;
+        $this->dispatch('set-company', $this->companyCode);
 
-        $this->code = $this->subDivision->code;
-        $this->name = $this->subDivision->name;
+        $this->branchId = $this->subSubDivision->branch_id;
+        $this->branchCode = $this->subSubDivision->branch_code;
+        $this->branchName = $this->subSubDivision->branch_name;
+        $this->dispatch('set-branch', $this->branchCode);
+
+        $this->departmentId = $this->subSubDivision->department_id;
+        $this->departmentCode = $this->subSubDivision->department_code;
+        $this->departmentName = $this->subSubDivision->department_name;
+        $this->dispatch('set-department', $this->departmentCode);
+
+        $this->divisionId = $this->subSubDivision->division_id;
+        $this->divisionCode = $this->subSubDivision->division_code;
+        $this->divisionName = $this->subSubDivision->division_name;
+        $this->dispatch('set-division', $this->divisionCode);
 
         $this->actionForm = 'update';
 
@@ -118,38 +145,61 @@ class SubDivisionForm extends Component
     }
 
     /**
-     * Updates the subDivision details in the database.
+     * Updates the subSubDivision details in the database.
      */
     public function update(): void
     {
-        if (! $this->departmentId) {
-            $this->dispatch('setErrorDepartment');
+        $data = $this->subSubDivisionData();
+        $data['updated_by'] = $this->updatedBy;
 
-            return;
-        }
-
-        DB::transaction(function () {
-            $this->subDivision->update($this->subDivisionData());
+        DB::transaction(function () use ($data) {
+            $this->subSubDivision->update($data);
         }, 5);
 
-        $this->dispatch('sub-division-updated', subDivisionId: $this->subDivision->id);
-
-        $this->reset();
+        $this->dispatch('refresh');
+        $this->dispatch('hide-form');
     }
 
     /**
-     * Deletes the subDivision from the database.
+     * Deletes the subSubDivision from the database.
      */
     #[On('delete')]
     public function destroy($code): void
     {
-        $this->subDivision = SubDivision::where('code', $code)->first();
-        $this->subDivision->code = $code.'-deleted';
-        $this->subDivision->save();
+        $this->subSubDivision = SubDivision::where('code', $code)->first();
+        $this->subSubDivision->code = $this->subSubDivision->code.time().'-deleted';
+        $this->subSubDivision->save();
 
-        $this->subDivision->delete();
+        $this->subSubDivision->delete();
 
-        $this->dispatch('sub-division-deleted', refreshCompanies: true);
+        $this->dispatch('refresh');
+    }
+
+    /**
+     * Resets the form values except for the given properties.
+     */
+    public function getResetExcept(): void
+    {
+        $this->resetExcept([
+            'createdBy',
+            'updatedBy',
+            'company',
+            'companyId',
+            'companyCode',
+            'companyName',
+            'branch',
+            'branchId',
+            'branchCode',
+            'branchName',
+            'department',
+            'departmentId',
+            'departmentCode',
+            'departmentName',
+            'division',
+            'divisionId',
+            'divisionCode',
+            'divisionName',
+        ]);
     }
 
     /**
@@ -157,8 +207,6 @@ class SubDivisionForm extends Component
      */
     public function render(): View
     {
-        return view('livewire.sub-division-form', [
-            'departments' => Department::all(),
-        ]);
+        return view('livewire.sub-division-form');
     }
 }

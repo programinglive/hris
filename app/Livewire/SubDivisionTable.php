@@ -16,41 +16,14 @@ class SubDivisionTable extends Component
 
     public $showForm = false;
 
-    #[Url]
+    #[Url(keep: true)]
+    public $filterCompanyCode;
+
+    #[Url(keep: true)]
+    public $filterBranchCode;
+
+    #[Url(keep: true)]
     public $search;
-
-    /**
-     * Handles the event when a subDivision is created.
-     *
-     * @param  int  $subDivisionId  The ID of the created subDivision.
-     */
-    #[On('sub-division-created')]
-    public function subDivisionAdded(int $subDivisionId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a subDivision is updated.
-     *
-     * @param  int  $subDivisionId  The ID of the updated subDivision.
-     */
-    #[On('sub-division-updated')]
-    public function subDivisionUpdated(int $subDivisionId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a subDivision is deleted.
-     */
-    #[On('sub-division-deleted')]
-    public function subDivisionDeleted(): void
-    {
-        $this->showForm = false;
-        $this->resetPage();
-        $this->getSubDivisions();
-    }
 
     /**
      * Shows the form subDivision.
@@ -61,6 +34,36 @@ class SubDivisionTable extends Component
         $this->showForm = true;
     }
 
+    #[On('hide-form')]
+    public function hideForm(): void
+    {
+        $this->showForm = false;
+    }
+
+    #[On('refresh')]
+    public function refresh(): void
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * Filters the subDivision by the given company code.
+     */
+    #[On('filter-company')]
+    public function filterCompany($companyCode): void
+    {
+        $this->filterCompanyCode = $companyCode;
+    }
+
+    /**
+     * Filters the subDivision by the given branch code.
+     */
+    #[On('filter-branch')]
+    public function filterBranch($branchCode): void
+    {
+        $this->filterBranchCode = $branchCode;
+    }
+
     /**
      * Retrieves a paginated list of subDivisions based on a search query.
      *
@@ -68,12 +71,20 @@ class SubDivisionTable extends Component
      */
     public function getSubDivisions(): LengthAwarePaginator
     {
-        return SubDivision::where(function ($query) {
-            $query->where('name', 'like', '%'.$this->search.'%')
-                ->orWhere('code', 'like', '%'.$this->search.'%');
-        })
-            ->orderBy('id', 'asc')
-            ->paginate(10);
+        $subDivision = SubDivision::where(function ($query) {
+            $query->where('code', 'like', '%'.$this->search.'%')
+                ->orWhere('name', 'like', '%'.$this->search.'%');
+        })->orderBy('id');
+
+        if ($this->filterCompanyCode) {
+            $subDivision->where('company_code', $this->filterCompanyCode);
+        }
+
+        if ($this->filterBranchCode) {
+            $subDivision->where('branch_code', $this->filterBranchCode);
+        }
+
+        return $subDivision->paginate(10);
     }
 
     /**

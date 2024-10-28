@@ -2,10 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Branch;
-use App\Models\Company;
-use App\Models\Department;
-use App\Models\Division;
 use App\Models\SubDivision;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,12 +18,11 @@ class SubDivisionFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_id' => Company::first()->id,
-            'branch_id' => Branch::first()->id,
-            'department_id' => Department::first()->id,
-            'division_id' => Division::first()->id,
-            'code' => $this->faker->unique()->word,
-            'name' => $this->faker->sentence(3),
+            'code' => 'SDIV001',
+            'name' => 'Sub Division A',
+            'description' => fake()->text(100),
+            'created_by' => 1,
+            'updated_by' => 1,
         ];
     }
 }
