@@ -134,7 +134,7 @@ class UserForm extends Component
      *
      * @param  string  $levelCode  The ID of the level.
      */
-    #[On('setLevel')]
+    #[On('set-level')]
     public function setLevel(string $levelCode): void
     {
         if ($levelCode != 0) {

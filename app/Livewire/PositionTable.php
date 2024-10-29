@@ -3,8 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Position;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -16,41 +16,14 @@ class PositionTable extends Component
 
     public $showForm = false;
 
-    #[Url]
+    #[Url(keep: true)]
     public $search;
 
-    /**
-     * Handles the event when a position is created.
-     *
-     * @param  int  $positionId  The ID of the created position.
-     */
-    #[On('position-created')]
-    public function positionAdded(int $positionId): void
-    {
-        $this->showForm = false;
-    }
+    #[Url(keep: true)]
+    public $filterCompanyCode;
 
-    /**
-     * Handles the event when a position is updated.
-     *
-     * @param  int  $positionId  The ID of the updated position.
-     */
-    #[On('position-updated')]
-    public function positionUpdated(int $positionId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a position is deleted.
-     */
-    #[On('position-deleted')]
-    public function positionDeleted(): void
-    {
-        $this->showForm = false;
-        $this->resetPage();
-        $this->getPositions();
-    }
+    #[Url(keep: true)]
+    public $filterBranchCode;
 
     /**
      * Shows the form position.
@@ -62,18 +35,62 @@ class PositionTable extends Component
     }
 
     /**
+     * Hides the form position.
+     */
+    #[On('hide-form')]
+    public function hideForm(): void
+    {
+        $this->dispatch('clear-form');
+        $this->showForm = false;
+    }
+
+    /**
+     * Handles the refresh event.
+     */
+    #[On('filter-company')]
+    public function filterCompany($companyCode): void
+    {
+        $this->filterBranchCode = '';
+        $this->filterCompanyCode = $companyCode;
+    }
+
+    /**
+     * Filters the division by the given branch code.
+     */
+    #[On('filter-branch')]
+    public function filterBranch($branchCode): void
+    {
+        $this->filterBranchCode = $branchCode;
+    }
+
+
+    /**
      * Retrieves a paginated list of positions based on a search query.
      *
-     * @return LengthAwarePaginator The paginated list of positions.
+     * @return array|LengthAwarePaginator The paginated list of positions.
      */
-    public function getPositions(): LengthAwarePaginator
+    public function getPositions(): array|LengthAwarePaginator
     {
-        return Position::where(function ($query) {
-            $query
-                ->where('code', 'like', '%'.$this->search.'%')
-                ->where('name', 'like', '%'.$this->search.'%');
-        })
-            ->orderBy('id', 'asc')->paginate(10);
+        $positions = Position::where(function ($query) {
+            $query->where('code', 'like', '%'.$this->search.'%')
+                ->orWhere('name', 'like', '%'.$this->search.'%');
+        })->orderBy('id');
+
+        if ($this->filterCompanyCode) {
+            $positions->where('company_code', $this->filterCompanyCode);
+        }
+
+        if ($this->filterBranchCode) {
+            $positions->where('branch_code', $this->filterBranchCode);
+        }
+
+        return $positions->paginate(10);
+    }
+
+    #[On('refresh')]
+    public function refresh(): void
+    {
+        $this->resetPage();
     }
 
     /**

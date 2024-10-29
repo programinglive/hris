@@ -2,9 +2,9 @@
 
 namespace App\Livewire;
 
-use App\Models\Division;
 use App\Models\Level;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -12,43 +12,30 @@ class FormLevelOption extends Component
 {
     public $levelCode;
 
-    public $levels;
-
     /**
-     * Update the level ID and dispatch the 'setLevel' event with the new ID.
+     * Update the level ID and dispatch the 'set-level' event with the new ID.
      *
      * @param  string  $levelCode  The new level ID.
      */
     public function updatedLevelCode(string $levelCode): void
     {
-        $this->dispatch('setLevel', $levelCode);
-        $this->dispatch('getPosition', $levelCode);
+        $this->dispatch('set-level', $levelCode);
+    }
+
+    #[On('set-level')]
+    public function setLevel($levelCode): void
+    {
+        $this->levelCode = $levelCode;
     }
 
     /**
-     * Retrieves the levels associated with a given division code.
+     * Get the level collection.
      *
-     * @param  string  $divisionCode  The code of the division.
+     * @return Collection The level collection.
      */
-    #[On('get-level')]
-    public function getLevel(string $divisionCode): void
+    public static function getLevel(): Collection
     {
-        $this->reset([
-            'levels',
-            'option',
-        ]);
-
-        $division = Division::where('code', $divisionCode)->first();
-
-        if ($division == null) {
-            return;
-        }
-
-        $levels = Level::where('division_id', $division->id);
-
-        if ($levels->count() > 0) {
-            $this->levels = $levels->get();
-        }
+        return Level::all();
     }
 
     /**
@@ -58,6 +45,8 @@ class FormLevelOption extends Component
      */
     public function render(): View
     {
-        return view('livewire.form-level-option');
+        return view('livewire.form-level-option', [
+            'levels' => self::getLevel(),
+        ]);
     }
 }

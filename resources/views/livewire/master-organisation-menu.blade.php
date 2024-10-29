@@ -21,5 +21,30 @@
 				<span class="menu-text">Brand</span>
 			</a>
 		</li>
+		<li class="menu-item">
+			<a href="{{ route('master.departments') }}" class="menu-link">
+				<span class="menu-text">Department</span>
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="{{ route('master.divisions') }}" class="menu-link">
+				<span class="menu-text">Division</span>
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="{{ route('master.sub_divisions') }}" class="menu-link">
+				<span class="menu-text">Sub Division</span>
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="{{ route('master.levels') }}" class="menu-link">
+				<span class="menu-text">Level</span>
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="{{ route('master.positions') }}" class="menu-link">
+				<span class="menu-text">Position</span>
+			</a>
+		</li>
 	</ul>
 </li>
