@@ -27,7 +27,7 @@ class BrandTable extends Component
 
     public function mount(): void
     {
-        if($this->filterCompanyCode != '') {
+        if ($this->filterCompanyCode != '') {
             $this->dispatch('filterBranchCode');
         }
     }

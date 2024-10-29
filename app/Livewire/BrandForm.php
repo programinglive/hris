@@ -21,6 +21,7 @@ class BrandForm extends Component
     public $companyCode;
 
     public $branches;
+
     public $branch;
 
     #[Url(keep: true)]
