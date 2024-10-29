@@ -19,14 +19,17 @@ return new class extends Migration
             $table->id();
             $table = ToolController::defaultTableSchema($table);
             $table->foreignIdFor(Department::class)
+                ->nullable()
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignIdFor(Division::class)
+                ->nullable()
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignIdFor(SubDivision::class)
+                ->nullable()
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();

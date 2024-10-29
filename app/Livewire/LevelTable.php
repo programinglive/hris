@@ -77,6 +77,15 @@ class LevelTable extends Component
     }
 
     /**
+     * Refreshes the list of levels.
+     */
+    #[On('refresh')]
+    public function refresh(): void
+    {
+        $this->resetPage();
+    }
+
+    /**
      * Render the livewire component.
      */
     public function render(): View

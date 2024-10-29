@@ -5,14 +5,24 @@
 >
 	<div class="flex justify-between pt-2" x-show="!open" >
 		<div>
-			<button type="button" class="btn bg-primary text-white" @click="open = true">+</button>
+			<button
+				type="button"
+				class="btn bg-primary text-white"
+				@click="open = true"
+			>
+				+
+			</button>
 		</div>
-		<div class="w-1/4 relative">
+		<div
+			class="flex items-center gap-2
+		     justify-between w-2/4 relative"
+		>
+			<livewire:import-level />
 			<input
 				wire:model.live="search"
 				type="text"
 				id="search"
-				class="form-input pr-10"
+				class="form-input pr-10 w-2/3"
 				placeholder="Search..."
 			>
 			@if($search)
@@ -107,13 +117,13 @@
 								{{ $level->company->name }}
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
-								{{ $level->department->name }}
+								{{ $level->department?->name }}
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
-								{{ $level->division->name }}
+								{{ $level->division?->name }}
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
-								{{ $level->subDivision->name }}
+								{{ $level->subDivision?->name }}
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $level->code }}

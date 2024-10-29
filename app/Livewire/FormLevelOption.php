@@ -30,7 +30,7 @@ class FormLevelOption extends Component
      *
      * @param  string  $divisionCode  The code of the division.
      */
-    #[On('getLevel')]
+    #[On('get-level')]
     public function getLevel(string $divisionCode): void
     {
         $this->reset([
