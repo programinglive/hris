@@ -70,8 +70,20 @@
 			</div>
 			@enderror
 		</div>
-		<div>
-			<button type="submit" class="btn bg-primary text-white float-end">Save</button>
+		<div class="flex justify-end gap-2">
+			<button
+				wire:click="$dispatch('hide-form')"
+				type="button"
+				class="btn btn-outline-danger"
+			>
+				Cancel
+			</button>
+			<button
+				type="submit"
+				class="btn bg-primary text-white float-end"
+			>
+				Save
+			</button>
 		</div>
 	</div>
 </form>

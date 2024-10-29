@@ -43,6 +43,7 @@ class BranchTable extends Component
     #[On('hide-form')]
     public function hideForm(): void
     {
+        $this->dispatch('clear-form');
         $this->showForm = false;
     }
 

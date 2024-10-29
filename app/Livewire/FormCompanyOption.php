@@ -18,54 +18,21 @@ class FormCompanyOption extends Component
     public $branchCode;
 
     /**
-     * Mount the component
-     */
-    public function mount(): void
-    {
-        $company = Company::where('code', $this->companyCode)->first();
-
-        if (! $company) {
-            $this->dispatch('clear-company-option');
-            $this->dispatch('clear-branch-option');
-        }
-    }
-
-    /**
-     * Updates the company ID and emits a 'setCompany' event.
+     * Handle updated company code.
      *
-     * @param  mixed  $companyCode  The new value for the company ID.
+     * @param string $companyCode
+     * @return void
      */
-    public function updatedCompanyCode(mixed $companyCode): void
+    public function updatedCompanyCode(string $companyCode): void
     {
-        $this->resetErrorBag();
-
+        $this->resetExcept('companyCode');
         $this->dispatch('set-company', $companyCode);
-        $this->dispatch('get-branch', $companyCode);
-
-        if ($this->companyCode == '') {
-            $this->reset('branchCode');
-            $this->dispatch('clear-branch-option');
-        }
     }
 
-    /**
-     * Set the company based on the company code.
-     *
-     * @param  string  $companyCode  The code of the company.
-     */
     #[On('set-company')]
-    public function setCompany(string $companyCode): void
+    public function setCompany($companyCode): void
     {
         $this->companyCode = $companyCode;
-    }
-
-    /**
-     * Handles the 'companyRequired' event by adding an error message to the 'companyId' field.
-     */
-    #[On('companyRequired')]
-    public function companyRequired(): void
-    {
-        $this->addError('companyCode', 'This field is required');
     }
 
     /**
@@ -79,18 +46,12 @@ class FormCompanyOption extends Component
         return Company::all();
     }
 
-    /**
-     * Clears the form by resetting all properties and error bag.
-     */
-    #[On('clear-company-option')]
-    public function clearCompanyOption(): void
+    #[On('clear-form')]
+    public function clearForm(): void
     {
         $this->reset();
         $this->resetErrorBag();
     }
-
-    #[On('refresh')]
-    public function refresh(): void {}
 
     /**
      * Render the view for the form company option.

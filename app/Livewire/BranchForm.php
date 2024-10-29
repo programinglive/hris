@@ -41,7 +41,10 @@ class BranchForm extends Component
      */
     public function mount(): void
     {
-        $this->company = Company::where('code', $this->companyCode)->first();
+        $this->company = Company::where(
+            'code',
+            $this->companyCode
+        )->first();
     }
 
     /**
@@ -95,7 +98,7 @@ class BranchForm extends Component
     public function save(): void
     {
         if (! $this->company) {
-            $this->dispatch('companyRequired');
+            $this->dispatch('company-required');
 
             return;
         }
@@ -142,7 +145,7 @@ class BranchForm extends Component
     public function update(): void
     {
         if (! $this->company) {
-            $this->dispatch('companyRequired');
+            $this->dispatch('company-required');
 
             return;
         }
@@ -188,6 +191,13 @@ class BranchForm extends Component
             'company',
             'branch',
         ]);
+    }
+
+    #[On('clear-form')]
+    public function clearForm(): void
+    {
+        $this->reset();
+        $this->resetErrorBag();
     }
 
     /**
