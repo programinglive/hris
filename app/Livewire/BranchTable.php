@@ -62,7 +62,7 @@ class BranchTable extends Component
     public function filterCompany(string $companyCode): void
     {
         $this->reset([
-            'filterBranchCode'
+            'filterBranchCode',
         ]);
 
         $this->filterCompanyCode = $companyCode;

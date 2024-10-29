@@ -66,7 +66,7 @@ class BranchForm extends Component
     /**
      * Sets the company code to the given value and dispatches a 'get-branch' event.
      *
-     * @param string $companyCode  The company code to set.
+     * @param  string  $companyCode  The company code to set.
      */
     #[On('set-company')]
     public function setCompany(string $companyCode): void
