@@ -18,7 +18,7 @@ class DepartmentSeeder extends Seeder
 
         foreach ($companies as $company) {
 
-            $branch = Branch::first();
+            $branch = $company->branches->first();
 
             Department::factory()->create([
                 'company_id' => $company->id,
@@ -33,7 +33,7 @@ class DepartmentSeeder extends Seeder
 
         foreach ($companies as $company) {
 
-            $branch = Branch::orderBy('id', 'desc')->first();
+            $branch = $company->branches()->orderBy('id', 'desc')->first();
 
             Department::factory()->create([
                 'company_id' => $company->id,

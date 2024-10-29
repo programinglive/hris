@@ -8,7 +8,7 @@
 			<button
 				type="button"
 				class="btn bg-primary text-white"
-				@click="open = true; $wire.dispatch('disableFilter')"
+				@click="open = true; $wire.dispatch('show-form')"
 			>+</button>
 		</div>
 		<div

@@ -36,42 +36,18 @@ class DepartmentForm extends Component
 
     public $actionForm = 'save';
 
-    /**
-     * Sets the value of the companyCode property to the given code.
-     *
-     * @param  string  $code  The code to set the companyCode property to.
-     */
     #[On('set-company')]
-    public function setCompany(string $code): void
+    public function setCompany($companyCode): void
     {
-        if ($code == '') {
-            $this->reset('companyId');
-
-            return;
-        }
-
-        $this->companyCode = $code;
-        $this->company = Company::where('code', $code)->first();
-        $this->companyCode = $this->company->code;
+        $this->companyCode = $companyCode;
+        $this->company = Company::where('code', $companyCode)->first();
     }
 
-    /**
-     * Sets the value of the brandCode property to the given code.
-     *
-     * @param  string  $code  The code to set the brandCode property to.
-     */
     #[On('set-branch')]
-    public function setBranch(string $code): void
+    public function setBranch($branchCode): void
     {
-        if ($code == '') {
-            $this->reset('branchId');
-
-            return;
-        }
-
-        $this->branchCode = $code;
-        $this->branch = Branch::where('code', $code)->first();
-        $this->branchCode = $this->branch->code;
+        $this->branchCode = $branchCode;
+        $this->branch = Branch::where('code', $branchCode)->first();
     }
 
     /**
@@ -114,20 +90,24 @@ class DepartmentForm extends Component
     #[On('edit')]
     public function edit($code): void
     {
+        $this->dispatch('show-form');
+
         $this->department = Department::where('code', $code)->first();
         $this->code = $this->department->code;
         $this->name = $this->department->name;
         $this->description = $this->department->description;
 
+        $this->company = Company::where('code', $this->department->company_code)->first();
         $this->companyCode = $this->department->company_code;
         $this->dispatch('set-company', $this->companyCode);
 
+        $this->dispatch('get-branch', $this->companyCode);
+
+        $this->branch = Branch::where('code', $this->department->branch_code)->first();
         $this->branchCode = $this->department->branch_code;
         $this->dispatch('set-branch', $this->branchCode);
 
         $this->actionForm = 'update';
-
-        $this->dispatch('show-form');
     }
 
     /**
@@ -136,8 +116,8 @@ class DepartmentForm extends Component
     public function update(): void
     {
         $data = $this->departmentData();
-        $data['updated_by'] = $this->updatedBy;
-
+        $data['updated_by'] = auth()->user()->id;
+        
         DB::transaction(function () use ($data) {
             $this->department->update($data);
         }, 5);

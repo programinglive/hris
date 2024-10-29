@@ -70,7 +70,14 @@
 			</div>
 			@enderror
 		</div>
-		<div>
+		<div class="flex justify-end gap-2">
+			<button
+				type="button"
+				@click="$dispatch('hide-form')"
+				class="btn bg-white border border-gray-300 text-gray-700 float-end"
+			>
+				Cancel
+			</button>
 			<button
 				type="submit"
 				class="btn bg-primary text-white float-end"
