@@ -16,9 +16,6 @@ class FormCompanyOption extends Component
 
     /**
      * Handle updated company code.
-     *
-     * @param string $companyCode
-     * @return void
      */
     public function updatedCompanyCode(string $companyCode): void
     {
