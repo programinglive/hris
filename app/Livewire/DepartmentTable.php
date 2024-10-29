@@ -20,6 +20,7 @@ class DepartmentTable extends Component
 
     #[Url(keep: true)]
     public $filterCompanyCode;
+
     #[Url(keep: true)]
     public $companyCode;
 
@@ -27,6 +28,7 @@ class DepartmentTable extends Component
 
     #[Url(keep: true)]
     public $filterBranchCode;
+
     #[Url(keep: true)]
     public $branchCode;
 
@@ -57,6 +59,7 @@ class DepartmentTable extends Component
     #[On('filter-company')]
     public function filterCompany($companyCode): void
     {
+        $this->filterBranchCode = '';
         $this->filterCompanyCode = $companyCode;
     }
 
@@ -67,15 +70,6 @@ class DepartmentTable extends Component
     public function filterBranch($branchCode): void
     {
         $this->filterBranchCode = $branchCode;
-    }
-
-    /**
-     * Refresh the component and reset the page.
-     */
-    #[On('refresh')]
-    public function refresh(): void
-    {
-        $this->resetPage();
     }
 
     /**
@@ -100,6 +94,15 @@ class DepartmentTable extends Component
         }
 
         return $departments->paginate(10);
+    }
+
+    /**
+     * Refresh the component and reset the page.
+     */
+    #[On('refresh')]
+    public function refresh(): void
+    {
+        $this->resetPage();
     }
 
     /**

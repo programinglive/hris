@@ -72,9 +72,9 @@
 		</div>
 		<div class="flex justify-end gap-2">
 			<button
+				wire:click="$dispatch('hide-form')"
 				type="button"
-				@click="$dispatch('hide-form')"
-				class="btn bg-white border border-gray-300 text-gray-700 float-end"
+				class="btn btn-outline-danger"
 			>
 				Cancel
 			</button>

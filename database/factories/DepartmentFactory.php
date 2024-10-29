@@ -19,7 +19,7 @@ class DepartmentFactory extends Factory
     {
         return [
             'code' => 'D001',
-            'name' => 'Department A',
+            'name' => 'Department '.fake()->name,
             'description' => fake()->text(100),
             'created_by' => 1,
             'updated_by' => 1,

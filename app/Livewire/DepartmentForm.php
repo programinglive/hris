@@ -117,7 +117,7 @@ class DepartmentForm extends Component
     {
         $data = $this->departmentData();
         $data['updated_by'] = auth()->user()->id;
-        
+
         DB::transaction(function () use ($data) {
             $this->department->update($data);
         }, 5);
