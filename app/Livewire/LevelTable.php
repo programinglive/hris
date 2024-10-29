@@ -16,8 +16,14 @@ class LevelTable extends Component
 
     public $showForm = false;
 
-    #[Url]
+    #[Url(keep: true)]
     public $search;
+
+    #[Url(keep: true)]
+    public $filterCompanyCode;
+
+    #[Url(keep: true)]
+    public $filterBranchCode;
 
     /**
      * Shows the form level.
@@ -39,18 +45,45 @@ class LevelTable extends Component
     }
 
     /**
+     * Handles the refresh event.
+     */
+    #[On('filter-company')]
+    public function filterCompany($companyCode): void
+    {
+        $this->filterBranchCode = '';
+        $this->filterCompanyCode = $companyCode;
+    }
+
+    /**
+     * Filters the division by the given branch code.
+     */
+    #[On('filter-branch')]
+    public function filterBranch($branchCode): void
+    {
+        $this->filterBranchCode = $branchCode;
+    }
+
+    /**
      * Retrieves a paginated list of levels based on a search query.
      *
      * @return LengthAwarePaginator The paginated list of levels.
      */
     public function getLevels(): LengthAwarePaginator
     {
-        return Level::where(function ($query) {
-            $query->where('name', 'like', '%'.$this->search.'%')
-                ->orWhere('code', 'like', '%'.$this->search.'%');
-        })
-            ->orderBy('id', 'asc')
-            ->paginate(10);
+        $levels = Level::where(function ($query) {
+            $query->where('code', 'like', '%'.$this->search.'%')
+                ->orWhere('name', 'like', '%'.$this->search.'%');
+        })->orderBy('id');
+
+        if ($this->filterCompanyCode) {
+            $levels->where('company_code', $this->filterCompanyCode);
+        }
+
+        if ($this->filterBranchCode) {
+            $levels->where('branch_code', $this->filterBranchCode);
+        }
+
+        return $levels->paginate(10);
     }
 
     /**
