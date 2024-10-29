@@ -23,13 +23,9 @@ class LevelFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_id' => Company::first()->id,
-            'branch_id' => Branch::first()->id,
-            'department_id' => Department::first()->id,
-            'division_id' => Division::first()->id,
-            'sub_division_id' => SubDivision::first()->id,
-            'code' => $this->faker->unique()->word(),
-            'name' => $this->faker->word(),
+            'code' => $this->faker->unique()->word,
+            'name' => $this->faker->word,
+            'description' => $this->faker->sentence(5),
         ];
     }
 }

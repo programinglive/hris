@@ -20,45 +20,22 @@ class LevelTable extends Component
     public $search;
 
     /**
-     * Handles the event when a level is created.
-     *
-     * @param  int  $levelId  The ID of the created level.
-     */
-    #[On('level-created')]
-    public function levelAdded(int $levelId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a level is updated.
-     *
-     * @param  int  $levelId  The ID of the updated level.
-     */
-    #[On('level-updated')]
-    public function levelUpdated(int $levelId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a level is deleted.
-     */
-    #[On('level-deleted')]
-    public function levelDeleted(): void
-    {
-        $this->showForm = false;
-        $this->resetPage();
-        $this->getLevels();
-    }
-
-    /**
      * Shows the form level.
      */
     #[On('show-form')]
     public function showForm(): void
     {
         $this->showForm = true;
+    }
+
+    /**
+     * Hides the form level.
+     */
+    #[On('hide-form')]
+    public function hideForm(): void
+    {
+        $this->dispatch('clear-form');
+        $this->showForm = false;
     }
 
     /**

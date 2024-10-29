@@ -10,7 +10,9 @@
 	>
 		<option value="">Select Branch</option>
 		@foreach ($branches as $branch)
-			<option value="{{ $branch->code }}">{{ $branch->code }}, {{ $branch->name }}</option>
+			<option value="{{ $branch->code }}">
+				{{ $branch->code }}, {{ $branch->name }}
+			</option>
 		@endforeach
 	</select>
 	@error('branchCode')

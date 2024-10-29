@@ -9,7 +9,9 @@
 	>
 		<option value="">Select Department</option>
 		@foreach ($departments as $department)
-			<option value="{{ $department->code }}">{{ $department->name }}</option>
+			<option value="{{ $department->code }}">
+				{{ $department->code }}, {{ $department->name }}
+			</option>
 		@endforeach
 	</select>
 	@error('departmentCode')

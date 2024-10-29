@@ -1,6 +1,6 @@
 <div class="flex gap-2">
 	<a
-		href="{{ asset('division_data.xlsx') }}"
+		href="{{ asset('level_data.xlsx') }}"
 		class="
 			        px-4 py-2
 			        rounded-md

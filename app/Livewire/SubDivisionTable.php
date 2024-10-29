@@ -53,6 +53,7 @@ class SubDivisionTable extends Component
     #[On('filter-company')]
     public function filterCompany($companyCode): void
     {
+        $this->filterBranchCode = '';
         $this->filterCompanyCode = $companyCode;
     }
 

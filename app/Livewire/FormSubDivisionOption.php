@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\SubDivision;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -19,20 +20,8 @@ class FormSubDivisionOption extends Component
     #[Url(keep: true)]
     public $departmentCode;
 
-    public $subDivisions;
-
     #[Url(keep: true)]
     public $subDivisionCode;
-
-    public function mount(): void
-    {
-        if ($this->companyCode != '' && $this->branchCode != '' && $this->departmentCode != '') {
-            $this->subDivisions = SubDivision::where('company_code', $this->companyCode)
-                ->where('branch_code', $this->branchCode)
-                ->where('department_code', $this->departmentCode)
-                ->get();
-        }
-    }
 
     /**
      * Update the division ID and dispatch the 'setSubDivision' event with the new ID.
@@ -60,28 +49,17 @@ class FormSubDivisionOption extends Component
 
     /**
      * Retrieves the division based on the provided department code and updates the corresponding properties.
-     *
-     * @param  string  $departmentCode  The code of the department.
      */
-    #[On('get-division')]
-    public function getSubDivision(string $departmentCode): void
+    public function getSubDivision(): Collection
     {
-        $this->reset([
-            'subDivisions',
-        ]);
-
-        $this->subDivisions = SubDivision::where(
-            'department_code',
-            $departmentCode
-        )->get();
+        return SubDivision::all();
     }
 
-    #[On('clear-division-option')]
-    public function clearSubDivisionOption(): void
+    #[On('clear-form')]
+    public function clearForm(): void
     {
-        $this->reset([
-            'subDivisionCode',
-        ]);
+        $this->reset();
+        $this->resetErrorBag();
     }
 
     /**
@@ -91,6 +69,8 @@ class FormSubDivisionOption extends Component
      */
     public function render(): View
     {
-        return view('livewire.form-sub-division-option');
+        return view('livewire.form-sub-division-option',[
+            'subDivisions' => self::getSubDivision()
+        ]);
     }
 }

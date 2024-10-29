@@ -11,7 +11,9 @@
 		<option value="">Select Division</option>
 		@if($divisions)
 			@foreach ($divisions as $division)
-				<option value="{{ $division->code }}">{{ $division->name }}</option>
+				<option value="{{ $division->code }}">
+					{{ $division->code }}, {{ $division->name }}
+				</option>
 			@endforeach
 		@endif
 	</select>

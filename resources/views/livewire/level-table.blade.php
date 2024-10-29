@@ -102,6 +102,13 @@
 						</th>
 						<th
 							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium
+											text-gray-500 uppercase"
+						>
+							Description
+						</th>
+						<th
+							scope="col"
 							class="px-6 py-3 text-end text-xs font-medium
 											text-gray-500 uppercase"
 							style="width: 100px"
@@ -130,6 +137,9 @@
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $level->name }}
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+								{{ $level->description }}
 							</td>
 							<td
 								class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex flex-col"

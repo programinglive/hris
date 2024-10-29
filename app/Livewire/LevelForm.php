@@ -2,9 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Models\Branch;
+use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
 use App\Models\Level;
+use App\Models\SubDivision;
 use DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
@@ -14,17 +17,29 @@ use Livewire\Component;
 
 class LevelForm extends Component
 {
-    #[Validate('required|string|min:1')]
-    public $departmentId;
+    public $company;
+    public $companyCode;
 
-    #[Validate('required|string|min:1')]
+    public $branch;
+    public $branchCode;
+
+    public $department;
+    public $departmentCode;
+
+    public $division;
     public $divisionCode;
 
-    #[Validate('required|unique:levels|min:3')]
+    public $subDivision;
+    public $subDivisionCode;
+
+
+    #[Validate('required')]
     public $code;
 
-    #[Validate('required|min:3')]
+    #[Validate('required')]
     public $name;
+
+    public $description;
 
     public $level;
 
@@ -41,11 +56,44 @@ class LevelForm extends Component
      */
     public function updated(string $key, mixed $value): void
     {
-        $this->resetErrorBag();
-
         if ($key == 'code' || $key == 'name') {
             $this->validateOnly($key);
         }
+    }
+
+    #[On('set-company')]
+    public function setCompany($companyCode): void
+    {
+        $this->company = Company::where('code', $companyCode)->first();
+        $this->companyCode = $companyCode;
+    }
+
+    #[On('set-branch')]
+    public function setBranch($branchCode): void
+    {
+        $this->branch = Branch::where('code', $branchCode)->first();
+        $this->branchCode = $branchCode;
+    }
+
+    #[On('set-department')]
+    public function setDepartment($departmentCode): void
+    {
+        $this->department = Department::where('code', $departmentCode)->first();
+        $this->departmentCode = $departmentCode;
+    }
+
+    #[On('set-division')]
+    public function setDivision($divisionCode): void
+    {
+        $this->division = Division::where('code', $divisionCode)->first();
+        $this->divisionCode = $divisionCode;
+    }
+
+    #[On('set-sub-division')]
+    public function setSubDivision($subDivisionCode): void
+    {
+        $this->subDivision = SubDivision::where('code', $subDivisionCode)->first();
+        $this->subDivisionCode = $subDivisionCode;
     }
 
     /**
@@ -54,12 +102,24 @@ class LevelForm extends Component
     public function levelData(): array
     {
         return [
-            'company_id' => 1,
-            'branch_id' => 1,
-            'department_id' => $this->departmentId,
-            'division_id' => $this->divisionCode,
+            'company_id' => $this->company->id,
+            'branch_id' => $this->branch->id,
+            'department_id' => $this->department->id,
+            'division_id' => $this->division->id,
+            'sub_division_id' => $this->subDivision->id,
+            'company_code' => $this->company->code,
+            'company_name' => $this->company->name,
+            'branch_code' => $this->branch->code,
+            'branch_name' => $this->branch->name,
+            'department_code' => $this->department->code,
+            'department_name' => $this->department->name,
+            'division_code' => $this->division->code,
+            'division_name' => $this->division->name,
+            'sub_division_code' => $this->subDivision->code,
+            'sub_division_name' => $this->subDivision->name,
             'code' => $this->code,
             'name' => $this->name,
+            'description' => $this->description,
         ];
     }
 
@@ -71,12 +131,11 @@ class LevelForm extends Component
         $this->validate();
 
         DB::transaction(function () {
-            $this->level = Level::create($this->levelData());
+            Level::create($this->levelData());
         }, 5);
 
-        $this->dispatch('level-created', levelId: $this->level->id);
-
-        $this->reset();
+        $this->dispatch('refresh');
+        $this->dispatch('hide-form');
     }
 
     /**
@@ -86,10 +145,30 @@ class LevelForm extends Component
     public function edit($code): void
     {
         $this->level = Level::where('code', $code)->first();
-        $this->departmentId = $this->level->department_id;
-        $this->divisionCode = $this->level->division_id;
+
+        $this->company = $this->level->company;
+        $this->companyCode  = $this->company->code;
+        $this->dispatch('set-company', $this->companyCode);
+
+        $this->branch = $this->level->branch;
+        $this->branchCode = $this->branch->code;
+        $this->dispatch('set-branch', $this->branchCode);
+
+        $this->department = $this->level->department;
+        $this->departmentCode = $this->department->code;
+        $this->dispatch('set-department', $this->departmentCode);
+
+        $this->division = $this->level->division;
+        $this->divisionCode = $this->division->code;
+        $this->dispatch('set-division', $this->divisionCode);
+
+        $this->subDivision = $this->level->subDivision;
+        $this->subDivisionCode = $this->subDivision->code;
+        $this->dispatch('set-sub-division', $this->subDivisionCode);
+
         $this->code = $this->level->code;
         $this->name = $this->level->name;
+        $this->description = $this->level->description;
 
         $this->actionForm = 'update';
 
@@ -101,31 +180,12 @@ class LevelForm extends Component
      */
     public function update(): void
     {
-        $organizations = [
-            'departmentId',
-            'divisionCode',
-        ];
-
-        foreach ($organizations as $organization) {
-
-            if ($this->{$organization} == '') {
-                $this->addError($organization, 'Please select a ['.ucfirst(rtrim($organization, 'Id')).'].');
-
-                return;
-            }
-        }
-
-        if ($this->code != $this->level->code) {
-            $this->validateOnly('code');
-        }
-
         DB::transaction(function () {
             $this->level->update($this->levelData());
         }, 5);
 
-        $this->dispatch('level-updated', levelId: $this->level->id);
-
-        $this->reset();
+        $this->dispatch('refresh');
+        $this->dispatch('hide-form');
     }
 
     /**
@@ -139,9 +199,7 @@ class LevelForm extends Component
         $this->level->save();
         $this->level->delete();
 
-        $this->dispatch('level-deleted', refreshCompanies: true);
-
-        $this->reset();
+        $this->dispatch('refresh');
     }
 
     /**
@@ -149,9 +207,6 @@ class LevelForm extends Component
      */
     public function render(): View
     {
-        return view('livewire.level-form', [
-            'departments' => Department::all(),
-            'divisions' => Division::all(),
-        ]);
+        return view('livewire.level-form');
     }
 }
