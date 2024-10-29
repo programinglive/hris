@@ -30,7 +30,6 @@ class CompanyTable extends Component
     public function showForm(): void
     {
         $this->showForm = true;
-        $this->resetPage();
     }
 
     /**
@@ -39,8 +38,8 @@ class CompanyTable extends Component
     #[On('hide-form')]
     public function hideForm(): void
     {
+        $this->dispatch('clear-form');
         $this->showForm = false;
-        $this->resetPage();
     }
 
     #[On('refresh')]

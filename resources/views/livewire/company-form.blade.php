@@ -117,9 +117,9 @@
 		</div>
 		<div class="flex justify-end">
 			<button
+				wire:click="$dispatch('hide-form')"
 				type="button"
 				class="btn btn-outline-danger"
-				wire:click="$dispatch('hide-form')"
 			>
 				Cancel
 			</button>

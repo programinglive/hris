@@ -157,6 +157,13 @@ class CompanyForm extends Component
         }
     }
 
+    #[On('clear-form')]
+    public function clearForm(): void
+    {
+        $this->reset();
+        $this->resetErrorBag();
+    }
+
     /**
      * Render the livewire component.
      */
