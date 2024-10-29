@@ -75,7 +75,7 @@ class ImportPosition extends Component
                 }
 
                 $this->branchCode = $this->branch->code;
-                
+
                 $this->position = Position::firstOrNew([
                     'code' => $rowProperties['code'],
                 ]);

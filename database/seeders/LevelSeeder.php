@@ -5,8 +5,8 @@ namespace Database\Seeders;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
-use App\Models\SubDivision;
 use App\Models\Level;
+use App\Models\SubDivision;
 use Illuminate\Database\Seeder;
 
 class LevelSeeder extends Seeder
@@ -16,7 +16,6 @@ class LevelSeeder extends Seeder
      */
     public function run(): void
     {
-
         $companies = Company::all();
 
         foreach ($companies as $key => $company) {

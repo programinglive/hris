@@ -2,13 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Branch;
-use App\Models\Company;
-use App\Models\Department;
-use App\Models\Division;
-use App\Models\Level;
 use App\Models\Position;
-use App\Models\SubDivision;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,14 +18,9 @@ class PositionFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_id' => Company::first()->id,
-            'branch_id' => Branch::first()->id,
-            'department_id' => Department::first()->id,
-            'division_id' => Division::first()->id,
-            'sub_division_id' => SubDivision::first()->id,
-            'level_id' => Level::first()->id,
             'code' => $this->faker->unique()->word(),
             'name' => $this->faker->word(),
+            'description' => $this->faker->sentence(),
         ];
     }
 }

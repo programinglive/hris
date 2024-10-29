@@ -20,12 +20,12 @@ class PositionForm extends Component
 {
     public $company;
 
-    #[Url(keep:true)]
+    #[Url(keep: true)]
     public $companyCode;
 
     public $branch;
 
-    #[Url(keep:true)]
+    #[Url(keep: true)]
     public $branchCode;
 
     public $department;
@@ -43,7 +43,6 @@ class PositionForm extends Component
     public $level;
 
     public $levelCode;
-
 
     #[Validate('required|unique:positions|min:3')]
     public $code;
@@ -194,7 +193,6 @@ class PositionForm extends Component
         DB::transaction(function () {
             $this->position->update($this->positionData());
         }, 5);
-
 
         $this->dispatch('refresh');
         $this->dispatch('hide-form');

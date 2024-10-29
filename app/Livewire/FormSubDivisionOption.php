@@ -69,8 +69,8 @@ class FormSubDivisionOption extends Component
      */
     public function render(): View
     {
-        return view('livewire.form-sub-division-option',[
-            'subDivisions' => self::getSubDivision()
+        return view('livewire.form-sub-division-option', [
+            'subDivisions' => self::getSubDivision(),
         ]);
     }
 }

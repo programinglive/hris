@@ -63,7 +63,6 @@ class PositionTable extends Component
         $this->filterBranchCode = $branchCode;
     }
 
-
     /**
      * Retrieves a paginated list of positions based on a search query.
      *

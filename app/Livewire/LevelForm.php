@@ -18,20 +18,24 @@ use Livewire\Component;
 class LevelForm extends Component
 {
     public $company;
+
     public $companyCode;
 
     public $branch;
+
     public $branchCode;
 
     public $department;
+
     public $departmentCode;
 
     public $division;
+
     public $divisionCode;
 
     public $subDivision;
-    public $subDivisionCode;
 
+    public $subDivisionCode;
 
     #[Validate('required')]
     public $code;
@@ -147,7 +151,7 @@ class LevelForm extends Component
         $this->level = Level::where('code', $code)->first();
 
         $this->company = $this->level->company;
-        $this->companyCode  = $this->company->code;
+        $this->companyCode = $this->company->code;
         $this->dispatch('set-company', $this->companyCode);
 
         $this->branch = $this->level->branch;
