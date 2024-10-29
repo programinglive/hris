@@ -14,9 +14,6 @@ class FormCompanyOption extends Component
     #[Url(keep: true)]
     public $companyCode;
 
-    #[Url(keep: true)]
-    public $branchCode;
-
     /**
      * Handle updated company code.
      *
@@ -25,7 +22,6 @@ class FormCompanyOption extends Component
      */
     public function updatedCompanyCode(string $companyCode): void
     {
-        $this->resetExcept('companyCode');
         $this->dispatch('set-company', $companyCode);
     }
 

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Branch;
 use App\Models\Brand;
 use App\Models\Company;
 use Illuminate\Database\Seeder;
@@ -18,7 +17,7 @@ class BrandSeeder extends Seeder
 
         foreach ($companies as $company) {
 
-            $branch = Branch::first();
+            $branch = $company->branches->first();
 
             Brand::factory()->create([
                 'company_id' => $company->id,
@@ -33,7 +32,7 @@ class BrandSeeder extends Seeder
 
         foreach ($companies as $company) {
 
-            $branch = Branch::orderBy('id', 'desc')->first();
+            $branch = $company->branches->orderBy('id', 'desc')->first();
 
             Brand::factory()->create([
                 'company_id' => $company->id,

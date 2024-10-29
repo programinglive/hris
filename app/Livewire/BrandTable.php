@@ -47,16 +47,8 @@ class BrandTable extends Component
     #[On('hide-form')]
     public function hideForm(): void
     {
+        $this->dispatch('clear-form');
         $this->showForm = false;
-    }
-
-    /**
-     * Refreshes the list of brands.
-     */
-    #[On('refresh')]
-    public function refresh(): void
-    {
-        $this->resetPage();
     }
 
     /**
@@ -103,6 +95,15 @@ class BrandTable extends Component
 
         return $brands->orderBy('id')
             ->paginate(10);
+    }
+
+    /**
+     * Refreshes the list of brands.
+     */
+    #[On('refresh')]
+    public function refresh(): void
+    {
+        $this->resetPage();
     }
 
     /**

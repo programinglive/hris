@@ -1,4 +1,6 @@
-<div class="flex flex-col gap-3">
+<div class="flex flex-col gap-3" >
+	{{$companyCode}}
+	{{$branchCode}}
 	<label for="branchCode" class="block text-sm font-medium text-gray-700">Branch</label>
 	<select
 		wire:model.live="branchCode"
@@ -9,11 +11,9 @@
 						rounded-md p-2"
 	>
 		<option value="">Select Branch</option>
-		@if($branches)
-			@foreach ($branches as $branch)
-				<option value="{{ $branch->code }}">{{ $branch->name }}</option>
-			@endforeach
-		@endif
+		@foreach ($branches as $branch)
+			<option value="{{ $branch->code }}">{{ $branch->code }}, {{ $branch->name }}</option>
+		@endforeach
 	</select>
 	@error('branchCode')
 	<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">

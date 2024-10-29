@@ -20,6 +20,7 @@ class BrandForm extends Component
     #[Url(keep: true)]
     public $companyCode;
 
+    public $branches;
     public $branch;
 
     #[Url(keep: true)]
@@ -35,24 +36,7 @@ class BrandForm extends Component
 
     public $brand;
 
-    public $createdBy;
-
-    public $updatedBy;
-
     public $actionForm = 'save';
-
-    /**
-     * Mount the component
-     */
-    public function mount(): void
-    {
-        $this->company = Company::first();
-
-        $this->branch = $this->company->branches()->first();
-        $this->branchCode = $this->branch->code;
-
-        $this->createdBy = auth()->user()->id;
-    }
 
     /**
      * Updates the specified property with the given value and performs validation if the property is 'code',
@@ -76,7 +60,7 @@ class BrandForm extends Component
     public function brandData()
     {
         if ($this->companyCode == '') {
-            $this->dispatch('companyRequired');
+            $this->dispatch('company-required');
 
             return;
         }
@@ -119,14 +103,18 @@ class BrandForm extends Component
     public function edit($code): void
     {
         $this->brand = Brand::where('code', $code)->first();
-        $company = Company::where('code', $this->brand->company_code)->first();
-        $this->dispatch('set-company', $company->code);
-        $branch = Branch::where('code', $this->brand->branch_code)->first();
-        $this->dispatch('set-branch', $branch->code);
+
+        $this->company = Company::find($this->brand->company_id);
+        $this->companyCode = $this->brand->company_code;
+        $this->dispatch('set-company', $this->companyCode);
+
+        $this->branch = Branch::find($this->brand->branch_id);
+        $this->branchCode = $this->branch->code;
+        $this->dispatch('set-branch', $this->branchCode);
+
         $this->code = $this->brand->code;
         $this->name = $this->brand->name;
         $this->description = $this->brand->description;
-        $this->updatedBy = auth()->user()->id;
 
         $this->actionForm = 'update';
 
@@ -179,6 +167,13 @@ class BrandForm extends Component
             'branch',
             'branchCode',
         ]);
+    }
+
+    #[On('clear-form')]
+    public function clearForm(): void
+    {
+        $this->reset();
+        $this->resetErrorBag();
     }
 
     /**
