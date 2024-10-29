@@ -1,6 +1,4 @@
 <div class="flex flex-col gap-3" >
-	{{$companyCode}}
-	{{$branchCode}}
 	<label for="branchCode" class="block text-sm font-medium text-gray-700">Branch</label>
 	<select
 		wire:model.live="branchCode"

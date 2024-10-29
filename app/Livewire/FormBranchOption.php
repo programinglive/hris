@@ -52,7 +52,7 @@ class FormBranchOption extends Component
      * Get the branch data.
      */
     #[On('get-branch')]
-    public function getBranch(): array|Collection
+    public function getBranch(): Collection
     {
         return Branch::all();
     }
@@ -69,7 +69,7 @@ class FormBranchOption extends Component
      */
     public function render(): View
     {
-        return view('livewire.form-branch-option',[
+        return view('livewire.form-branch-option', [
             'branches' => $this->getBranch(),
         ]);
     }
