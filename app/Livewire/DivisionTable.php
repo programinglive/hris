@@ -41,15 +41,7 @@ class DivisionTable extends Component
     public function hideForm(): void
     {
         $this->showForm = false;
-    }
-
-    /**
-     * Refreshes the component when the refresh event is triggered.
-     */
-    #[On('refresh')]
-    public function refresh(): void
-    {
-        $this->resetPage();
+        $this->dispatch('clear-form');
     }
 
     /**
@@ -58,6 +50,7 @@ class DivisionTable extends Component
     #[On('filter-company')]
     public function filterCompany($companyCode): void
     {
+        $this->filterBranchCode = '';
         $this->filterCompanyCode = $companyCode;
     }
 
@@ -91,6 +84,15 @@ class DivisionTable extends Component
         }
 
         return $divisions->paginate(10);
+    }
+
+    /**
+     * Refreshes the component when the refresh event is triggered.
+     */
+    #[On('refresh')]
+    public function refresh(): void
+    {
+        $this->resetPage();
     }
 
     /**

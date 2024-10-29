@@ -137,7 +137,7 @@ class DivisionForm extends Component
     public function update(): void
     {
         $data = $this->divisionData();
-        $data['updated_by'] = $this->updatedBy;
+        $data['updated_by'] = auth()->user()->id;
 
         DB::transaction(function () use ($data) {
             $this->division->update($data);
@@ -163,22 +163,13 @@ class DivisionForm extends Component
     }
 
     /**
-     * Resets the form values except for the given properties.
+     * Clear the form values.
      */
-    public function getResetExcept(): void
+    #[On('clear-form')]
+    public function clearForm(): void
     {
-        $this->resetExcept([
-            'createdBy',
-            'updatedBy',
-            'company',
-            'companyId',
-            'companyCode',
-            'companyName',
-            'branch',
-            'branchId',
-            'branchCode',
-            'branchName',
-        ]);
+        $this->reset();
+        $this->resetErrorBag();
     }
 
     /**
