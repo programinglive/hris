@@ -23,14 +23,5 @@ class BranchSeeder extends Seeder
                 'code' => 'B'.str_pad((Branch::count() + 1), 3, '0', STR_PAD_LEFT),
             ])->create();
         }
-
-        foreach ($companies as $company) {
-            Branch::factory([
-                'company_id' => $company->id,
-                'company_code' => $company->code,
-                'company_name' => $company->name,
-                'code' => 'B'.str_pad((Branch::count() + 1), 3, '0', STR_PAD_LEFT),
-            ])->create();
-        }
     }
 }
