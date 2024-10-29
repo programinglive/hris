@@ -64,6 +64,16 @@ return new class extends Migration
             $table->string('company_name')->nullable();
             $table->string('branch_code')->nullable();
             $table->string('branch_name')->nullable();
+            $table->string('department_code')->nullable();
+            $table->string('department_name')->nullable();
+            $table->string('division_code')->nullable();
+            $table->string('division_name')->nullable();
+            $table->string('sub_division_code')->nullable();
+            $table->string('sub_division_name')->nullable();
+            $table->string('level_code')->nullable();
+            $table->string('level_name')->nullable();
+            $table->string('position_code')->nullable();
+            $table->string('position_name')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('nik')->nullable();

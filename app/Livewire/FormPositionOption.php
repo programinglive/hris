@@ -2,55 +2,44 @@
 
 namespace App\Livewire;
 
-use App\Models\Level;
 use App\Models\Position;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class FormPositionOption extends Component
 {
+    #[Url(keep: true)]
     public $positionCode;
 
-    public $positions;
-
-    public $option = 'disabled';
-
     /**
-     * Update the position ID and dispatch the 'setPosition' event with the new ID.
+     * Update the position ID and dispatch the 'set-position' event with the new ID.
      *
      * @param  string  $positionCode  The new position ID.
      */
-    public function updatedPositionId(string $positionCode): void
+    public function updatedPositionCode(string $positionCode): void
     {
-        $this->dispatch('setPosition', positionCode: $positionCode);
+        $this->dispatch('set-position', $positionCode);
     }
 
-    /**
-     * Retrieves the position based on the given level code.
-     *
-     * @param  string  $levelCode  The code of the level.
-     */
-    #[On('getPosition')]
-    public function getPosition(string $levelCode): void
+    #[On('set-position')]
+    public function setPosition(string $positionCode): void
     {
-        $this->reset([
-            'positions',
-            'option',
-        ]);
+        $this->positionCode = $positionCode;
+    }
 
-        $level = Level::where('code', $levelCode)->first();
+    public function getPosition(): Collection
+    {
+        return Position::all();
+    }
 
-        if ($level == null) {
-            return;
-        }
-
-        $positions = Position::where('level_id', $level->id);
-
-        if ($positions->count() > 0) {
-            $this->option = '';
-            $this->positions = $positions->get();
-        }
+    #[On('clear-form')]
+    public function clearForm(): void
+    {
+        $this->resetErrorBag();
+        $this->reset();
     }
 
     /**
@@ -60,6 +49,8 @@ class FormPositionOption extends Component
      */
     public function render(): View
     {
-        return view('livewire.form-position-option');
+        return view('livewire.form-position-option',[
+            'positions' => self::getPosition(),
+        ]);
     }
 }

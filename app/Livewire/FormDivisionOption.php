@@ -24,7 +24,7 @@ class FormDivisionOption extends Component
     public $divisionCode;
 
     /**
-     * Update the division ID and dispatch the 'setDivision' event with the new ID.
+     * Update the division ID and dispatch the 'set-division' event with the new ID.
      *
      * @param  string  $divisionCode  The new division ID.
      */

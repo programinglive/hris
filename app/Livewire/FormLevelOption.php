@@ -6,10 +6,12 @@ use App\Models\Level;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class FormLevelOption extends Component
 {
+    #[Url(keep: true)]
     public $levelCode;
 
     /**

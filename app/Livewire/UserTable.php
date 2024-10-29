@@ -33,6 +33,20 @@ class UserTable extends Component
 
     public $employee;
 
+    #[On('filter-company')]
+    public function filterCompany($companyCode): void
+    {
+        $this->filterCompanyCode = $companyCode;
+        $this->companyCode = $companyCode;
+    }
+
+    #[On('filter-branch')]
+    public function filterBranch($branchCode): void
+    {
+        $this->filterBranchCode = $branchCode;
+        $this->branchCode = $branchCode;
+    }
+
     /**
      * Shows the form user.
      */
@@ -48,11 +62,15 @@ class UserTable extends Component
     #[On('hide-form')]
     public function hideForm(): void
     {
+        $this->dispatch('clear-form');
         $this->showForm = false;
     }
 
     #[On('refresh')]
-    public function refresh() {}
+    public function refresh(): void
+    {
+        $this->resetPage();
+    }
 
     /**
      * Retrieves a paginated list of users based on the search criteria.

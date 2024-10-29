@@ -7,7 +7,7 @@
 						focus:border-indigo-500 block w-full sm:text-sm
 						border border-gray-300 rounded-md p-2"
 	>
-		<option value="0">Select Level</option>
+		<option value="">Select Level</option>
 		@foreach ($levels as $level)
 			<option value="{{ $level->code }}">
 				{{ $level->code }}, {{ $level->name }}

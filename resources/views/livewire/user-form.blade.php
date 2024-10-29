@@ -94,7 +94,7 @@
 					<button
 						type="button"
 						class="btn btn-outline-danger float-end"
-						wire:click="$dispatch('clearUserForm')"
+						wire:click="$dispatch('clear-form')"
 					>
 						Cancel
 					</button>
@@ -103,6 +103,7 @@
 				<livewire:form-branch-option />
 				<livewire:form-department-option />
 				<livewire:form-division-option />
+				<livewire:form-sub-division-option />
 				<livewire:form-level-option />
 				<livewire:form-position-option />
 			</div>
@@ -138,8 +139,20 @@
 			</div>
 			@enderror
 		</div>
-		<div>
-			<button type="submit" class="btn bg-primary text-white float-end">Save</button>
+		<div class="flex justify-end gap-2">
+			<button
+				wire:click="$dispatch('hide-form')"
+				type="button"
+				class="btn btn-outline-danger"
+			>
+				Cancel
+			</button>
+			<button
+				type="submit"
+				class="btn bg-primary text-white float-end"
+			>
+				Save
+			</button>
 		</div>
 	</div>
 </form>
