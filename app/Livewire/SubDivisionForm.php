@@ -150,7 +150,7 @@ class SubDivisionForm extends Component
     public function update(): void
     {
         $data = $this->subSubDivisionData();
-        $data['updated_by'] = $this->updatedBy;
+        $data['updated_by'] = auth()->user()->id;
 
         DB::transaction(function () use ($data) {
             $this->subSubDivision->update($data);
