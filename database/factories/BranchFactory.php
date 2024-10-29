@@ -19,7 +19,7 @@ class BranchFactory extends Factory
     {
         return [
             'code' => 'B001',
-            'name' => fake()->name,
+            'name' => fake()->word(),
             'phone' => fake()->phoneNumber,
             'address' => fake()->streetAddress,
             'type' => fake()->randomElement(['branch', 'partner']),

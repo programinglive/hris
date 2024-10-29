@@ -19,7 +19,7 @@ class SubDivisionFactory extends Factory
     {
         return [
             'code' => 'SDIV001',
-            'name' => 'Sub Division ' . $this->faker->name(),
+            'name' => 'Sub Division '.$this->faker->word(),
             'description' => fake()->text(100),
             'created_by' => 1,
             'updated_by' => 1,

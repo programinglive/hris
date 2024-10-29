@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Division;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -19,20 +20,8 @@ class FormDivisionOption extends Component
     #[Url(keep: true)]
     public $departmentCode;
 
-    public $divisions;
-
     #[Url(keep: true)]
     public $divisionCode;
-
-    public function mount(): void
-    {
-        if ($this->companyCode != '' && $this->branchCode != '' && $this->departmentCode != '') {
-            $this->divisions = Division::where('company_code', $this->companyCode)
-                ->where('branch_code', $this->branchCode)
-                ->where('department_code', $this->departmentCode)
-                ->get();
-        }
-    }
 
     /**
      * Update the division ID and dispatch the 'setDivision' event with the new ID.
@@ -41,10 +30,7 @@ class FormDivisionOption extends Component
      */
     public function updatedDivisionCode(string $divisionCode): void
     {
-        $this->resetErrorBag();
-
         $this->dispatch('set-division', $divisionCode);
-        $this->dispatch('get-level', $divisionCode);
     }
 
     /**
@@ -58,27 +44,16 @@ class FormDivisionOption extends Component
         $this->divisionCode = $divisionCode;
     }
 
-    /**
-     * Retrieves the division based on the provided department code and updates the corresponding properties.
-     *
-     * @param  string  $departmentCode  The code of the department.
-     */
-    #[On('get-division')]
-    public function getDivision(string $departmentCode): void
+    public function getDivision(): Collection
     {
-        $this->reset([
-            'divisions',
-        ]);
-
-        $this->divisions = Division::where('department_code', $departmentCode)->get();
+        return Division::all();
     }
 
-    #[On('clear-division-option')]
-    public function clearDivisionOption(): void
+    #[On('clear-form')]
+    public function clearForm(): void
     {
-        $this->reset([
-            'divisionCode',
-        ]);
+        $this->reset();
+        $this->resetErrorBag();
     }
 
     /**
@@ -88,6 +63,8 @@ class FormDivisionOption extends Component
      */
     public function render(): View
     {
-        return view('livewire.form-division-option');
+        return view('livewire.form-division-option', [
+            'divisions' => self::getDivision(),
+        ]);
     }
 }

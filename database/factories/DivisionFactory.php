@@ -19,7 +19,7 @@ class DivisionFactory extends Factory
     {
         return [
             'code' => 'DIV001',
-            'name' => 'Division '.fake()->name,
+            'name' => 'Division '.fake()->word,
             'description' => fake()->text(100),
             'created_by' => 1,
             'updated_by' => 1,

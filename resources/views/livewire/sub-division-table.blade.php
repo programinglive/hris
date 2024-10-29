@@ -67,6 +67,13 @@
 							class="px-6 py-3 text-left text-xs font-medium
 											text-gray-500 uppercase"
 						>
+							Branch
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium
+											text-gray-500 uppercase"
+						>
 							Department
 						</th>
 						<th
@@ -111,6 +118,9 @@
 						<tr>
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $subDivision->company->name }}
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+								{{ $subDivision->branch->name }}
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $subDivision->department->name }}
