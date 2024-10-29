@@ -21,19 +21,11 @@ class ImportDivision extends Component
 
     public $company;
 
-    public $companyId;
-
     public $companyCode;
-
-    public $companyName;
 
     public $branch;
 
-    public $branchId;
-
     public $branchCode;
-
-    public $branchName;
 
     public $import;
 
@@ -59,9 +51,7 @@ class ImportDivision extends Component
                     return;
                 }
 
-                $this->companyId = $this->company->id;
                 $this->companyCode = $this->company->code;
-                $this->companyName = $this->company->name;
 
                 $this->branch = Branch::where('code', $rowProperties['branch_code'])->first();
 
@@ -69,21 +59,19 @@ class ImportDivision extends Component
                     return;
                 }
 
-                $this->branchId = $this->branch->id;
                 $this->branchCode = $this->branch->code;
-                $this->branchName = $this->branch->name;
 
                 $this->division = Division::firstOrNew([
                     'code' => $rowProperties['code'],
                 ]);
 
-                $this->division->company_id = $this->companyId;
+                $this->division->company_id = $this->company->id;
                 $this->division->company_code = $this->companyCode;
-                $this->division->company_name = $this->companyName;
+                $this->division->company_name = $this->company->name;
 
-                $this->division->branch_id = $this->branchId;
+                $this->division->branch_id = $this->branch->id;
                 $this->division->branch_code = $this->branchCode;
-                $this->division->branch_name = $this->branchName;
+                $this->division->branch_name = $this->branch->name;
 
                 $this->department = Department::where(
                     'code', $rowProperties['department_code'])

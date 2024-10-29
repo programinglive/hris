@@ -44,7 +44,7 @@ class FormDivisionOption extends Component
         $this->resetErrorBag();
 
         $this->dispatch('set-division', $divisionCode);
-        $this->dispatch('getLevel', $divisionCode);
+        $this->dispatch('get-level', $divisionCode);
     }
 
     /**
