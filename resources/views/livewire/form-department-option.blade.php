@@ -8,11 +8,9 @@
 						border-gray-300 rounded-md p-2"
 	>
 		<option value="">Select Department</option>
-		@if($departments)
 		@foreach ($departments as $department)
 			<option value="{{ $department->code }}">{{ $department->name }}</option>
 		@endforeach
-		@endif
 	</select>
 	@error('departmentCode')
 	<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
