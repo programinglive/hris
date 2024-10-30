@@ -152,6 +152,8 @@ class ImportUser extends Component
                 $userDetail->date_in = $rowProperties['date_in'] == '' ? null : $rowProperties['date_in'];
                 $userDetail->date_out = $rowProperties['date_out'] == '' ? null : $rowProperties['date_out'];
                 $userDetail->save();
+
+                $user->save();
             });
 
         $this->dispatch('refresh');
