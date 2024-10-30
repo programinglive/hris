@@ -19,6 +19,11 @@ class EmployeeController extends Controller
             'users.email',
             'user_details.date_in',
             'user_details.date_out',
+            'user_details.department_code',
+            'user_details.division_code',
+            'user_details.sub_division_code',
+            'user_details.level_code',
+            'user_details.position_code',
         ])
             ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->where('users.name', '!=', 'admin')
