@@ -17,39 +17,25 @@ class EmployeeTable extends Component
     public $showForm = false;
 
     #[Url(keep: true)]
+    public $filterCompanyCode;
+
+    #[Url(keep: true)]
+    public $filterBranchCode;
+
+    #[Url(keep: true)]
     public $search;
 
-    /**
-     * Handles the event when a employee is created.
-     *
-     * @param  int  $employeeId  The ID of the created employee.
-     */
-    #[On('employee-created')]
-    public function employeeAdded(int $employeeId): void
+    #[On('filter-company')]
+    public function filterCompany($companyCode): void
     {
-        $this->showForm = false;
+        $this->filterBranchCode = '';
+        $this->filterCompanyCode = $companyCode;
     }
 
-    /**
-     * Handles the event when a employee is updated.
-     *
-     * @param  int  $employeeId  The ID of the updated employee.
-     */
-    #[On('employee-updated')]
-    public function employeeUpdated(int $employeeId): void
+    #[On('filter-branch')]
+    public function filterBranch($branchCode): void
     {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a employee is deleted.
-     */
-    #[On('employee-deleted')]
-    public function employeeDeleted(): void
-    {
-        $this->showForm = false;
-        $this->resetPage();
-        $this->getEmployees();
+        $this->filterBranchCode = $branchCode;
     }
 
     /**
@@ -59,6 +45,15 @@ class EmployeeTable extends Component
     public function showForm(): void
     {
         $this->showForm = true;
+    }
+
+    /**
+     * Hides the form employee.
+     */
+    #[On('hide-form')]
+    public function hideForm(): void
+    {
+        $this->showForm = false;
     }
 
     #[On('refresh')]
@@ -71,9 +66,26 @@ class EmployeeTable extends Component
      */
     public function getEmployees(): LengthAwarePaginator
     {
-        return User::where('name', 'like', '%'.$this->search.'%')
-            ->whereNot('name', 'admin')
-            ->paginate(10);
+        $users = User::join('user_details', 'user_details.user_id', '=', 'users.id')
+            ->where(function ($query) {
+            $query->where('user_details.nik', 'like', '%'.$this->search.'%')
+                ->orWhere('user_details.first_name', 'like', '%'.$this->search.'%')
+                ->orWhere('user_details.last_name', 'like', '%'.$this->search.'%')
+                ->orWhere('user_details.phone', 'like', '%'.$this->search.'%')
+                ->orWhere('users.email', 'like', '%'.$this->search.'%')
+                ->orWhere('users.name', 'like', '%'.$this->search.'%');
+        })->orderBy('id');
+
+        if ($this->filterCompanyCode) {
+            $users->where('user_details.company_code', $this->filterCompanyCode);
+        }
+
+        if ($this->filterBranchCode) {
+            $users->where('user_details.branch_code', $this->filterBranchCode);
+        }
+
+        return $users->paginate(10);
+
     }
 
     /**
