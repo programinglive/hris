@@ -120,6 +120,8 @@ class ImportUser extends Component
 
                 $user->password = bcrypt('hris123');
                 $user->email = $rowProperties['email'] == '' ? time().'@test.com' : $rowProperties['name'].'@test.com';
+                $user->save();
+
 
                 $userDetail = UserDetail::firstOrNew([
                     'user_id' => $user->id
@@ -153,7 +155,6 @@ class ImportUser extends Component
                 $userDetail->date_out = $rowProperties['date_out'] == '' ? null : $rowProperties['date_out'];
                 $userDetail->save();
 
-                $user->save();
             });
 
         $this->dispatch('refresh');
