@@ -44,9 +44,6 @@ class LoginPage extends Component
         if (Auth::user()) {
             return redirect()->intended('dashboard');
         }
-
-        $this->loginAccount = 'admin@test.com';
-        $this->password = 'hrisproject';
     }
 
     /**
