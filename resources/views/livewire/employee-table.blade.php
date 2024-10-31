@@ -109,13 +109,13 @@
 			@forelse($employees as $employee)
 				<tr>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
-						{{ $employee->details?->company?->name }}
+						{{ $employee->company?->name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
-						{{ $employee->details?->branch?->name }}
+						{{ $employee->branch?->name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
-						{{ $employee->details?->nik }}
+						{{ $employee->nik }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
 						{{ $employee->user->name }}
@@ -127,41 +127,41 @@
 						{{ $employee->phone }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
-						{{ $employee->details?->first_name }}
+						{{ $employee->first_name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[120px]">
-						{{ $employee->details?->last_name }}
+						{{ $employee->last_name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
-						{{ $employee->details?->department?->name }}
+						{{ $employee->department?->name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
-						{{ $employee->details?->division?->name }}
+						{{ $employee->division?->name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
-						{{ $employee->details?->subDivision?->name }}
+						{{ $employee->subDivision?->name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
-						{{ $employee->details?->level?->name }}
+						{{ $employee->level?->name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
-						{{ $employee->details?->position?->name }}
+						{{ $employee->position?->name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
-						{{ $employee->details?->date_in ? date('Y-m-d' , strtotime($employee->details?->date_in)) : ''}}
+						{{ $employee->date_in ? date('Y-m-d' , strtotime($employee->date_in)) : ''}}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500">
-						{{ $employee->details?->date_out ? date('Y-m-d' , strtotime($employee->details?->date_out)) : ''}}
+						{{ $employee->date_out ? date('Y-m-d' , strtotime($employee->date_out)) : ''}}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-end flex flex-col space-y-2">
 						<button
-							wire:click="$dispatch('edit', { nik: '{{ $employee->details?->nik }}'})"
+							wire:click="$dispatch('edit', { nik: '{{ $employee->nik }}'})"
 							class="text-gray-500 hover:text-sky-700"
 						>
 							Edit
 						</button>
 						<button
-							wire:click="$dispatch('delete', { nik: '{{ $employee->details?->nik }}'})"
+							wire:click="$dispatch('delete', { nik: '{{ $employee->nik }}'})"
 							class="text-gray-500 hover:text-sky-700"
 						>
 							Delete
