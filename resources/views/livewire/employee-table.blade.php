@@ -118,10 +118,10 @@
 						{{ $employee->details?->nik }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
-						{{ $employee->name }}
+						{{ $employee->user->name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
-						{{ $employee->email }}
+						{{ $employee->user->email }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
 						{{ $employee->phone }}

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
@@ -66,14 +67,11 @@ class EmployeeTable extends Component
      */
     public function getEmployees(): LengthAwarePaginator
     {
-        $users = User::join('user_details', 'user_details.user_id', '=', 'users.id')
-            ->where(function ($query) {
+        $users = UserDetail::where(function ($query) {
             $query->where('user_details.nik', 'like', '%'.$this->search.'%')
                 ->orWhere('user_details.first_name', 'like', '%'.$this->search.'%')
                 ->orWhere('user_details.last_name', 'like', '%'.$this->search.'%')
-                ->orWhere('user_details.phone', 'like', '%'.$this->search.'%')
-                ->orWhere('users.email', 'like', '%'.$this->search.'%')
-                ->orWhere('users.name', 'like', '%'.$this->search.'%');
+                ->orWhere('user_details.phone', 'like', '%'.$this->search.'%');
         })
             ->where('users.name', '!=', 'admin')
             ->orderBy('user_details.nik', 'desc');
