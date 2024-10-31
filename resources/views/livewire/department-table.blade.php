@@ -104,23 +104,23 @@
 					<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
 					@forelse($departments as $department)
 						<tr>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								<div>{{ $department->company_name }}</div>
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								<div>{{ $department->branch_name }}</div>
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								<div>{{ $department->code }}</div>
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								<div>{{ $department->name }}</div>
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								<div>{{ $department->description }}</div>
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-end text-sm
+								class="px-4 py-2 whitespace-nowrap text-end text-sm
 												font-medium flex flex-col"
 								style="width: 100px"
 							>

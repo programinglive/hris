@@ -111,26 +111,26 @@
 					<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
 					@forelse($divisions as $division)
 						<tr>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								<div>{{ $division->company_name }}</div>
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								<div>{{ $division->branch_name }}</div>
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								<div>{{ $division->department_name }}</div>
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								<div>{{ $division->code }}</div>
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								<div>{{ $division->name }}</div>
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								<div>{{ $division->description }}</div>
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-end text-sm
+								class="px-4 py-2 whitespace-nowrap text-end text-sm
 												font-medium flex flex-col"
 								style="width: 100px"
 							>

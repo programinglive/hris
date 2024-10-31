@@ -169,47 +169,47 @@
 					@forelse($assets as $asset)
 						<tr>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $asset->company_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $asset->branch_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $asset->code }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $asset->name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $asset->request_by }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $asset->request_date }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $asset->approve_by }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $asset->next_approve }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-end text-sm
+								class="px-4 py-2 whitespace-nowrap text-end text-sm
 												font-medium flex flex-col"
 								style="width: 100px"
 							>

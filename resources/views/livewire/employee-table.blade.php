@@ -118,10 +118,10 @@
 						{{ $employee->nik }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
-						{{ $employee->user->name }}
+						{{ $employee->user?->name }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
-						{{ $employee->user->email }}
+						{{ $employee->user?->email }}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
 						{{ $employee->phone }}
@@ -154,18 +154,35 @@
 						{{ $employee->date_out ? date('Y-m-d' , strtotime($employee->date_out)) : ''}}
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-end flex flex-col space-y-2">
-						<button
-							wire:click="$dispatch('edit', { nik: '{{ $employee->nik }}'})"
-							class="text-gray-500 hover:text-sky-700"
-						>
-							Edit
-						</button>
-						<button
-							wire:click="$dispatch('delete', { nik: '{{ $employee->nik }}'})"
-							class="text-gray-500 hover:text-sky-700"
-						>
-							Delete
-						</button>
+						
+						<div x-data="{ open: false }" class="relative">
+							<button
+								@click="open = !open"
+								class="text-gray-500 hover:text-sky-700 text-end"
+							>
+								...
+							</button>
+							<div
+								style="z-index: 9999"
+								x-show="open"
+								class="absolute right-0 top-0 bg-white
+															dark:bg-slate-800 p-2 rounded-md shadow-lg "
+								@click.outside="open = false"
+							>
+								<button
+									wire:click="$dispatch('edit', { nik: '{{ $employee->nik }}'}); open = false"
+									class="block w-full text-gray-500 hover:text-sky-700 text-end"
+								>
+									Edit
+								</button>
+								<button
+									wire:click="$dispatch('delete', { nik: '{{ $employee->nik }}'}); open = false"
+									class="block w-full text-gray-500 hover:text-sky-700 text-end"
+								>
+									Delete
+								</button>
+							</div>
+						</div>
 					</td>
 				</tr>
 			@empty

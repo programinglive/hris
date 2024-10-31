@@ -100,32 +100,32 @@
 					@forelse($workingCalendars as $working_calendar)
 						<tr>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $working_calendar->company_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $working_calendar->branch_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $working_calendar->date }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $working_calendar->type }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $working_calendar->description }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-end text-sm
+								class="px-4 py-2 whitespace-nowrap text-end text-sm
 												font-medium flex flex-col"
 								style="width: 100px"
 							>

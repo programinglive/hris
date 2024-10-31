@@ -94,6 +94,8 @@ class UserForm extends Component
 
     public $user;
 
+    public $userDetail;
+
     public $actionForm = 'save';
 
     /**
@@ -310,40 +312,56 @@ class UserForm extends Component
      * Edit the user details.
      */
     #[On('edit')]
-    public function edit($name): void
+    public function edit($nik): void
     {
-        $this->user = User::where('name', $name)->first();
+        $this->userDetail = UserDetail::where('nik', $nik)->first();
+        $this->user = $this->userDetail->user;
         $this->name = $this->user->name;
         $this->email = $this->user->email;
-        $this->details = $this->user->details->toArray();
+        $this->details = $this->userDetail->toArray();
+        $this->dispatch('set-detail', $this->details);
 
         $this->company = Company::where('code', $this->details['company_code'])->first();
-        $this->companyCode = $this->company->code;
-        $this->dispatch('set-company', $this->companyCode);
+        if ($this->company) {
+            $this->companyCode = $this->company->code;
+            $this->dispatch('set-company', $this->companyCode);
+        }
 
         $this->branch = Branch::where('code', $this->details['branch_code'])->first();
-        $this->branchCode = $this->branch->code;
-        $this->dispatch('set-branch', $this->branchCode);
+        if ($this->branch) {
+            $this->branchCode = $this->branch->code;
+            $this->dispatch('set-branch', $this->branchCode);
+        }
 
         $this->department = Department::find($this->details['department_id']);
-        $this->departmentCode = $this->department->code;
-        $this->dispatch('set-department', $this->departmentCode);
+        if ($this->department) {
+            $this->departmentCode = $this->department->code;
+            $this->dispatch('set-department', $this->departmentCode);
+        }
 
         $this->division = Division::find($this->details['division_id']);
-        $this->divisionCode = $this->division->code;
-        $this->dispatch('set-division', $this->divisionCode);
+        if ($this->division) {
+            $this->divisionCode = $this->division->code;
+            $this->dispatch('set-division', $this->divisionCode);
+        }
 
         $this->subDivision = SubDivision::find($this->details['sub_division_id']);
-        $this->subDivisionCode = $this->subDivision->code;
-        $this->dispatch('set-sub-division', $this->subDivisionCode);
+        if ($this->subDivision) {
+            $this->subDivisionCode = $this->subDivision->code;
+            $this->dispatch('set-sub-division', $this->subDivisionCode);
+        }
 
         $this->position = Position::find($this->details['position_id']);
-        $this->positionCode = $this->position->code;
-        $this->dispatch('set-position', $this->positionCode);
+        if ($this->position) {
+            $this->positionCode = $this->position->code;
+            $this->dispatch('set-position', $this->positionCode);
+        }
 
         $this->level = Level::find($this->details['level_id']);
-        $this->levelCode = $this->level->code;
-        $this->dispatch('set-level', $this->levelCode);
+        if ($this->level) {
+            $this->levelCode = $this->level->code;
+            $this->dispatch('set-level', $this->levelCode);
+        }
 
         $this->actionForm = 'update';
         $this->dispatch('show-form');
@@ -354,8 +372,21 @@ class UserForm extends Component
      */
     public function update(): void
     {
+        if (! $this->company) {
+            $this->addError('errorMessage', 'Please Select Company First');
+
+            return;
+        }
+
+        if (! $this->branch) {
+            $this->addError('errorMessage', 'Please Select Branch First');
+
+            return;
+        }
+
         DB::transaction(function () {
             $userData = $this->userData();
+
             unset($userData['password']);
             if ($this->newPassword) {
                 $this->validateOnly('password_confirmation');
@@ -363,6 +394,8 @@ class UserForm extends Component
             }
 
             $this->user->update($userData);
+            $this->userDetail = $this->user->details;
+            $this->userDetail->update(self::UserDetailData($this->user));
         }, 5);
 
         $this->dispatch('hide-form');
@@ -373,11 +406,13 @@ class UserForm extends Component
      * Deletes the user from the database.
      */
     #[On('delete')]
-    public function destroy($name): void
+    public function destroy($nik): void
     {
-        $this->user = User::where('name', $name)->first();
-        $this->user->name = $this->user->name.time().'-deleted';
-        $this->user->delete();
+        $this->userDetail = UserDetail::where('nik', $nik)->first();
+        $this->userDetail->user->name = $this->userDetail->user->name.time().'-deleted';
+        $this->userDetail->user->delete();
+
+        $this->userDetail->delete();
 
         $this->dispatch('refresh');
     }

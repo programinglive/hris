@@ -160,37 +160,37 @@
 					@forelse($subCategories as $subCategory)
 						<tr>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $subCategory->company_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $subCategory->branch_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $subCategory->category_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $subCategory->code }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $subCategory->name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-end
+								class="px-4 py-2 whitespace-nowrap text-end
 												text-sm font-medium flex flex-col"
 								style="width: 100px"
 							>

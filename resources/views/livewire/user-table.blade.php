@@ -120,43 +120,43 @@
 						@if($user->name != 'root')
 							<tr>
 								<td
-									wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"
-									class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+									wire:click="$dispatch('edit', { nik: '{{ $user->nik }}'})"
+									class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"
 								>
-									{{ $user->details?->company_name }}
+									{{ $user->company_name }}
 								</td>
 								<td
-									wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"
-									class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+									wire:click="$dispatch('edit', { nik: '{{ $user->nik }}'})"
+									class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"
 								>
-									{{ $user->details?->branch_name }}
+									{{ $user->branch_name }}
 								</td>
 								<td
-									wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"
-									class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+									wire:click="$dispatch('edit', { nik: '{{ $user->nik }}'})"
+									class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"
 								>
 										{{ $user->name }}
 								</td>
 								<td
-									wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"
-									class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+									wire:click="$dispatch('edit', { nik: '{{ $user->nik }}'})"
+									class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"
 								>
-									{{ $user->details?->first_name }}
+									{{ $user->first_name }}
 								</td>
 								<td
-									wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"
-									class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+									wire:click="$dispatch('edit', { nik: '{{ $user->nik }}'})"
+									class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"
 								>
-									{{ $user->email }}
+									{{ $user->user->email }}
 								</td>
 								<td
-									wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"
-									class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+									wire:click="$dispatch('edit', { nik: '{{ $user->nik }}'})"
+									class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"
 								>
-									{{ $user->details?->phone }}
+									{{ $user->phone }}
 								</td>
 								<td
-									class="px-6 py-4 whitespace-nowrap text-end
+									class="px-4 py-2 whitespace-nowrap text-end
 									text-sm font-medium flex flex-col"
 									style="width: 100px"
 								>
@@ -175,13 +175,13 @@
 											@click.outside="open = false"
 										>
 											<button
-												wire:click="$dispatch('edit', { name: '{{ $user->name }}'})"
+												wire:click="$dispatch('edit', { nik: '{{ $user->nik }}'}); open = false"
 												class="block w-full text-gray-500 hover:text-sky-700 text-end"
 											>
 												Edit
 											</button>
 											<button
-												wire:click="$dispatch('delete', { name: '{{ $user->name }}'})"
+												wire:click="$dispatch('delete', { nik: '{{ $user->nik }}'}); open = false"
 												class="block w-full text-gray-500 hover:text-sky-700 text-end"
 											>
 												Delete

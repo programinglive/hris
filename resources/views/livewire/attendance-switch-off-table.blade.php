@@ -193,42 +193,42 @@
 					@forelse($attendanceSwitchOffs as $attendanceSwitchOff)
 						<tr>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $attendanceSwitchOff->company_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $attendanceSwitchOff->branch_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $attendanceSwitchOff->employee_nik }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $attendanceSwitchOff->employee_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $attendanceSwitchOff->from_date }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $attendanceSwitchOff->to_date }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $attendanceSwitchOff->status }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-end text-sm
+								class="px-4 py-2 whitespace-nowrap text-end text-sm
 												font-medium flex flex-col"
 								style="width: 100px"
 							>

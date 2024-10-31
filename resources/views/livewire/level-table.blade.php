@@ -120,29 +120,29 @@
 					<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
 					@forelse($levels as $level)
 						<tr>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $level->company->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $level->department?->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $level->division?->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $level->subDivision?->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $level->code }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $level->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $level->description }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex flex-col"
+								class="px-4 py-2 whitespace-nowrap text-end text-sm font-medium flex flex-col"
 								style="width: 100px"
 							>
 								<button

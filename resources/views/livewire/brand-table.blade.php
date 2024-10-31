@@ -131,37 +131,37 @@
 					@forelse($brands as $brand)
 						<tr>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $brand->company_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $brand->branch_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $brand->code }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $brand->name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $brand->description }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-end
+								class="px-4 py-2 whitespace-nowrap text-end
 												text-sm font-medium flex flex-col"
 								style="width: 100px"
 							>

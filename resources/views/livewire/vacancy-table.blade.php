@@ -189,27 +189,27 @@
 					@forelse($vacancies as $vacancy)
 						<tr>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-nowrap"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500 text-nowrap"
 							>
 								{{ $vacancy->company_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-nowrap"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500 text-nowrap"
 							>
 								{{ $vacancy->branch_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-nowrap"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500 text-nowrap"
 							>
 								{{ $vacancy->code }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-nowrap"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500 text-nowrap"
 							>
 								{{ $vacancy->name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-end text-sm
+								class="px-4 py-2 whitespace-nowrap text-end text-sm
 												font-medium flex flex-col"
 								style="width: 100px"
 							>

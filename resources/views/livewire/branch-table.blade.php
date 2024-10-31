@@ -131,37 +131,37 @@
 					@forelse($branches as $branch)
 						<tr>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $branch->company_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $branch->code }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $branch->name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $branch->phone }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap
+								class="px-4 py-2 whitespace-nowrap
 												text-sm font-medium text-gray-500"
 							>
 								{{ $branch->address }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-end
+								class="px-4 py-2 whitespace-nowrap text-end
 												text-sm font-medium flex flex-col"
 								style="width: 100px"
 							>

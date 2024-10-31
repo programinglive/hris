@@ -116,29 +116,29 @@
 					<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
 					@forelse($subDivisions as $subDivision)
 						<tr>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $subDivision->company->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $subDivision->branch->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $subDivision->department->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $subDivision->division->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $subDivision->code }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $subDivision->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $subDivision->description }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium
+								class="px-4 py-2 whitespace-nowrap text-end text-sm font-medium
 												flex flex-col sticky right-0" style="width: 100px"
 							>
 								<button

@@ -84,7 +84,6 @@ class EmployeeTable extends Component
         }
 
         return $users->paginate(10);
-
     }
 
     /**

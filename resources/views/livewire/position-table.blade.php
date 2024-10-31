@@ -106,35 +106,35 @@
 					<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
 					@forelse($positions as $position)
 						<tr>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $position->company->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $position->branch->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $position->department->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $position->division->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $position->subDivision->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $position->level->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $position->code }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $position->name }}
 							</td>
-							<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+							<td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500">
 								{{ $position->description }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-end text-sm
+								class="px-4 py-2 whitespace-nowrap text-end text-sm
 												font-medium flex flex-col"
 								style="width: 100px"
 							>

@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
@@ -79,33 +79,24 @@ class UserTable extends Component
      */
     public function getUsers(): LengthAwarePaginator
     {
-        $users = User::join(
-            'user_details',
-            'user_details.user_id',
-            '=', 'users.id'
-        )
-            ->where(function ($query) {
-                $query->where('user_details.nik', 'like', '%'.$this->search.'%')
-                    ->orWhere('users.name', 'like', '%'.$this->search.'%');
-            })
-            ->where(function ($query) {
-                $query->whereNot('users.name', 'like', 'admin');
-            });
+        $users = UserDetail::where(function ($query) {
+            $query->where('user_details.nik', 'like', '%'.$this->search.'%')
+                ->orWhere('user_details.first_name', 'like', '%'.$this->search.'%')
+                ->orWhere('user_details.last_name', 'like', '%'.$this->search.'%')
+                ->orWhere('user_details.phone', 'like', '%'.$this->search.'%');
+        })
+            ->where('user_details.first_name', '!=', 'admin')
+            ->orderBy('user_details.nik', 'desc');
 
-        if ($this->filterCompanyCode != '') {
-            $users->where(function ($query) {
-                $query->where('user_details.company_code', $this->filterCompanyCode);
-            });
+        if ($this->filterCompanyCode) {
+            $users->where('user_details.company_code', $this->filterCompanyCode);
         }
 
-        if ($this->filterBranchCode != '') {
-            $users->where(function ($query) {
-                $query->where('user_details.branch_code', $this->filterBranchCode);
-            });
+        if ($this->filterBranchCode) {
+            $users->where('user_details.branch_code', $this->filterBranchCode);
         }
 
-        return $users->orderBy('users.id')
-            ->paginate(10);
+        return $users->paginate(10);
     }
 
     /**

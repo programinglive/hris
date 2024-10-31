@@ -169,42 +169,42 @@
 					@forelse($leaveTypes as $leaveType)
 						<tr>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $leaveType->company_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $leaveType->branch_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $leaveType->employee_nik }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $leaveType->employee_name }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $leaveType->in }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $leaveType->out }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $leaveType->status }}
 							</td>
 							<td
-								class="px-6 py-4 whitespace-nowrap text-end text-sm
+								class="px-4 py-2 whitespace-nowrap text-end text-sm
 												font-medium flex flex-col"
 								style="width: 100px"
 							>
