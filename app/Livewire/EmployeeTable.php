@@ -72,7 +72,7 @@ class EmployeeTable extends Component
                 ->orWhere('user_details.last_name', 'like', '%'.$this->search.'%')
                 ->orWhere('user_details.phone', 'like', '%'.$this->search.'%');
         })
-            ->where('users.name', '!=', 'admin')
+            ->where('user_details.first_name', '!=', 'admin')
             ->orderBy('user_details.nik', 'desc');
 
         if ($this->filterCompanyCode) {
