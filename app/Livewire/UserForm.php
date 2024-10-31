@@ -55,7 +55,6 @@ class UserForm extends Component
     #[Url(keep: true)]
     public $positionCode;
 
-
     #[Validate('required|unique:users|regex:/^\S+$/')]
     public $name;
 
@@ -114,7 +113,7 @@ class UserForm extends Component
     /**
      * Set the details for the user to be created.
      *
-     * @param array $details  The details of the user.
+     * @param  array  $details  The details of the user.
      */
     #[On('set-detail')]
     public function setDetail(array $details): void
@@ -317,7 +316,7 @@ class UserForm extends Component
         $this->name = $this->user->name;
         $this->email = $this->user->email;
         $this->details = $this->user->details->toArray();
-        
+
         $this->company = Company::where('code', $this->details['company_code'])->first();
         $this->companyCode = $this->company->code;
         $this->dispatch('set-company', $this->companyCode);
@@ -366,7 +365,6 @@ class UserForm extends Component
             $this->user->update($userData);
         }, 5);
 
-
         $this->dispatch('hide-form');
         $this->dispatch('refresh');
     }
@@ -378,7 +376,7 @@ class UserForm extends Component
     public function destroy($name): void
     {
         $this->user = User::where('name', $name)->first();
-        $this->user->name = $this->user->name . time(). '-deleted';
+        $this->user->name = $this->user->name.time().'-deleted';
         $this->user->delete();
 
         $this->dispatch('refresh');

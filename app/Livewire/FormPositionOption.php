@@ -49,7 +49,7 @@ class FormPositionOption extends Component
      */
     public function render(): View
     {
-        return view('livewire.form-position-option',[
+        return view('livewire.form-position-option', [
             'positions' => self::getPosition(),
         ]);
     }

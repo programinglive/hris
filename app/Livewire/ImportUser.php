@@ -92,7 +92,7 @@ class ImportUser extends Component
                 $userUpdated = User::where('name', $rowProperties['name'])
                     ->whereDate('updated_at', today())->first();
 
-                if($userUpdated) {
+                if ($userUpdated) {
                     return;
                 }
 
@@ -122,9 +122,8 @@ class ImportUser extends Component
                 $user->email = $rowProperties['email'] == '' ? time().'@test.com' : $rowProperties['name'].'@test.com';
                 $user->save();
 
-
                 $userDetail = UserDetail::firstOrNew([
-                    'user_id' => $user->id
+                    'user_id' => $user->id,
                 ]);
 
                 $userDetail->company_id = $this->company?->id;

@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
