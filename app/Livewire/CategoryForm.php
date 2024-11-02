@@ -42,9 +42,6 @@ class CategoryForm extends Component
         $this->ifBranchCodeNotEmpty();
     }
 
-    /**
-     * @return void
-     */
     public function ifCompanyCodeNotEmpty(): void
     {
         if ($this->companyCode != '') {
@@ -52,9 +49,6 @@ class CategoryForm extends Component
         }
     }
 
-    /**
-     * @return void
-     */
     public function ifBranchCodeNotEmpty(): void
     {
         if ($this->branchCode != '') {
@@ -65,7 +59,7 @@ class CategoryForm extends Component
     #[On('set-company')]
     public function setCompany(string $companyCode): void
     {
-        if($companyCode === '') {
+        if ($companyCode === '') {
             return;
         }
 
@@ -76,7 +70,7 @@ class CategoryForm extends Component
     #[On('set-branch')]
     public function setBranch(string $branchCode): void
     {
-        if($branchCode === '') {
+        if ($branchCode === '') {
             return;
         }
 

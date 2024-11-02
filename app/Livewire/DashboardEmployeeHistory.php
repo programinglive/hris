@@ -6,7 +6,6 @@ use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
-
 class DashboardEmployeeHistory extends Component
 {
     #[Url(keep: true)]

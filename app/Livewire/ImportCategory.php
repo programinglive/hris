@@ -28,11 +28,11 @@ class ImportCategory extends Component
 
         SimpleExcelReader::create($this->import)->getRows()
             ->each(function (array $rowProperties) {
-                if( $rowProperties['company_code'] == '' ) {
+                if ($rowProperties['company_code'] == '') {
                     return;
                 }
 
-                if( $rowProperties['branch_code'] == '' ) {
+                if ($rowProperties['branch_code'] == '') {
                     return;
                 }
 
