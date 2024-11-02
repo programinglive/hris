@@ -16,6 +16,9 @@ class DashboardPage extends Component
     #[Url(keep: true)]
     public $filterBranchCode;
 
+    #[Url(keep: true)]
+    public $filterYear = '2024';
+
     /**
      * Render the view for the dashboard page.
      */
