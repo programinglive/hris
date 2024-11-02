@@ -114,9 +114,8 @@ class CategoryForm extends Component
             $this->category = Category::create($this->categoryData());
         }, 5);
 
-        $this->dispatch('category-created', categoryId: $this->category->id);
-
-        $this->reset();
+        $this->dispatch('refresh');
+        $this->dispatch('hide-form');
     }
 
     /**
@@ -128,6 +127,13 @@ class CategoryForm extends Component
         $this->category = Category::where('code', $code)->first();
         $this->code = $this->category->code;
         $this->name = $this->category->name;
+        $this->description = $this->category->description;
+
+        $this->company = Company::where('code', $this->category->company_code)->first();
+        $this->dispatch('set-company', $this->company->code);
+
+        $this->branch = Branch::where('code', $this->category->branch_code)->first();
+        $this->dispatch('set-branch', $this->branch->code);
 
         $this->actionForm = 'update';
 
@@ -140,12 +146,14 @@ class CategoryForm extends Component
     public function update(): void
     {
         DB::transaction(function () {
-            $this->category->update($this->categoryData());
+            $data = $this->categoryData();
+            $data['updated_by'] = auth()->user()->id;
+
+            $this->category->update($data);
         }, 5);
 
-        $this->dispatch('category-updated', categoryId: $this->category->id);
-
-        $this->reset();
+        $this->dispatch('refresh');
+        $this->dispatch('hide-form');
     }
 
     /**
@@ -155,14 +163,12 @@ class CategoryForm extends Component
     public function destroy($code): void
     {
         $this->category = Category::where('code', $code)->first();
-        $this->category->code = $this->category->code.'-deleted';
+        $this->category->code = $this->category->code.time().'-deleted';
         $this->category->save();
 
         $this->category->delete();
 
-        $this->reset();
-
-        $this->dispatch('category-deleted', refreshCompanies: true);
+        $this->dispatch('refresh');
     }
 
     #[On('clear-form')]

@@ -44,6 +44,7 @@ class ImportCategory extends Component
                 ]);
 
                 $category->name = $rowProperties['name'];
+                $category->description = $rowProperties['description'];
                 $category->company_id = $company->id;
                 $category->company_code = $company->code;
                 $category->company_name = $company->name;
