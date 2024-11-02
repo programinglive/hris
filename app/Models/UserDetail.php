@@ -67,7 +67,6 @@ class UserDetail extends Model
         return $this->belongsTo(SubDivision::class);
     }
 
-
     /**
      * Get the level that owns the user detail.
      */
