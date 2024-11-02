@@ -2,10 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Models\Branch;
 use App\Models\Category;
+use App\Models\Company;
 use DB;
 use Illuminate\Contracts\View\View;
-use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
@@ -15,21 +16,13 @@ class CategoryForm extends Component
 {
     public $company;
 
-    public $companyId;
-
     #[Url(keep: true)]
     public $companyCode;
 
-    public $companyName;
-
     public $branch;
-
-    public $branchId;
 
     #[Url(keep: true)]
     public $branchCode;
-
-    public $branchName;
 
     #[Validate('required|unique:categories|min:3')]
     public $code;
@@ -37,28 +30,58 @@ class CategoryForm extends Component
     #[Validate('required|unique:categories|min:3')]
     public $name;
 
+    public $description;
+
     public $category;
-
-    public $createdBy;
-
-    public $updatedBy;
 
     public $actionForm = 'save';
 
-    /**
-     * Updates the specified property with the given value and performs validation if the property is 'code',
-     * 'email', or 'phone'.
-     *
-     * @param  string  $key  The name of the property to be updated.
-     * @param  mixed  $value  The new value for the property.
-     *
-     * @throws ValidationException
-     */
-    public function updated(string $key, mixed $value): void
+    public function mount(): void
     {
-        if ($key == 'name') {
-            $this->validateOnly($key);
+        $this->ifCompanyCodeNotEmpty();
+        $this->ifBranchCodeNotEmpty();
+    }
+
+    /**
+     * @return void
+     */
+    public function ifCompanyCodeNotEmpty(): void
+    {
+        if ($this->companyCode != '') {
+            $this->company = Company::where('code', $this->companyCode)->first();
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function ifBranchCodeNotEmpty(): void
+    {
+        if ($this->branchCode != '') {
+            $this->branch = Branch::where('code', $this->branchCode)->first();
+        }
+    }
+
+    #[On('set-company')]
+    public function setCompany(string $companyCode): void
+    {
+        if($companyCode === '') {
+            return;
+        }
+
+        $this->companyCode = $companyCode;
+        $this->company = Company::where('code', $companyCode)->first();
+    }
+
+    #[On('set-branch')]
+    public function setBranch(string $branchCode): void
+    {
+        if($branchCode === '') {
+            return;
+        }
+
+        $this->branchCode = $branchCode;
+        $this->branch = $this->company->branches()->where('code', $branchCode)->first();
     }
 
     /**
@@ -67,16 +90,16 @@ class CategoryForm extends Component
     public function categoryData(): array
     {
         return [
-            'company_id' => 1,
-            'branch_id' => 1,
+            'company_id' => $this->company?->id,
+            'branch_id' => $this->branch?->id,
             'code' => $this->code,
             'name' => $this->name,
+            'description' => $this->description,
             'company_code' => $this->companyCode,
-            'company_name' => $this->companyName,
+            'company_name' => $this->company?->name,
             'branch_code' => $this->branchCode,
-            'branch_name' => $this->branchName,
-            'created_bt' => $this->createdBy,
-            'updated_by' => $this->updatedBy,
+            'branch_name' => $this->branch?->name,
+            'created_bt' => auth()->user()->id,
         ];
     }
 
@@ -140,6 +163,13 @@ class CategoryForm extends Component
         $this->reset();
 
         $this->dispatch('category-deleted', refreshCompanies: true);
+    }
+
+    #[On('clear-form')]
+    public function clearForm(): void
+    {
+        $this->reset();
+        $this->resetErrorBag();
     }
 
     /**
