@@ -1,6 +1,6 @@
-<div class="flex-1 bg-white p-6 rounded-lg shadow">
+<div class="col-span-2 bg-white p-6 rounded-lg shadow">
 	<div class="flex justify-between">
-		<h3 class="text-xl">Employee History </h3>
+		<h3 class="text-xl">History </h3>
 		<h3 class="text-xl">
 			{{ $filterYear }}
 		</h3>
@@ -39,9 +39,6 @@
 					scales: {
 						y: {
 							beginAtZero: true,
-							grid: {
-								offset: false
-							}
 						}
 					}
 				}

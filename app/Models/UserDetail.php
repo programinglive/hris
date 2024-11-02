@@ -15,6 +15,10 @@ class UserDetail extends Model
 
     public $guarded = ['id'];
 
+    protected $casts = [
+        'date_of_birth' => 'datetime:Y-m-d',
+    ];
+
     /**
      * Get the user that owns the user detail.
      */

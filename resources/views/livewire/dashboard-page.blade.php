@@ -5,10 +5,16 @@
 		<livewire:dashboard-off-boarding-count />
 		<livewire:dashboard-probation-count />
 	</div>
-	<div class="grid grid-cols-2 gap-4">
+	<div class="grid grid-cols-4 gap-4">
 		<livewire:dashboard-employee-history :filterYear="$filterYear"/>
+		<livewire:dashboard-employee-gender :filterYear="$filterYear"/>
+		<livewire:dashboard-employee-birthday :filterYear="$filterYear"/>
+		<div class="col-span-2 flex flex-col gap-2">
+			<livewire:dashboard-employee-late :filterYear="$filterYear"/>
+			<livewire:dashboard-employee-leave :filterYear="$filterYear"/>
+		</div>
+		<livewire:dashboard-employee-interview :filterYear="$filterYear"/>
 		<livewire:dashboard-employee-turn-over :filterYear="$filterYear"/>
-		<livewire:dashboard-employee-late :filterYear="$filterYear"/>
-		<livewire:dashboard-employee-leave :filterYear="$filterYear"/>
+		<livewire:dashboard-employee-request :filterYear="$filterYear"/>
 	</div>
 </div>

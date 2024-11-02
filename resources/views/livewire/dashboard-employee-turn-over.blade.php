@@ -1,5 +1,5 @@
-<div class="flex-1 bg-white p-6 rounded-lg shadow">
-	<h3 class="text-xl">Employee Turn Over</h3>
+<div class="col-span-2 bg-white p-6 rounded-lg shadow">
+	<h3 class="text-xl">Turn Over</h3>
 	<canvas id="employee-turn-over" width="400" height="200"></canvas>
 </div>
 
@@ -12,20 +12,28 @@
 			const ctx = document.getElementById('employee-turn-over');
 
 			new Chart(ctx, {
-				type: 'bar',
+				type: 'line',
 				data: {
-					labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+					labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 					datasets: [{
-						label: '# of Votes',
-						data: [12, 19, 3, 5, 2, 3],
+						label: '# of Turn Over',
+						data: Array.from({ length: 12 }, () => Math.floor(Math.random() * 100) + 1),
 						borderWidth: 1,
 						barThickness: 3,
 					}]
 				},
 				options: {
+					layout: {
+						padding: {
+							left: 0,
+							right: 0,
+							top: 0,
+							bottom: 0,
+						},
+					},
 					scales: {
 						y: {
-							beginAtZero: true
+							beginAtZero: true,
 						}
 					}
 				}
