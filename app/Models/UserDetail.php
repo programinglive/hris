@@ -39,6 +39,47 @@ class UserDetail extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    /**
+     * Get the department that owns the user detail.
+     */
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    /**
+     * Get the division that owns the user detail.
+     */
+    public function division(): BelongsTo
+    {
+        return $this->belongsTo(Division::class);
+    }
+
+    /**
+     * Get the subdivision that owns the user detail.
+     */
+    public function subDivision(): BelongsTo
+    {
+        return $this->belongsTo(SubDivision::class);
+    }
+
+
+    /**
+     * Get the level that owns the user detail.
+     */
+    public function level(): BelongsTo
+    {
+        return $this->belongsTo(Level::class);
+    }
+
+    /**
+     * Get the position that owns the user detail.
+     */
+    public function position(): BelongsTo
+    {
+        return $this->belongsTo(Position::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
