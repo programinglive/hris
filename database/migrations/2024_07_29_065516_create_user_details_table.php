@@ -87,12 +87,15 @@ return new class extends Migration
             $table->string('marriage_status')->nullable();
             $table->string('place_of_birth')->nullable();
             $table->timestamp('date_of_birth')->nullable();
-            $table->timestamp('date_in')->nullable();
+            $table->timestamp('probation_in')->nullable();
+            $table->timestamp('probation_out')->nullable();
             $table->timestamp('date_out')->nullable();
+            $table->timestamp('date_in')->nullable();
             $table->string('ktp')->nullable();
             $table->string('npwp')->nullable();
             $table->enum('role', ['administrator', 'employee'])->default('employee');
             $table->string('bank_account')->nullable();
+            $table->string('bank_name')->nullable();
             $table->text('note')->nullable();
             $table->softDeletes();
             $table->timestamps();

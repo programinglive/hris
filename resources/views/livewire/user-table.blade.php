@@ -135,7 +135,7 @@
 									wire:click="$dispatch('edit', { nik: '{{ $user->nik }}'})"
 									class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"
 								>
-										{{ $user->name }}
+										{{ $user->user->name }}
 								</td>
 								<td
 									wire:click="$dispatch('edit', { nik: '{{ $user->nik }}'})"
