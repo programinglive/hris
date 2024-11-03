@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Company;
 use Illuminate\Database\Seeder;
@@ -15,8 +16,8 @@ class CategorySeeder extends Seeder
     {
         $companies = Company::all();
 
-        foreach ($companies as $company) {
-            $branch = $company->branches()->first();
+        foreach ($companies as $key => $company) {
+            $branch = Branch::find($key + 1);
             Category::factory([
                 'company_id' => $company->id,
                 'branch_id' => $branch->id,
