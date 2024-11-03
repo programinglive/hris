@@ -7,7 +7,7 @@
 		<livewire:dashboard-employee-history :filterYear="$filterYear"/>
 		<livewire:dashboard-employee-gender :filterYear="$filterYear"/>
 		<livewire:dashboard-employee-birthday :filterYear="$filterYear"/>
-		<div class="col-span-2 flex flex-col gap-2">
+		<div class="col-span-2 flex flex-col gap-4">
 			<livewire:dashboard-employee-late :filterYear="$filterYear"/>
 			<livewire:dashboard-employee-leave :filterYear="$filterYear"/>
 		</div>
