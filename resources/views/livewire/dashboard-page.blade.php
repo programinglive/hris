@@ -1,11 +1,9 @@
 <div class="flex flex-col gap-4">
-	<div class="flex gap-3">
+	<div class="grid grid-cols-4 gap-4">
 		<livewire:dashboard-employee-count />
 		<livewire:dashboard-on-boarding-count />
 		<livewire:dashboard-off-boarding-count />
 		<livewire:dashboard-probation-count />
-	</div>
-	<div class="grid grid-cols-4 gap-4">
 		<livewire:dashboard-employee-history :filterYear="$filterYear"/>
 		<livewire:dashboard-employee-gender :filterYear="$filterYear"/>
 		<livewire:dashboard-employee-birthday :filterYear="$filterYear"/>
