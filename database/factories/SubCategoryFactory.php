@@ -2,9 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Branch;
-use App\Models\Category;
-use App\Models\Company;
 use App\Models\SubCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

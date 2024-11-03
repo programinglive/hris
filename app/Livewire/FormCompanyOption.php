@@ -30,8 +30,6 @@ class FormCompanyOption extends Component
 
     /**
      * Get company data.
-     *
-     * @return Collection
      */
     public function getCompanyData(): Collection
     {

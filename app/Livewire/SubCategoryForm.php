@@ -60,9 +60,6 @@ class SubCategoryForm extends Component
 
     /**
      * Sets the company code.
-     *
-     * @param  string  $companyCode
-     * @return void
      */
     #[On('set-company')]
     public function setCompany(string $companyCode): void
@@ -75,9 +72,6 @@ class SubCategoryForm extends Component
 
     /**
      * Sets the branch code.
-     *
-     * @param  string  $branchCode
-     * @return void
      */
     #[On('set-branch')]
     public function setBranch(string $branchCode): void
@@ -90,9 +84,6 @@ class SubCategoryForm extends Component
 
     /**
      * Sets the category code.
-     *
-     * @param string $categoryCode
-     * @return void
      */
     #[On('set-category')]
     public function setCategory(string $categoryCode): void
@@ -103,6 +94,7 @@ class SubCategoryForm extends Component
             $this->category = Category::where('code', $this->categoryCode)->first();
         }
     }
+
     /**
      * The default data for the form.
      */
