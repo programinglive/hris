@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             LevelSeeder::class,
             PositionSeeder::class,
             CategorySeeder::class,
+            SubCategorySeeder::class,
             EmployeeSeeder::class,
         ]);
     }

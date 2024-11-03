@@ -104,57 +104,19 @@ class SubCategoryTable extends Component
     }
 
     /**
-     * Sets the company code.
-     *
-     * @param  string  $code  The code to set as the company code.
-     */
-    #[On('set-company')]
-    public function setCompany(string $code): void
-    {
-        $this->companyCode = $code;
-        $this->dispatch('refresh');
-    }
-
-    /**
-     * Handles the event when a subCategory is created.
-     *
-     * @param  int  $subCategoryId  The ID of the created subCategory.
-     */
-    #[On('sub-category-created')]
-    public function subCategoryAdded(int $subCategoryId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a subCategory is updated.
-     *
-     * @param  int  $subCategoryId  The ID of the updated subCategory.
-     */
-    #[On('sub-category-updated')]
-    public function subCategoryUpdated(int $subCategoryId): void
-    {
-        $this->showForm = false;
-    }
-
-    /**
-     * Handles the event when a subCategory is deleted.
-     */
-    #[On('sub-category-deleted')]
-    public function subCategoryDeleted(): void
-    {
-        $this->showForm = false;
-        $this->resetPage();
-        $this->getCategories();
-    }
-
-    /**
      * Shows the form subCategory.
      */
     #[On('show-form')]
     public function showForm(): void
     {
         $this->showForm = true;
+    }
+
+    #[On('hide-form')]
+    public function hideForm(): void
+    {
+        $this->dispatch('clear-form');
+        $this->showForm = false;
     }
 
     /**

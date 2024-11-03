@@ -42,6 +42,9 @@ class CategoryForm extends Component
         $this->ifBranchCodeNotEmpty();
     }
 
+    /**
+     * Handle company code changed
+     */
     public function ifCompanyCodeNotEmpty(): void
     {
         if ($this->companyCode != '') {
@@ -49,6 +52,9 @@ class CategoryForm extends Component
         }
     }
 
+    /**
+     * Handle branch code changed
+     */
     public function ifBranchCodeNotEmpty(): void
     {
         if ($this->branchCode != '') {

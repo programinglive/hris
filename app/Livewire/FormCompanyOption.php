@@ -29,10 +29,9 @@ class FormCompanyOption extends Component
     }
 
     /**
-     * Retrieves the company data based on the value of `$companyCode`.
+     * Get company data.
      *
-     * @return Collection The collection of company data if `$companyCode` is empty,
-     *                    otherwise an empty collection.
+     * @return Collection
      */
     public function getCompanyData(): Collection
     {

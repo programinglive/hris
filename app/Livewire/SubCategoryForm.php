@@ -2,11 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Models\Branch;
 use App\Models\Category;
+use App\Models\Company;
 use App\Models\SubCategory;
 use DB;
 use Illuminate\Contracts\View\View;
-use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
@@ -14,77 +15,112 @@ use Livewire\Component;
 
 class SubCategoryForm extends Component
 {
+    public $company;
+
     #[Url(keep: true)]
     public $companyCode;
 
-    public $companyName;
+    public $branch;
 
     #[Url(keep: true)]
     public $branchCode;
 
-    public $branchName;
-
     #[Url(keep: true)]
     public $categories = [];
 
-    public $categoryId;
+    public $category;
 
+    #[Url(keep: true)]
     public $categoryCode;
 
-    #[Validate('required|unique:categories|min:3')]
+    #[Validate('required|unique:sub_categories,code|min:3')]
     public $code;
 
-    #[Validate('required|unique:categories|min:3')]
+    #[Validate('required|min:3')]
     public $name;
+
+    public $description;
 
     public $subCategory;
 
     public $actionForm = 'save';
 
-    /**
-     * Mounts the component.
-     */
     public function mount(): void
     {
-        $this->categories = Category::where(
-            'company_code', $this->companyCode
-        )
-            ->get()->toArray();
+        $this->categoryCode == '' ?
+            $this->category = null :
+            $this->category = Category::where('code', $this->categoryCode)->first();
+        $this->companyCode == '' ?
+            $this->company = null :
+            $this->company = Company::where('code', $this->companyCode)->first();
+        $this->branchCode == '' ?
+            $this->branch = null :
+            $this->branch = Branch::where('code', $this->branchCode)->first();
     }
 
     /**
-     * Updates the specified property with the given value and performs validation if the property is 'code',
-     * 'email', or 'phone'.
+     * Sets the company code.
      *
-     * @param  string  $key  The name of the property to be updated.
-     * @param  mixed  $value  The new value for the property.
-     *
-     * @throws ValidationException
+     * @param  string  $companyCode
+     * @return void
      */
-    public function updated(string $key, mixed $value): void
+    #[On('set-company')]
+    public function setCompany(string $companyCode): void
     {
-        if ($key == 'name') {
-            $this->validateOnly($key);
-        }
+        $this->companyCode = $companyCode;
+        $this->company = $this->companyCode != '' ?
+                            Company::where('code', $companyCode)->first() :
+                            null;
     }
 
+    /**
+     * Sets the branch code.
+     *
+     * @param  string  $branchCode
+     * @return void
+     */
+    #[On('set-branch')]
+    public function setBranch(string $branchCode): void
+    {
+        $this->branchCode = $branchCode;
+        $this->branch = $this->branchCode != '' ?
+                            Branch::where('code', $branchCode)->first() :
+                            null;
+    }
+
+    /**
+     * Sets the category code.
+     *
+     * @param string $categoryCode
+     * @return void
+     */
+    #[On('set-category')]
+    public function setCategory(string $categoryCode): void
+    {
+        $this->categoryCode = $categoryCode;
+
+        if ($this->categoryCode != '') {
+            $this->category = Category::where('code', $this->categoryCode)->first();
+        }
+    }
     /**
      * The default data for the form.
      */
     public function subCategoryData(): array
     {
         return [
-            'company_id' => 1,
-            'branch_id' => 1,
-            'category_id' => $this->categoryId,
+            'company_id' => $this->company->id,
+            'branch_id' => $this->branch->id,
+            'category_id' => $this->category?->id,
             'code' => $this->code,
             'name' => $this->name,
+            'description' => $this->description,
             'company_code' => $this->companyCode,
-            'company_name' => $this->companyName,
+            'company_name' => $this->company->name,
             'branch_code' => $this->branchCode,
-            'branch_name' => $this->branchName,
+            'branch_name' => $this->branch->name,
             'category_code' => $this->categoryCode,
-            'category_name' => $this->categoryName,
+            'category_name' => $this->category?->name,
         ];
     }
 
@@ -101,9 +137,8 @@ class SubCategoryForm extends Component
             );
         }, 5);
 
-        $this->dispatch('sub-category-created', subCategoryId: $this->subCategory->id);
-
-        $this->reset();
+        $this->dispatch('refresh');
+        $this->dispatch('hide-form');
     }
 
     /**
@@ -115,6 +150,7 @@ class SubCategoryForm extends Component
         $this->subCategory = SubCategory::where('code', $code)->first();
         $this->code = $this->subCategory->code;
         $this->name = $this->subCategory->name;
+        $this->description = $this->subCategory->description;
 
         $this->actionForm = 'update';
 
@@ -127,15 +163,14 @@ class SubCategoryForm extends Component
     public function update(): void
     {
         DB::transaction(function () {
-            $this->subCategory->update($this->subCategoryData());
+            $data = $this->subCategoryData();
+            $data['updated_by'] = auth()->user()->id;
+
+            $this->subCategory->update($data);
         }, 5);
 
-        $this->dispatch(
-            'sub-category-updated',
-            subCategoryId: $this->subCategory->id
-        );
-
-        $this->reset();
+        $this->dispatch('refresh');
+        $this->dispatch('hide-form');
     }
 
     /**
@@ -145,14 +180,19 @@ class SubCategoryForm extends Component
     public function destroy($code): void
     {
         $this->subCategory = SubCategory::where('code', $code)->first();
-        $this->subCategory->code = $this->subCategory->code.'-deleted';
+        $this->subCategory->code = $this->subCategory->code.time().'-deleted';
         $this->subCategory->save();
 
         $this->subCategory->delete();
 
-        $this->reset();
+        $this->dispatch('refresh');
+    }
 
-        $this->dispatch('sub-category-deleted', refreshCompanies: true);
+    #[On('clear-form')]
+    public function clearForm(): void
+    {
+        $this->reset();
+        $this->resetErrorBag();
     }
 
     /**
