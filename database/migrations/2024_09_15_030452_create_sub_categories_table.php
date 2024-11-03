@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('category_name')->nullable();
             $table->string('code')->unique();
             $table->string('name');
+            $table->string('description')->nullable();
         });
     }
 
