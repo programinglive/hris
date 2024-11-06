@@ -37,6 +37,7 @@
 			<livewire:transaction-business-trip-menu />
 			<livewire:transaction-asset-menu />
 			<livewire:transaction-payroll-menu />
+			<livewire:transaction-item-menu />
 			
 			<li class="menu-title">Setting</li>
 			

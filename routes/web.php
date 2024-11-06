@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth', 'loggedIn']], function () {
         include __DIR__.'/module/rbusinesstrip.php';
         include __DIR__.'/module/rasset.php';
         include __DIR__.'/module/rpayrol.php';
+        include __DIR__.'/module/ritem.php';
     });
 
     Route::name('setting.')->prefix('transaction')->group(function () {

@@ -22,8 +22,8 @@
 			</a>
 		</li>
 		<li class="menu-item">
-			<a href="{{ route('master.items') }}" class="menu-link">
-				<span class="menu-text">Item</span>
+			<a href="{{ route('master.inventories') }}" class="menu-link">
+				<span class="menu-text">Inventory</span>
 			</a>
 		</li>
 		<li class="menu-item">
