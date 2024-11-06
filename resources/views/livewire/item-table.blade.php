@@ -121,6 +121,24 @@
 						</th>
 						<th
 							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap"
+						>
+							Request By
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap"
+						>
+							Receive By
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap"
+						>
+							Approve By
+						</th>
+						<th
+							scope="col"
 							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Code
@@ -130,6 +148,30 @@
 							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Name
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+						>
+							Description
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+						>
+							Date Request
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+						>
+							Date Receive
+						</th>
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+						>
+							Date Approve
 						</th>
 						<th
 							scope="col"
@@ -156,12 +198,62 @@
 							<td
 								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
+								<div>
+									{{ $item->employee_nik }}
+								</div>
+								<div>
+									{{ $item->employee_name }}
+								</div>
+							</td>
+							<td
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
+							>
+								<div>
+									{{ $item->receiver_nik }}
+								</div>
+								<div>
+									{{ $item->receiver_name }}
+								</div>
+							</td>
+							<td
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
+							>
+								<div>
+									{{ $item->approver_nik }}
+								</div>
+								<div>
+									{{ $item->approver_name }}
+								</div>
+							</td>
+							<td
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
+							>
 								{{ $item->code }}
 							</td>
 							<td
 								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
 							>
 								{{ $item->name }}
+							</td>
+							<td
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
+							>
+								{{ $item->description }}
+							</td>
+							<td
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
+							>
+								{{ $item->date_request }}
+							</td>
+							<td
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
+							>
+								{{ $item->date_receive }}
+							</td>
+							<td
+								class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-500"
+							>
+								{{ $item->date_approve }}
 							</td>
 							<td
 								class="px-4 py-2 whitespace-nowrap text-end text-sm
@@ -185,7 +277,7 @@
 					@empty
 						<tr>
 							<td
-								colspan="4"
+								colspan="9"
 								class="text-center text-gray-500 pt-4"
 							>
 								Empty Data
