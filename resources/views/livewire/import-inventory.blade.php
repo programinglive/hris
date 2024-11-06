@@ -1,6 +1,6 @@
 <div class="flex gap-2 h-10 w-full">
 	<a
-		href="{{ asset('item_data.xlsx') }}"
+		href="{{ asset('inventory_data.xlsx') }}"
 		class="
 			        px-4 py-2
 			        rounded-md
@@ -28,7 +28,7 @@
 			          18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
 			/>
 		</svg>
-		Item Template
+		Inventory Template
 	</a>
 	<label for="import" class="inline">
 		<input

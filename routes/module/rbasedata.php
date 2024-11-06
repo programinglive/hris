@@ -2,7 +2,6 @@
 
 use App\Livewire\CategoryPage;
 use App\Livewire\InventoryPage;
-use App\Livewire\ItemPage;
 use App\Livewire\LeaveTypePage;
 use App\Livewire\SubCategoryPage;
 use App\Livewire\UserPage;

@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Inventory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Inventory>
+ * @extends Factory<Inventory>
  */
 class InventoryFactory extends Factory
 {
@@ -17,7 +18,10 @@ class InventoryFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'code' => $this->faker->ean8,
+            'name' => $this->faker->name,
+            'description' => $this->faker->text,
+            'price' => $this->faker->randomFloat(2, 0, 1000),
         ];
     }
 }

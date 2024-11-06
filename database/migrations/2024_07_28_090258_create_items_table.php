@@ -54,7 +54,7 @@ return new class extends Migration
             $table->string('code');
             $table->string('name');
             $table->string('description')->nullable();
-            $table->decimal('price', 10);
+            $table->decimal('price', 10)->default(0);
             $table->timestamp('date_request')->nullable();
             $table->timestamp('date_receive')->nullable();
             $table->timestamp('date_approve')->nullable();

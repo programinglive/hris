@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             SubCategorySeeder::class,
             EmployeeSeeder::class,
+            InventorySeeder::class,
             ItemSeeder::class,
         ]);
     }

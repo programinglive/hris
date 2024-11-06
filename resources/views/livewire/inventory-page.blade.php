@@ -1,3 +1,5 @@
-<div>
-    {{-- If your happiness depends on money, you will never be happy with yourself. --}}
+<div class="flex flex-col gap-4">
+	<livewire:breadcrumb :moduleLabel="$moduleLabel"/>
+	<livewire:page-filter />
+	<livewire:inventory-table />
 </div>
