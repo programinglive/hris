@@ -60,10 +60,6 @@ return new class extends Migration
             $table->timestamp('date_approve')->nullable();
             $table->string('employee_nik')->nullable();
             $table->string('employee_name')->nullable();
-            $table->string('approved_nik')->nullable();
-            $table->string('approved_name')->nullable();
-            $table->string('received_nik')->nullable();
-            $table->string('received_name')->nullable();
             $table->string('department_code')->nullable();
             $table->string('department_name')->nullable();
             $table->string('division_code')->nullable();
