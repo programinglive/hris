@@ -35,6 +35,7 @@ class EmployeeSeeder extends Seeder
             UserDetail::factory()->create([
                 'user_id' => $user->id,
                 'nik' => 'EMP'.str_pad((UserDetail::count() + 1), 5, '0', STR_PAD_LEFT),
+                'date_of_birth' => now()->subMonths(rand(1, 12))->format('Y-m-d'),
                 'company_id' => $company->id,
                 'company_code' => $company->code,
                 'company_name' => $company->name,

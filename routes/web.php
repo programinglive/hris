@@ -2,11 +2,13 @@
 
 use App\Livewire\DashboardPage;
 use App\Livewire\LoginPage;
+use App\Livewire\RegisterCompanyPage;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
 
 Route::get('/', LoginPage::class)->name('landingpage');
+Route::get('register_company', RegisterCompanyPage::class)->name('register_company');
 
 Route::get('pinfo', function () {
     return phpinfo();

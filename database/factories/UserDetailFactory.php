@@ -27,7 +27,7 @@ class UserDetailFactory extends Factory
             'last_education' => $this->faker->sentence(),
             'marriage_status' => $this->faker->randomElement(['single', 'married']),
             'place_of_birth' => $this->faker->address(),
-            'date_of_birth' => $this->faker->date(),
+            'date_of_birth' => $this->faker->date('Y-m-' . mt_rand(1, (int) date('t'))),
             'probation_in' => $this->faker->date(),
             'probation_out' => $this->faker->date(),
             'date_in' => $this->faker->date(),

@@ -32,6 +32,12 @@
 						   class="text-sm text-primary border-b border-dashed border-primary">Forget Password ?</a>
 					</div>
 					
+					<div class="text-center mb-4">
+						<p class="text-sm text-gray-500 dark:text-gray-300">
+							Don't have an account? <a href="{{ route('register_company') }}" class="text-primary">Register your company</a>
+						</p>
+					</div>
+					
 					<div class="flex justify-center mb-6">
 						<button class="btn w-full text-white bg-primary"> Log In</button>
 					</div>
