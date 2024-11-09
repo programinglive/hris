@@ -50,4 +50,19 @@ class ToolController extends Controller
     {
         session([$key => $value]);
     }
+
+    /**
+     * Generate code for a given model.
+     */
+    public static function generateCode(string $prefix, string $model): string
+    {
+        $prefixArray = explode('_', $model);
+        $prefixArray = array_map('ucfirst', $prefixArray);
+        $model = implode('', $prefixArray);
+
+        $model = 'App\Models\\'.ucfirst($model);
+        $modelInstance = app($model);
+
+        return $prefix.str_pad($modelInstance::withTrashed()->count() + 1, 5, '0', STR_PAD_LEFT);
+    }
 }
