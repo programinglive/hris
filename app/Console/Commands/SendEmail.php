@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\SendEmailJob;
+use App\Models\User;
 use Illuminate\Console\Command;
 
 class SendEmail extends Command
@@ -12,7 +13,7 @@ class SendEmail extends Command
      *
      * @var string
      */
-    protected $signature = 'app:send-email';
+    protected $signature = 'app:send-email {id}';
 
     /**
      * The console command description.
@@ -26,7 +27,7 @@ class SendEmail extends Command
      */
     public function handle(): void
     {
-        $email = 'user@example.com';
-        SendEmailJob::dispatch($email);
+        $user = User::find($this->argument('id'));
+        SendEmailJob::dispatch($user);
     }
 }

@@ -7,7 +7,9 @@
 
   <p>Your login details are:</p>
   <ul style="list-style: none; padding: 0">
+    <li>Username: {{ $data['name'] }}</li>
     <li>Email: {{ $data['email'] }}</li>
     <li>Password: {{ $data['password'] }}</li>
+    <li>Company: {{ $data['company_name'] }}</li>
   </ul>
 </div>

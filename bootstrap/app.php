@@ -14,8 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(callback: function (Middleware $middleware) {
         $middleware->appendToGroup('loggedIn', [
-           EnsureCompanyExists::class,
-           \App\Http\Middleware\EnsureBranchExists::class
+            EnsureCompanyExists::class,
+            \App\Http\Middleware\EnsureBranchExists::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

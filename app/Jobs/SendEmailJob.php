@@ -11,14 +11,14 @@ class SendEmailJob implements ShouldQueue
 {
     use Queueable;
 
-    protected $email;
+    protected $user;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($email)
+    public function __construct($user)
     {
-        $this->email = $email;
+        $this->user = $user;
     }
 
     /**
@@ -27,12 +27,14 @@ class SendEmailJob implements ShouldQueue
     public function handle(): void
     {
         $data = [
-            'recipient' => $this->email,
+            'recipient' => $this->user->email,
             'sender' => env('MAIL_FROM_ADDRESS'),
-            'email' => $this->email,
-            'password' => 'password'
+            'email' => $this->user->email,
+            'password' => 'password',
+            'name' => $this->user->name,
+            'company_name' => $this->user->details->company_name,
         ];
-        
-        Mail::to($this->email)->send(new WelcomeEmail($data));
+
+        Mail::to($this->user)->send(new WelcomeEmail($data));
     }
 }

@@ -3,11 +3,13 @@
 namespace App\Livewire;
 
 use App\Http\Controllers\ToolController;
+use App\Jobs\SendEmailJob;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -42,7 +44,7 @@ class RegisterCompanyPage extends Component
     /**
      * Handle company registration form
      */
-    public function registerCompany(): RedirectResponse
+    public function registerCompany(): RedirectResponse|Redirector
     {
         $this->validate();
 
@@ -64,6 +66,9 @@ class RegisterCompanyPage extends Component
             ]);
 
             auth()->login($user);
+
+            SendEmailJob::dispatch($user);
+
         }, 5);
 
         return redirect()->route('dashboard');
