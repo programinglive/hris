@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureBranchExists;
 use App\Http\Middleware\EnsureCompanyExists;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(callback: function (Middleware $middleware) {
         $middleware->appendToGroup('loggedIn', [
             EnsureCompanyExists::class,
-            \App\Http\Middleware\EnsureBranchExists::class,
+            EnsureBranchExists::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
