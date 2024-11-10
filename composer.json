@@ -12,6 +12,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.5",
         "opcodesio/log-viewer": "^3.10",
+        "sentry/sentry-laravel": "^4.10",
         "spatie/laravel-activitylog": "^4.8",
         "spatie/simple-excel": "^3.6"
     },

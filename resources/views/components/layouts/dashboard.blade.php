@@ -28,7 +28,6 @@
 </head>
 
 <body>
-
 <div class="grid grid-cols-6 wrapper">
 	@livewire('dashboard-sidebar')
 	
@@ -42,6 +41,13 @@
 		
 		@livewire('dashboard-footer')
 	</div>
+	<!-- A button to trigger a test error -->
+	<script>
+		const button = document.getElementById('test-error');
+		button.addEventListener('click', () => {
+			throw new Error('This is a test error');
+		});
+	</script>
 </div>
 
 @include('layouts.shared/customizer')
@@ -49,8 +55,10 @@
 @include('layouts.shared/footer-scripts')
 
 @vite(['resources/js/app.js'])
-
+<script
+	src="https://js.sentry-cdn.com/01dd207fdd7a7474ab35a17128525073.min.js"
+	crossorigin="anonymous"
+></script>
 @livewireScripts
 </body>
-
 </html>

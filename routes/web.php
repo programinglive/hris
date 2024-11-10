@@ -10,10 +10,6 @@ require __DIR__.'/auth.php';
 Route::get('/', LoginPage::class)->name('landingpage');
 Route::get('register_company', RegisterCompanyPage::class)->name('register_company');
 
-Route::get('pinfo', function () {
-    return phpinfo();
-});
-
 Route::group(['middleware' => ['auth', 'loggedIn']], function () {
 
     Route::get('dashboard', DashboardPage::class)->name('dashboard');
@@ -41,4 +37,8 @@ Route::group(['middleware' => ['auth', 'loggedIn']], function () {
     Route::name('download.')->prefix('download')->group(function () {
         include __DIR__.'/download/demployee.php';
     });
+});
+
+Route::get('pinfo', function () {
+    return phpinfo();
 });
