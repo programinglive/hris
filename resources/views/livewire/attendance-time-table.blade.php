@@ -128,49 +128,49 @@
 					<tr>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Company
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Branch
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Nik
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Name
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							In
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Out
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Status
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-end text-xs font-medium text-gray-500 uppercase"
 							style="width: 100px"
 						>
 							Action

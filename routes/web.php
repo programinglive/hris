@@ -2,6 +2,7 @@
 
 use App\Livewire\DashboardPage;
 use App\Livewire\LoginPage;
+use App\Livewire\ProfilePage;
 use App\Livewire\RegisterCompanyPage;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,7 @@ Route::get('register_company', RegisterCompanyPage::class)->name('register_compa
 Route::group(['middleware' => ['auth', 'loggedIn']], function () {
 
     Route::get('dashboard', DashboardPage::class)->name('dashboard');
+    Route::get('profile', ProfilePage::class)->name('profile');
 
     Route::name('master.')->prefix('master')->group(function () {
         include __DIR__.'/module/rbasedata.php';

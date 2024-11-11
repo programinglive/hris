@@ -17,6 +17,8 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="{{asset('/favicon-32x32.png')}}">
 	<link rel="icon" type="image/png" sizes="16x16" href="{{asset('/favicon-16x16.png')}}">
 	<link rel="manifest" href="{{asset('/site.webmanifest')}}">
+	<link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+	
 	
 	@yield('css')
 	
@@ -59,6 +61,7 @@
 	src="https://js.sentry-cdn.com/01dd207fdd7a7474ab35a17128525073.min.js"
 	crossorigin="anonymous"
 ></script>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 @livewireScripts
 </body>
 </html>

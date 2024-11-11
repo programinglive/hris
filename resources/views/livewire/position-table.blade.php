@@ -39,63 +39,63 @@
 						<tr>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium
+							class="px-4 py-3 text-left text-xs font-medium
 											text-gray-500 uppercase"
 						>
 							Company
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium
+							class="px-4 py-3 text-left text-xs font-medium
 											text-gray-500 uppercase"
 						>
 							Department
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium
+							class="px-4 py-3 text-left text-xs font-medium
 											text-gray-500 uppercase"
 						>
 							Division
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium
+							class="px-4 py-3 text-left text-xs font-medium
 											text-gray-500 uppercase"
 						>
 							Sub Division
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium
+							class="px-4 py-3 text-left text-xs font-medium
 											text-gray-500 uppercase"
 						>
 							Level
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium
+							class="px-4 py-3 text-left text-xs font-medium
 											text-gray-500 uppercase"
 						>
 							Code
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium
+							class="px-4 py-3 text-left text-xs font-medium
 											text-gray-500 uppercase"
 						>
 							Name
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium
+							class="px-4 py-3 text-left text-xs font-medium
 											text-gray-500 uppercase"
 						>
 							Description
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-end text-xs font-medium
+							class="px-4 py-3 text-end text-xs font-medium
 											text-gray-500 uppercase"
 							style="width: 100px"
 						>

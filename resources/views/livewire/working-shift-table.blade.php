@@ -59,43 +59,43 @@
 					<tr>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Company
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Branch
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Name
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Start Time
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							End Time
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Description
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-end text-xs font-medium text-gray-500 uppercase"
 							style="width: 100px"
 						>
 							Action

@@ -66,6 +66,12 @@ class UserTable extends Component
         $this->showForm = false;
     }
 
+    #[On('show-profile')]
+    public function showProfile(): void
+    {
+        $this->redirect(route('profile'));
+    }
+
     #[On('refresh')]
     public function refresh(): void
     {

@@ -22,24 +22,24 @@
 		</div>
 		<div class="p-6">
 			<div id="example1" class="flex flex-col gap-3">
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 6</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 6</div>
 			</div>
 
 			<div id="SimpalNestebalListHtml" class="hidden w-full overflow-hidden transition-[height] duration-300">
 				<pre class="language-html h-auto">
 								<code>
 									&lt;div id=&quot;example1&quot; class=&quot;flex flex-col gap-3&quot;&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 6&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 6&lt;/div&gt;
 									&lt;/div&gt;
 								</code>
 							</pre>
@@ -68,21 +68,21 @@
 		<div class="p-6">
 			<div class="grid md:grid-cols-2 gap-5">
 				<div id="example2-left" class="flex flex-col gap-3">
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 6</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 6</div>
 				</div>
 
 				<div id="example2-right" class="flex flex-col gap-3">
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 1</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 2</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 3</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 4</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 5</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 6</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 1</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 2</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 3</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 4</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 5</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 6</div>
 				</div>
 			</div>
 
@@ -91,21 +91,21 @@
 								<code>
 									&lt;div class=&quot;grid md:grid-cols-2 gap-5&quot;&gt;
 										&lt;div id=&quot;example2-left&quot; class=&quot;flex flex-col gap-3&quot;&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 6&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 6&lt;/div&gt;
 										&lt;/div&gt;
 		
 										&lt;div id=&quot;example2-right&quot; class=&quot;flex flex-col gap-3&quot;&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 1&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 2&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 3&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 4&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 5&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 6&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 1&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 2&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 3&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 4&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 5&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 6&lt;/div&gt;
 										&lt;/div&gt;
 									&lt;/div&gt;
 								</code>
@@ -135,21 +135,21 @@
 			<p class="text-gray-400 mb-4">Try dragging from one list to another. The item you drag will be cloned and the clone will stay in the original list.</p>
 			<div class="grid md:grid-cols-2 gap-5">
 				<div id="example3-left" class="flex flex-col gap-3">
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 6</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 6</div>
 				</div>
 
 				<div id="example3-right" class="flex flex-col gap-3">
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 1</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 2</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 3</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 4</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 5</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 6</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 1</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 2</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 3</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 4</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 5</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 6</div>
 				</div>
 			</div>
 
@@ -158,21 +158,21 @@
 								<code>
 									&lt;div class=&quot;grid md:grid-cols-2 gap-5&quot;&gt;
 										&lt;div id=&quot;example3-left&quot; class=&quot;flex flex-col gap-3&quot;&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 6&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 6&lt;/div&gt;
 										&lt;/div&gt;
 
 										&lt;div id=&quot;example3-right&quot; class=&quot;flex flex-col gap-3&quot;&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 1&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 2&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 3&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 4&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 5&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 6&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 1&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 2&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 3&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 4&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 5&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 6&lt;/div&gt;
 										&lt;/div&gt;
 									&lt;/div&gt;
 								</code>
@@ -204,21 +204,21 @@
 				option set to false. However, you can still drag from the list on the left to the list on the right.</p>
 			<div class="grid md:grid-cols-2 gap-5">
 				<div id="example4-left" class="flex flex-col gap-3">
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 6</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 6</div>
 				</div>
 
 				<div id="example4-right" class="flex flex-col gap-3">
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 1</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 2</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 3</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 4</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 5</div>
-					<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 6</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 1</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 2</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 3</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 4</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 5</div>
+					<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted">Item 6</div>
 				</div>
 			</div>
 
@@ -227,21 +227,21 @@
 								<code>
 									&lt;div class=&quot;grid md:grid-cols-2 gap-5&quot;&gt;
 										&lt;div id=&quot;example4-left&quot; class=&quot;flex flex-col gap-3&quot;&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 6&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 6&lt;/div&gt;
 										&lt;/div&gt;
 
 										&lt;div id=&quot;example4-right&quot; class=&quot;flex flex-col gap-3&quot;&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 1&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 2&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 3&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 4&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 5&lt;/div&gt;
-											&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 6&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 1&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 2&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 3&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 4&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 5&lt;/div&gt;
+											&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 tinted&quot;&gt;Item 6&lt;/div&gt;
 										&lt;/div&gt;
 									&lt;/div&gt;
 								</code>
@@ -269,17 +269,17 @@
 		</div>
 		<div class="p-6">
 			<div id="example5" class="flex flex-col gap-3">
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">
 					<i class="mgc_move_line handle"></i>&nbsp;&nbsp;Item 1</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">
 					<i class="mgc_move_line handle"></i>&nbsp;&nbsp;Item 2</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">
 					<i class="mgc_move_line handle"></i>&nbsp;&nbsp;Item 3</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">
 					<i class="mgc_move_line handle"></i>&nbsp;&nbsp;Item 4</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">
 					<i class="mgc_move_line handle"></i>&nbsp;&nbsp;Item 5</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">
 					<i class="mgc_move_line handle"></i>&nbsp;&nbsp;Item 6</div>
 			</div>
 
@@ -287,12 +287,12 @@
 				<pre class="language-html h-auto">
 								<code>
 									&lt;div id=&quot;example5&quot; class=&quot;flex flex-col gap-3&quot;&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;&lt;i class=&quot;mgc_move_line handle&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;Item 1&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;&lt;i class=&quot;mgc_move_line handle&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;Item 2&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;&lt;i class=&quot;mgc_move_line handle&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;Item 3&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;&lt;i class=&quot;mgc_move_line handle&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;Item 4&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;&lt;i class=&quot;mgc_move_line handle&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;Item 5&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;&lt;i class=&quot;mgc_move_line handle&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;Item 6&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;&lt;i class=&quot;mgc_move_line handle&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;Item 1&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;&lt;i class=&quot;mgc_move_line handle&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;Item 2&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;&lt;i class=&quot;mgc_move_line handle&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;Item 3&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;&lt;i class=&quot;mgc_move_line handle&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;Item 4&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;&lt;i class=&quot;mgc_move_line handle&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;Item 5&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;&lt;i class=&quot;mgc_move_line handle&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;Item 6&lt;/div&gt;
 									&lt;/div&gt;
 								</code>
 							</pre>
@@ -322,24 +322,24 @@
 				<code>filter</code>
 				option.</p>
 			<div id="example6" class="flex flex-col gap-3">
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
-				<div class="rounded-md border px-6 py-3 bg-danger filtered text-white border-gray-200 dark:border-gray-700">Filtered</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
+				<div class="rounded-md border px-4 py-3 bg-danger filtered text-white border-gray-200 dark:border-gray-700">Filtered</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
 			</div>
 
 			<div id="FilterNestebalListHtml" class="hidden w-full overflow-hidden transition-[height] duration-300">
 				<pre class="language-html h-auto">
 								<code>
 									&lt;div id=&quot;example6&quot; class=&quot;flex flex-col gap-3&quot;&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
-										&lt;div class=&quot;rounded-md border px-6 py-3 bg-danger filtered border-gray-200 dark:border-gray-700&quot;&gt;Filtered&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
+										&lt;div class=&quot;rounded-md border px-4 py-3 bg-danger filtered border-gray-200 dark:border-gray-700&quot;&gt;Filtered&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
 									&lt;/div&gt;
 								</code>
 							</pre>
@@ -447,65 +447,65 @@
 				option is lower than the default value of 1 (eg
 				<code>0.65</code>).</p>
 			<div id="nestedDemo" class="flex flex-col gap-3 nested-sortable">
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-1">
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-1">
 					<div class="pb-3">Item 1.1</div>
 					<div class="list-group nested-sortable">
-						<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.1</div>
-						<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.2
+						<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.1</div>
+						<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.2
 							<div class="list-group nested-sortable">
-								<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-3">Item 3.1</div>
-								<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-3">Item 3.2</div>
-								<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-3">Item 3.3</div>
-								<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-3">Item 3.4</div>
+								<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-3">Item 3.1</div>
+								<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-3">Item 3.2</div>
+								<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-3">Item 3.3</div>
+								<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-3">Item 3.4</div>
 							</div>
 						</div>
-						<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.3</div>
-						<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.4</div>
+						<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.3</div>
+						<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.4</div>
 					</div>
 				</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-1">Item 1.2</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-1">Item 1.3</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-1">Item 1.4
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-1">Item 1.2</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-1">Item 1.3</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-1">Item 1.4
 					<div class="list-group nested-sortable">
-						<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.1</div>
-						<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.2</div>
-						<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.3</div>
-						<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.4</div>
+						<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.1</div>
+						<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.2</div>
+						<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.3</div>
+						<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2">Item 2.4</div>
 					</div>
 				</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-1">Item 1.5</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-1">Item 1.5</div>
 			</div>
 
 			<div id="SortableNestebalListHtml" class="hidden w-full overflow-hidden transition-[height] duration-300">
 				<pre class="language-html h-56">
 								<code>
 									&lt;div id=&quot;nestedDemo&quot; class=&quot;flex flex-col gap-3 nested-sortable&quot;&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-1&quot;&gt;Item 1.1
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-1&quot;&gt;Item 1.1
 											&lt;div class=&quot;list-group nested-sortable&quot;&gt;
-												&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.1&lt;/div&gt;
-												&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.2
+												&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.1&lt;/div&gt;
+												&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.2
 													&lt;div class=&quot;list-group nested-sortable&quot;&gt;
-														&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-3&quot;&gt;Item 3.1&lt;/div&gt;
-														&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-3&quot;&gt;Item 3.2&lt;/div&gt;
-														&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-3&quot;&gt;Item 3.3&lt;/div&gt;
-														&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-3&quot;&gt;Item 3.4&lt;/div&gt;
+														&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-3&quot;&gt;Item 3.1&lt;/div&gt;
+														&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-3&quot;&gt;Item 3.2&lt;/div&gt;
+														&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-3&quot;&gt;Item 3.3&lt;/div&gt;
+														&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-3&quot;&gt;Item 3.4&lt;/div&gt;
 													&lt;/div&gt;
 												&lt;/div&gt;
-												&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.3&lt;/div&gt;
-												&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.4&lt;/div&gt;
+												&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.3&lt;/div&gt;
+												&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.4&lt;/div&gt;
 											&lt;/div&gt;
 										&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-1&quot;&gt;Item 1.2&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-1&quot;&gt;Item 1.3&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-1&quot;&gt;Item 1.4
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-1&quot;&gt;Item 1.2&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-1&quot;&gt;Item 1.3&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-1&quot;&gt;Item 1.4
 											&lt;div class=&quot;list-group nested-sortable&quot;&gt;
-												&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.1&lt;/div&gt;
-												&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.2&lt;/div&gt;
-												&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.3&lt;/div&gt;
-												&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.4&lt;/div&gt;
+												&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.1&lt;/div&gt;
+												&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.2&lt;/div&gt;
+												&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.3&lt;/div&gt;
+												&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-2&quot;&gt;Item 2.4&lt;/div&gt;
 											&lt;/div&gt;
 										&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700 nested-1&quot;&gt;Item 1.5&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700 nested-1&quot;&gt;Item 1.5&lt;/div&gt;
 									&lt;/div&gt;
 								</code>
 							</pre>
@@ -535,24 +535,24 @@
 				<a target="_blank" href="https://github.com/SortableJS/Sortable/tree/master/plugins/MultiDrag">MultiDrag</a>
 				plugin allows for multiple items to be dragged at a time. You can click to "select" multiple items, and then drag them as one item.</p>
 			<div id="multiDragDemo" class="flex flex-col gap-3">
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 6</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 6</div>
 			</div>
 
 			<div id="MultiDragNestebalListHtml" class="hidden w-full overflow-hidden transition-[height] duration-300">
 				<pre class="language-html h-56">
 								<code>
 									&lt;div id=&quot;multiDragDemo&quot; class=&quot;flex flex-col gap-3&quot;&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 6&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 6&lt;/div&gt;
 									&lt;/div&gt;
 								</code>
 							</pre>
@@ -582,24 +582,24 @@
 				<a target="_blank" href="https://github.com/SortableJS/Sortable/tree/master/plugins/Swap">Swap</a>
 				plugin changes the behaviour of Sortable to allow for items to be swapped with eachother rather than sorted.</p>
 			<div id="swapDemo" class="flex flex-col gap-3">
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
-				<div class="card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700">Item 6</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 1</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 2</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 3</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 4</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 5</div>
+				<div class="card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700">Item 6</div>
 			</div>
 
 			<div id="SwapNestebalListHtml" class="hidden w-full overflow-hidden transition-[height] duration-300">
 				<pre class="language-html h-auto">
 								<code>
 									&lt;div id=&quot;swapDemo&quot; class=&quot;flex flex-col gap-3&quot;&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
-										&lt;div class=&quot;card cursor-grab px-6 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 6&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 1&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 2&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 3&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 4&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 5&lt;/div&gt;
+										&lt;div class=&quot;card cursor-grab px-4 py-3 border border-gray-200 dark:border-gray-700&quot;&gt;Item 6&lt;/div&gt;
 									&lt;/div&gt;
 								</code>
 							</pre>

@@ -106,79 +106,79 @@
 					<tr>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Company
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Branch
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Code
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Title
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Description
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Location
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Job Type
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Category
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Experience Level
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Salary Range
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Posting Date
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
 						>
 							Closing Date
 						</th>
 						<th
 							scope="col"
-							class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase"
+							class="px-4 py-3 text-end text-xs font-medium text-gray-500 uppercase"
 							style="width: 100px"
 						>
 							Action

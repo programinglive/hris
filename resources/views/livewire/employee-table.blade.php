@@ -117,8 +117,8 @@
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
 						{{ $employee->nik }}
 					</td>
-					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
-						{{ $employee->user?->name }}
+					<td class="px-4 py-2 whitespace-nowrap text-blue-600 truncate max-w-[150px]">
+						<a href="{{ route('profile', ['nik' => $employee->nik]) }}">{{ $employee->user?->name }}</a>
 					</td>
 					<td class="px-4 py-2 whitespace-nowrap text-gray-500 truncate max-w-[150px]">
 						{{ $employee->user?->email }}
