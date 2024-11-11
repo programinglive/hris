@@ -71,7 +71,7 @@ class RegisterCompanyPage extends Component
 
         }, 5);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('profile');
     }
 
     public function render(): View
