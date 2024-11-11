@@ -8,22 +8,22 @@
 					HRIS
 				</a>
 				
-				<form wire:submit.prevent="login">
+				<form wire:submit.prevent="login" class="flex flex-col gap-4">
 					@csrf
 					
-					<div class="mb-4">
-						<label class="block text-sm font-medium text-gray-600 dark:text-gray-200 mb-2" for="email">Email Address or Username</label>
-						<input wire:model="loginAccount" id="loginAccount"  type="text" placeholder="Enter your Email or username" name="loginAccount">
+					<div>
+						<label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email Address or Username</label>
+						<input type="text" id="email" wire:model="loginAccount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter your Email or username" required>
 						@error('loginAccount') <span class="text-red-300">{{ $message }}</span> @enderror
 					</div>
 					
-					<div class="mb-4">
-						<label class="block text-sm font-medium text-gray-600 dark:text-gray-200 mb-2" for="password">Password</label>
-						<input wire:model="password" id="password"  type="password" placeholder="Enter your password" name="password">
+					<div>
+						<label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Password</label>
+						<input type="password" id="password" wire:model="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter your password" required>
 						@error('password') <span class="text-red-300">{{ $message }}</span> @enderror
 					</div>
 					
-					<div class="flex items-center justify-between mb-4">
+					<div class="flex items-center justify-between">
 						<div class="flex items-center">
 							<input type="checkbox" class="form-checkbox rounded" id="checkbox-signin">
 							<label class="ms-2" for="checkbox-signin">Remember me</label>
@@ -32,7 +32,7 @@
 						   class="text-sm text-primary border-b border-dashed border-primary">Forget Password ?</a>
 					</div>
 					
-					<div class="text-center mb-4">
+					<div class="text-center">
 						<p class="text-sm text-gray-500 dark:text-gray-300">
 							Don't have an account? <a href="{{ route('register_company') }}" class="text-primary">Register your company</a>
 						</p>
