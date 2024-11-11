@@ -13,13 +13,13 @@
 					
 					<div class="mb-4">
 						<label class="block text-sm font-medium text-gray-600 dark:text-gray-200 mb-2" for="email">Email Address or Username</label>
-						<input wire:model="loginAccount" id="loginAccount" class="form-input" type="text" placeholder="Enter your Email or username" name="loginAccount">
+						<input wire:model="loginAccount" id="loginAccount"  type="text" placeholder="Enter your Email or username" name="loginAccount">
 						@error('loginAccount') <span class="text-red-300">{{ $message }}</span> @enderror
 					</div>
 					
 					<div class="mb-4">
 						<label class="block text-sm font-medium text-gray-600 dark:text-gray-200 mb-2" for="password">Password</label>
-						<input wire:model="password" id="password" class="form-input" type="password" placeholder="Enter your password" name="password">
+						<input wire:model="password" id="password"  type="password" placeholder="Enter your password" name="password">
 						@error('password') <span class="text-red-300">{{ $message }}</span> @enderror
 					</div>
 					

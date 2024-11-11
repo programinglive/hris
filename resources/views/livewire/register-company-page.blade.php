@@ -14,7 +14,7 @@
 						wire:model.live="companyName"
 						type="text"
 						id="company_name"
-						class="form-input"
+						
 					>
 					@error('companyName') {{ $message }} @enderror
 				</div>
@@ -28,7 +28,7 @@
 					<textarea
 						wire:model.live="companyAddress"
 						id="company_address"
-						class="form-input"
+						
 						rows="4"
 					></textarea>
 					@error('companyAddress') {{ $message }} @enderror
@@ -44,7 +44,7 @@
 						wire:model.live="companyPhone"
 						type="text"
 						id="company_phone"
-						class="form-input"
+						
 					>
 					@error('companyPhone') {{ $message }} @enderror
 				</div>
@@ -54,7 +54,7 @@
 						wire:model.live="companyEmail"
 						type="text"
 						id="company_email"
-						class="form-input"
+						
 					>
 					@error('companyEmail') {{ $message }} @enderror
 				</div>

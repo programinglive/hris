@@ -1,4 +1,4 @@
-<div class="flex gap-2 h-10 w-full">
+<div class="flex gap-2 h-10 justify-end">
 	<a
 		href="{{ asset('employee_data.xlsx') }}"
 		class="
@@ -18,27 +18,22 @@
 		</svg>
 		Employee Template
 	</a>
-	<label for="import" class="inline">
+	<div class="relative">
 		<input
 			wire:model="import"
 			type="file"
 			id="import"
 			name="import"
 			accept=".csv,.xlsx"
-			class="form-input"
+			class="hidden"
 		>
-	</label>
-	@error('import')
-	<div class="text-red-500 inline">{{ $message }}</div>
-	@enderror
-	<button
-		wire:click="importUser"
-		type="button"
-		class="btn bg-green-500 text-white"
-	>
-		<i class="mgc_upload_line"></i>
-	</button>
-	
+		<label for="import" class="inline-flex items-center px-4 py-3 bg-green-500 text-white rounded-md">
+			<i class="mgc_upload_line"></i>
+		</label>
+		@error('import')
+			<div class="text-red-500 inline">{{ $message }}</div>
+		@enderror
+	</div>
 	<div wire:loading.class.remove="hidden" class="hidden">
 		<div class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
 			<div class="animate-spin h-12 w-12 border-b-4 border-gray-900 mb-4"></div>

@@ -56,6 +56,17 @@ class ImportUser extends Component
      * This function will validate the uploaded file and store it in the
      * 'photos' directory.
      * The path of the uploaded file will be stored in
+    public function updatedImport(): void
+    {
+        $this->importUser();
+    }
+
+    /**
+     * Handles the event when the import field is updated.
+     *
+     * This function will validate the uploaded file and store it in the
+     * 'photos' directory.
+     * The path of the uploaded file will be stored in
      * the $this→import variable.
      */
     public function importUser(): void

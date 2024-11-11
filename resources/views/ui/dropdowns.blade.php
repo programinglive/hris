@@ -1028,7 +1028,7 @@
                                     <label for="exampleInputEmail1"
                                         class="text-gray-800 text-sm font-medium inline-block mb-2">Email
                                         address</label>
-                                    <input type="email" class="form-input" id="exampleInputEmail1"
+                                    <input type="email"  id="exampleInputEmail1"
                                         aria-describedby="emailHelp" placeholder="Enter email">
                                     <small id="emailHelp"
                                         class="form-text text-sm text-slate-700 dark:text-slate-400">We'll
@@ -1038,7 +1038,7 @@
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1"
                                         class="text-gray-800 text-sm font-medium inline-block mb-2">Password</label>
-                                    <input type="password" class="form-input" id="exampleInputPassword1"
+                                    <input type="password"  id="exampleInputPassword1"
                                         placeholder="Password">
                                 </div>
                                 <div class="flex items-center gap-2 mb-3">

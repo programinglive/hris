@@ -72,7 +72,7 @@
 					id="import"
 					name="import"
 					accept=".csv,.xlsx"
-					class="form-input"
+					
 				>
 			</label>
 			@error('import')
