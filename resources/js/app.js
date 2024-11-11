@@ -1,14 +1,9 @@
 import "@frostui/tailwindcss"
 
-import feather from 'feather-icons';
-
 class App {
 
     // Components
     initComponents() {
-
-        // Feather Icons
-        feather.replace()
 
         // Back To Top
         const mybutton = document.querySelector('[data-toggle="back-to-top"]');

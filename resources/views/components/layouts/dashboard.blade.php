@@ -23,7 +23,7 @@
 	@yield('css')
 	
 	@vite(['resources/scss/app.scss', 'resources/scss/icons.scss'])
-	@vite(['resources/js/head.js', 'resources/js/config.js'])
+	@vite(['resources/js/config.js'])
 	@stack('styles')
 	@stack('scripts')
 	@livewireStyles
@@ -43,13 +43,6 @@
 		
 		@livewire('dashboard-footer')
 	</div>
-	<!-- A button to trigger a test error -->
-	<script>
-		const button = document.getElementById('test-error');
-		button.addEventListener('click', () => {
-			throw new Error('This is a test error');
-		});
-	</script>
 </div>
 
 @include('layouts.shared/customizer')
