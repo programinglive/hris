@@ -4,8 +4,8 @@
 			<div class="flex items-center gap-4 p-6">
 				<img src="http://localhost:8000/images/users/user-6.jpg" alt="Profile" class="w-20 h-20 rounded-full">
 				<div>
-					<h2 class="text-lg font-bold text-gray-800 dark:text-white">{{ auth()->user()->name }}</h2>
-					<p class="text-sm text-gray-500 dark:text-gray-400">{{ auth()->user()->email }}</p>
+					<h2 class="text-lg font-bold text-gray-800 dark:text-white">{{ $user->name }}</h2>
+					<p class="text-sm text-gray-500 dark:text-gray-400">{{ $user->email }}</p>
 				</div>
 			</div>
 		</div>
@@ -58,7 +58,7 @@
 	<script>
 		const tabsElement = document.getElementById('tabs-example');
 
-		// create an array of objects with the id, trigger element (eg. button), and the content element
+		// Create an array of objects with the id, trigger element (e.g., button), and the content element
 		const tabElements = [
 			{
 				id: 'profile',
