@@ -97,6 +97,7 @@ class UserForm extends Component
     public $userDetail;
 
     public $actionForm = 'save';
+    public $cancelButton = true;
 
     /**
      * Mount the component
@@ -104,11 +105,15 @@ class UserForm extends Component
     public function mount(): void
     {
         if ($this->companyCode != '') {
-            $this->company = Company::where('code', $this->companyCode)->first();
+            $this->setCompany($this->companyCode);
         }
 
         if ($this->branchCode != '') {
-            $this->branch = Branch::where('code', $this->branchCode)->first();
+            $this->setBranch($this->branchCode);
+        }
+
+        if($this->user){
+            $this->setUser();
         }
     }
 
@@ -225,6 +230,36 @@ class UserForm extends Component
             $this->details['position_code'] = $this->position->code;
             $this->details['position_name'] = $this->position->name;
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function setUser(): void
+    {
+        $this->userDetail = UserDetail::where('user_id', $this->user->id)->first();
+        $this->setDetail($this->userDetail->toArray());
+
+        $this->name = $this->user->name;
+        $this->email = $this->user->email;
+
+        $this->companyCode = $this->userDetail->company_code;
+        $this->dispatch('set-company', $this->companyCode);
+        $this->branchCode = $this->userDetail->branch_code;
+        $this->dispatch('set-branch', $this->branchCode);
+        $this->departmentCode = $this->userDetail->department_code;
+        $this->dispatch('set-department', $this->departmentCode);
+        $this->divisionCode = $this->userDetail->division_code;
+        $this->dispatch('set-division', $this->divisionCode);
+        $this->subDivisionCode = $this->userDetail->sub_division_code;
+        $this->dispatch('set-sub-division', $this->subDivisionCode);
+        $this->levelCode = $this->userDetail->level_code;
+        $this->dispatch('set-level', $this->levelCode);
+        $this->positionCode = $this->userDetail->position_code;
+        $this->dispatch('set-position', $this->positionCode);
+
+        $this->details = $this->userDetail->toArray();
+        $this->dispatch('set-detail', $this->details);
     }
 
     /**

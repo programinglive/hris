@@ -1,10 +1,12 @@
-<div class="grid grid-cols-4 gap-4">
-	<div class="col-span-1 bg-white shadow rounded">
-		<div class="flex items-center gap-4 p-6">
-			<img src="http://localhost:8000/images/users/user-6.jpg" alt="Profile" class="w-20 h-20 rounded-full">
-			<div>
-				<h2 class="text-lg font-bold text-gray-800 dark:text-white">{{ auth()->user()->name }}</h2>
-				<p class="text-sm text-gray-500 dark:text-gray-400">{{ auth()->user()->email }}</p>
+<div wire:ignore class="grid grid-cols-4 gap-4">
+	<div>
+		<div class="col-span-1 bg-white shadow rounded">
+			<div class="flex items-center gap-4 p-6">
+				<img src="http://localhost:8000/images/users/user-6.jpg" alt="Profile" class="w-20 h-20 rounded-full">
+				<div>
+					<h2 class="text-lg font-bold text-gray-800 dark:text-white">{{ auth()->user()->name }}</h2>
+					<p class="text-sm text-gray-500 dark:text-gray-400">{{ auth()->user()->email }}</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -23,11 +25,18 @@
 				<li role="presentation">
 					<button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-styled-tab" data-tabs-target="#styled-contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">Assets</button>
 				</li>
+				<li role="presentation">
+					<button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="request-styled-tab" data-tabs-target="#styled-request" type="button" role="tab" aria-controls="request" aria-selected="false">Request</button>
+				</li>
 			</ul>
 		</div>
 		<div id="default-styled-tab-content">
 			<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="styled-profile" role="tabpanel" aria-labelledby="profile-tab">
-				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Profile tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+				<livewire:user-form
+					:cancelButton="false"
+					:user="$user"
+					:actionForm="$actionForm"
+				/>
 			</div>
 			<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="styled-dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
 				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
@@ -36,6 +45,9 @@
 				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
 			</div>
 			<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="styled-contacts" role="tabpanel" aria-labelledby="contacts-tab">
+				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Contacts tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+			</div>
+			<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="styled-request" role="tabpanel" aria-labelledby="request-tab">
 				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Contacts tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
 			</div>
 		</div>
@@ -67,6 +79,11 @@
 				id: 'contacts',
 				triggerEl: document.querySelector('#contacts-tab-example'),
 				targetEl: document.querySelector('#contacts-example'),
+			},
+			{
+				id: 'request',
+				triggerEl: document.querySelector('#request-tab-example'),
+				targetEl: document.querySelector('#request-example'),
 			},
 		];
 

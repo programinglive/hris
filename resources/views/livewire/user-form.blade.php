@@ -91,6 +91,7 @@
 			<div class="flex flex-col gap-4 flex-1">
 				<div class="flex justify-between">
 					<h2 class="mb-1 text-2xl">Organization</h2>
+					@if($cancelButton)
 					<button
 						type="button"
 						class="btn btn-outline-danger float-end"
@@ -98,6 +99,7 @@
 					>
 						Cancel
 					</button>
+					@endif
 				</div>
 				<livewire:form-company-option />
 				<livewire:form-branch-option />
@@ -140,6 +142,7 @@
 			@enderror
 		</div>
 		<div class="flex justify-end gap-2">
+			@if($cancelButton)
 			<button
 				wire:click="$dispatch('hide-form')"
 				type="button"
@@ -147,6 +150,7 @@
 			>
 				Cancel
 			</button>
+			@endif
 			<button
 				type="submit"
 				class="btn bg-primary text-white float-end"

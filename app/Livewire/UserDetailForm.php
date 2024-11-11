@@ -9,6 +9,8 @@ use App\Models\Division;
 use App\Models\Level;
 use App\Models\Position;
 use App\Models\SubDivision;
+use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -51,6 +53,13 @@ class UserDetailForm extends Component
     #[Url(keep: true)]
     public $positionCode;
 
+    public $user;
+
+    public $userDetail;
+
+    #[Url(keep: true)]
+    public $nik;
+
     public $details = [
         'company_id' => null,
         'branch_id' => null,
@@ -91,6 +100,24 @@ class UserDetailForm extends Component
         'date_out' => null,
         'note' => null,
     ];
+
+    public function mount(): void
+    {
+        if($this->nik != '') {
+            $this->setUser();
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function setUser(): void
+    {
+        $this->userDetail = UserDetail::where('nik', $this->nik)->first();
+        $this->user = $this->userDetail->user;
+
+        $this->details = $this->userDetail->toArray();
+    }
 
     #[On('set-detail')]
     public function setDetail($details): void
