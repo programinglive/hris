@@ -30,11 +30,11 @@
 			>+</button>
 		</div>
 		<div class="col-span-1">
-			<div class="grid grid-cols-4 gap-2">
-				<div class="col-span-2">
+			<div class="grid grid-cols-2 gap-2">
+				<div class="col-span-1">
 					<livewire:import-user />
 				</div>
-				<div class="col-span-2">
+				<div class="col-span-1">
 					<input
 						wire:model.live="search"
 						type="text"
@@ -62,7 +62,6 @@
 					@endif
 				</div>
 			</div>
-			
 		</div>
 	</div>
 	<div x-show="open">

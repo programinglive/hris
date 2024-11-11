@@ -34,6 +34,16 @@ class ImportWorkingCalendar extends Component
 
     public $import;
 
+    /**
+     * Called when the import value is updated.
+     *
+     * @return void
+     */
+    public function updatedImport(): void
+    {
+        $this->importWorkingCalendar();
+    }
+
     public function importWorkingCalendar(): void
     {
         $this->validate([

@@ -3,47 +3,47 @@
 			open: $wire.entangle('showForm')
 		}"
 >
-	<div class="flex justify-between pt-2" x-show="!open" >
-		<div>
+	<div class="grid grid-cols-2 gap-4 pt-2" x-show="!open" >
+		<div class="col-span-1">
 			<button
 				type="button"
 				class="btn bg-primary text-white"
 				@click="open = true"
 			>+</button>
 		</div>
-		<div
-			class="flex items-center gap-2
-		     justify-between w-2/4 relative"
-		>
-			<livewire:import-working-calendar />
-			<input
-				wire:model.live="search"
-				type="text"
-				id="search"
-				class="form-input pr-10 w-1/2"
-				placeholder="Search..."
-			>
-			@if($search)
-				<button
-					wire:click="$set('search',null)"
-					type="button"
-					class="absolute inset-y-0 right-0 flex items-center pr-3"
-				>
-					<svg
-						class="h-3 w-3 text-gray-500"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
+		<div class="col-span-1">
+			<div class="grid grid-cols-2 gap-2">
+				<div class="col-span-1">
+					<livewire:import-working-calendar />
+				</div>
+				<div class="col-span-1">
+					<input
+						wire:model.live="search"
+						type="text"
+						id="search"
+						class="form-input pr-10"
+						placeholder="Search..."
 					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
-						></path>
-					</svg>
-				</button>
-			@endif
+					@if($search)
+						<button
+							wire:click="$set('search',null)"
+							type="button"
+							class="absolute inset-y-0 right-0 flex items-center pr-3"
+						>
+							<svg
+								class="h-3 w-3 text-gray-500"
+								fill="none" viewBox="0 0 24 24" stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2" d="M6 18L18 6M6 6l12 12"
+								></path>
+							</svg>
+						</button>
+					@endif
+				</div>
+			</div>
 		</div>
 	</div>
 	<div x-show="open">
