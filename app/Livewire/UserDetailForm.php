@@ -9,7 +9,6 @@ use App\Models\Division;
 use App\Models\Level;
 use App\Models\Position;
 use App\Models\SubDivision;
-use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
@@ -103,14 +102,11 @@ class UserDetailForm extends Component
 
     public function mount(): void
     {
-        if($this->nik != '') {
+        if ($this->nik != '') {
             $this->setUser();
         }
     }
 
-    /**
-     * @return void
-     */
     public function setUser(): void
     {
         $this->userDetail = UserDetail::where('nik', $this->nik)->first();
@@ -126,9 +122,6 @@ class UserDetailForm extends Component
     }
 
     #[On('set-company')]
-    /**
-     * @param string $companyCode
-     */
     public function setCompany(string $companyCode): void
     {
         $this->details['company_code'] = $companyCode;

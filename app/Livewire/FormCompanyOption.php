@@ -21,11 +21,9 @@ class FormCompanyOption extends Component
     {
         $this->dispatch('set-company', $companyCode);
     }
+
     /**
      * Handle set company event.
-     *
-     * @param string $companyCode
-     * @return void
      */
     #[On('set-company')]
     public function setCompany(string $companyCode): void

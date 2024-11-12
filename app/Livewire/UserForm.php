@@ -97,6 +97,7 @@ class UserForm extends Component
     public $userDetail;
 
     public $actionForm = 'save';
+
     public $cancelButton = true;
 
     /**
@@ -112,7 +113,7 @@ class UserForm extends Component
             $this->setBranch($this->branchCode);
         }
 
-        if($this->user){
+        if ($this->user) {
             $this->setUser();
         }
     }
@@ -232,14 +233,11 @@ class UserForm extends Component
         }
     }
 
-    /**
-     * @return void
-     */
     public function setUser(): void
     {
         $this->userDetail = UserDetail::where('user_id', $this->user->id)->first();
         $this->setDetail($this->userDetail->toArray());
-        
+
         $this->name = $this->user->name;
         $this->email = $this->user->email;
         $this->companyCode = $this->userDetail->company_code ?? '';

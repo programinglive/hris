@@ -36,8 +36,6 @@ class ImportWorkingCalendar extends Component
 
     /**
      * Called when the import value is updated.
-     *
-     * @return void
      */
     public function updatedImport(): void
     {

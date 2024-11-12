@@ -8,7 +8,6 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
-
 class ProfileCard extends Component
 {
     #[Url(keep: true)]
@@ -51,15 +50,13 @@ class ProfileCard extends Component
             $this->user = $this->userDetail->user;
         }
 
-        if (!$this->user) {
+        if (! $this->user) {
             $this->user = auth()->user();
         }
     }
 
     /**
      * Set the company code
-     *
-     * @param string $companyCode
      */
     #[On('set-company')]
     public function setCompany(string $companyCode): void
@@ -69,8 +66,6 @@ class ProfileCard extends Component
 
     /**
      * Set the branch code
-     *
-     * @param string $branchCode
      */
     #[On('set-branch')]
     public function setBranch(string $branchCode): void
@@ -80,8 +75,6 @@ class ProfileCard extends Component
 
     /**
      * Set the department code
-     *
-     * @param string $departmentCode
      */
     #[On('set-department')]
     public function setDepartment(string $departmentCode): void
@@ -89,11 +82,8 @@ class ProfileCard extends Component
         $this->departmentCode = $departmentCode;
     }
 
-
     /**
      * Set the division code
-     *
-     * @param string $divisionCode
      */
     #[On('set-division')]
     public function setDivision(string $divisionCode): void
@@ -101,11 +91,8 @@ class ProfileCard extends Component
         $this->divisionCode = $divisionCode;
     }
 
-
     /**
      * Set the subdivision code
-     *
-     * @param string $subDivisionCode
      */
     #[On('set-sub-division')]
     public function setSubDivision(string $subDivisionCode): void
@@ -113,11 +100,8 @@ class ProfileCard extends Component
         $this->subDivisionCode = $subDivisionCode;
     }
 
-
     /**
      * Set the level code
-     *
-     * @param string $levelCode
      */
     #[On('set-level')]
     public function setLevel(string $levelCode): void
@@ -125,12 +109,8 @@ class ProfileCard extends Component
         $this->levelCode = $levelCode;
     }
 
-
-
     /**
      * Set the position code
-     *
-     * @param string $positionCode
      */
     #[On('set-position')]
     public function setPosition(string $positionCode): void
@@ -140,13 +120,11 @@ class ProfileCard extends Component
 
     /**
      * Render the profile card view
-     *
-     * @return  View
      */
     public function render(): View
     {
         return view('livewire.profile-card', [
-            'user' => $this->user
+            'user' => $this->user,
         ]);
     }
 }
