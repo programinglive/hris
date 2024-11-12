@@ -242,24 +242,25 @@ class UserForm extends Component
         
         $this->name = $this->user->name;
         $this->email = $this->user->email;
-
-        if (is_null($this->userDetail->company_code)) {
-            return;
-        }
-
-        $this->companyCode = $this->userDetail->company_code;
+        $this->companyCode = $this->userDetail->company_code ?? '';
         $this->dispatch('set-company', $this->companyCode);
-        $this->branchCode = $this->userDetail->branch_code;
+
+        $this->branchCode = $this->userDetail->branch_code ?? '';
         $this->dispatch('set-branch', $this->branchCode);
-        $this->departmentCode = $this->userDetail->department_code;
+
+        $this->departmentCode = $this->userDetail->department_code ?? '';
         $this->dispatch('set-department', $this->departmentCode);
-        $this->divisionCode = $this->userDetail->division_code;
+
+        $this->divisionCode = $this->userDetail->division_code ?? '';
         $this->dispatch('set-division', $this->divisionCode);
-        $this->subDivisionCode = $this->userDetail->sub_division_code;
+
+        $this->subDivisionCode = $this->userDetail->sub_division_code ?? '';
         $this->dispatch('set-sub-division', $this->subDivisionCode);
-        $this->levelCode = $this->userDetail->level_code;
+
+        $this->levelCode = $this->userDetail->level_code ?? '';
         $this->dispatch('set-level', $this->levelCode);
-        $this->positionCode = $this->userDetail->position_code;
+
+        $this->positionCode = $this->userDetail->position_code ?? '';
         $this->dispatch('set-position', $this->positionCode);
 
         $this->details = $this->userDetail->toArray();
