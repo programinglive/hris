@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="utf-8">
 	<title>{{ $title ?? '' }} | {{ config('app.name') }}</title>
@@ -17,7 +16,7 @@
 	<link rel="manifest" href="{{asset('/site.webmanifest')}}">
 	
 	@vite(['resources/scss/app.scss', 'resources/scss/icons.scss'])
-	@vite(['resources/js/config.js'])
+{{--	@vite(['resources/js/config.js'])--}}
 	@livewireStyles
 </head>
 

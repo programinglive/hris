@@ -239,9 +239,13 @@ class UserForm extends Component
     {
         $this->userDetail = UserDetail::where('user_id', $this->user->id)->first();
         $this->setDetail($this->userDetail->toArray());
-
+        
         $this->name = $this->user->name;
         $this->email = $this->user->email;
+
+        if (is_null($this->userDetail->company_code)) {
+            return;
+        }
 
         $this->companyCode = $this->userDetail->company_code;
         $this->dispatch('set-company', $this->companyCode);

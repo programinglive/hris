@@ -17,11 +17,7 @@ class PageFilter extends Component
 
     public $filter = true;
 
-    public $companyId;
-
     public $branchFilter = false;
-
-    public $brands;
 
     /**
      * Renders the view for the page filter.
@@ -32,7 +28,6 @@ class PageFilter extends Component
     {
         return view('livewire.page-filter', [
             'companies' => Company::all(),
-            'brands' => $this->brands,
         ]);
     }
 }

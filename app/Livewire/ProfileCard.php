@@ -50,6 +50,10 @@ class ProfileCard extends Component
             $this->userDetail = UserDetail::where('nik', $this->nik)->first();
             $this->user = $this->userDetail->user;
         }
+
+        if (!$this->user) {
+            $this->user = auth()->user();
+        }
     }
 
     /**

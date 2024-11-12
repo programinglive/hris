@@ -126,7 +126,10 @@ class UserDetailForm extends Component
     }
 
     #[On('set-company')]
-    public function setCompany($companyCode): void
+    /**
+     * @param string $companyCode
+     */
+    public function setCompany(string $companyCode): void
     {
         $this->details['company_code'] = $companyCode;
         $this->company = Company::where('code', $companyCode)->first();
