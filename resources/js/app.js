@@ -1,5 +1,12 @@
 import "@frostui/tailwindcss"
 
+import * as Sentry from '@sentry/browser';
+
+Sentry.replayIntegration({
+    unblock: [".sentry-unblock, [data-sentry-unblock]"],
+    unmask: [".sentry-unmask, [data-sentry-unmask]"],
+});
+
 class App {
 
     // Components
