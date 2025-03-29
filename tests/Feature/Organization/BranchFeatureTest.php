@@ -392,4 +392,96 @@ class BranchFeatureTest extends TestCase
         expect($errors->getMessages())->toHaveKey('code');
         expect($errors->get('code')[0])->toContain('The code has already been taken');
     }
+
+    #[Test]
+    public function filters_are_reset_when_filter_dialog_opens()
+    {
+        $this->actingAs($this->user);
+        
+        // Create some branches
+        $company1 = Company::factory()->create([
+            'owner_id' => $this->user->id
+        ]);
+        
+        $company2 = Company::factory()->create([
+            'owner_id' => $this->user->id
+        ]);
+        
+        Branch::factory()->create([
+            'company_id' => $company1->id,
+            'city' => 'City 1'
+        ]);
+        
+        Branch::factory()->create([
+            'company_id' => $company2->id,
+            'city' => 'City 2'
+        ]);
+        
+        // Apply some filters
+        $response = $this->get(route('organization.branch.index', [
+            'company_id' => $company1->id,
+            'city' => 'City 1',
+        ]));
+        
+        // Open filter dialog
+        $response = $this->get(route('organization.branch.index', [
+            'company_id' => $company1->id,
+            'city' => 'City 1',
+            'filter_dialog' => 'true',
+        ]));
+        
+        $response->assertInertia(function (Assert $page) {
+            $page->component('organization/branch/index')
+                ->has('branches.data')
+                // Verify filters are reset
+                ->where('filters.company_id', null)
+                ->where('filters.city', null);
+        });
+    }
+
+    #[Test]
+    public function query_string_is_cleared_when_filter_dialog_opens()
+    {
+        $this->actingAs($this->user);
+        
+        // Create some branches
+        $company1 = Company::factory()->create([
+            'owner_id' => $this->user->id
+        ]);
+        
+        $company2 = Company::factory()->create([
+            'owner_id' => $this->user->id
+        ]);
+        
+        Branch::factory()->create([
+            'company_id' => $company1->id,
+            'city' => 'City 1'
+        ]);
+        
+        Branch::factory()->create([
+            'company_id' => $company2->id,
+            'city' => 'City 2'
+        ]);
+        
+        // Apply some filters
+        $response = $this->get(route('organization.branch.index', [
+            'company_id' => $company1->id,
+            'city' => 'City 1',
+        ]));
+        
+        // Open filter dialog
+        $response = $this->get(route('organization.branch.index', [
+            'company_id' => $company1->id,
+            'city' => 'City 1',
+            'filter_dialog' => 'true',
+        ]));
+        
+        $response->assertInertia(function (Assert $page) {
+            $page->component('organization/branch/index')
+                ->has('branches.data')
+                // Verify only page parameter exists in query string
+                ->where('filters.company_id', null)
+                ->where('filters.city', null);
+        });
+    }
 }

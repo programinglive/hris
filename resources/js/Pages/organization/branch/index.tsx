@@ -294,7 +294,25 @@ export default function BranchIndex({ branches, companies, filters }: Props) {
             onSearch={handleSearch}
             filterDialog={{
               isOpen: isFilterDialogOpen,
-              onOpenChange: setIsFilterDialogOpen,
+              onOpenChange: (open) => {
+                setIsFilterDialogOpen(open);
+                if (open) {
+                  // Reset filters when dialog opens
+                  setFilterState({
+                    company_id: null,
+                    city: null,
+                  });
+                  // Reset URL query parameters
+                  router.get(route('organization.branch.index'), {
+                    page: 1,
+                    company_id: null,
+                    city: null,
+                  }, {
+                    preserveState: true,
+                    replace: true
+                  });
+                }
+              },
               title: "Filter Branches",
               fields: [
                 {
@@ -323,7 +341,8 @@ export default function BranchIndex({ branches, companies, filters }: Props) {
                 });
               },
               onApply: handleFilter,
-              onReset: resetFilters
+              onReset: resetFilters,
+              className: "space-y-4"
             }}
             actions={actions}
           />

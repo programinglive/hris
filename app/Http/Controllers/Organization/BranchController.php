@@ -24,6 +24,14 @@ class BranchController extends Controller
     {
         $query = Branch::with('company');
         
+        // Reset filters if filter_dialog is open
+        if ($request->boolean('filter_dialog')) {
+            $request->replace([
+                'company_id' => null,
+                'city' => null,
+            ]);
+        }
+        
         // Apply search filter if provided
         if ($request->has('search') && !empty($request->search)) {
             $search = $request->search;
