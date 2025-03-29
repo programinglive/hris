@@ -25,6 +25,15 @@ class CompanyController extends Controller
         $query = Company::query()
             ->select('id', 'name', 'email', 'phone', 'city', 'country', 'is_active');
             
+        // Reset filters if filter_dialog is open
+        if ($request->boolean('filter_dialog')) {
+            $request->replace([
+                'status' => null,
+                'city' => null,
+                'country' => null,
+            ]);
+        }
+        
         // Apply search filter if provided
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -41,6 +50,18 @@ class CompanyController extends Controller
             $status = $request->input('status');
             $query->where('is_active', $status === 'active');
         }
+
+        // Apply city filter if provided
+        if ($request->filled('city')) {
+            $city = $request->input('city');
+            $query->where('city', 'like', "%{$city}%");
+        }
+
+        // Apply country filter if provided
+        if ($request->filled('country')) {
+            $country = $request->input('country');
+            $query->where('country', 'like', "%{$country}%");
+        }
         
         $companies = $query->orderBy('name')
                           ->paginate(10)
@@ -48,7 +69,7 @@ class CompanyController extends Controller
         
         return Inertia::render('organization/company/index', [
             'companies' => $companies,
-            'filters' => $request->only(['search', 'status'])
+            'filters' => $request->only(['search', 'status', 'city', 'country'])
         ]);
     }
 

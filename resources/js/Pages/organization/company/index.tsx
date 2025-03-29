@@ -204,10 +204,10 @@ export default function CompanyIndex({ companies, filters }: Props) {
 
   const handleFilter = () => {
     const newFilters: { [key: string]: string | number | undefined } = {
-      ...filters,
       page: 1
     };
 
+    // Only include filters that have values
     if (filterState.status !== null && filterState.status !== '') {
       newFilters.status = filterState.status;
     }
@@ -275,8 +275,29 @@ export default function CompanyIndex({ companies, filters }: Props) {
             onSearch={handleSearch}
             filterDialog={{
               isOpen: isFilterDialogOpen,
-              onOpenChange: setIsFilterDialogOpen,
+              onOpenChange: (open) => {
+                setIsFilterDialogOpen(open);
+                if (open) {
+                  // Reset filters when dialog opens
+                  setFilterState({
+                    status: null,
+                    city: null,
+                    country: null,
+                  });
+                  // Reset URL query parameters
+                  router.get(route('organization.company.index'), {
+                    page: 1,
+                    status: null,
+                    city: null,
+                    country: null,
+                  }, {
+                    preserveState: true,
+                    replace: true
+                  });
+                }
+              },
               title: "Filter Companies",
+              description: "Refine your search by applying filters below",
               fields: [
                 {
                   label: "Status",
@@ -290,12 +311,14 @@ export default function CompanyIndex({ companies, filters }: Props) {
                 {
                   label: "City",
                   type: "text",
-                  name: "city"
+                  name: "city",
+                  placeholder: "Enter city name"
                 },
                 {
                   label: "Country",
                   type: "text",
-                  name: "country"
+                  name: "country",
+                  placeholder: "Enter country name"
                 }
               ],
               state: {
@@ -311,7 +334,8 @@ export default function CompanyIndex({ companies, filters }: Props) {
                 });
               },
               onApply: handleFilter,
-              onReset: resetFilters
+              onReset: resetFilters,
+              className: "space-y-4"
             }}
             actions={actions}
           />

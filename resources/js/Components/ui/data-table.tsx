@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Search, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, ArrowUpDown, Filter } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { Link } from '@inertiajs/react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 
@@ -30,16 +30,19 @@ export interface DataTableProps<TData> {
     isOpen: boolean;
     onOpenChange: (open: boolean) => void;
     title: string;
+    description?: string;
     fields: Array<{
       label: string;
       type: 'text' | 'select';
       name: string;
       options?: Array<{ value: string; label: string }>;
+      placeholder?: string;
     }>;
     state: { [key: string]: string | undefined };
     onStateChange: (state: { [key: string]: string | undefined }) => void;
     onApply: () => void;
     onReset: () => void;
+    className?: string;
   };
   actions?: Array<{
     label: string;
@@ -265,12 +268,17 @@ export function DataTable<TData extends Record<string | number | symbol, any>>({
 
       {filterDialog && (
         <Dialog open={filterDialog.isOpen} onOpenChange={filterDialog.onOpenChange}>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className={`sm:max-w-[425px] ${filterDialog.className}`}>
             <DialogHeader>
               <DialogTitle>{filterDialog.title}</DialogTitle>
+              {filterDialog.description && (
+                <DialogDescription>
+                  {filterDialog.description}
+                </DialogDescription>
+              )}
             </DialogHeader>
             <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {filterDialog.fields.map((field) => (
                   <div key={field.name} className="space-y-2">
                     <Label htmlFor={field.name}>{field.label}</Label>
@@ -284,7 +292,7 @@ export function DataTable<TData extends Record<string | number | symbol, any>>({
                           })
                         }
                       >
-                        <SelectTrigger id={field.name}>
+                        <SelectTrigger id={field.name} className="w-full">
                           <SelectValue placeholder={`Select ${field.label.toLowerCase()}`} />
                         </SelectTrigger>
                         <SelectContent>
@@ -305,7 +313,8 @@ export function DataTable<TData extends Record<string | number | symbol, any>>({
                             [field.name]: e.target.value
                           })
                         }
-                        placeholder={`Enter ${field.label.toLowerCase()}`}
+                        placeholder={field.placeholder}
+                        className="w-full"
                       />
                     )}
                   </div>

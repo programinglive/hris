@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use App\Mail\VerificationCodeMail;
 use Inertia\Testing\AssertableInertia as Assert;
+use PHPUnit\Framework\Attributes\Test;
 
 class CompanyFeatureTest extends TestCase
 {
@@ -42,13 +43,15 @@ class CompanyFeatureTest extends TestCase
     }
 
     // Company Registration Tests
-    public function test_company_registration_page_can_be_rendered()
+    #[Test]
+    public function company_registration_page_can_be_rendered()
     {
         $response = $this->get('/register-company');
         $response->assertStatus(200);
     }
 
-    public function test_contact_validation_step()
+    #[Test]
+    public function contact_validation_step()
     {
         Mail::fake();
 
@@ -76,7 +79,8 @@ class CompanyFeatureTest extends TestCase
         });
     }
 
-    public function test_verification_code_step()
+    #[Test]
+    public function verification_code_step()
     {
         $verificationCode = '123456';
         Session::put('registration_data', [
@@ -101,7 +105,8 @@ class CompanyFeatureTest extends TestCase
         $this->assertTrue($registrationData['verified']);
     }
 
-    public function test_save_company_details_step()
+    #[Test]
+    public function save_company_details_step()
     {
         Session::put('registration_data', [
             'contact' => 'admin' . $this->timestamp . '@example.com',
@@ -397,5 +402,220 @@ class CompanyFeatureTest extends TestCase
         ]);
         
         $response->assertSessionHasErrors(['email']);
+    }
+
+    #[Test]
+    public function companies_can_be_filtered_by_city()
+    {
+        $this->actingAs($this->user);
+        
+        // Create a company with a specific city
+        $city = 'Test City Filter';
+        $company = Company::factory()->create([
+            'owner_id' => $this->user->id,
+            'city' => $city,
+        ]);
+        
+        // Create another company with a different city
+        Company::factory()->create([
+            'owner_id' => $this->user->id,
+            'city' => 'Different City',
+        ]);
+        
+        $response = $this->get(route('organization.company.index', [
+            'city' => $city,
+        ]));
+        
+        $response->assertInertia(function (Assert $page) use ($company, $city) {
+            $page->component('organization/company/index')
+                ->has('companies.data', 1)
+                ->where('companies.data.0.city', $city)
+                ->where('companies.data.0.id', $company->id);
+        });
+    }
+
+    #[Test]
+    public function companies_can_be_filtered_by_country()
+    {
+        $this->actingAs($this->user);
+        
+        // Create a company with a specific country
+        $country = 'Test Country Filter';
+        $company = Company::factory()->create([
+            'owner_id' => $this->user->id,
+            'country' => $country,
+        ]);
+        
+        // Create another company with a different country
+        Company::factory()->create([
+            'owner_id' => $this->user->id,
+            'country' => 'Different Country',
+        ]);
+        
+        $response = $this->get(route('organization.company.index', [
+            'country' => $country,
+        ]));
+        
+        $response->assertInertia(function (Assert $page) use ($company, $country) {
+            $page->component('organization/company/index')
+                ->has('companies.data', 1)
+                ->where('companies.data.0.country', $country)
+                ->where('companies.data.0.id', $company->id);
+        });
+    }
+
+    #[Test]
+    public function companies_can_be_filtered_by_status()
+    {
+        $this->actingAs($this->user);
+        
+        // Update existing company to be inactive
+        $this->company->update(['is_active' => false]);
+        
+        // Create an active company
+        $activeCompany = Company::factory()->create([
+            'owner_id' => $this->user->id,
+            'is_active' => true,
+        ]);
+        
+        // Test active filter
+        $response = $this->get(route('organization.company.index', [
+            'status' => 'active',
+        ]));
+        
+        $response->assertInertia(function (Assert $page) use ($activeCompany) {
+            $page->component('organization/company/index')
+                ->has('companies.data', 1)
+                ->where('companies.data.0.is_active', true)
+                ->where('companies.data.0.id', $activeCompany->id);
+        });
+        
+        // Test inactive filter
+        $response = $this->get(route('organization.company.index', [
+            'status' => 'inactive',
+        ]));
+        
+        $response->assertInertia(function (Assert $page) {
+            $page->component('organization/company/index')
+                ->has('companies.data', 1)
+                ->where('companies.data.0.is_active', false);
+        });
+    }
+
+    #[Test]
+    public function companies_can_be_filtered_by_multiple_criteria()
+    {
+        $this->actingAs($this->user);
+        
+        // Create a company matching all criteria
+        $matchingCompany = Company::factory()->create([
+            'owner_id' => $this->user->id,
+            'name' => 'Test Company',
+            'city' => 'Test City',
+            'country' => 'Test Country',
+            'is_active' => true,
+        ]);
+        
+        // Create companies that don't match all criteria
+        Company::factory()->create([
+            'owner_id' => $this->user->id,
+            'name' => 'Test Company',
+            'city' => 'Different City',
+            'country' => 'Test Country',
+            'is_active' => true,
+        ]);
+        
+        Company::factory()->create([
+            'owner_id' => $this->user->id,
+            'name' => 'Test Company',
+            'city' => 'Test City',
+            'country' => 'Different Country',
+            'is_active' => true,
+        ]);
+        
+        Company::factory()->create([
+            'owner_id' => $this->user->id,
+            'name' => 'Test Company',
+            'city' => 'Test City',
+            'country' => 'Test Country',
+            'is_active' => false,
+        ]);
+        
+        $response = $this->get(route('organization.company.index', [
+            'search' => 'Test Company',
+            'city' => 'Test City',
+            'country' => 'Test Country',
+            'status' => 'active',
+        ]));
+        
+        $response->assertInertia(function (Assert $page) use ($matchingCompany) {
+            $page->component('organization/company/index')
+                ->has('companies.data', 1)
+                ->where('companies.data.0.name', 'Test Company')
+                ->where('companies.data.0.city', 'Test City')
+                ->where('companies.data.0.country', 'Test Country')
+                ->where('companies.data.0.is_active', true)
+                ->where('companies.data.0.id', $matchingCompany->id);
+        });
+    }
+
+    #[Test]
+    public function filters_are_reset_when_filter_dialog_opens()
+    {
+        $this->actingAs($this->user);
+        
+        // Apply some filters
+        $response = $this->get(route('organization.company.index', [
+            'status' => 'active',
+            'city' => 'Test City',
+            'country' => 'Test Country',
+        ]));
+        
+        // Open filter dialog
+        $response = $this->get(route('organization.company.index', [
+            'status' => 'active',
+            'city' => 'Test City',
+            'country' => 'Test Country',
+            'filter_dialog' => 'true',
+        ]));
+        
+        $response->assertInertia(function (Assert $page) {
+            $page->component('organization/company/index')
+                ->has('companies.data')
+                // Verify filters are reset
+                ->where('filters.status', null)
+                ->where('filters.city', null)
+                ->where('filters.country', null);
+        });
+    }
+
+    #[Test]
+    public function query_string_is_cleared_when_filter_dialog_opens()
+    {
+        $this->actingAs($this->user);
+        
+        // Apply some filters
+        $response = $this->get(route('organization.company.index', [
+            'status' => 'active',
+            'city' => 'Test City',
+            'country' => 'Test Country',
+        ]));
+        
+        // Open filter dialog
+        $response = $this->get(route('organization.company.index', [
+            'status' => 'active',
+            'city' => 'Test City',
+            'country' => 'Test Country',
+            'filter_dialog' => 'true',
+        ]));
+        
+        $response->assertInertia(function (Assert $page) {
+            $page->component('organization/company/index')
+                ->has('companies.data')
+                // Verify only page parameter exists in query string
+                ->where('filters.status', null)
+                ->where('filters.city', null)
+                ->where('filters.country', null);
+        });
     }
 }
