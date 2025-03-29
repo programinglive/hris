@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { DataTable } from '@/components/ui/data-table';
 import { Button } from '@/components/ui/button';
-import { Plus, Edit, Trash2, Eye, MoreHorizontal, Filter } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, MoreHorizontal } from 'lucide-react';
 import AppLayout from '@/layouts/app/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { 
@@ -24,22 +24,6 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { ImportDialog } from '@/components/company/import-dialog';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 interface Company {
   id: number;
@@ -77,9 +61,16 @@ interface Props {
   };
 }
 
+interface Action {
+  label: string;
+  href?: string;
+  onClick?: () => void;
+  variant?: 'default' | 'outline' | 'ghost';
+  icon?: React.ComponentType<{ className?: string }>;
+}
+
 export default function CompanyIndex({ companies, filters }: Props) {
   const { url } = usePage();
-  const [searchQuery, setSearchQuery] = useState(filters.search || '');
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [companyToDelete, setCompanyToDelete] = useState<number | null>(null);
@@ -179,7 +170,6 @@ export default function CompanyIndex({ companies, filters }: Props) {
   ];
   
   const handleSearch = (query: string) => {
-    setSearchQuery(query);
     router.get(route('organization.company.index'), {
       ...filters,
       search: query,
@@ -199,7 +189,7 @@ export default function CompanyIndex({ companies, filters }: Props) {
       replace: true
     });
   };
-  
+
   const handleDelete = (id: number) => {
     setCompanyToDelete(id);
     setIsDeleteDialogOpen(true);
@@ -251,6 +241,21 @@ export default function CompanyIndex({ companies, filters }: Props) {
     });
     setIsFilterDialogOpen(false);
   };
+
+  const actions: Action[] = [
+    {
+      label: "Add Company",
+      href: route('organization.company.create'),
+      variant: "default",
+      icon: Plus
+    },
+    {
+      label: "Import",
+      onClick: () => setIsImportDialogOpen(true),
+      variant: "outline",
+      icon: Plus
+    }
+  ];
 
   return (
     <AppLayout title="Companies" breadcrumbs={breadcrumbs}>
@@ -308,20 +313,7 @@ export default function CompanyIndex({ companies, filters }: Props) {
               onApply: handleFilter,
               onReset: resetFilters
             }}
-            actions={[
-              {
-                label: "Add Company",
-                href: route('organization.company.create'),
-                variant: "default",
-                icon: Plus
-              },
-              {
-                label: "Import",
-                onClick: () => setIsImportDialogOpen(true),
-                variant: "outline",
-                icon: Plus
-              }
-            ]}
+            actions={actions}
           />
         </Card>
 

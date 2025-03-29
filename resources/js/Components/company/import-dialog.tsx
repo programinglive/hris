@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import { useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogDescription, 
+  DialogFooter 
 } from '@/components/ui/dialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle, FileSpreadsheet, Upload, X, CheckCircle2 } from 'lucide-react';
@@ -157,21 +157,16 @@ export function ImportDialog({ isOpen, onClose, templateUrl }: ImportDialogProps
               )}
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium">1. Download Template</h3>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={downloadTemplate}
-                    type="button"
-                  >
-                    <FileSpreadsheet className="mr-2 h-4 w-4" />
-                    Download Template
-                  </Button>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  First, download our Excel template and fill it with your company data.
-                </p>
+                <h3 className="text-sm font-medium">1. Download Template</h3>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={downloadTemplate}
+                  type="button"
+                >
+                  <FileSpreadsheet className="mr-2 h-4 w-4" />
+                  Download Template
+                </Button>
               </div>
 
               <div className="space-y-2">
