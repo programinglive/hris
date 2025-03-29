@@ -312,7 +312,8 @@ export default function CompanyIndex({ companies, filters }: Props) {
               {
                 label: "Add Company",
                 href: route('organization.company.create'),
-                variant: "default"
+                variant: "default",
+                icon: Plus
               },
               {
                 label: "Import",

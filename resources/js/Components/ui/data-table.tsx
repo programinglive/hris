@@ -134,15 +134,28 @@ export function DataTable<TData extends Record<string | number | symbol, any>>({
               </Button>
             )}
             {actions?.map((action, index) => (
-              <Button
-                key={index}
-                variant={action.variant}
-                onClick={action.onClick}
-                className={action.href ? "cursor-pointer" : ""}
-              >
-                {action.icon && <action.icon className="mr-2 h-4 w-4" />}
-                {action.label}
-              </Button>
+              action.href ? (
+                <Link
+                  key={index}
+                  href={action.href}
+                  className={`inline-flex items-center gap-2 px-3 py-1 border border-transparent text-sm font-medium rounded-md whitespace-nowrap shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary ${
+                    action.variant === 'outline' ? 'bg-white text-primary border-primary hover:bg-primary/10' : ''
+                  }`}
+                >
+                  {action.icon && <action.icon className="h-4 w-4" />}
+                  {action.label}
+                </Link>
+              ) : (
+                <Button
+                  key={index}
+                  variant={action.variant}
+                  onClick={action.onClick}
+                  className="inline-flex items-center gap-2 px-3 py-1 h-auto whitespace-nowrap"
+                >
+                  {action.icon && <action.icon className="h-4 w-4" />}
+                  {action.label}
+                </Button>
+              )
             ))}
           </div>
         </div>
