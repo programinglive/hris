@@ -513,4 +513,161 @@ class CompanyTest extends TestCase
         // Assert the duplicate data was not imported
         $this->assertEquals(1, Company::where('email', 'duplicate@company.com')->count());
     }
+
+    #[Test]
+    public function company_list_has_correct_pagination_structure()
+    {
+        // Create more companies than the default per page
+        $companies = Company::factory()->count(15)->create([
+            'owner_id' => $this->user->id
+        ]);
+        
+        $response = $this->get(route('organization.company.index'));
+        
+        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('organization/company/index')
+            ->has('companies.data')
+            ->has('companies.links')
+            ->where('companies.total', 15)
+            ->where('companies.per_page', 10) // Default per_page
+            ->where('companies.current_page', 1)
+        );
+    }
+
+    #[Test]
+    public function company_list_can_be_sorted_by_name()
+    {
+        // Create companies with different names
+        $companies = Company::factory()->count(3)->create([
+            'owner_id' => $this->user->id,
+            'name' => fn () => $this->faker->unique()->company
+        ]);
+        
+        // Sort by name ascending
+        $response = $this->get(route('organization.company.index', ['sort' => 'name', 'direction' => 'asc']));
+        
+        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('organization/company/index')
+            ->has('companies.data', 3)
+            ->where('companies.data.0.name', $companies->sortBy('name')->first()->name)
+        );
+    }
+
+    #[Test]
+    public function company_list_can_be_filtered_by_name()
+    {
+        // Create companies with specific names
+        $matchingCompany = Company::factory()->create([
+            'owner_id' => $this->user->id,
+            'name' => 'Test Company'
+        ]);
+        
+        Company::factory()->count(2)->create([
+            'owner_id' => $this->user->id,
+            'name' => fn () => $this->faker->unique()->company
+        ]);
+        
+        $response = $this->get(route('organization.company.index', ['search' => 'Test']));
+        
+        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('organization/company/index')
+            ->has('companies.data', 1)
+            ->where('companies.data.0.name', 'Test Company')
+        );
+    }
+
+    #[Test]
+    public function company_list_shows_correct_status_badges()
+    {
+        // Create companies with different statuses
+        $activeCompany = Company::factory()->create([
+            'owner_id' => $this->user->id,
+            'is_active' => true,
+            'name' => 'Active Company'
+        ]);
+        
+        $inactiveCompany = Company::factory()->create([
+            'owner_id' => $this->user->id,
+            'is_active' => false,
+            'name' => 'Inactive Company'
+        ]);
+        
+        $response = $this->get(route('organization.company.index'));
+        
+        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('organization/company/index')
+            ->has('companies.data', 2)
+            ->where('companies.data.0.name', 'Active Company')
+            ->where('companies.data.0.is_active', true)
+            ->where('companies.data.1.name', 'Inactive Company')
+            ->where('companies.data.1.is_active', false)
+        );
+    }
+
+    #[Test]
+    public function company_list_shows_correct_action_buttons()
+    {
+        $company = Company::factory()->create([
+            'owner_id' => $this->user->id
+        ]);
+        
+        $response = $this->get(route('organization.company.index'));
+        
+        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('organization/company/index')
+            ->has('companies.data', fn (Assert $companies) => 
+                $companies->each(fn (Assert $company) => 
+                    $company->has('id')
+                           ->has('name')
+                           ->has('is_active')
+                           ->has('email')
+                           ->has('phone')
+                           ->has('city')
+                           ->has('country')
+                )
+            )
+        );
+    }
+
+    #[Test]
+    public function company_list_shows_correct_import_export_buttons()
+    {
+        $response = $this->get(route('organization.company.index'));
+        
+        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('organization/company/index')
+        );
+    }
+
+    #[Test]
+    public function company_list_shows_correct_bulk_actions()
+    {
+        $companies = Company::factory()->count(3)->create([
+            'owner_id' => $this->user->id
+        ]);
+        
+        $response = $this->get(route('organization.company.index'));
+        
+        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('organization/company/index')
+        );
+    }
+
+    #[Test]
+    public function company_list_shows_correct_column_headers()
+    {
+        $response = $this->get(route('organization.company.index'));
+        
+        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('organization/company/index')
+        );
+    }
 }

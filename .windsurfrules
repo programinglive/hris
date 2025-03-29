@@ -9,3 +9,17 @@
 9. We not use spatie permission we use role model instead
 10. For Organization module hierarchy is company -> branch -> department -> division -> sub-division -> position -> level
 11. We don't use manager_id in application
+
+## Organization
+
+1. Company Page
+2. Branch Page
+3. Department Page
+4. Division Page
+5. Sub-division Page
+6. Position Page
+7. Level Page
+
+# Employee
+
+1. Employee Page
