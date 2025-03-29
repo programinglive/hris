@@ -79,11 +79,18 @@ class CompanyController extends Controller
             'country' => 'nullable|string|max:100',
             'website' => 'nullable|url|max:255',
             'description' => 'nullable|string',
+            'logo' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'is_active' => 'boolean',
         ]);
 
         $validated['owner_id'] = Auth::id();
-        
+
+        // Handle logo upload if provided
+        if ($request->hasFile('logo')) {
+            $path = $request->file('logo')->store('logos', 'public');
+            $validated['logo'] = $path;
+        }
+
         Company::create($validated);
 
         return Redirect::route('organization.company.index')->with('success', 'Company created successfully.');
