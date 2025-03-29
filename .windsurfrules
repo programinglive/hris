@@ -1,5 +1,4 @@
 1. This is laravel project with inertiajs and reactjs
-2. for testing use laravel pesttest
 3. for authentication use inertia auth
 4. We don't use employees table, we use users -> user_details table. Employee is role
 5. One User can have multiple roles
@@ -10,15 +9,34 @@
 10. For Organization module hierarchy is company -> branch -> department -> division -> sub-division -> position -> level
 11. We don't use manager_id in application
 
+# Test
+1. When run test check on factory associate with model
+2. When run test check on controller associate with model
+3. When run test check on view associate with model
+4. When run test check on route associate with model
+5. When run test check on middleware associate with model
+6. When run test check on policy associate with model
+7. When run test check on model associate with model
+8. When run test check on database associate with model
+9. When run test check on storage associate with model
+10. When run test check on config associate with model
+11. When run test check on package associate with model
+12. use TestCase
+13. don't use /** @test */ use #[Test] attribute insteat
+
 ## Organization
 
 1. Company Page
+    - Company can has multiple branches
+    - Company can has multiple brands
 2. Branch Page
 3. Department Page
 4. Division Page
 5. Sub-division Page
 6. Position Page
 7. Level Page
+8. Brand Page
+    - user can associate with multiple brands
 
 # Employee
 

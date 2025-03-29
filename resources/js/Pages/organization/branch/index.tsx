@@ -1,10 +1,16 @@
-import AppLayout from '@/layouts/app/app-layout';
+import React, { useState } from 'react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { DataTable } from '@/components/ui/data-table';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2, Eye, MoreHorizontal } from 'lucide-react';
-import { useState } from 'react';
-import { Link, router } from '@inertiajs/react';
+import { Plus, Edit, Trash2, Eye, MoreHorizontal } from 'lucide-react';
+import AppLayout from '@/layouts/app/app-layout';
 import { type BreadcrumbItem } from '@/types';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,14 +22,8 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Card } from '@/components/ui/card';
 import { ImportDialog } from '@/components/branch/import-dialog';
-import { ReactNode } from 'react';
 
 interface Company {
   id: number;
@@ -35,31 +35,31 @@ interface Branch {
   name: string;
   code: string;
   address: string;
-  city: string;
+  city: string | null;
   company: Company | null;
   is_main_branch: boolean;
   is_active: boolean;
   created_at: string;
 }
 
-interface ColumnDef<T> {
-  key: string;
-  label: string;
-  render?: (value: any, row: T) => ReactNode;
+interface FilterState {
+  company_id: string | null;
+  city: string | null;
 }
 
-interface BranchListsProps {
-  branches: {
-    data: Branch[];
-    meta: {
-      current_page: number;
-      last_page: number;
-      per_page: number;
-      total: number;
-    };
-  };
+interface PaginatedData {
+  data: Branch[];
+  current_page: number;
+  per_page: number;
+  total: number;
+  from: number;
+  to: number;
+  last_page: number;
+}
+
+interface Props {
+  branches: PaginatedData;
   companies: Company[];
-  cities: string[];
   filters: {
     search?: string;
     company_id?: string;
@@ -67,32 +67,24 @@ interface BranchListsProps {
   };
 }
 
-export default function BranchLists({ branches, companies, cities, filters }: BranchListsProps) {
-  // Ensure we have default values for all props
-  const branchesData = branches?.data || [];
-  const branchesMeta = branches?.meta || { current_page: 1, last_page: 1, per_page: 10, total: 0 };
-  const companiesData = companies || [];
-  const citiesData = cities || [];
-  const filtersData = filters || {};
-  
-  const [searchQuery, setSearchQuery] = useState(filtersData.search || '');
-  const [companyFilter, setCompanyFilter] = useState(filtersData.company_id || '');
-  const [cityFilter, setCityFilter] = useState(filtersData.city || '');
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [branchToDelete, setBranchToDelete] = useState<Branch | null>(null);
+interface Action {
+  label: string;
+  href?: string;
+  onClick?: () => void;
+  variant?: 'default' | 'outline' | 'ghost';
+  icon?: React.ComponentType<{ className?: string }>;
+}
+
+export default function BranchIndex({ branches, companies, filters }: Props) {
+  const { url } = usePage();
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
-  
-  const handleDelete = (branch: Branch) => {
-    setBranchToDelete(branch);
-    setIsDeleteDialogOpen(true);
-  };
-  
-  const confirmDelete = () => {
-    if (branchToDelete) {
-      router.delete(`/organization/branch/${branchToDelete.id}`);
-    }
-    setIsDeleteDialogOpen(false);
-  };
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
+  const [branchToDelete, setBranchToDelete] = useState<number | null>(null);
+  const [filterState, setFilterState] = useState<FilterState>({
+    company_id: filters.company_id || null,
+    city: filters.city || null,
+  });
   
   // Generate breadcrumbs
   const breadcrumbs: BreadcrumbItem[] = [
@@ -105,96 +97,94 @@ export default function BranchLists({ branches, companies, cities, filters }: Br
       href: '#',
     },
     {
-      title: 'Branch',
-      href: '/organization/branch',
+      title: 'Branches',
+      href: url,
     }
   ];
   
-  // Define columns for the data table
-  const columns: ColumnDef<Branch>[] = [
+  // Define columns
+  const columns = [
     {
-      key: 'name',
-      label: 'Branch Name',
-      render: (value: string) => <div className="font-medium">{value}</div>,
+      accessorKey: 'name' as keyof Branch,
+      header: 'Branch Name',
+      cell: ({ row }: { row: Branch }) => row.name,
     },
     {
-      key: 'code',
-      label: 'Code',
+      accessorKey: 'code' as keyof Branch,
+      header: 'Code',
+      cell: ({ row }: { row: Branch }) => row.code,
     },
     {
-      key: 'company',
-      label: 'Company',
-      render: (value: Company | null) => {
-        return value ? value.name : 'Not Assigned';
+      accessorKey: 'company' as keyof Branch,
+      header: 'Company',
+      cell: ({ row }: { row: Branch }) => {
+        return row.company ? row.company.name : 'Not Assigned';
       },
     },
     {
-      key: 'city',
-      label: 'Location',
-      render: (value: string | null, row: Branch) => {
-        const city = value;
+      accessorKey: 'city' as keyof Branch,
+      header: 'Location',
+      cell: ({ row }: { row: Branch }) => {
+        const city = row.city;
         const address = row.address;
         return city ? city : (address ? address.substring(0, 30) + (address.length > 30 ? '...' : '') : 'Not specified');
       },
     },
     {
-      key: 'is_active',
-      label: 'Status',
-      render: (value: boolean, row: Branch) => {
-        const isActive = value;
-        const isMainBranch = row.is_main_branch;
-        return (
-          <div className="flex gap-2">
-            <Badge 
-              variant={isActive ? 'default' : 'secondary'}
-              className="capitalize"
-            >
-              {isActive ? 'Active' : 'Inactive'}
+      accessorKey: 'is_active' as keyof Branch,
+      header: 'Status',
+      cell: ({ row }: { row: Branch }) => (
+        <div className="flex gap-2">
+          <Badge 
+            variant={row.is_active ? 'default' : 'secondary'}
+            className="capitalize"
+          >
+            {row.is_active ? 'Active' : 'Inactive'}
+          </Badge>
+          {row.is_main_branch && (
+            <Badge variant="success">
+              Main
             </Badge>
-            {isMainBranch && (
-              <Badge variant="success">
-                Main
-              </Badge>
-            )}
-          </div>
-        );
-      },
+          )}
+        </div>
+      ),
     },
     {
-      key: 'created_at',
-      label: 'Created',
+      accessorKey: 'created_at' as keyof Branch,
+      header: 'Created',
+      cell: ({ row }: { row: Branch }) => row.created_at,
     },
     {
-      key: 'actions',
-      label: 'Actions',
-      render: (value: any, row: Branch) => (
+      accessorKey: 'actions' as keyof Branch,
+      header: 'Actions',
+      cell: ({ row }: { row: Branch }) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`/organization/branch/${row.id}`} className="cursor-pointer">
+              <Link href={route('organization.branch.show', row.id)} className="flex items-center">
                 <Eye className="mr-2 h-4 w-4" />
-                View
+                <span>View</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={`/organization/branch/${row.id}/edit`}>
+              <Link href={route('organization.branch.edit', row.id)} className="flex items-center">
                 <Edit className="mr-2 h-4 w-4" />
-                Edit
+                <span>Edit</span>
               </Link>
             </DropdownMenuItem>
             {!row.is_main_branch && (
               <DropdownMenuItem 
-                className="text-red-500 focus:text-red-500"
-                onClick={() => handleDelete(row)}
+                onClick={() => handleDelete(row.id)}
+                className="flex items-center text-red-600 focus:text-red-600 focus:bg-red-50"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
-                Delete
+                <span>Delete</span>
               </DropdownMenuItem>
             )}
           </DropdownMenuContent>
@@ -202,130 +192,167 @@ export default function BranchLists({ branches, companies, cities, filters }: Br
       ),
     },
   ];
-  
-  // Handle page change
-  const handlePageChange = (page: number) => {
-    router.get(
-      '/organization/branch',
-      { 
-        page,
-        search: searchQuery,
-        company_id: companyFilter,
-        city: cityFilter
-      },
-      { 
-        preserveState: true,
-        replace: true 
-      }
-    );
+
+  const handleSearch = (query: string) => {
+    router.get(route('organization.branch.index'), {
+      ...filters,
+      search: query,
+      page: 1
+    }, {
+      preserveState: true,
+      replace: true
+    });
   };
 
-  // Handle search
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    router.get(
-      '/organization/branch',
-      { 
-        search: query,
-        company_id: companyFilter,
-        city: cityFilter
-      },
-      { 
-        preserveState: true,
-        replace: true 
-      }
-    );
+  const handlePageChange = (page: number) => {
+    router.get(route('organization.branch.index'), {
+      ...filters,
+      page
+    }, {
+      preserveState: true,
+      replace: true
+    });
   };
-  
-  // Handle filter change
-  const handleFilterChange = (filters: Record<string, any>) => {
-    const companyId = filters.company_id || '';
-    const city = filters.city || '';
-    
-    setCompanyFilter(companyId);
-    setCityFilter(city);
-    
-    router.get(
-      '/organization/branch',
-      { 
-        search: searchQuery,
-        company_id: companyId,
-        city: city
-      },
-      { 
-        preserveState: true,
-        replace: true 
-      }
-    );
+
+  const handleDelete = (id: number) => {
+    setBranchToDelete(id);
+    setIsDeleteDialogOpen(true);
   };
-  
-  // Define filter options for the data table
-  const filterOptions = {
-    company_id: {
-      label: 'Company',
-      options: companiesData.map(company => ({
-        label: company.name,
-        value: company.id.toString(),
-        id: `company-${company.id}`
-      }))
-    },
-    city: {
-      label: 'Location',
-      options: citiesData.map((city, index) => ({
-        label: city,
-        value: city,
-        id: `city-${index}`
-      }))
+
+  const confirmDelete = () => {
+    if (branchToDelete) {
+      router.delete(route('organization.branch.destroy', branchToDelete));
     }
+    setIsDeleteDialogOpen(false);
   };
-  
+
+  const handleFilter = () => {
+    const newFilters: { [key: string]: string | number | undefined } = {
+      ...filters,
+      page: 1
+    };
+
+    if (filterState.company_id !== null && filterState.company_id !== '') {
+      newFilters.company_id = filterState.company_id;
+    }
+
+    if (filterState.city !== null && filterState.city !== '') {
+      newFilters.city = filterState.city;
+    }
+
+    router.get(route('organization.branch.index'), newFilters, {
+      preserveState: true,
+      replace: true
+    });
+    setIsFilterDialogOpen(false);
+  };
+
+  const resetFilters = () => {
+    setFilterState({
+      company_id: null,
+      city: null,
+    });
+    router.get(route('organization.branch.index'), {
+      page: 1
+    }, {
+      preserveState: true,
+      replace: true
+    });
+    setIsFilterDialogOpen(false);
+  };
+
+  const actions: Action[] = [
+    {
+      label: "Add Branch",
+      href: route('organization.branch.create'),
+      variant: "default",
+      icon: Plus
+    },
+    {
+      label: "Import",
+      onClick: () => setIsImportDialogOpen(true),
+      variant: "outline",
+      icon: Plus
+    }
+  ];
+
   return (
-    <AppLayout title="Branch Management" breadcrumbs={breadcrumbs}>
+    <AppLayout title="Branches" breadcrumbs={breadcrumbs}>
       <div className="p-6">
-        <DataTable 
-          title="Branches"
-          columns={columns}
-          data={branchesData}
-          searchPlaceholder="Search branches..."
-          totalItems={branchesMeta.total}
-          currentPage={branchesMeta.current_page}
-          perPage={branchesMeta.per_page}
-          onPageChange={handlePageChange}
-          onSearch={handleSearch}
-          onFilter={handleFilterChange}
-          filterOptions={filterOptions}
-          addButton={{
-            label: 'Add Branch',
-            href: '/organization/branch/create'
-          }}
-          importButton={{
-            label: 'Import Branches',
-            onClick: () => setIsImportDialogOpen(true)
-          }}
-        />
-        
+        <Card className="p-6">
+          <DataTable<Branch>
+            data={branches.data}
+            columns={columns}
+            title="Branches"
+            searchPlaceholder="Search branches..."
+            pagination={{
+              totalItems: branches.total,
+              currentPage: branches.current_page,
+              perPage: branches.per_page,
+              onPageChange: handlePageChange
+            }}
+            onSearch={handleSearch}
+            filterDialog={{
+              isOpen: isFilterDialogOpen,
+              onOpenChange: setIsFilterDialogOpen,
+              title: "Filter Branches",
+              fields: [
+                {
+                  label: "Company",
+                  type: "select",
+                  name: "company_id",
+                  options: companies.map(company => ({
+                    value: company.id.toString(),
+                    label: company.name
+                  }))
+                },
+                {
+                  label: "City",
+                  type: "text",
+                  name: "city"
+                }
+              ],
+              state: {
+                company_id: filterState.company_id || '',
+                city: filterState.city || ''
+              },
+              onStateChange: (state) => {
+                setFilterState({
+                  company_id: state.company_id || null,
+                  city: state.city || null
+                });
+              },
+              onApply: handleFilter,
+              onReset: resetFilters
+            }}
+            actions={actions}
+          />
+        </Card>
+
+        {/* Delete Confirmation Dialog */}
         <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Are you sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete the branch 
-                <span className="font-semibold"> {branchToDelete?.name}</span>.
+                This action will permanently delete this branch.
+                This action cannot be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={confirmDelete} className="bg-red-600 hover:bg-red-700">
+              <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
                 Delete
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        
+
+        {/* Import Dialog */}
         <ImportDialog 
           isOpen={isImportDialogOpen} 
           onClose={() => setIsImportDialogOpen(false)} 
-          templateUrl="/organization/branch/import/template"
+          templateUrl={route('organization.branch.import.template')}
         />
       </div>
     </AppLayout>

@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use App\Mail\VerificationCodeMail;
-use Tests\InertiaTestHelpers;
-use PHPUnit\Framework\Attributes\Test;
 use Inertia\Testing\AssertableInertia as Assert;
 
 class CompanyFeatureTest extends TestCase
