@@ -194,21 +194,43 @@ export default function BranchIndex({ branches, companies, filters }: Props) {
   ];
 
   const handleSearch = (query: string) => {
-    router.get(route('organization.branch.index'), {
+    const newFilters: { [key: string]: string | number | undefined } = {
       ...filters,
-      search: query,
+      search: query.trim() || undefined,
       page: 1
-    }, {
+    };
+
+    // Remove empty filter values
+    Object.keys(newFilters).forEach(key => {
+      if (!newFilters[key]) {
+        delete newFilters[key];
+      }
+    });
+
+    router.get(route('organization.branch.index'), newFilters, {
       preserveState: true,
       replace: true
     });
   };
 
   const handlePageChange = (page: number) => {
-    router.get(route('organization.branch.index'), {
-      ...filters,
+    const newFilters: { [key: string]: string | number | undefined } = {
       page
-    }, {
+    };
+
+    if (filters.search) {
+      newFilters.search = filters.search;
+    }
+
+    if (filterState.company_id) {
+      newFilters.company_id = filterState.company_id;
+    }
+
+    if (filterState.city) {
+      newFilters.city = filterState.city;
+    }
+
+    router.get(route('organization.branch.index'), newFilters, {
       preserveState: true,
       replace: true
     });
@@ -305,8 +327,7 @@ export default function BranchIndex({ branches, companies, filters }: Props) {
                   // Reset URL query parameters
                   router.get(route('organization.branch.index'), {
                     page: 1,
-                    company_id: null,
-                    city: null,
+                    filter_dialog: true,
                   }, {
                     preserveState: true,
                     replace: true
@@ -314,6 +335,7 @@ export default function BranchIndex({ branches, companies, filters }: Props) {
                 }
               },
               title: "Filter Branches",
+              description: "Use these filters to narrow down your branch search. You can filter by company and city.",
               fields: [
                 {
                   label: "Company",
@@ -322,12 +344,14 @@ export default function BranchIndex({ branches, companies, filters }: Props) {
                   options: companies.map(company => ({
                     value: company.id.toString(),
                     label: company.name
-                  }))
+                  })),
+                  placeholder: "Select Company"
                 },
                 {
                   label: "City",
                   type: "text",
-                  name: "city"
+                  name: "city",
+                  placeholder: "Enter City"
                 }
               ],
               state: {
@@ -372,6 +396,10 @@ export default function BranchIndex({ branches, companies, filters }: Props) {
           isOpen={isImportDialogOpen} 
           onClose={() => setIsImportDialogOpen(false)} 
           templateUrl={route('organization.branch.import.template')}
+          accessibility={{ 
+            title: 'Import Branches', 
+            description: 'Import branches from an Excel file.' 
+          }}
         />
       </div>
     </AppLayout>

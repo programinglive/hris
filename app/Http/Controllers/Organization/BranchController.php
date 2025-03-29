@@ -22,68 +22,62 @@ class BranchController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Branch::with('company');
-        
-        // Reset filters if filter_dialog is open
-        if ($request->boolean('filter_dialog')) {
-            $request->replace([
+        $query = Branch::with(['company'])->select([
+            'id',
+            'name',
+            'code',
+            'address',
+            'city',
+            'company_id',
+            'is_main_branch',
+            'is_active',
+            'created_at'
+        ]);
+
+        // Reset filters if filter dialog is opened
+        if ($request->has('filter_dialog')) {
+            $filters = [
+                'search' => null,
                 'company_id' => null,
                 'city' => null,
-            ]);
-        }
-        
-        // Apply search filter if provided
-        if ($request->has('search') && !empty($request->search)) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('code', 'like', "%{$search}%")
-                  ->orWhere('city', 'like', "%{$search}%")
-                  ->orWhereHas('company', function ($subQuery) use ($search) {
-                      $subQuery->where('name', 'like', "%{$search}%");
-                  });
-            });
-        }
-        
-        // Apply company filter if provided
-        if ($request->has('company_id') && !empty($request->company_id)) {
-            $query->where('company_id', $request->company_id);
-        }
-        
-        // Apply location (city) filter if provided
-        if ($request->has('city') && !empty($request->city)) {
-            $query->where('city', $request->city);
-        }
-        
-        // Get paginated results
-        $branches = $query->paginate(10)->through(function ($branch) {
-            return [
-                'id' => $branch->id,
-                'name' => $branch->name,
-                'code' => $branch->code,
-                'address' => $branch->address,
-                'city' => $branch->city,
-                'company' => $branch->company ? [
-                    'id' => $branch->company->id,
-                    'name' => $branch->company->name,
-                ] : null,
-                'is_main_branch' => $branch->is_main_branch,
-                'is_active' => $branch->is_active,
-                'created_at' => $branch->created_at->format('Y-m-d'),
             ];
-        });
-        
-        // Get companies for filter dropdown
-        $companies = Company::select('id', 'name')->orderBy('name')->get();
-        
-        // Get unique cities for filter dropdown
-        $cities = Branch::select('city')->distinct()->whereNotNull('city')->orderBy('city')->pluck('city');
+        } else {
+            // Apply filters
+            if ($request->has('search')) {
+                $search = $request->input('search');
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('code', 'like', '%' . $search . '%')
+                        ->orWhere('address', 'like', '%' . $search . '%')
+                        ->orWhere('city', 'like', '%' . $search . '%');
+                });
+            }
+
+            if ($request->has('company_id')) {
+                $query->where('company_id', $request->input('company_id'));
+            }
+
+            if ($request->has('city')) {
+                $query->where('city', 'like', '%' . $request->input('city') . '%');
+            }
+
+            $filters = [
+                'search' => $request->input('search'),
+                'company_id' => $request->input('company_id'),
+                'city' => $request->input('city'),
+            ];
+        }
+
+        // Get companies for filter
+        $companies = Company::select(['id', 'name'])->get();
+
+        // Get branches with pagination
+        $branches = $query->paginate(10);
 
         return Inertia::render('organization/branch/index', [
             'branches' => $branches,
             'companies' => $companies,
-            'cities' => $cities,
-            'filters' => $request->only(['search', 'company_id', 'city']),
+            'filters' => $filters
         ]);
     }
 
@@ -305,7 +299,6 @@ class BranchController extends Controller
      */
     public function downloadTemplate()
     {
-        // Create the file
         $filename = 'branch_import_template.xlsx';
         $tempPath = storage_path('app/temp/' . $filename);
         
@@ -319,25 +312,44 @@ class BranchController extends Controller
         
         // Add headers by adding a row with the header values
         $writer->addRow([
-            'name' => 'name',
-            'code' => 'code',
-            'address' => 'address',
-            'city' => 'city',
-            'phone' => 'phone',
-            'email' => 'email',
-            'is_active' => 'is_active'
+            'name' => 'Branch Name*',
+            'code' => 'Branch Code*',
+            'company_code' => 'Company Code*',
+            'company_name' => 'Company Name*',
+            'address' => 'Address',
+            'city' => 'City',
+            'state' => 'State/Province',
+            'postal_code' => 'Postal Code',
+            'country' => 'Country',
+            'phone' => 'Phone',
+            'email' => 'Email',
+            'is_active' => 'Is Active (Yes/No)',
+            'description' => 'Description'
         ]);
         
         // Add example data
         $writer->addRow([
-            'name' => 'Example Branch',
+            'name' => 'Main Branch',
             'code' => 'BR001',
+            'company_code' => 'BEAUT',
+            'company_name' => 'Test Company',
             'address' => '123 Main Street',
-            'city' => 'New York',
-            'phone' => '555-123-4567',
+            'city' => 'City Name',
+            'state' => 'State',
+            'postal_code' => '12345',
+            'country' => 'Country',
+            'phone' => '+1234567890',
             'email' => 'branch@example.com',
-            'is_active' => 'Yes'
+            'is_active' => 'Yes',
+            'description' => 'Main branch description'
         ]);
+        
+        // Add notes in additional rows
+        $writer->addRow([]);
+        $writer->addRow(['Notes:']);
+        $writer->addRow(['* Required fields']);
+        $writer->addRow(['* Branch Code must be unique']);
+        $writer->addRow(['* For Is Active field, use Yes/No, True/False, or 1/0']);
         
         // Close the writer to save the file
         $writer->close();
@@ -361,24 +373,29 @@ class BranchController extends Controller
         ]);
         
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors(),
-            ], 422);
+            return back()->withErrors($validator);
         }
         
         if (!$request->hasFile('file')) {
-            return response()->json([
-                'success' => false,
-                'errors' => ['file' => ['No file was uploaded.']],
-            ], 422);
+            return back()->withErrors(['file' => 'No file was uploaded.']);
         }
         
         $file = $request->file('file');
-        
+
         // Process the file directly from the uploaded file path
         try {
-            $reader = SimpleExcelReader::create($file->getPathname());
+            // Get file extension to determine reader type
+            $extension = strtolower($file->getClientOriginalExtension());
+            
+            // Map extension to reader type
+            $readerType = 'xlsx'; // Default
+            if ($extension === 'csv') {
+                $readerType = 'csv';
+            } elseif ($extension === 'xls') {
+                $readerType = 'xls';
+            }
+            
+            $reader = SimpleExcelReader::create($file->getPathname(), $readerType);
             
             $importResults = [
                 'total' => 0,
@@ -388,77 +405,86 @@ class BranchController extends Controller
             ];
             
             DB::beginTransaction();
-            
+
             try {
                 $reader->getRows()->each(function(array $row) use (&$importResults) {
                     $importResults['total']++;
                     
                     // Skip header row if it exists
-                    if (isset($row['name']) && strtolower($row['name']) === 'name') {
+                    if (isset($row['name']) && $row['name'] === 'Branch Name*') {
                         return;
                     }
                     
-                    // Validate row data
-                    $validator = Validator::make($row, [
-                        'name' => 'required|string|max:255',
-                        'code' => 'required|string|max:50|unique:branches',
-                        'address' => 'nullable|string|max:255',
-                        'city' => 'nullable|string|max:100',
-                        'phone' => 'nullable|string|max:20',
-                        'email' => 'nullable|email|max:255',
-                        'is_active' => 'nullable|string',
-                    ]);
-                    
-                    if ($validator->fails()) {
-                        $importResults['failed']++;
-                        $importResults['errors'][] = [
-                            'row' => $importResults['total'],
-                            'name' => $row['name'] ?? 'Unknown',
-                            'code' => $row['code'] ?? 'Unknown',
-                            'errors' => $validator->errors()->all(),
-                        ];
+                    // Skip empty rows
+                    if (empty($row['name']) && empty($row['code'])) {
                         return;
                     }
                     
                     try {
-                        // Create branch
+                        // Get company using both code and name
+                        $company = \App\Models\Company::where(function ($query) use ($row) {
+                            $query->where('code', $row['company_code'])
+                                ->orWhere('name', $row['company_name']);
+                        })->first();
+
+                        if (!$company) {
+                            throw new \Exception("Company not found: Code={$row['company_code']}, Name={$row['company_name']}");
+                        }
+                        
+                        // Prepare data for validation and creation
                         $isActive = false;
                         if (isset($row['is_active'])) {
                             $isActiveValue = strtolower(trim($row['is_active']));
                             $isActive = in_array($isActiveValue, ['yes', 'true', '1', 'y']);
                         }
                         
-                        // Get company for the branch
-                        // First try to find the test company, then fallback to the first company
-                        $company = \App\Models\Company::where('code', 'TEST')->first();
-                        
-                        if (!$company) {
-                            $company = \App\Models\Company::first();
-                        }
-                        
-                        if (!$company) {
-                            throw new \Exception('No company found. Please create a company first.');
-                        }
-                        
-                        Branch::create([
-                            'name' => $row['name'],
-                            'code' => $row['code'],
+                        $data = [
+                            'name' => $row['name'] ?? null,
+                            'code' => $row['code'] ?? null,
                             'address' => $row['address'] ?? null,
                             'city' => $row['city'] ?? null,
+                            'state' => $row['state'] ?? null,
+                            'postal_code' => $row['postal_code'] ?? null,
+                            'country' => $row['country'] ?? null,
                             'phone' => $row['phone'] ?? null,
                             'email' => $row['email'] ?? null,
                             'company_id' => $company->id,
                             'is_active' => $isActive,
                             'is_main_branch' => false,
+                            'description' => $row['description'] ?? null,
+                        ];
+                        
+                        // Validate row data
+                        $rowValidator = Validator::make($data, [
+                            'name' => 'required|string|max:255',
+                            'code' => 'required|string|max:50|unique:branches',
+                            'address' => 'nullable|string|max:255',
+                            'city' => 'nullable|string|max:100',
+                            'state' => 'nullable|string|max:50',
+                            'postal_code' => 'nullable|string|max:20',
+                            'country' => 'nullable|string|max:100',
+                            'phone' => 'nullable|string|max:20',
+                            'email' => 'nullable|email|max:255',
+                            'company_id' => 'required|exists:companies,id',
+                            'is_active' => 'boolean',
+                            'is_main_branch' => 'boolean',
+                            'description' => 'nullable|string|max:255',
                         ]);
                         
+                        if ($rowValidator->fails()) {
+                            throw new \Exception('Validation failed: ' . json_encode($rowValidator->errors()->all()));
+                        }
+
+                        // Create branch
+                        Branch::create($data);
                         $importResults['success']++;
+                        
                     } catch (\Exception $e) {
                         $importResults['failed']++;
                         $importResults['errors'][] = [
                             'row' => $importResults['total'],
-                            'name' => $row['name'] ?? 'Unknown',
-                            'code' => $row['code'] ?? 'Unknown',
+                            'name' => $row['name'] ?? "Row {$importResults['total']}",
+                            'code' => $row['code'] ?? '',
                             'errors' => [$e->getMessage()],
                         ];
                     }
@@ -466,25 +492,50 @@ class BranchController extends Controller
                 
                 DB::commit();
                 
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Import completed successfully.',
-                    'results' => $importResults,
+                // Get the updated branches with company_id
+                $branches = Branch::with('company')->select([
+                    'id',
+                    'name',
+                    'code',
+                    'address',
+                    'city',
+                    'company_id',
+                    'is_main_branch',
+                    'is_active',
+                    'created_at'
+                ])->paginate(10);
+                
+                // Get companies for filter
+                $companies = Company::select(['id', 'name'])->get();
+                
+                return Inertia::render('organization/branch/index', [
+                    'branches' => $branches,
+                    'companies' => $companies,
+                    'filters' => [
+                        'search' => null,
+                        'company_id' => null,
+                        'city' => null,
+                    ],
+                    'importResults' => $importResults,
+                    'importMessage' => "Import completed: {$importResults['success']} branches imported successfully, {$importResults['failed']} failed.",
+                    'importStatus' => $importResults['failed'] > 0 ? 'warning' : 'success'
                 ]);
             } catch (\Exception $e) {
                 DB::rollBack();
                 
-                return response()->json([
-                    'success' => false,
-                    'message' => 'An error occurred during import: ' . $e->getMessage(),
-                ], 500);
+                return Inertia::render('organization/branch/index', [
+                    'importResults' => $importResults,
+                    'importMessage' => 'An error occurred during import: ' . $e->getMessage(),
+                    'importStatus' => 'error'
+                ]);
             }
         } catch (\Exception $e) {
             // Handle file reading errors
-            return response()->json([
-                'success' => false,
-                'message' => 'Error reading the import file: ' . $e->getMessage(),
-            ], 500);
+            return Inertia::render('organization/branch/index', [
+                'importResults' => null,
+                'importMessage' => 'Error reading the import file: ' . $e->getMessage(),
+                'importStatus' => 'error'
+            ]);
         }
     }
 }

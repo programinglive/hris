@@ -17,6 +17,10 @@ interface ImportDialogProps {
   isOpen: boolean;
   onClose: () => void;
   templateUrl: string;
+  accessibility?: {
+    title: string;
+    description: string;
+  };
 }
 
 interface ImportResult {
@@ -31,7 +35,7 @@ interface ImportResult {
   }>;
 }
 
-export function ImportDialog({ isOpen, onClose, templateUrl }: ImportDialogProps) {
+export function ImportDialog({ isOpen, onClose, templateUrl, accessibility }: ImportDialogProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const [importStatus, setImportStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -66,7 +70,6 @@ export function ImportDialog({ isOpen, onClose, templateUrl }: ImportDialogProps
     post('/organization/branch/import/process', {
       forceFormData: true,
       onSuccess: (page) => {
-        // Access the custom props from the response
         const response = page.props as unknown as {
           success: boolean;
           message: string;
@@ -78,7 +81,6 @@ export function ImportDialog({ isOpen, onClose, templateUrl }: ImportDialogProps
         if (response.results) {
           setImportResult(response.results);
         }
-        // Don't close the dialog, show the success message
       },
       onError: (errors) => {
         setImportStatus('error');
@@ -109,12 +111,17 @@ export function ImportDialog({ isOpen, onClose, templateUrl }: ImportDialogProps
   };
   
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => {
-      if (!open) {
-        handleClose();
-      }
-    }}>
-      <DialogContent className="sm:max-w-md md:max-w-lg">
+    <Dialog 
+      open={isOpen} 
+      onOpenChange={(open) => {
+        if (!open) {
+          handleClose();
+        }
+      }}
+      aria-label={accessibility?.title}
+      aria-describedby={accessibility?.description}
+    >
+      <DialogContent className="sm:max-w-md md:max-w-lg" aria-label={accessibility?.title}>
         <DialogHeader>
           <DialogTitle>Import Branches</DialogTitle>
           <DialogDescription>
@@ -157,21 +164,16 @@ export function ImportDialog({ isOpen, onClose, templateUrl }: ImportDialogProps
               )}
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium">1. Download Template</h3>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={downloadTemplate}
-                    type="button"
-                  >
-                    <FileSpreadsheet className="mr-2 h-4 w-4" />
-                    Download Template
-                  </Button>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  First, download our Excel template and fill it with your branch data.
-                </p>
+                <h3 className="text-sm font-medium">1. Download Template</h3>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={downloadTemplate}
+                  type="button"
+                >
+                  <FileSpreadsheet className="mr-2 h-4 w-4" />
+                  Download Template
+                </Button>
               </div>
 
               <div className="space-y-2">
@@ -204,66 +206,37 @@ export function ImportDialog({ isOpen, onClose, templateUrl }: ImportDialogProps
                             e.stopPropagation();
                             removeFile();
                           }}
-                          type="button"
                         >
                           <X className="h-4 w-4" />
+                          <span className="sr-only">Remove file</span>
                         </Button>
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        Click or drag to replace file
-                      </p>
                     </div>
                   ) : (
                     <div className="flex flex-col items-center justify-center space-y-2">
                       <Upload className="h-8 w-8 text-muted-foreground" />
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium">
-                          {isDragActive ? 'Drop the file here' : 'Drag & drop your Excel file here'}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          or click to browse files (XLSX, XLS, CSV only)
-                        </p>
-                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Drag and drop your file here, or click to select
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Supported formats: .xlsx, .xls, .csv
+                      </p>
                     </div>
                   )}
                 </div>
               </div>
+
+              <DialogFooter>
+                <Button 
+                  type="submit" 
+                  disabled={!selectedFile || processing}
+                  className="w-full"
+                >
+                  {processing ? 'Importing...' : 'Import Branches'}
+                </Button>
+              </DialogFooter>
             </div>
           </div>
-
-          <DialogFooter className="flex justify-between sm:justify-between">
-            <Button
-              variant="outline"
-              type="button"
-              onClick={handleClose}
-              disabled={processing}
-            >
-              {importStatus === 'success' ? 'Close' : 'Cancel'}
-            </Button>
-            {importStatus !== 'success' && (
-              <Button 
-                type="submit" 
-                disabled={!selectedFile || processing}
-              >
-                {processing ? 'Importing...' : 'Import Branches'}
-              </Button>
-            )}
-            {importStatus === 'success' && (
-              <Button 
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  reset();
-                  setSelectedFile(null);
-                  setImportStatus('idle');
-                  setImportResult(null);
-                  setImportMessage('');
-                }}
-              >
-                Import More
-              </Button>
-            )}
-          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>

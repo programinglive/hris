@@ -4,15 +4,18 @@
 4. One User can have multiple roles
 5. One User can have multiple brands
 6. One User can have multiple work schedules
-8. One User can have one work shift in a day
-9. We not use spatie permission we use role model instead
-10. For Organization module hierarchy is company -> branch -> department -> division -> sub-division -> position -> level
-11. We don't use manager_id in application
+7. One User can have one work shift in a day
+8. We not use spatie permission we use role model instead
+9. For Organization module hierarchy is company -> branch -> department -> division -> sub-division -> position -> level
+10. We don't use manager_id in application
 
 # Commit 
 1. Use conventional commit
 2. Use commitlint
 3. npm run lint first before commit
+
+# Handling Upload
+1. Use Simple Excel from spatie https://github.com/spatie/simple-excel
 
 # Test
 1. When run test check on factory associate with model

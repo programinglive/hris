@@ -114,7 +114,7 @@ export function ImportDialog({ isOpen, onClose, templateUrl }: ImportDialogProps
         handleClose();
       }
     }}>
-      <DialogContent className="sm:max-w-md md:max-w-lg">
+      <DialogContent className="sm:max-w-md md:max-w-lg" aria-label="Import Companies Dialog">
         <DialogHeader>
           <DialogTitle>Import Companies</DialogTitle>
           <DialogDescription>

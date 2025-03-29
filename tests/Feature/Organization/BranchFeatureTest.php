@@ -63,8 +63,11 @@ class BranchFeatureTest extends TestCase
                         ->has('address')
                         ->has('city')
                         ->has('company')
-                        ->has('is_active')
+                        ->has('company.id')
+                        ->has('company.name')
+                        ->has('company_id')
                         ->has('is_main_branch')
+                        ->has('is_active')
                         ->has('created_at')
                 )
                 ->has('branches.current_page')
@@ -278,37 +281,52 @@ class BranchFeatureTest extends TestCase
         
         // Add headers
         $writer->addRow([
-            'name' => 'name',
-            'code' => 'code',
-            'address' => 'address',
-            'city' => 'city',
-            'phone' => 'phone',
-            'email' => 'email',
-            'is_active' => 'is_active',
-            'company_id' => 'company_id'
+            'name' => 'Branch Name*',
+            'code' => 'Branch Code*',
+            'company_code' => 'Company Code*',
+            'company_name' => 'Company Name*',
+            'address' => 'Address',
+            'city' => 'City',
+            'state' => 'State/Province',
+            'postal_code' => 'Postal Code',
+            'country' => 'Country',
+            'phone' => 'Phone',
+            'email' => 'Email',
+            'is_active' => 'Is Active (Yes/No)',
+            'description' => 'Description'
         ]);
         
         // Add test data
         $writer->addRow([
             'name' => 'Test Import Branch 1',
             'code' => 'IMPORT001',
+            'company_code' => $this->company->code,
+            'company_name' => $this->company->name,
             'address' => '123 Import Street',
             'city' => 'Import City',
+            'state' => 'Import State',
+            'postal_code' => '12345',
+            'country' => 'Import Country',
             'phone' => '555-123-4567',
             'email' => 'import1@example.com',
             'is_active' => 'Yes',
-            'company_id' => $this->company->id
+            'description' => 'First imported branch'
         ]);
         
         $writer->addRow([
             'name' => 'Test Import Branch 2',
             'code' => 'IMPORT002',
+            'company_code' => $this->company->code,
+            'company_name' => $this->company->name,
             'address' => '456 Import Street',
             'city' => 'Import City',
+            'state' => 'Import State',
+            'postal_code' => '67890',
+            'country' => 'Import Country',
             'phone' => '555-987-6543',
             'email' => 'import2@example.com',
             'is_active' => 'Yes',
-            'company_id' => $this->company->id
+            'description' => 'Second imported branch'
         ]);
         
         $writer->close();
@@ -334,16 +352,32 @@ class BranchFeatureTest extends TestCase
             'name' => 'Test Import Branch 1',
             'code' => 'IMPORT001',
             'company_id' => $this->company->id,
+            'address' => '123 Import Street',
+            'city' => 'Import City',
+            'state' => 'Import State',
+            'postal_code' => '12345',
+            'country' => 'Import Country',
+            'phone' => '555-123-4567',
+            'email' => 'import1@example.com',
             'is_main_branch' => 0,
-            'is_active' => 1
+            'is_active' => 1,
+            'description' => 'First imported branch'
         ]);
         
         $this->assertDatabaseHas('branches', [
             'name' => 'Test Import Branch 2',
             'code' => 'IMPORT002',
             'company_id' => $this->company->id,
+            'address' => '456 Import Street',
+            'city' => 'Import City',
+            'state' => 'Import State',
+            'postal_code' => '67890',
+            'country' => 'Import Country',
+            'phone' => '555-987-6543',
+            'email' => 'import2@example.com',
             'is_main_branch' => 0,
-            'is_active' => 1
+            'is_active' => 1,
+            'description' => 'Second imported branch'
         ]);
     }
 
@@ -399,44 +433,26 @@ class BranchFeatureTest extends TestCase
         $this->actingAs($this->user);
         
         // Create some branches
-        $company1 = Company::factory()->create([
-            'owner_id' => $this->user->id
+        $branches = Branch::factory()->count(3)->create([
+            'company_id' => $this->company->id,
         ]);
-        
-        $company2 = Company::factory()->create([
-            'owner_id' => $this->user->id
-        ]);
-        
-        Branch::factory()->create([
-            'company_id' => $company1->id,
-            'city' => 'City 1'
-        ]);
-        
-        Branch::factory()->create([
-            'company_id' => $company2->id,
-            'city' => 'City 2'
-        ]);
-        
-        // Apply some filters
-        $response = $this->get(route('organization.branch.index', [
-            'company_id' => $company1->id,
-            'city' => 'City 1',
-        ]));
         
         // Open filter dialog
         $response = $this->get(route('organization.branch.index', [
-            'company_id' => $company1->id,
-            'city' => 'City 1',
-            'filter_dialog' => 'true',
+            'company_id' => $this->company->id,
+            'city' => 'Test City',
+            'filter_dialog' => true
         ]));
         
-        $response->assertInertia(function (Assert $page) {
+        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => 
             $page->component('organization/branch/index')
                 ->has('branches.data')
                 // Verify filters are reset
+                ->where('filters.search', null)
                 ->where('filters.company_id', null)
-                ->where('filters.city', null);
-        });
+                ->where('filters.city', null)
+        );
     }
 
     #[Test]
@@ -445,43 +461,25 @@ class BranchFeatureTest extends TestCase
         $this->actingAs($this->user);
         
         // Create some branches
-        $company1 = Company::factory()->create([
-            'owner_id' => $this->user->id
+        $branches = Branch::factory()->count(3)->create([
+            'company_id' => $this->company->id,
         ]);
-        
-        $company2 = Company::factory()->create([
-            'owner_id' => $this->user->id
-        ]);
-        
-        Branch::factory()->create([
-            'company_id' => $company1->id,
-            'city' => 'City 1'
-        ]);
-        
-        Branch::factory()->create([
-            'company_id' => $company2->id,
-            'city' => 'City 2'
-        ]);
-        
-        // Apply some filters
-        $response = $this->get(route('organization.branch.index', [
-            'company_id' => $company1->id,
-            'city' => 'City 1',
-        ]));
         
         // Open filter dialog
         $response = $this->get(route('organization.branch.index', [
-            'company_id' => $company1->id,
-            'city' => 'City 1',
-            'filter_dialog' => 'true',
+            'company_id' => $this->company->id,
+            'city' => 'Test City',
+            'filter_dialog' => true
         ]));
         
-        $response->assertInertia(function (Assert $page) {
+        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => 
             $page->component('organization/branch/index')
                 ->has('branches.data')
                 // Verify only page parameter exists in query string
+                ->where('filters.search', null)
                 ->where('filters.company_id', null)
-                ->where('filters.city', null);
-        });
+                ->where('filters.city', null)
+        );
     }
 }
