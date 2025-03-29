@@ -9,6 +9,11 @@
 10. For Organization module hierarchy is company -> branch -> department -> division -> sub-division -> position -> level
 11. We don't use manager_id in application
 
+# Commit 
+1. Use conventional commit
+2. Use commitlint
+3. npm run lint first before commit
+
 # Test
 1. When run test check on factory associate with model
 2. When run test check on controller associate with model
