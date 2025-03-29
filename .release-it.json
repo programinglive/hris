@@ -1,0 +1,34 @@
+{
+  "git": {
+    "requireCleanWorkingDir": true,
+    "requireUpstream": true,
+    "commitMessage": "release: ${version}"
+  },
+  "github": {
+    "release": true,
+    "assets": "dist/**"
+  },
+  "npm": {
+    "publish": false
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "conventionalcommits",
+      "types": [
+        { "type": "feat", "section": "Features", "icon": "✨" },
+        { "type": "fix", "section": "Bug Fixes", "icon": "🐛" },
+        { "type": "perf", "section": "Performance Improvements", "icon": "⚡️" },
+        { "type": "docs", "section": "Documentation", "icon": "📚" },
+        { "type": "style", "section": "Styles", "icon": "🎨" },
+        { "type": "refactor", "section": "Code Refactoring", "icon": "🔧" },
+        { "type": "test", "section": "Tests", "icon": "✅" },
+        { "type": "chore", "section": "Chores", "icon": "🔧" },
+        { "type": "revert", "section": "Reverts", "icon": "⏪" }
+      ]
+    }
+  },
+  "hooks": {
+    "before:bump": "npm test",
+    "after:bump": "npm run build"
+  }
+}

@@ -1,0 +1,11 @@
+1. This is laravel project with inertiajs and reactjs
+2. for testing use laravel pesttest
+3. for authentication use inertia auth
+4. We don't use employees table, we use users -> user_details table. Employee is role
+5. One User can have multiple roles
+6. One User can have multiple brands
+7. One User can have multiple work schedules
+8. One User can have one work shift in a day
+9. We not use spatie permission we use role model instead
+10. For Organization module hierarchy is company -> branch -> department -> division -> sub-division -> position -> level
+11. We don't use manager_id in application
