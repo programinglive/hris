@@ -1,5 +1,4 @@
-import React from 'react';
-import { Head, useForm as useInertiaForm } from '@inertiajs/react';
+import { useForm as useInertiaForm } from '@inertiajs/react';
 import { 
   Form,
   FormControl,
@@ -104,7 +103,7 @@ export default function CreateCompany() {
     // Transfer values from React Hook Form to Inertia form
     Object.entries(values).forEach(([key, value]) => {
       if (value !== undefined) {
-        inertia.setData(key as keyof typeof inertia.data, value as any);
+        inertia.setData(key as keyof typeof inertia.data, value);
       }
     });
     

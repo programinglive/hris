@@ -1,5 +1,5 @@
-import React from 'react';
-import { Head, useForm as useInertiaForm } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { 
   Form,
   FormControl,
@@ -7,34 +7,37 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
-import { zodResolver } from '@hookform/resolvers/zod';
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from 'zod';
 import AppLayout from '@/layouts/app/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { useForm } from 'react-hook-form';
+import { useForm, useFormState, SubmitHandler, Controller } from 'react-hook-form';
+import { useEffect, useCallback, useMemo } from 'react';
+import type { PageProps } from '@/types';
 
 interface Company {
   id: number;
   name: string;
-  legal_name: string | null;
-  tax_id: string | null;
-  registration_number: string | null;
+  legal_name?: string;
+  tax_id?: string;
+  registration_number?: string;
   email: string;
-  phone: string | null;
-  address: string | null;
-  city: string | null;
-  state: string | null;
-  postal_code: string | null;
-  country: string | null;
-  website: string | null;
-  description: string | null;
+  phone?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  postal_code?: string;
+  country?: string;
+  website?: string;
+  description?: string;
   is_active: boolean;
+  owner_id?: number;
 }
 
 interface Props {
@@ -57,15 +60,20 @@ const formSchema = z.object({
   state: z.string().optional(),
   postal_code: z.string().optional(),
   country: z.string().optional(),
-  website: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
+  website: z.string().optional(),
   description: z.string().optional(),
-  is_active: z.boolean().default(true),
+  is_active: z.boolean(),
+  owner_id: z.number().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function EditCompany({ company }: Props) {
-  const inertia = useInertiaForm({
+const EditCompany = ({ company }: Props) => {
+  // Get inertia instance at component level
+  const page = usePage<PageProps>();
+
+  // Memoize form values to prevent unnecessary re-renders
+  const formValues = useMemo(() => ({
     name: company.name,
     legal_name: company.legal_name ?? '',
     tax_id: company.tax_id ?? '',
@@ -80,33 +88,32 @@ export default function EditCompany({ company }: Props) {
     website: company.website ?? '',
     description: company.description ?? '',
     is_active: company.is_active,
-  });
-  
+    owner_id: company.owner_id,
+  }), [company]);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: company.name,
-      legal_name: company.legal_name ?? '',
-      tax_id: company.tax_id ?? '',
-      registration_number: company.registration_number ?? '',
-      email: company.email,
-      phone: company.phone ?? '',
-      address: company.address ?? '',
-      city: company.city ?? '',
-      state: company.state ?? '',
-      postal_code: company.postal_code ?? '',
-      country: company.country ?? '',
-      website: company.website ?? '',
-      description: company.description ?? '',
-      is_active: company.is_active,
-    }
+    defaultValues: formValues,
   });
 
+  const { isSubmitting, errors } = useFormState({
+    control: form.control
+  });
+
+  // Memoize the submit handler to prevent unnecessary re-renders
+  const onSubmit = useCallback(async (data: FormValues) => {
+    try {
+      await router.put(`/organization/company/${company.id}`, data);
+    } catch (error) {
+      console.error('Failed to update company:', error);
+    }
+  }, [company.id, router]);
+
   // Generate breadcrumbs
-  const breadcrumbs: BreadcrumbItem[] = [
+  const breadcrumbs: BreadcrumbItem[] = useMemo(() => [
     {
       title: 'Dashboard',
-      href: '/dashboard',
+      href: '/',
     },
     {
       title: 'Organization',
@@ -120,11 +127,12 @@ export default function EditCompany({ company }: Props) {
       title: 'Edit',
       href: `/organization/company/${company.id}/edit`,
     }
-  ];
+  ], [company.id]);
 
-  function onSubmit(values: FormValues) {
-    inertia.put(`/organization/company/${company.id}`, values);
-  }
+  // Memoize cancel handler
+  const handleCancel = useCallback(() => {
+    router.visit(route('organization.company.index'));
+  }, []);
 
   return (
     <AppLayout title={`Edit ${company.name}`} breadcrumbs={breadcrumbs}>
@@ -161,9 +169,6 @@ export default function EditCompany({ company }: Props) {
                       <FormControl>
                         <Input placeholder="Enter legal name" {...field} />
                       </FormControl>
-                      <FormDescription>
-                        The official registered name of the company
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -227,12 +232,96 @@ export default function EditCompany({ company }: Props) {
                 
                 <FormField
                   control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Address</FormLabel>
+                      <FormControl>
+                        <Textarea placeholder="Enter address" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="city"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>City</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter city" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="state"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>State</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter state" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="postal_code"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Postal Code</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter postal code" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="country"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Country</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter country" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
                   name="website"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Website</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://example.com" {...field} />
+                        <Input type="url" placeholder="Enter website URL" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Textarea placeholder="Enter description" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -243,131 +332,41 @@ export default function EditCompany({ company }: Props) {
                   control={form.control}
                   name="is_active"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
+                    <FormItem className="flex flex-row items-center justify-between rounded-md border p-3">
+                      <div className="space-y-1.5">
                         <FormLabel className="text-base">Active Status</FormLabel>
                         <FormDescription>
-                          Set whether this company is active or inactive
+                          Toggle to activate or deactivate the company
                         </FormDescription>
                       </div>
                       <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
+                        <Controller
+                          name="is_active"
+                          control={form.control}
+                          render={({ field }) => (
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="data-[state=checked]:bg-primary"
+                            />
+                          )}
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
               
-              <div>
-                <h3 className="text-lg font-medium mb-4">Address Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="address"
-                    render={({ field }) => (
-                      <FormItem className="col-span-2">
-                        <FormLabel>Address</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Enter address" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="city"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>City</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter city" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="state"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>State/Province</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter state or province" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="postal_code"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Postal Code</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter postal code" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="country"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Country</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter country" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-              
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        placeholder="Enter company description" 
-                        className="min-h-[100px]"
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <div className="flex justify-end space-x-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => window.history.back()}
+              <div className="flex justify-end space-x-2">
+                <Button 
+                  variant="outline" 
+                  type="button" 
+                  onClick={handleCancel}
                 >
                   Cancel
                 </Button>
-                <Button 
-                  type="submit"
-                  disabled={form.formState.isSubmitting}
-                >
-                  {form.formState.isSubmitting ? 'Saving...' : 'Save Changes'}
-                </Button>
+                <Button type="submit" disabled={isSubmitting}>Update Company</Button>
               </div>
             </form>
           </Form>
@@ -375,4 +374,6 @@ export default function EditCompany({ company }: Props) {
       </div>
     </AppLayout>
   );
-}
+};
+
+export default EditCompany;

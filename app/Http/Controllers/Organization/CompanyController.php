@@ -130,7 +130,7 @@ class CompanyController extends Controller
             'description' => 'nullable|string',
             'is_active' => 'boolean',
         ]);
-        
+
         $company->update($validated);
 
         return Redirect::route('organization.company.index')->with('success', 'Company updated successfully.');

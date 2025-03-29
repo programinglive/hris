@@ -14,12 +14,31 @@ export default defineConfig({
         react(),
         tailwindcss(),
     ],
-    esbuild: {
-        jsx: 'automatic',
-    },
     resolve: {
         alias: {
             'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
+            '@': resolve(__dirname, 'resources/js'),
         },
     },
+    server: {
+        hmr: {
+            overlay: false,
+            host: 'localhost',
+            port: 5173,
+        },
+    },
+    optimizeDeps: {
+        include: ['@inertiajs/react', 'react-hook-form', 'zod', 'react', 'react-dom'],
+    },
+    build: {
+        chunkSizeWarningLimit: 1000,
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'vendor': ['react', 'react-dom', '@inertiajs/react'],
+                    'form': ['react-hook-form', 'zod']
+                }
+            }
+        }
+    }
 });
