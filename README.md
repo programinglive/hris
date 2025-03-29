@@ -8,11 +8,31 @@ HRIS Project is a modern human resource management system designed to help busin
 
 ### Key Features
 
-- **Company Management**: Create and manage multiple companies, branches, departments, and positions
-- **Employee Database**: Maintain comprehensive employee records with customizable fields
-- **Attendance Tracking**: Monitor employee attendance, leaves, and overtime
-- **User Management**: Role-based access control for different user types
-- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Organization Management**
+  - Create and manage companies, branches, departments, divisions, sub-divisions, positions, and position levels
+  - Import branch data using templates
+  - Manage multiple brands
+  - Organize company structure hierarchically
+
+- **Employee Management**
+  - Comprehensive employee database with detailed records
+  - Import employee data in bulk
+  - View and manage employee users
+  - Support for multiple roles per user
+  - Associate employees with multiple brands
+
+- **User Management**
+  - Role-based access control
+  - Multiple roles per user
+  - Multiple brands per user
+  - Multiple work schedules per user
+  - One work shift per day
+
+- **Modern Interface**
+  - Built with React and Inertia.js
+  - Responsive design for desktop and mobile
+  - Intuitive navigation
+  - Real-time updates
 
 ## Installation
 
@@ -20,17 +40,18 @@ Follow these steps to set up the HRIS Project on your local machine:
 
 ### Prerequisites
 
-- PHP 8.1 or higher
+- PHP 8.3 or higher
 - Composer
 - Node.js and npm
-- MySQL or PostgreSQL
+- SQLite (for development)
+- MySQL or PostgreSQL (for production)
 
 ### Setup Instructions
 
 1. **Clone the repository**
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/beautyworld_repository/hrisnew.git
 cd hrisnew
 ```
 
@@ -55,6 +76,14 @@ php artisan key:generate
 
 5. **Configure your database**
 
+For development (SQLite):
+Edit the `.env` file:
+
+```
+DB_CONNECTION=sqlite
+```
+
+For production (MySQL/PostgreSQL):
 Edit the `.env` file and set your database connection details:
 
 ```
@@ -81,7 +110,7 @@ npm run dev
 8. **Start the development server**
 
 ```bash
-php artisan serve
+composer run dev
 ```
 
 The application will be available at http://localhost:8000
@@ -95,8 +124,6 @@ After installation, you can:
 3. Set up your company structure (departments, positions, etc.)
 4. Add employees and manage their information
 5. Configure attendance settings and other HR policies
-
-## Development
 
 ### Building for production
 
