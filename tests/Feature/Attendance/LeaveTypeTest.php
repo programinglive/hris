@@ -101,7 +101,7 @@ class LeaveTypeTest extends TestCase
 
         // Simulate a leave request
         $leaveType->leaveRequests()->create([
-            'employee_id' => 1,
+            'employee_code' => 1,
             'start_date' => now(),
             'end_date' => now()->addDays(1),
             'status' => 'pending',
@@ -122,7 +122,7 @@ class LeaveTypeTest extends TestCase
 
         // Simulate a leave balance
         $leaveType->leaveBalances()->create([
-            'employee_id' => 1,
+            'employee_code' => 1,
             'balance' => 10,
         ]);
 

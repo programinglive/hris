@@ -244,16 +244,15 @@ export default function CompanyIndex({ companies, filters }: Props) {
 
   const actions: Action[] = [
     {
-      label: "Add Company",
-      href: route('organization.company.create'),
-      variant: "default",
-      icon: Plus
+      label: "Import",
+      icon: Plus,
+      variant: "outline",
+      onClick: () => setIsImportDialogOpen(true)
     },
     {
-      label: "Import",
-      onClick: () => setIsImportDialogOpen(true),
-      variant: "outline",
-      icon: Plus
+      label: "Create Company",
+      icon: Plus,
+      href: route('organization.company.create')
     }
   ];
 

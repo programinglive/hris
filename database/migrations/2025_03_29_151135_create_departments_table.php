@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('code')->unique()->nullable();
             $table->text('description')->nullable();
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
-            $table->string('status')->default('active');
+            $table->foreignId('branch_id')->nullable()->constrained()->onDelete('cascade');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

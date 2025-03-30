@@ -37,8 +37,6 @@ interface Position {
   level_id: number | null;
   sub_division_id: number | null;
   company_id: number;
-  min_salary: number | null;
-  max_salary: number | null;
   status: string;
 }
 
@@ -57,8 +55,6 @@ export default function PositionEdit({ position, companies, levels, subDivisions
     level_id: position.level_id ? position.level_id.toString() : '',
     sub_division_id: position.sub_division_id ? position.sub_division_id.toString() : '',
     company_id: position.company_id.toString(),
-    min_salary: position.min_salary ? position.min_salary.toString() : '',
-    max_salary: position.max_salary ? position.max_salary.toString() : '',
     status: position.status,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -185,38 +181,6 @@ export default function PositionEdit({ position, companies, levels, subDivisions
                   </SelectContent>
                 </Select>
                 {errors.sub_division_id && <p className="text-red-500 text-sm">{errors.sub_division_id}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="min_salary">Minimum Salary</Label>
-                <Input
-                  id="min_salary"
-                  name="min_salary"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={formData.min_salary}
-                  onChange={handleChange}
-                  placeholder="Enter minimum salary"
-                  className={errors.min_salary ? 'border-red-500' : ''}
-                />
-                {errors.min_salary && <p className="text-red-500 text-sm">{errors.min_salary}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="max_salary">Maximum Salary</Label>
-                <Input
-                  id="max_salary"
-                  name="max_salary"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={formData.max_salary}
-                  onChange={handleChange}
-                  placeholder="Enter maximum salary"
-                  className={errors.max_salary ? 'border-red-500' : ''}
-                />
-                {errors.max_salary && <p className="text-red-500 text-sm">{errors.max_salary}</p>}
               </div>
 
               <div className="space-y-2">

@@ -56,7 +56,7 @@ class WorkingCalendarControllerTest extends TestCase
         // Create user details
         $userDetail = new UserDetail([
             'user_id' => $this->user->id,
-            'employee_id' => 'EMP-000001',
+            'employee_code' => 'EMP-000001',
             'status' => 'active',
             'company_id' => $this->company->id,
         ]);

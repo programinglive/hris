@@ -18,10 +18,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->foreignId('department_id')->constrained()->onDelete('cascade');
-            $table->foreignId('division_id')->constrained()->onDelete('cascade')->nullable();
-            $table->foreignId('sub_division_id')->constrained()->onDelete('cascade')->nullable();
+            $table->foreignId('division_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('sub_division_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('level_id')->constrained()->onDelete('cascade');
-            $table->string('status')->default('active');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -44,8 +44,6 @@ export default function PositionCreate({ companies, levels, subDivisions }: Prop
     level_id: '',
     sub_division_id: '',
     company_id: '',
-    min_salary: '',
-    max_salary: '',
     status: 'active',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -172,38 +170,6 @@ export default function PositionCreate({ companies, levels, subDivisions }: Prop
                   </SelectContent>
                 </Select>
                 {errors.sub_division_id && <p className="text-red-500 text-sm">{errors.sub_division_id}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="min_salary">Minimum Salary</Label>
-                <Input
-                  id="min_salary"
-                  name="min_salary"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={formData.min_salary}
-                  onChange={handleChange}
-                  placeholder="Enter minimum salary"
-                  className={errors.min_salary ? 'border-red-500' : ''}
-                />
-                {errors.min_salary && <p className="text-red-500 text-sm">{errors.min_salary}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="max_salary">Maximum Salary</Label>
-                <Input
-                  id="max_salary"
-                  name="max_salary"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={formData.max_salary}
-                  onChange={handleChange}
-                  placeholder="Enter maximum salary"
-                  className={errors.max_salary ? 'border-red-500' : ''}
-                />
-                {errors.max_salary && <p className="text-red-500 text-sm">{errors.max_salary}</p>}
               </div>
 
               <div className="space-y-2">

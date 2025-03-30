@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\UserDetail;
+use App\Models\Company;
+use App\Models\Branch;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
 class EmployeeImportTest extends TestCase
@@ -40,6 +42,10 @@ class EmployeeImportTest extends TestCase
         // Create a user and authenticate
         $user = User::factory()->create(['email_verified_at' => now()]);
         $this->actingAs($user);
+
+        // Create a company and branch for the import
+        $company = Company::factory()->create();
+        $branch = Branch::factory()->create(['company_id' => $company->id]);
 
         // Create an uploaded file from the existing template
         $templatePath = storage_path('app/public/templates/employee_import_template.xlsx');
@@ -77,7 +83,9 @@ class EmployeeImportTest extends TestCase
         
         $this->assertDatabaseHas('user_details', [
             'user_id' => $user->id,
-            'employee_id' => 'EMP001',
+            'employee_code' => 'EMP001',
+            'company_id' => $company->id,
+            'branch_id' => $branch->id,
             'status' => 'Active',
         ]);
     }

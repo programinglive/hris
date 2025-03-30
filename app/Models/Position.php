@@ -22,12 +22,12 @@ class Position extends Model
         'name',
         'code',
         'description',
-        'level_id',
-        'sub_division_id',
         'company_id',
-        'min_salary',
-        'max_salary',
-        'status',
+        'department_id',
+        'division_id',
+        'sub_division_id',
+        'level_id',
+        'is_active',
     ];
 
     /**
@@ -36,9 +36,8 @@ class Position extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'min_salary' => 'decimal:2',
-        'max_salary' => 'decimal:2',
-        'status' => 'string',
+        'is_active' => 'boolean',
+        'deleted_at' => 'datetime',
     ];
 
     /**

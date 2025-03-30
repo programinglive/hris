@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('user_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('employee_id')->unique();
-            $table->enum('status', ['active', 'inactive', 'on_leave', 'terminated'])->default('active');
-            $table->foreignId('company_id')->constrained()->onDelete('cascade');
-            $table->foreignId('branch_id')->constrained()->onDelete('cascade');
-            $table->foreignId('department_id')->constrained()->onDelete('cascade')->nullable();
-            $table->foreignId('division_id')->constrained()->onDelete('cascade')->nullable();
-            $table->foreignId('sub_division_id')->constrained()->onDelete('cascade')->nullable();
-            $table->foreignId('level_id')->constrained()->onDelete('cascade')->nullable();
-            $table->foreignId('position_id')->constrained()->onDelete('cascade')->nullable();
-            $table->date('join_date');
+            $table->string('employee_code')->unique()->nullable();
+            $table->enum('status', ['active', 'inactive', 'on_leave', 'terminated'])->default('active')->nullable();
+            $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('branch_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('division_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('sub_division_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('level_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('position_id')->nullable()->constrained()->onDelete('cascade');
+            $table->date('join_date')->nullable();
             $table->date('exit_date')->nullable();
             $table->string('gender')->nullable();
             $table->date('date_of_birth')->nullable();

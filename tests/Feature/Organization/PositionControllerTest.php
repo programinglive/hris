@@ -94,8 +94,6 @@ class PositionControllerTest extends TestCase
             'level_id' => $this->level->id,
             'sub_division_id' => $this->subDivision->id,
             'company_id' => $this->company->id,
-            'min_salary' => 5000,
-            'max_salary' => 8000,
             'status' => 'active',
         ];
 
@@ -110,8 +108,7 @@ class PositionControllerTest extends TestCase
             'level_id' => $this->level->id,
             'sub_division_id' => $this->subDivision->id,
             'company_id' => $this->company->id,
-            'min_salary' => 5000,
-            'max_salary' => 8000,
+            'status' => 'active',
         ]);
     }
 
@@ -123,22 +120,6 @@ class PositionControllerTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors(['name', 'company_id', 'status']);
-    }
-
-    #[Test]
-    public function it_validates_salary_range_on_store()
-    {
-        $positionData = [
-            'name' => 'Test Position',
-            'company_id' => $this->company->id,
-            'status' => 'active',
-            'min_salary' => 8000,
-            'max_salary' => 5000, // Max less than min
-        ];
-
-        $response = $this->post(route('organization.position.store'), $positionData);
-
-        $response->assertSessionHasErrors(['max_salary']);
     }
 
     #[Test]
@@ -195,8 +176,6 @@ class PositionControllerTest extends TestCase
             'level_id' => $this->level->id,
             'sub_division_id' => $this->subDivision->id,
             'company_id' => $this->company->id,
-            'min_salary' => 6000,
-            'max_salary' => 9000,
             'status' => 'inactive',
         ];
 
@@ -209,8 +188,6 @@ class PositionControllerTest extends TestCase
             'id' => $position->id,
             'name' => 'Updated Position',
             'description' => 'Updated Description',
-            'min_salary' => 6000,
-            'max_salary' => 9000,
             'status' => 'inactive',
         ]);
     }
@@ -245,6 +222,82 @@ class PositionControllerTest extends TestCase
         $response->assertRedirect(route('organization.position.index'));
         $response->assertSessionHas('success', 'Position deleted successfully.');
 
+        $this->assertSoftDeleted('positions', [
+            'id' => $position->id,
+        ]);
+    }
+
+    #[Test]
+    public function test_user_can_create_position(): void
+    {
+        $this->actingAs($this->user, 'web');
+
+        $response = $this->post(route('organization.position.store'), [
+            'name' => 'Test Position',
+            'description' => 'Test position description',
+            'company_id' => $this->company->id,
+            'level_id' => $this->level->id,
+            'sub_division_id' => $this->subDivision->id,
+            'status' => 'active',
+        ]);
+
+        $response->assertRedirect(route('organization.position.index'));
+        $this->assertDatabaseHas('positions', [
+            'name' => 'Test Position',
+            'company_id' => $this->company->id,
+            'level_id' => $this->level->id,
+            'sub_division_id' => $this->subDivision->id,
+            'status' => 'active',
+        ]);
+    }
+
+    #[Test]
+    public function test_user_can_update_position(): void
+    {
+        $this->actingAs($this->user, 'web');
+
+        $position = Position::factory()->create([
+            'company_id' => $this->company->id,
+            'level_id' => $this->level->id,
+            'sub_division_id' => $this->subDivision->id,
+            'status' => 'active',
+        ]);
+
+        $response = $this->put(route('organization.position.update', $position), [
+            'name' => 'Updated Position',
+            'description' => 'Updated position description',
+            'company_id' => $this->company->id,
+            'level_id' => $this->level->id,
+            'sub_division_id' => $this->subDivision->id,
+            'status' => 'inactive',
+        ]);
+
+        $response->assertRedirect(route('organization.position.index'));
+        $this->assertDatabaseHas('positions', [
+            'id' => $position->id,
+            'name' => 'Updated Position',
+            'company_id' => $this->company->id,
+            'level_id' => $this->level->id,
+            'sub_division_id' => $this->subDivision->id,
+            'status' => 'inactive',
+        ]);
+    }
+
+    #[Test]
+    public function test_user_can_delete_position(): void
+    {
+        $this->actingAs($this->user, 'web');
+
+        $position = Position::factory()->create([
+            'company_id' => $this->company->id,
+            'level_id' => $this->level->id,
+            'sub_division_id' => $this->subDivision->id,
+            'status' => 'active',
+        ]);
+
+        $response = $this->delete(route('organization.position.destroy', $position));
+
+        $response->assertRedirect(route('organization.position.index'));
         $this->assertSoftDeleted('positions', [
             'id' => $position->id,
         ]);

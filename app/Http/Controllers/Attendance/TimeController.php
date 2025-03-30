@@ -52,7 +52,7 @@ class TimeController extends Controller
         
         // Get users for filter dropdown
         $users = User::with('detail')->whereHas('detail', function($q) {
-            $q->whereNotNull('employee_id');
+            $q->whereNotNull('employee_code');
         })->orderBy('name')->get(['id', 'name']);
         
         return Inertia::render('attendance/time/index', [
@@ -68,7 +68,7 @@ class TimeController extends Controller
     public function create(): Response
     {
         $users = User::with('detail')->whereHas('detail', function($q) {
-            $q->whereNotNull('employee_id');
+            $q->whereNotNull('employee_code');
         })->orderBy('name')->get(['id', 'name']);
         
         return Inertia::render('attendance/time/create', [
@@ -114,7 +114,7 @@ class TimeController extends Controller
     {
         $timeLog->load('user', 'user.detail');
         $users = User::with('detail')->whereHas('detail', function($q) {
-            $q->whereNotNull('employee_id');
+            $q->whereNotNull('employee_code');
         })->orderBy('name')->get(['id', 'name']);
         
         return Inertia::render('attendance/time/edit', [

@@ -23,15 +23,11 @@ class DivisionFactory extends Factory
      */
     public function definition(): array
     {
-        // Create a department with valid company_id and branch_id
-        $department = Department::factory()->create();
-        
         return [
             'name' => $this->faker->unique()->words(3, true),
             'description' => $this->faker->paragraph,
-            'department_id' => $department->id,
-            'manager_id' => null, // Optional, can be set to User::factory() if needed
-            'status' => $this->faker->randomElement(['active', 'inactive']),
+            'department_id' => Department::factory(),
+            'is_active' => true,
         ];
     }
 }

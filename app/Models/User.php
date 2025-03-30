@@ -24,6 +24,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'company_id',
+        'branch_id',
+        'department_id',
+        'position_id',
     ];
 
     /**
@@ -60,11 +64,11 @@ class User extends Authenticatable
     /**
      * Get the user's details.
      */
-    public function detail(): HasOne
+    public function userDetails(): HasOne
     {
         return $this->hasOne(UserDetail::class);
     }
-    
+
     /**
      * Get the brands associated with the user.
      */
@@ -96,7 +100,8 @@ class User extends Authenticatable
      */
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class, 'user_roles');
+        return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id')
+                    ->withTimestamps();
     }
     
     /**
@@ -193,8 +198,5 @@ class User extends Authenticatable
     /**
      * Get the user's details.
      */
-    public function userDetails()
-    {
-        return $this->hasOne(UserDetails::class);
-    }
+    // Removed the duplicate method
 }

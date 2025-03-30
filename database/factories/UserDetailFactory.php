@@ -24,33 +24,41 @@ class UserDetailFactory extends Factory
      */
     public function definition(): array
     {
-        $statuses = ['Active', 'On Leave', 'Probation', 'Terminated'];
-        $departments = ['HR', 'Finance', 'Marketing', 'Operations', 'IT', 'Sales', 'Customer Service', 'Production'];
-        $positions = ['Manager', 'Supervisor', 'Specialist', 'Coordinator', 'Officer', 'Assistant', 'Director', 'VP'];
-        $genders = ['Male', 'Female'];
-        $maritalStatuses = ['Single', 'Married', 'Divorced', 'Widowed'];
-        
-        $department = $this->faker->randomElement($departments);
-        $position = $this->faker->randomElement($positions);
+        $statuses = ['active', 'inactive', 'on_leave', 'terminated'];
         
         return [
-            'user_id' => User::factory(),
-            'employee_id' => 'EMP' . $this->faker->unique()->numerify('######'),
-            'phone' => '+62' . $this->faker->numerify('##########'),
-            'address' => $this->faker->address(),
-            'position' => $position . ' ' . $department,
-            'department' => $department,
-            'join_date' => $this->faker->dateTimeBetween('-5 years', 'now'),
+            'user_id' => null, // Will be set by UserFactory
+            'employee_code' => 'EMP' . $this->faker->unique()->numerify('######'),
             'status' => $this->faker->randomElement($statuses),
-            'gender' => $this->faker->randomElement($genders),
-            'birth_date' => $this->faker->dateTimeBetween('-50 years', '-20 years'),
-            'marital_status' => $this->faker->randomElement($maritalStatuses),
-            'emergency_contact_name' => $this->faker->name(),
-            'emergency_contact_relationship' => $this->faker->randomElement(['Spouse', 'Parent', 'Sibling', 'Friend', 'Child']),
-            'emergency_contact_phone' => '+62' . $this->faker->numerify('##########'),
-            'profile_image' => null,
-            'company_id' => Company::factory(),
-            'branch_id' => Branch::factory(),
+            'company_id' => null, // Will be set by UserFactory
+            'branch_id' => null,
+            'department_id' => null,
+            'division_id' => null,
+            'sub_division_id' => null,
+            'level_id' => null,
+            'position_id' => null,
+            'join_date' => $this->faker->dateTimeBetween('-5 years', 'now'),
+            'exit_date' => null,
+            'gender' => null,
+            'date_of_birth' => null,
+            'place_of_birth' => null,
+            'nationality' => null,
+            'marital_status' => null,
+            'religion' => null,
+            'blood_type' => null,
+            'emergency_contact_name' => null,
+            'emergency_contact_phone' => null,
+            'emergency_contact_relationship' => null,
+            'address' => null,
+            'city' => null,
+            'state' => null,
+            'postal_code' => null,
+            'country' => null,
+            'phone' => null,
+            'mobile_phone' => null,
+            'email' => null,
+            'photo' => null,
+            'notes' => null,
         ];
     }
 

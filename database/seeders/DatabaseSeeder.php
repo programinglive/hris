@@ -129,7 +129,7 @@ class DatabaseSeeder extends Seeder
         if ($testUser) {
             UserDetail::create([
                 'user_id' => $testUser->id,
-                'employee_id' => 'EMP-'.str_pad($testUser->id, 6, '0', STR_PAD_LEFT),
+                'employee_code' => 'EMP-'.str_pad($testUser->id, 6, '0', STR_PAD_LEFT),
                 'status' => 'active',
                 'company_id' => $firstCompany->id,
                 'branch_id' => $firstCompany->branches->first()->id ?? null,

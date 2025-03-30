@@ -1,15 +1,7 @@
 1. This is laravel project with inertiajs and reactjs
 2. for authentication use inertia auth
-3. We don't use employees table, we use users -> user_details table. Employee is role
-4. One User can have multiple roles
-5. One User can have multiple brands
-6. One User can have multiple work schedules
-7. One User can have one work shift in a day
-8. We not use spatie permission we use role model instead
-9. For Organization module hierarchy is company -> branch -> department -> division -> sub-division -> position -> level
-10. We don't use manager_id in application
 
-# Commit 
+# Commit
 1. Use conventional commit
 2. Use commitlint
 3. npm run lint first before commit
@@ -32,7 +24,9 @@
 12. use TestCase
 13. don't use /** @test */ use #[Test] attribute insteat
 
-## Organization
+# Organization
+
+## For Organization module hierarchy is company -> branch -> department -> division -> sub-division -> position -> level
 
 1. Company Page
     - Company can has multiple branches
@@ -47,5 +41,15 @@
     - user can associate with multiple brands
 
 # Employee
+
+## Rule 
+1. We don't use employees table, we use users -> user_details table. Employee is role
+2. Employee must have company_id
+3. One User can have multiple brands
+4. One User can have multiple work schedules
+5. One User can have one work shift in a day
+6. We not use spatie permission we use role model instead
+7. We don't use manager_id in application
+8. Role use roles -> user_roles table because 1 users can have multiple roles
 
 1. Employee Page

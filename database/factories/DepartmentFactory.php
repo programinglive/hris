@@ -29,8 +29,7 @@ class DepartmentFactory extends Factory
             'description' => $this->faker->paragraph,
             'company_id' => Company::factory(),
             'branch_id' => Branch::factory(),
-            'manager_id' => null, // Optional, can be set to User::factory() if needed
-            'status' => $this->faker->randomElement(['active', 'inactive']),
+            'is_active' => true,
         ];
     }
 }

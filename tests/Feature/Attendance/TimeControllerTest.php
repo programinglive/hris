@@ -32,7 +32,7 @@ class TimeControllerTest extends TestCase
         // Create user details
         UserDetail::create([
             'user_id' => $this->user->id,
-            'employee_id' => 'EMP001',
+            'employee_code' => 'EMP001',
             'join_date' => now()->subYear(),
             'status' => 'active',
         ]);

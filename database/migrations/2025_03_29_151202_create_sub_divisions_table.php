@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code')->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->foreignId('division_id')->constrained()->onDelete('cascade');
-            $table->string('status')->default('active');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

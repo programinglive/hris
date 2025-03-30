@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserDetail extends Model
 {
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -14,19 +17,8 @@ class UserDetail extends Model
      */
     protected $fillable = [
         'user_id',
-        'employee_id',
-        'phone',
-        'address',
-        'join_date',
-        'exit_date',
+        'employee_code',
         'status',
-        'gender',
-        'birth_date',
-        'marital_status',
-        'emergency_contact_name',
-        'emergency_contact_relationship',
-        'emergency_contact_phone',
-        'profile_image',
         'company_id',
         'branch_id',
         'department_id',
@@ -34,6 +26,28 @@ class UserDetail extends Model
         'sub_division_id',
         'level_id',
         'position_id',
+        'join_date',
+        'exit_date',
+        'gender',
+        'date_of_birth',
+        'place_of_birth',
+        'nationality',
+        'marital_status',
+        'religion',
+        'blood_type',
+        'emergency_contact_name',
+        'emergency_contact_phone',
+        'emergency_contact_relationship',
+        'address',
+        'city',
+        'state',
+        'postal_code',
+        'country',
+        'phone',
+        'mobile_phone',
+        'email',
+        'photo',
+        'notes',
     ];
 
     /**
@@ -44,7 +58,7 @@ class UserDetail extends Model
     protected $casts = [
         'join_date' => 'date',
         'exit_date' => 'date',
-        'birth_date' => 'date',
+        'date_of_birth' => 'date',
     ];
 
     /**
@@ -109,5 +123,34 @@ class UserDetail extends Model
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
+    }
+
+    /**
+     * Convert the model instance to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $array = parent::toArray();
+        
+        // Load relationships if they exist
+        if ($this->relationLoaded('company')) {
+            $array['company'] = $this->company->only('id', 'name');
+        }
+        
+        if ($this->relationLoaded('branch')) {
+            $array['branch'] = $this->branch->only('id', 'name');
+        }
+        
+        if ($this->relationLoaded('department')) {
+            $array['department'] = $this->department->only('id', 'name');
+        }
+        
+        if ($this->relationLoaded('position')) {
+            $array['position'] = $this->position->only('id', 'name');
+        }
+        
+        return $array;
     }
 }

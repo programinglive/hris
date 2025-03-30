@@ -7,6 +7,8 @@ use App\Models\Position;
 use App\Models\Level;
 use App\Models\SubDivision;
 use App\Models\Company;
+use App\Models\Department;
+use App\Models\Division;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -70,11 +72,15 @@ class PositionController extends Controller
         $levels = Level::orderBy('level_order')->get();
         $subDivisions = SubDivision::with('division')->orderBy('name')->get();
         $companies = Company::orderBy('name')->get();
+        $departments = Department::orderBy('name')->get();
+        $divisions = Division::orderBy('name')->get();
         
         return Inertia::render('organization/position/create', [
             'levels' => $levels,
             'subDivisions' => $subDivisions,
             'companies' => $companies,
+            'departments' => $departments,
+            'divisions' => $divisions,
         ]);
     }
 
@@ -84,20 +90,21 @@ class PositionController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:positions,name,NULL,id,deleted_at,NULL',
+            'code' => 'nullable|string|max:255|unique:positions,code,NULL,id,deleted_at,NULL',
             'description' => 'nullable|string',
-            'level_id' => 'nullable|exists:levels,id',
-            'sub_division_id' => 'nullable|exists:sub_divisions,id',
             'company_id' => 'required|exists:companies,id',
-            'min_salary' => 'nullable|numeric|min:0',
-            'max_salary' => 'nullable|numeric|min:0|gte:min_salary',
-            'status' => 'required|in:active,inactive',
+            'department_id' => 'required|exists:departments,id',
+            'division_id' => 'nullable|exists:divisions,id',
+            'sub_division_id' => 'nullable|exists:sub_divisions,id',
+            'level_id' => 'required|exists:levels,id',
+            'is_active' => 'boolean',
         ]);
-        
-        Position::create($validated);
-        
+
+        $position = Position::create($validated);
+
         return redirect()->route('organization.position.index')
-            ->with('success', 'Position created successfully.');
+            ->with('success', 'Position created successfully');
     }
 
     /**
@@ -123,12 +130,16 @@ class PositionController extends Controller
         $levels = Level::orderBy('level_order')->get();
         $subDivisions = SubDivision::with('division')->orderBy('name')->get();
         $companies = Company::orderBy('name')->get();
+        $departments = Department::orderBy('name')->get();
+        $divisions = Division::orderBy('name')->get();
         
         return Inertia::render('organization/position/edit', [
             'position' => $position,
             'levels' => $levels,
             'subDivisions' => $subDivisions,
             'companies' => $companies,
+            'departments' => $departments,
+            'divisions' => $divisions,
         ]);
     }
 
@@ -138,20 +149,21 @@ class PositionController extends Controller
     public function update(Request $request, Position $position): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:positions,name,' . $position->id . ',id,deleted_at,NULL',
+            'code' => 'nullable|string|max:255|unique:positions,code,' . $position->id . ',id,deleted_at,NULL',
             'description' => 'nullable|string',
-            'level_id' => 'nullable|exists:levels,id',
-            'sub_division_id' => 'nullable|exists:sub_divisions,id',
             'company_id' => 'required|exists:companies,id',
-            'min_salary' => 'nullable|numeric|min:0',
-            'max_salary' => 'nullable|numeric|min:0|gte:min_salary',
-            'status' => 'required|in:active,inactive',
+            'department_id' => 'required|exists:departments,id',
+            'division_id' => 'nullable|exists:divisions,id',
+            'sub_division_id' => 'nullable|exists:sub_divisions,id',
+            'level_id' => 'required|exists:levels,id',
+            'is_active' => 'boolean',
         ]);
-        
+
         $position->update($validated);
-        
+
         return redirect()->route('organization.position.index')
-            ->with('success', 'Position updated successfully.');
+            ->with('success', 'Position updated successfully');
     }
 
     /**

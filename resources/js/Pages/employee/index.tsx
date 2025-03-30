@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import React, { useState } from 'react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { DataTable } from '@/components/ui/data-table';
 import { Button } from '@/components/ui/button';
 import { Plus, Edit, Trash2, Eye, MoreHorizontal } from 'lucide-react';
@@ -29,11 +29,23 @@ interface Employee {
   id: number;
   name: string;
   email: string;
-  employee_id: string;
+  employee_code: string;
   position: string | null;
   department: string | null;
   join_date: string | null;
   status: string;
+  userDetails: {
+    company: {
+      name: string;
+    };
+    branch: {
+      name: string;
+    };
+  };
+}
+
+interface FilterState {
+  status: string | null;
 }
 
 interface PaginatedData {
@@ -48,16 +60,29 @@ interface PaginatedData {
 
 interface Props {
   employees: PaginatedData;
-  filters: Record<string, string | null>;
+  filters: {
+    search?: string;
+    status?: string;
+  };
+}
+
+interface Action {
+  label: string;
+  href?: string;
+  onClick?: () => void;
+  variant?: 'default' | 'outline' | 'ghost';
+  icon?: React.ComponentType<{ className?: string }>;
 }
 
 export default function EmployeeLists({ employees, filters }: Props) {
   const { url } = usePage();
-  const [searchQuery, setSearchQuery] = useState(filters.search || '');
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [employeeToDelete, setEmployeeToDelete] = useState<number | null>(null);
-  const [sort, setSort] = useState<{ field: keyof Employee; direction: 'asc' | 'desc' } | null>(null);
+  const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
+  const [filterState, setFilterState] = useState<FilterState>({
+    status: filters.status || null,
+  });
   
   // Generate breadcrumbs
   const breadcrumbs: BreadcrumbItem[] = [
@@ -74,13 +99,13 @@ export default function EmployeeLists({ employees, filters }: Props) {
       href: url,
     }
   ];
-  
+
   // Define columns
   const columns = [
     {
-      accessorKey: 'employee_id' as keyof Employee,
-      header: 'Employee ID',
-      cell: ({ row }: { row: Employee }) => row.employee_id,
+      accessorKey: 'employee_code' as keyof Employee,
+      header: 'Employee Code',
+      cell: ({ row }: { row: Employee }) => row.employee_code,
     },
     {
       accessorKey: 'name' as keyof Employee,
@@ -106,6 +131,16 @@ export default function EmployeeLists({ employees, filters }: Props) {
       accessorKey: 'join_date' as keyof Employee,
       header: 'Join Date',
       cell: ({ row }: { row: Employee }) => row.join_date || '-',
+    },
+    {
+      accessorKey: 'userDetails.company.name' as keyof Employee,
+      header: 'Company',
+      cell: ({ row }: { row: Employee }) => row.userDetails?.company?.name || '-',
+    },
+    {
+      accessorKey: 'userDetails.branch.name' as keyof Employee,
+      header: 'Branch',
+      cell: ({ row }: { row: Employee }) => row.userDetails?.branch?.name || '-',
     },
     {
       accessorKey: 'status' as keyof Employee,
@@ -154,7 +189,6 @@ export default function EmployeeLists({ employees, filters }: Props) {
   ];
 
   const handleSearch = (query: string) => {
-    setSearchQuery(query);
     router.get(route('employee.index'), {
       ...filters,
       search: query,
@@ -187,9 +221,106 @@ export default function EmployeeLists({ employees, filters }: Props) {
     setIsDeleteDialogOpen(false);
   };
 
+  const handleFilter = () => {
+    router.get(route('employee.index'), {
+      ...filters,
+      ...filterState,
+      page: 1
+    }, {
+      preserveState: true,
+      replace: true
+    });
+  };
+
+  const resetFilters = () => {
+    setFilterState({
+      status: null,
+    });
+    router.get(route('employee.index'), {
+      page: 1,
+      filter_dialog: true,
+    }, {
+      preserveState: true,
+      replace: true
+    });
+  };
+
   return (
     <AppLayout title="Employees" breadcrumbs={breadcrumbs}>
-      <div className="p-6 space-y-6">
+      <div className="p-6">
+        <Card className="p-6">
+          <DataTable<Employee>
+            data={employees.data}
+            columns={columns}
+            title="Employee Lists"
+            searchPlaceholder="Search employees..."
+            pagination={{
+              totalItems: employees.total,
+              currentPage: employees.current_page,
+              perPage: employees.per_page,
+              onPageChange: handlePageChange
+            }}
+            onSearch={handleSearch}
+            filterDialog={{
+              isOpen: isFilterDialogOpen,
+              onOpenChange: (open) => {
+                setIsFilterDialogOpen(open);
+                if (open) {
+                  // Reset filters when dialog opens
+                  setFilterState({
+                    status: null,
+                  });
+                  // Reset URL query parameters
+                  router.get(route('employee.index'), {
+                    page: 1,
+                    filter_dialog: true,
+                  }, {
+                    preserveState: true,
+                    replace: true
+                  });
+                }
+              },
+              title: "Filter Employees",
+              description: "Use these filters to narrow down your employee search. You can filter by status.",
+              fields: [
+                {
+                  label: "Status",
+                  type: "select",
+                  name: "status",
+                  options: [
+                    { value: "active", label: "Active" },
+                    { value: "inactive", label: "Inactive" }
+                  ]
+                }
+              ],
+              state: {
+                status: filterState.status || ''
+              },
+              onStateChange: (state) => {
+                setFilterState({
+                  status: state.status || null
+                });
+              },
+              onApply: handleFilter,
+              onReset: resetFilters,
+              className: "space-y-4"
+            }}
+            actions={[
+              {
+                label: "Import",
+                icon: Plus,
+                variant: "outline",
+                onClick: () => setIsImportDialogOpen(true)
+              },
+              {
+                label: "Create Employee",
+                icon: Plus,
+                href: route('employee.create')
+              }
+            ]}
+          />
+        </Card>
+
         {/* Delete Confirmation Dialog */}
         <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
           <AlertDialogContent>
@@ -208,41 +339,13 @@ export default function EmployeeLists({ employees, filters }: Props) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        
+
         {/* Import Dialog */}
         <ImportDialog 
           isOpen={isImportDialogOpen} 
           onClose={() => setIsImportDialogOpen(false)} 
           templateUrl="/employee/import/template"
         />
-
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href={route('employee.create')}>
-              <Button>Add Employee</Button>
-            </Link>
-            <Button variant="outline" onClick={() => setIsImportDialogOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              Import
-            </Button>
-          </div>
-        </div>
-
-        <Card className="p-6">
-          <DataTable<Employee>
-            data={employees.data}
-            columns={columns}
-            title=""
-            searchPlaceholder="Search employees..."
-            pagination={{
-              totalItems: employees.total,
-              currentPage: employees.current_page,
-              perPage: employees.per_page,
-              onPageChange: handlePageChange
-            }}
-            onSearch={handleSearch}
-          />
-        </Card>
       </div>
     </AppLayout>
   );

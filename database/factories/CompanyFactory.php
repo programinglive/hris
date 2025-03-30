@@ -36,7 +36,11 @@ class CompanyFactory extends Factory
             'country' => $this->faker->country(),
             'website' => $this->faker->url(),
             'description' => $this->faker->paragraph(),
-            'owner_id' => User::factory(),
+            'owner_id' => User::factory()->create([
+                'email' => $this->faker->unique()->safeEmail(),
+                'password' => bcrypt('password'),
+                'company_id' => null,
+            ])->id,
             'is_active' => $this->faker->boolean(80), // 80% chance of being active
         ];
     }

@@ -285,16 +285,15 @@ export default function BranchIndex({ branches, companies, filters }: Props) {
 
   const actions: Action[] = [
     {
-      label: "Add Branch",
-      href: route('organization.branch.create'),
-      variant: "default",
-      icon: Plus
+      label: "Import",
+      icon: Plus,
+      variant: "outline",
+      onClick: () => setIsImportDialogOpen(true)
     },
     {
-      label: "Import",
-      onClick: () => setIsImportDialogOpen(true),
-      variant: "outline",
-      icon: Plus
+      label: "Create Branch",
+      icon: Plus,
+      href: route('organization.branch.create')
     }
   ];
 

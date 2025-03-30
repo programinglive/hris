@@ -83,7 +83,7 @@ class EmployeeController extends Controller
             'name' => 'Employee Name',
             'email' => 'Email',
             'password' => 'Password',
-            'employee_id' => 'Employee ID',
+            'employee_code' => 'Employee Code',
             'position' => 'Position',
             'department' => 'Department',
             'join_date' => 'Join Date (YYYY-MM-DD)',
@@ -103,7 +103,7 @@ class EmployeeController extends Controller
             'name' => 'John Doe',
             'email' => 'john.doe@example.com',
             'password' => 'password123',
-            'employee_id' => 'EMP001',
+            'employee_code' => 'EMP123456',
             'position' => 'Manager',
             'department' => 'IT',
             'join_date' => '2023-01-15',
@@ -172,7 +172,7 @@ class EmployeeController extends Controller
                         'name' => 'required|string|max:255',
                         'email' => 'required|string|email|max:255|unique:users',
                         'password' => 'required|string|min:8',
-                        'employee_id' => 'required|string|max:50|unique:user_details',
+                        'employee_code' => 'required|string|max:50|unique:user_details',
                         'position' => 'nullable|string|max:100',
                         'department' => 'nullable|string|max:100',
                         'join_date' => 'nullable|date',
@@ -209,7 +209,7 @@ class EmployeeController extends Controller
                         // Create user details
                         UserDetail::create([
                             'user_id' => $user->id,
-                            'employee_id' => $row['employee_id'],
+                            'employee_code' => $row['employee_code'],
                             'position' => $row['position'] ?? null,
                             'department' => $row['department'] ?? null,
                             'join_date' => $row['join_date'] ?? null,
@@ -284,27 +284,77 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Get all users with employee role and their details
-        $employees = User::with(['detail', 'detail.department', 'detail.position'])
-            ->whereHas('detail')
-            ->get()
-            ->map(function ($user) {
-                return [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'employee_id' => $user->detail->employee_id,
-                    'position' => $user->detail->position ? $user->detail->position->name : null,
-                    'department' => $user->detail->department ? $user->detail->department->name : null,
-                    'join_date' => $user->detail->join_date ? $user->detail->join_date->format('Y-m-d') : null,
-                    'status' => $user->detail->status,
-                ];
+        $query = User::with([
+            'userDetails' => function ($q) {
+                $q->with([
+                    'company:id,name',
+                    'branch:id,name',
+                    'department:id,name',
+                    'position:id,name'
+                ]);
+            },
+            'roles'
+        ])
+        ->whereHas('roles', function ($q) {
+            $q->where('name', 'employee');
+        })
+        ->whereHas('userDetails', function ($q) {
+            $q->whereNotNull('employee_code');
+        });
+
+        // Apply filters
+        if ($request->status) {
+            $query->whereHas('userDetails', function ($q) use ($request) {
+                $q->where('status', $request->status);
             });
-            
-        return Inertia::render('employee/index', [
-            'employees' => $employees
+        }
+
+        if ($request->search) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhereHas('userDetails', function ($q) use ($search) {
+                        $q->where('employee_code', 'like', "%{$search}%")
+                            ->orWhereHas('position', function ($q) use ($search) {
+                                $q->where('name', 'like', "%{$search}%");
+                            })
+                            ->orWhereHas('department', function ($q) use ($search) {
+                                $q->where('name', 'like', "%{$search}%");
+                            })
+                            ->orWhere('join_date', 'like', "%{$search}%")
+                            ->orWhere('status', 'like', "%{$search}%")
+                            ->orWhereHas('company', function ($q) use ($search) {
+                                $q->where('name', 'like', "%{$search}%");
+                            })
+                            ->orWhereHas('branch', function ($q) use ($search) {
+                                $q->where('name', 'like', "%{$search}%");
+                            });
+                    });
+            });
+        }
+
+        $employees = $query->paginate(10);
+
+        return Inertia::render('Employee/Index', [
+            'component' => 'Employee/Index',
+            'props' => [
+                'employees' => $employees->map(function ($user) {
+                    return [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'userDetails' => $user->userDetails,
+                        'roles' => $user->roles
+                    ];
+                }),
+                'filters' => [
+                    'search' => $request->search,
+                    'status' => $request->status,
+                ],
+            ],
         ]);
     }
 
@@ -357,7 +407,7 @@ class EmployeeController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'employee_id' => 'required|string|max:50|unique:user_details',
+            'employee_code' => 'required|string|max:50|unique:user_details',
             'position' => 'nullable|string|max:100',
             'department' => 'nullable|string|max:100',
             'join_date' => 'nullable|date',
@@ -398,7 +448,7 @@ class EmployeeController extends Controller
             // Create user details
             UserDetail::create([
                 'user_id' => $user->id,
-                'employee_id' => $request->employee_id,
+                'employee_code' => $request->employee_code,
                 'position' => $request->position,
                 'department' => $request->department,
                 'join_date' => $request->join_date,
@@ -439,18 +489,18 @@ class EmployeeController extends Controller
     public function show(string $id)
     {
         $user = User::with([
-            'detail', 
-            'detail.department', 
-            'detail.position',
-            'detail.company',
-            'detail.branch',
-            'detail.division',
-            'detail.subDivision',
-            'detail.level'
+            'userDetails', 
+            'userDetails.department', 
+            'userDetails.position',
+            'userDetails.company',
+            'userDetails.branch',
+            'userDetails.division',
+            'userDetails.subDivision',
+            'userDetails.level'
         ])->findOrFail($id);
         
         // Check if user detail exists
-        if (!$user->detail) {
+        if (!$user->userDetails) {
             return redirect()->route('employee.index')
                 ->with('error', 'Employee details not found.');
         }
@@ -459,27 +509,27 @@ class EmployeeController extends Controller
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'employee_id' => $user->detail->employee_id ?? null,
-            'phone' => $user->detail->phone ?? null,
-            'address' => $user->detail->address ?? null,
-            'position' => $user->detail->position ? $user->detail->position->name : null,
-            'department' => $user->detail->department ? $user->detail->department->name : null,
-            'division' => $user->detail->division ? $user->detail->division->name : null,
-            'sub_division' => $user->detail->subDivision ? $user->detail->subDivision->name : null,
-            'level' => $user->detail->level ? $user->detail->level->name : null,
-            'company' => $user->detail->company ? $user->detail->company->name : null,
-            'branch' => $user->detail->branch ? $user->detail->branch->name : null,
-            'join_date' => $user->detail->join_date ? $user->detail->join_date->format('Y-m-d') : null,
-            'exit_date' => $user->detail->exit_date ? $user->detail->exit_date->format('Y-m-d') : null,
-            'status' => $user->detail->status ?? 'inactive',
-            'gender' => $user->detail->gender ?? null,
-            'birth_date' => $user->detail->birth_date ? $user->detail->birth_date->format('Y-m-d') : null,
-            'marital_status' => $user->detail->marital_status ?? null,
-            'profile_image' => $user->detail->profile_image ?? null,
+            'employee_code' => $user->userDetails->employee_code ?? null,
+            'phone' => $user->userDetails->phone ?? null,
+            'address' => $user->userDetails->address ?? null,
+            'position' => $user->userDetails->position ? $user->userDetails->position->name : null,
+            'department' => $user->userDetails->department ? $user->userDetails->department->name : null,
+            'division' => $user->userDetails->division ? $user->userDetails->division->name : null,
+            'sub_division' => $user->userDetails->subDivision ? $user->userDetails->subDivision->name : null,
+            'level' => $user->userDetails->level ? $user->userDetails->level->name : null,
+            'company' => $user->userDetails->company ? $user->userDetails->company->name : null,
+            'branch' => $user->userDetails->branch ? $user->userDetails->branch->name : null,
+            'join_date' => $user->userDetails->join_date ? $user->userDetails->join_date->format('Y-m-d') : null,
+            'exit_date' => $user->userDetails->exit_date ? $user->userDetails->exit_date->format('Y-m-d') : null,
+            'status' => $user->userDetails->status ?? 'inactive',
+            'gender' => $user->userDetails->gender ?? null,
+            'birth_date' => $user->userDetails->birth_date ? $user->userDetails->birth_date->format('Y-m-d') : null,
+            'marital_status' => $user->userDetails->marital_status ?? null,
+            'profile_image' => $user->userDetails->profile_image ?? null,
             'emergency_contact' => [
-                'name' => $user->detail->emergency_contact_name ?? null,
-                'relationship' => $user->detail->emergency_contact_relationship ?? null,
-                'phone' => $user->detail->emergency_contact_phone ?? null,
+                'name' => $user->userDetails->emergency_contact_name ?? null,
+                'relationship' => $user->userDetails->emergency_contact_relationship ?? null,
+                'phone' => $user->userDetails->emergency_contact_phone ?? null,
             ],
         ];
         
@@ -493,7 +543,7 @@ class EmployeeController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::with('detail')->findOrFail($id);
+        $user = User::with('userDetails')->findOrFail($id);
         
         // Get organization data from database
         $companies = Company::select('id', 'name')->where('is_active', true)->get();
@@ -515,27 +565,27 @@ class EmployeeController extends Controller
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'employee_id' => $user->detail->employee_id ?? null,
-            'position' => $user->detail->position ?? null,
-            'department' => $user->detail->department ?? null,
-            'join_date' => $user->detail->join_date ? $user->detail->join_date->format('Y-m-d') : null,
-            'exit_date' => $user->detail->exit_date ? $user->detail->exit_date->format('Y-m-d') : null,
-            'status' => $user->detail->status ?? null,
-            'gender' => $user->detail->gender ?? null,
-            'birth_date' => $user->detail->birth_date ? $user->detail->birth_date->format('Y-m-d') : null,
-            'marital_status' => $user->detail->marital_status ?? null,
-            'phone' => $user->detail->phone ?? null,
-            'address' => $user->detail->address ?? null,
-            'emergency_contact_name' => $user->detail->emergency_contact_name ?? null,
-            'emergency_contact_relationship' => $user->detail->emergency_contact_relationship ?? null,
-            'emergency_contact_phone' => $user->detail->emergency_contact_phone ?? null,
-            'company_id' => $user->detail->company_id ?? null,
-            'branch_id' => $user->detail->branch_id ?? null,
-            'brand_id' => $user->detail->brand_id ?? null,
-            'department_id' => $user->detail->department_id ?? null,
-            'division_id' => $user->detail->division_id ?? null,
-            'subdivision_id' => $user->detail->sub_division_id ?? null,
-            'position_level_id' => $user->detail->position_level_id ?? null,
+            'employee_code' => $user->userDetails->employee_code ?? null,
+            'position' => $user->userDetails->position ?? null,
+            'department' => $user->userDetails->department ?? null,
+            'join_date' => $user->userDetails->join_date ? $user->userDetails->join_date->format('Y-m-d') : null,
+            'exit_date' => $user->userDetails->exit_date ? $user->userDetails->exit_date->format('Y-m-d') : null,
+            'status' => $user->userDetails->status ?? null,
+            'gender' => $user->userDetails->gender ?? null,
+            'birth_date' => $user->userDetails->birth_date ? $user->userDetails->birth_date->format('Y-m-d') : null,
+            'marital_status' => $user->userDetails->marital_status ?? null,
+            'phone' => $user->userDetails->phone ?? null,
+            'address' => $user->userDetails->address ?? null,
+            'emergency_contact_name' => $user->userDetails->emergency_contact_name ?? null,
+            'emergency_contact_relationship' => $user->userDetails->emergency_contact_relationship ?? null,
+            'emergency_contact_phone' => $user->userDetails->emergency_contact_phone ?? null,
+            'company_id' => $user->userDetails->company_id ?? null,
+            'branch_id' => $user->userDetails->branch_id ?? null,
+            'brand_id' => $user->userDetails->brand_id ?? null,
+            'department_id' => $user->userDetails->department_id ?? null,
+            'division_id' => $user->userDetails->division_id ?? null,
+            'subdivision_id' => $user->userDetails->sub_division_id ?? null,
+            'position_level_id' => $user->userDetails->position_level_id ?? null,
         ];
 
         return Inertia::render('employee/edit', [
@@ -563,13 +613,13 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = User::with('detail')->findOrFail($id);
+        $user = User::with('userDetails')->findOrFail($id);
         
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'password' => 'nullable|string|min:8',
-            'employee_id' => 'required|string|max:50|unique:user_details,employee_id,' . $user->detail->id,
+            'employee_code' => 'required|string|max:50|unique:user_details,employee_code,' . $user->userDetails->id,
             'position' => 'nullable|string|max:100',
             'department' => 'nullable|string|max:100',
             'join_date' => 'nullable|date',
@@ -608,8 +658,8 @@ class EmployeeController extends Controller
             }
 
             // Update user details
-            $user->detail->update([
-                'employee_id' => $request->employee_id,
+            $user->userDetails->update([
+                'employee_code' => $request->employee_code,
                 'position' => $request->position,
                 'department' => $request->department,
                 'join_date' => $request->join_date,
@@ -649,14 +699,14 @@ class EmployeeController extends Controller
      */
     public function destroy(string $id)
     {
-        $user = User::with('detail')->findOrFail($id);
+        $user = User::with('userDetails')->findOrFail($id);
 
         DB::beginTransaction();
 
         try {
             // Delete user details first (due to foreign key constraint)
-            if ($user->detail) {
-                $user->detail->delete();
+            if ($user->userDetails) {
+                $user->userDetails->delete();
             }
             
             // Delete user

@@ -39,7 +39,17 @@ class Role extends Model
 
         static::creating(function ($role) {
             if (empty($role->slug)) {
-                $role->slug = Str::slug($role->name);
+                $baseSlug = Str::slug($role->name);
+                $slug = $baseSlug;
+                $counter = 1;
+                
+                // Check for existing role with the same slug
+                while (Role::where('slug', $slug)->exists()) {
+                    $slug = $baseSlug . '_' . $counter;
+                    $counter++;
+                }
+                
+                $role->slug = $slug;
             }
         });
     }

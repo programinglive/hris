@@ -39,7 +39,7 @@ class WorkingShiftTest extends TestCase
         UserDetail::create([
             'user_id' => $this->user->id,
             'company_id' => $this->company->id,
-            'employee_id' => 'EMP-001',
+            'employee_code' => 'EMP-001',
             'status' => 'active',
         ]);
 

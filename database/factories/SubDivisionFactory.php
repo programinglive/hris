@@ -27,8 +27,7 @@ class SubDivisionFactory extends Factory
             'name' => $this->faker->unique()->words(3, true),
             'description' => $this->faker->paragraph,
             'division_id' => Division::factory(),
-            'manager_id' => null, // Optional, can be set to User::factory() if needed
-            'status' => $this->faker->randomElement(['active', 'inactive']),
+            'is_active' => true,
         ];
     }
 }

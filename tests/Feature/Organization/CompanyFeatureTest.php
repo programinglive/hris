@@ -33,6 +33,8 @@ class CompanyFeatureTest extends TestCase
             'password' => bcrypt('password'),
         ]);
 
+        dd($this->user);
+
         // Create a test company
         $this->company = Company::factory()->create([
             'owner_id' => $this->user->id,
