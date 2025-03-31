@@ -14,6 +14,16 @@ Route::get('/', function () {
 // Include landing page routes (for company registration)
 include('module/landingpage.php');
 
+// Sentry test route
+Route::get('/sentry-test', function () {
+    try {
+        throw new \Exception('Sentry test error');
+    } catch (\Exception $e) {
+        \Sentry\captureException($e);
+        throw $e;
+    }
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
@@ -34,8 +44,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Assets routes
     include('module/assets.php');
 });
-
-
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

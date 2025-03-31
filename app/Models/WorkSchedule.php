@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class WorkSchedule extends Model
 {
@@ -25,6 +26,7 @@ class WorkSchedule extends Model
         'working_days',
         'is_default',
         'company_id',
+        'is_active',
     ];
 
     /**
@@ -38,6 +40,7 @@ class WorkSchedule extends Model
         'grace_period_minutes' => 'integer',
         'working_days' => 'array',
         'is_default' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     /**
@@ -57,9 +60,9 @@ class WorkSchedule extends Model
     }
 
     /**
-     * Get the users assigned to this work schedule.
+     * Get all users assigned to this work schedule.
      */
-    public function users()
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_work_schedules')
             ->withPivot('effective_date', 'end_date', 'is_active')

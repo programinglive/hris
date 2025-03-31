@@ -24,7 +24,7 @@ class Division extends Model
         'description',
         'department_id',
         'manager_id',
-        'status',
+        'is_active',
     ];
 
     /**
@@ -33,7 +33,7 @@ class Division extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'status' => 'string',
+        'is_active' => 'boolean',
     ];
 
     /**
@@ -82,6 +82,14 @@ class Division extends Model
     public function subDivisions(): HasMany
     {
         return $this->hasMany(SubDivision::class);
+    }
+
+    /**
+     * Get the positions for the division.
+     */
+    public function positions(): HasMany
+    {
+        return $this->hasMany(Position::class);
     }
 
     /**

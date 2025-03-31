@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\Brand;
+use App\Models\Department;
+use App\Models\Level;
 
 class Company extends Model
 {
@@ -96,5 +98,21 @@ class Company extends Model
     public function brands(): HasMany
     {
         return $this->hasMany(Brand::class);
+    }
+
+    /**
+     * Get the departments for the company.
+     */
+    public function departments(): HasMany
+    {
+        return $this->hasMany(Department::class);
+    }
+
+    /**
+     * Get the levels for the company.
+     */
+    public function levels(): HasMany
+    {
+        return $this->hasMany(Level::class);
     }
 }

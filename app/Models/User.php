@@ -70,13 +70,20 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the brands associated with the user.
+     * Get all of the brands that are associated with the user.
      */
     public function brands(): BelongsToMany
     {
         return $this->belongsToMany(Brand::class, 'user_brands')
-                    ->withPivot('role', 'is_primary')
-                    ->withTimestamps();
+            ->using(UserBrand::class)
+            ->withPivot([
+                'role',
+                'is_primary',
+                'created_at',
+                'updated_at'
+            ])
+            ->withTimestamps()
+            ->wherePivot('company_id', $this->company_id);
     }
     
     /**
@@ -174,7 +181,32 @@ class User extends Authenticatable
         return $this->hasMany(LeaveRequest::class);
     }
 
-    
+    /**
+     * Get all work shifts assigned to the user.
+     */
+    public function workShifts(): BelongsToMany
+    {
+        return $this->belongsToMany(WorkShift::class, 'user_work_shifts')
+            ->using(UserWorkShift::class)
+            ->withPivot([
+                'date',
+                'created_at',
+                'updated_at'
+            ])
+            ->withTimestamps()
+            ->where('work_shifts.company_id', $this->company_id);
+    }
+
+    /**
+     * Get all work schedules assigned to the user.
+     */
+    public function workSchedules(): BelongsToMany
+    {
+        return $this->belongsToMany(WorkSchedule::class, 'user_work_schedules')
+            ->withPivot('effective_date', 'end_date', 'is_active')
+            ->withTimestamps();
+    }
+
     /**
      * Get the active work schedule for this user.
      */
@@ -194,9 +226,4 @@ class User extends Authenticatable
             ->latest('effective_date')
             ->first();
     }
-
-    /**
-     * Get the user's details.
-     */
-    // Removed the duplicate method
 }

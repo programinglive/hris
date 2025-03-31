@@ -114,7 +114,7 @@ class DivisionSeeder extends Seeder
                     'name' => $template['name'],
                     'description' => $template['description'],
                     'department_id' => $department->id,
-                    'status' => 'active',
+                    'is_active' => true,
                     'code' => $uniqueCode
                 ]);
                 

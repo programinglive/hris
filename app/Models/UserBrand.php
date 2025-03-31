@@ -4,15 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\QueryException;
+use Exception;
 
 class UserBrand extends Pivot
 {
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = true;
+    protected $table = 'user_brands';
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +21,7 @@ class UserBrand extends Pivot
         'brand_id',
         'role',
         'is_primary',
+        'company_id'
     ];
 
     /**
@@ -36,7 +34,7 @@ class UserBrand extends Pivot
     ];
 
     /**
-     * Get the user that the brand is assigned to.
+     * Get the user that owns the user_brand.
      */
     public function user(): BelongsTo
     {
@@ -44,10 +42,37 @@ class UserBrand extends Pivot
     }
 
     /**
-     * Get the brand that is assigned to the user.
+     * Get the brand that owns the user_brand.
      */
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    /**
+     * Get the company that owns the user_brand.
+     */
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, 'company_id', 'id');
+    }
+
+    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (UserBrand $userBrand) {
+            if ($userBrand->company_id !== $userBrand->user->company_id) {
+                throw new QueryException(
+                    'Company ID mismatch between user and brand',
+                    'Company ID mismatch between user and brand',
+                    [],
+                    new Exception()
+                );
+            }
+        });
     }
 }

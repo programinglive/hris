@@ -45,7 +45,7 @@ class LevelSeeder extends Seeder
                     'description' => $template['description'],
                     'level_order' => $template['level_order'],
                     'company_id' => $company->id,
-                    'status' => 'active',
+                    'is_active' => true,
                 ]);
                 
                 $this->command->info("Created level {$level->name} for company {$company->name}");

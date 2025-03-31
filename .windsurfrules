@@ -5,9 +5,14 @@
 1. Use conventional commit
 2. Use commitlint
 3. npm run lint first before commit
+4. run laravel pint first before commit
 
 # Handling Upload
 1. Use Simple Excel from spatie https://github.com/spatie/simple-excel
+
+# Migration
+1. scan schema first before create new migration
+2. if possible merge migration avoid add column
 
 # Test
 1. When run test check on factory associate with model

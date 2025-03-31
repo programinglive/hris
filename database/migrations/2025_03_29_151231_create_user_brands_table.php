@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('user_brands', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('brand_id')->constrained();
+            $table->string('role');
+            $table->boolean('is_primary')->default(false);
+            $table->foreignId('company_id')->constrained();
             $table->timestamps();
+
+            $table->unique(['user_id', 'brand_id']);
         });
     }
 

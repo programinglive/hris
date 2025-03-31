@@ -18,4 +18,16 @@ Route::prefix('employee')->name('employee.')->group(function () {
     Route::get('/import', [EmployeeController::class, 'showImportForm'])->name('import');
     Route::get('/import/template', [EmployeeController::class, 'downloadTemplate'])->name('import.template');
     Route::post('/import/process', [EmployeeController::class, 'processImport'])->name('import.process');
+
+    // Work Shift routes
+    Route::prefix('work-shift')->name('work-shift.')->group(function () {
+        Route::post('/{user}', [EmployeeController::class, 'assignWorkShift'])->name('store');
+        Route::delete('/{user}/{shift}', [EmployeeController::class, 'removeWorkShift'])->name('destroy');
+    });
+
+    // Work Schedule routes
+    Route::prefix('{id}/work-schedule')->name('work-schedule.')->group(function () {
+        Route::post('/', [EmployeeController::class, 'assignWorkSchedule'])->name('store');
+        Route::delete('/{scheduleId}', [EmployeeController::class, 'removeWorkSchedule'])->name('destroy');
+    });
 });

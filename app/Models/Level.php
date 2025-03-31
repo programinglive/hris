@@ -24,7 +24,7 @@ class Level extends Model
         'description',
         'level_order',
         'company_id',
-        'status',
+        'is_active',
     ];
 
     /**
@@ -34,7 +34,7 @@ class Level extends Model
      */
     protected $casts = [
         'level_order' => 'integer',
-        'status' => 'string',
+        'is_active' => 'boolean',
     ];
 
     /**

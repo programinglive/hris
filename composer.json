@@ -13,6 +13,9 @@
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
+        "sentry/sdk": "^4.0",
+        "sentry/sentry": "^4.10",
+        "sentry/sentry-laravel": "^4.13",
         "spatie/laravel-ray": "^1.40",
         "spatie/simple-excel": "^3.7",
         "tightenco/ziggy": "^2.4"
@@ -20,7 +23,7 @@
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.2.2",
-        "laravel/pint": "^1.18",
+        "laravel/pint": "^1.21",
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",

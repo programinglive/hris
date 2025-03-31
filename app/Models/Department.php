@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Company;
+use App\Models\Branch;
+use App\Models\Division;
+use App\Models\Position;
+use App\Models\User;
+use App\Models\UserDetail;
 
 class Department extends Model
 {
@@ -21,7 +29,7 @@ class Department extends Model
         'code',
         'description',
         'manager_id',
-        'status',
+        'is_active',
         'company_id',
         'branch_id',
     ];
@@ -32,7 +40,7 @@ class Department extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'status' => 'string',
+        'is_active' => 'boolean',
     ];
 
     /**
@@ -76,26 +84,34 @@ class Department extends Model
     }
     
     /**
-     * Get the divisions in the department.
+     * Get the company that owns the department.
      */
-    public function divisions()
-    {
-        return $this->hasMany(Division::class);
-    }
-    
-    /**
-     * Get the company that the department belongs to.
-     */
-    public function company()
+    public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }
-    
+
     /**
-     * Get the branch that the department belongs to.
+     * Get the branch that owns the department.
      */
-    public function branch()
+    public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    /**
+     * Get the divisions in the department.
+     */
+    public function divisions(): HasMany
+    {
+        return $this->hasMany(Division::class);
+    }
+
+    /**
+     * Get the positions in the department.
+     */
+    public function positions(): HasMany
+    {
+        return $this->hasMany(Position::class);
     }
 }

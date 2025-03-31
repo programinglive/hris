@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->integer('level_order');
-            $table->string('status')->default('active');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

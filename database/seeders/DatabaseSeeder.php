@@ -14,7 +14,6 @@ use App\Models\SubDivision;
 use Database\Seeders\CompanySeeder;
 use Database\Seeders\BranchSeeder;
 use Database\Seeders\BrandSeeder;
-use Database\Seeders\UserSeeder;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\DepartmentSeeder;
 use Database\Seeders\DivisionSeeder;
@@ -24,7 +23,6 @@ use Database\Seeders\PositionSeeder;
 use Database\Seeders\FaqSeeder;
 use Database\Seeders\WorkingCalendarSeeder;
 use Database\Seeders\HolidaySeeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -76,7 +74,7 @@ class DatabaseSeeder extends Seeder
         ], [
             'description' => 'Information Technology Department',
             'company_id' => $firstCompany->id,
-            'status' => 'active'
+            'is_active' => true
         ]);
         
         $defaultLevel = Level::firstOrCreate([
@@ -85,7 +83,7 @@ class DatabaseSeeder extends Seeder
         ], [
             'description' => 'Executive Level',
             'level_order' => 1,
-            'status' => 'active',
+            'is_active' => true,
             'company_id' => $firstCompany->id
         ]);
         
@@ -95,7 +93,7 @@ class DatabaseSeeder extends Seeder
             'department_id' => $itDepartment->id
         ], [
             'description' => 'IT Management Division',
-            'status' => 'active',
+            'is_active' => true,
             'department_id' => $itDepartment->id
         ]);
         
@@ -105,7 +103,7 @@ class DatabaseSeeder extends Seeder
             'division_id' => $itDivision->id
         ], [
             'description' => 'System Administration Sub-Division',
-            'status' => 'active',
+            'is_active' => true,
             'division_id' => $itDivision->id
         ]);
         
@@ -118,36 +116,14 @@ class DatabaseSeeder extends Seeder
         ], [
             'description' => 'System Administrator',
             'level_id' => $defaultLevel->id,
-            'status' => 'active',
+            'is_active' => true,
             'company_id' => $firstCompany->id,
             'department_id' => $itDepartment->id,
             'division_id' => $itDivision->id,
             'sub_division_id' => $itSubDivision->id
         ]);
         
-        // Step 5: Associate the test user with the first company
-        if ($testUser) {
-            UserDetail::create([
-                'user_id' => $testUser->id,
-                'employee_code' => 'EMP-'.str_pad($testUser->id, 6, '0', STR_PAD_LEFT),
-                'status' => 'active',
-                'company_id' => $firstCompany->id,
-                'branch_id' => $firstCompany->branches->first()->id ?? null,
-                'department_id' => $itDepartment->id,
-                'division_id' => $itDivision->id,
-                'sub_division_id' => $itSubDivision->id,
-                'level_id' => $defaultLevel->id,
-                'position_id' => $adminPosition->id,
-                'join_date' => now()
-            ]);
-            
-            // Assign admin role to test user
-            if (Role::where('name', 'admin')->exists()) {
-                $testUser->assignRole('admin');
-            }
-        }
-        
-        // Step 6: Seed other tables
+        // Step 5: Seed other tables
         $this->call([
             DepartmentSeeder::class,
             DivisionSeeder::class,
@@ -158,5 +134,67 @@ class DatabaseSeeder extends Seeder
             WorkingCalendarSeeder::class,
             HolidaySeeder::class
         ]);
+        
+        // Step 6: Associate the test user with the first company
+        if ($testUser) {
+            // Get the first company and its IT department
+            $firstCompany = Company::with([
+                'departments' => function ($query) {
+                    $query->with([
+                        'divisions' => function ($query) {
+                            $query->with(['subDivisions']);
+                        }
+                    ]);
+                },
+                'levels'
+            ])->first();
+            
+            if (!$firstCompany) {
+                throw new \Exception('No company found');
+            }
+            
+            // Find the IT department with divisions and sub-divisions
+            $itDepartment = $firstCompany->departments->first(function ($department) {
+                if ($department->divisions->isEmpty()) {
+                    return false;
+                }
+                
+                $firstDivision = $department->divisions->first();
+                if (!$firstDivision || $firstDivision->subDivisions->isEmpty()) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            if (!$itDepartment) {
+                throw new \Exception('No IT department found with divisions and sub-divisions');
+            }
+            
+            // Get the default level
+            $defaultLevel = $firstCompany->levels->first();
+            if (!$defaultLevel) {
+                throw new \Exception('No level found for company');
+            }
+            
+            // Create user details
+            UserDetail::create([
+                'user_id' => $testUser->id,
+                'employee_code' => 'EMP-' . str_pad($testUser->id, 6, '0', STR_PAD_LEFT),
+                'status' => 'active',
+                'company_id' => $firstCompany->id,
+                'branch_id' => $firstCompany->branches->first()->id ?? null,
+                'department_id' => $itDepartment->id,
+                'division_id' => $itDepartment->divisions->first()->id,
+                'sub_division_id' => $itDepartment->divisions->first()->subDivisions->first()->id,
+                'level_id' => $defaultLevel->id,
+                'join_date' => now()
+            ]);
+            
+            // Assign admin role to test user
+            if (Role::where('name', 'admin')->exists()) {
+                $testUser->assignRole('admin');
+            }
+        }
     }
 }

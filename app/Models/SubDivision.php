@@ -24,7 +24,7 @@ class SubDivision extends Model
         'description',
         'division_id',
         'manager_id',
-        'status',
+        'is_active',
     ];
 
     /**
@@ -33,7 +33,7 @@ class SubDivision extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'status' => 'string',
+        'is_active' => 'boolean',
     ];
 
     /**
