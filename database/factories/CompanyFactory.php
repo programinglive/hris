@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Brand;
 use App\Models\Company;
 use App\Models\Role;
 use App\Models\WorkSchedule;
@@ -28,7 +27,7 @@ class CompanyFactory extends Factory
     {
         $companyName = $this->faker->company();
         $companyCode = Str::upper(Str::slug($companyName, '-'));
-        
+
         return [
             'name' => $companyName,
             'code' => $companyCode,

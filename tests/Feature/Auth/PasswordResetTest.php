@@ -17,8 +17,7 @@ class PasswordResetTest extends TestCase
     {
         $response = $this->get(route('password.request'));
         $response->assertStatus(200)
-            ->assertInertia(fn (Assert $page) => 
-                $page->component('auth/password/reset-request')
+            ->assertInertia(fn (Assert $page) => $page->component('auth/password/reset-request')
             );
     }
 
@@ -55,8 +54,7 @@ class PasswordResetTest extends TestCase
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
             $response = $this->get(route('password.reset', $notification->token));
             $response->assertStatus(200)
-                ->assertInertia(fn (Assert $page) => 
-                    $page->component('auth/password/reset')
+                ->assertInertia(fn (Assert $page) => $page->component('auth/password/reset')
                 );
 
             return true;

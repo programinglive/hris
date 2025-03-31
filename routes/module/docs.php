@@ -12,7 +12,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Documentation show
     Route::get('/docs/{file}', function ($file) {
         return Inertia::render('docs/show', [
-            'file' => $file
+            'file' => $file,
         ]);
     })->name('docs.show');
 
@@ -21,7 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Clean up the path to prevent directory traversal
         $path = str_replace(['..', '.php'], ['', ''], $path);
         $path = str_replace('//', '/', $path);
-        
+
         // Ensure we're only serving files from the docs directory
         if (strpos($path, '../') !== false) {
             abort(404);
@@ -29,7 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         $file = base_path("resources/docs/{$path}");
 
-        if (!file_exists($file)) {
+        if (! file_exists($file)) {
             abort(404);
         }
 

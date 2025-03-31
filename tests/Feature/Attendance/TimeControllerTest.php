@@ -41,8 +41,7 @@ class TimeControllerTest extends TestCase
         $response = $this->get(route('attendance.time.index'));
 
         $response->assertStatus(200)
-            ->assertInertia(fn (Assert $page) => 
-                $page->component('attendance/time/index')
+            ->assertInertia(fn (Assert $page) => $page->component('attendance/time/index')
             );
     }
 
@@ -142,9 +141,8 @@ class TimeControllerTest extends TestCase
         ]));
 
         $response->assertStatus(200)
-            ->assertInertia(fn (Assert $page) => 
-                $page->component('attendance/time/index')
-                    ->has('timeLogs', 2)
+            ->assertInertia(fn (Assert $page) => $page->component('attendance/time/index')
+                ->has('timeLogs', 2)
             );
     }
 }

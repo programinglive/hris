@@ -4,8 +4,8 @@ namespace Tests\Feature\UI;
 
 use App\Models\Company;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Inertia\Testing\AssertableInertia as Assert;
+use Tests\TestCase;
 
 class CompanyRegistrationUITest extends TestCase
 {
@@ -14,7 +14,7 @@ class CompanyRegistrationUITest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Clear session before each test
         $this->app['session']->flush();
     }
@@ -30,8 +30,7 @@ class CompanyRegistrationUITest extends TestCase
     public function it_shows_contact_form_with_validation()
     {
         $response = $this->get(route('landing-page.installation-wizard'));
-        $response->assertInertia(fn (Assert $page) => 
-            $page->component('auth/register-company')
+        $response->assertInertia(fn (Assert $page) => $page->component('auth/register-company')
         );
 
         // Test invalid contact submission
@@ -67,11 +66,10 @@ class CompanyRegistrationUITest extends TestCase
         ]);
 
         $response->assertStatus(200);
-        
+
         // Check if we're on verification step
         $response = $this->get(route('landing-page.installation-wizard'));
-        $response->assertInertia(fn (Assert $page) => 
-            $page->component('auth/register-company')
+        $response->assertInertia(fn (Assert $page) => $page->component('auth/register-company')
         );
 
         // Verify session data

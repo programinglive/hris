@@ -12,7 +12,7 @@ class CheckInstallationWizardTest extends TestCase
     #[Test]
     public function it_redirects_to_installation_wizard_when_no_companies_exist()
     {
-        $middleware = new CheckInstallationWizard();
+        $middleware = new CheckInstallationWizard;
         $request = Request::create('/login', 'GET');
 
         $response = $middleware->handle($request, function () {
@@ -27,7 +27,7 @@ class CheckInstallationWizardTest extends TestCase
     {
         Company::factory()->create();
 
-        $middleware = new CheckInstallationWizard();
+        $middleware = new CheckInstallationWizard;
         $request = Request::create('/login', 'GET');
 
         $response = $middleware->handle($request, function () {
@@ -43,7 +43,7 @@ class CheckInstallationWizardTest extends TestCase
         $user = $this->createUser();
         $this->actingAs($user);
 
-        $middleware = new CheckInstallationWizard();
+        $middleware = new CheckInstallationWizard;
         $request = Request::create('/login', 'GET');
 
         $response = $middleware->handle($request, function () {
@@ -56,7 +56,7 @@ class CheckInstallationWizardTest extends TestCase
     #[Test]
     public function it_redirects_to_installation_wizard_when_no_companies_exist_and_user_is_not_authenticated()
     {
-        $middleware = new CheckInstallationWizard();
+        $middleware = new CheckInstallationWizard;
         $request = Request::create('/login', 'GET');
 
         $response = $middleware->handle($request, function () {

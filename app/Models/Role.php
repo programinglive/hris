@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 
 class Role extends Model
@@ -92,7 +91,7 @@ class Role extends Model
     /**
      * Check if the role has a specific permission.
      *
-     * @param string $permission
+     * @param  string  $permission
      * @return bool
      */
     public function hasPermission($permission)

@@ -15,8 +15,7 @@ class AuthenticationTest extends TestCase
     {
         $response = $this->get('/login');
         $response->assertStatus(200)
-            ->assertInertia(fn (Assert $page) => 
-                $page->component('auth/login')
+            ->assertInertia(fn (Assert $page) => $page->component('auth/login')
             );
     }
 

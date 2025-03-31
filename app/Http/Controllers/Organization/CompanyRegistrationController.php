@@ -103,7 +103,7 @@ class CompanyRegistrationController extends Controller
 
         $registrationData = Session::get('registration_data');
 
-        if (!$registrationData || $validated['verification_code'] !== $registrationData['verification_code']) {
+        if (! $registrationData || $validated['verification_code'] !== $registrationData['verification_code']) {
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid verification code',
@@ -221,7 +221,7 @@ class CompanyRegistrationController extends Controller
 
         // Verify the verification code
         $storedCode = session('verification_code');
-        if (!$storedCode || $validated['verification_code'] !== $storedCode) {
+        if (! $storedCode || $validated['verification_code'] !== $storedCode) {
             return redirect()->back()->withErrors([
                 'verification_code' => 'Invalid verification code',
             ])->withInput();

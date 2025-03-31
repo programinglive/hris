@@ -2,12 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Brand;
-use App\Models\Company;
 use App\Models\User;
-use App\Models\UserBrand;
-use App\Models\UserDetail;
-use App\Models\UserRole;
 use App\Models\WorkSchedule;
 use App\Models\WorkShift;
 use Illuminate\Database\Eloquent\Factories\Factory;

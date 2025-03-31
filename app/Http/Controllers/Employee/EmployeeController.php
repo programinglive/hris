@@ -24,7 +24,7 @@ class EmployeeController extends Controller
 
         return Inertia::render('employee/index', [
             'employees' => $employees,
-            'filters' => request()->only(['search', 'status'])
+            'filters' => request()->only(['search', 'status']),
         ]);
     }
 
@@ -90,8 +90,8 @@ class EmployeeController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'phone' => 'required|string|unique:users,phone,' . $user->id,
+            'email' => 'required|email|unique:users,email,'.$user->id,
+            'phone' => 'required|string|unique:users,phone,'.$user->id,
             'company_id' => 'required|exists:companies,id',
         ]);
 

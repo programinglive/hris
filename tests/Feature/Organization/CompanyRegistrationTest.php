@@ -6,10 +6,8 @@ use App\Models\Company;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -22,7 +20,7 @@ class CompanyRegistrationTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Store timestamp for consistent testing
         $this->timestamp = time();
     }
