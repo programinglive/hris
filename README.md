@@ -125,6 +125,41 @@ After installation, you can:
 4. Add employees and manage their information
 5. Configure attendance settings and other HR policies
 
+## Company Registration Wizard
+
+The Company Registration Wizard is a step-by-step process that guides administrators through setting up their organization in HRIS Project. This wizard is essential for new installations and ensures that all necessary company information is properly configured before users can access the system.
+
+### Registration Process
+
+1. **Company Information**
+   - Enter basic company details
+   - Set up primary company information
+   - Configure company contact information
+   - Upload company logo (optional)
+
+2. **Administrator Setup**
+   - Create the first admin user
+   - Set up admin credentials
+   - Assign initial roles and permissions
+
+3. **Basic Configuration**
+   - Set up initial departments
+   - Configure work schedules
+   - Set up default settings
+
+### Accessing the Registration Wizard
+
+- The wizard is automatically triggered when no companies exist in the system
+- Users attempting to access any authentication routes (login, register) will be redirected to the wizard
+- The wizard must be completed before any other functionality can be accessed
+
+### Security Features
+
+- All registration data is validated before submission
+- Password requirements are enforced for admin accounts
+- Company information is validated against existing records
+- Session-based security to prevent unauthorized access
+
 ### Building for production
 
 ```bash
