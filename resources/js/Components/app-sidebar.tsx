@@ -134,6 +134,16 @@ const mainNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
+        title: 'Settings',
+        href: '/settings',
+        icon: FileText,
+    },
+    {
+        title: 'Documentation',
+        href: '/docs',
+        icon: FileText,
+    },
+    {
         title: 'Base Data',
         href: '#',
         icon: FileText,

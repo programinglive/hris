@@ -48,6 +48,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Assets routes
     include 'module/assets.php';
+
+    // Documentation routes
+    include 'module/docs.php';
 });
 
 require __DIR__.'/settings.php';
