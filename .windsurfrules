@@ -8,7 +8,7 @@
 1. Use conventional commit
 2. Use commitlint
 3. npm run lint first before commit
-4. run vendor pint first before commit
+4. run vendor/bin/pint first before commit
 
 # Handling Upload
 1. Use Simple Excel from spatie https://github.com/spatie/simple-excel
