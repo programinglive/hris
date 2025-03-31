@@ -7,9 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
-use App\Models\Company;
-use App\Models\Branch;
-use App\Models\User;
 
 class Brand extends Model
 {
@@ -50,24 +47,24 @@ class Brand extends Model
             if (empty($brand->code)) {
                 $baseCode = Str::upper(Str::substr(Str::slug($brand->name), 0, 3));
                 $counter = 1;
-                $code = $baseCode . '-' . sprintf('%03d', $counter);
-                
+                $code = $baseCode.'-'.sprintf('%03d', $counter);
+
                 // Make sure the code is unique
                 while (static::where('code', $code)->exists()) {
                     $counter++;
-                    $code = $baseCode . '-' . sprintf('%03d', $counter);
+                    $code = $baseCode.'-'.sprintf('%03d', $counter);
                 }
-                
+
                 $brand->code = $code;
             } else {
                 // If code is provided but not unique, make it unique
                 $originalCode = $brand->code;
                 $counter = 1;
-                
+
                 while (static::where('code', $brand->code)->exists()) {
                     $parts = explode('-', $originalCode);
                     $prefix = $parts[0];
-                    $brand->code = $prefix . '-' . sprintf('%03d', $counter);
+                    $brand->code = $prefix.'-'.sprintf('%03d', $counter);
                     $counter++;
                 }
             }
@@ -81,7 +78,7 @@ class Brand extends Model
     {
         return $this->belongsTo(Company::class);
     }
-    
+
     /**
      * Get the branch that owns the brand.
      */
@@ -89,14 +86,14 @@ class Brand extends Model
     {
         return $this->belongsTo(Branch::class);
     }
-    
+
     /**
      * Get the users associated with the brand.
      */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_brands')
-                    ->withPivot('role', 'is_primary')
-                    ->withTimestamps();
+            ->withPivot('role', 'is_primary')
+            ->withTimestamps();
     }
 }

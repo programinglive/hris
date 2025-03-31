@@ -2,25 +2,29 @@
 
 namespace Tests\Feature\Organization;
 
-use App\Models\Position;
-use App\Models\Level;
-use App\Models\SubDivision;
-use App\Models\User;
 use App\Models\Company;
 use App\Models\Division;
+use App\Models\Level;
+use App\Models\Position;
+use App\Models\SubDivision;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class PositionControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
     protected User $user;
+
     protected Company $company;
+
     protected Level $level;
+
     protected SubDivision $subDivision;
+
     protected Division $division;
 
     protected function setUp(): void

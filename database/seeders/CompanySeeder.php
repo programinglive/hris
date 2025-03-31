@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Company;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,14 +16,14 @@ class CompanySeeder extends Seeder
     {
         // Create a main admin user if it doesn't exist
         $admin = User::where('email', 'admin@beautyhris.com')->first();
-        if (!$admin) {
+        if (! $admin) {
             $admin = User::create([
                 'name' => 'Admin User',
                 'email' => 'admin@beautyhris.com',
                 'password' => Hash::make('password'),
             ]);
         }
-        
+
         // Create predefined companies
         $companies = [
             [
@@ -76,14 +75,14 @@ class CompanySeeder extends Seeder
                 'is_active' => true,
             ],
         ];
-        
+
         foreach ($companies as $companyData) {
             $company = Company::firstOrCreate(
                 ['name' => $companyData['name']],
                 array_merge($companyData, ['owner_id' => $admin->id])
             );
         }
-        
+
         // Create additional random companies
         Company::factory()
             ->count(2)

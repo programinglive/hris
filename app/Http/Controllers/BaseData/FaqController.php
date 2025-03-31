@@ -16,21 +16,21 @@ class FaqController extends Controller
     {
         $perPage = $request->input('per_page', 10);
         $search = $request->input('search', '');
-        
+
         $query = Faq::orderBy('order');
-        
+
         if ($search) {
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('question', 'like', "%{$search}%")
-                  ->orWhere('answer', 'like', "%{$search}%");
+                    ->orWhere('answer', 'like', "%{$search}%");
             });
         }
-        
+
         $faqs = $query->paginate($perPage);
-        
+
         return Inertia::render('basedata/faq/index', [
             'faqs' => $faqs->toArray(),
-            'search' => $search
+            'search' => $search,
         ]);
     }
 
@@ -53,9 +53,9 @@ class FaqController extends Controller
             'order' => 'nullable|integer',
             'status' => 'required|in:active,inactive',
         ]);
-        
+
         Faq::create($validated);
-        
+
         return redirect()->route('basedata.faq.index')
             ->with('success', 'FAQ created successfully.');
     }
@@ -66,7 +66,7 @@ class FaqController extends Controller
     public function show(Faq $faq)
     {
         return Inertia::render('basedata/faq/show', [
-            'faq' => $faq
+            'faq' => $faq,
         ]);
     }
 
@@ -76,7 +76,7 @@ class FaqController extends Controller
     public function edit(Faq $faq)
     {
         return Inertia::render('basedata/faq/edit', [
-            'faq' => $faq
+            'faq' => $faq,
         ]);
     }
 
@@ -91,9 +91,9 @@ class FaqController extends Controller
             'order' => 'nullable|integer',
             'status' => 'required|in:active,inactive',
         ]);
-        
+
         $faq->update($validated);
-        
+
         return redirect()->route('basedata.faq.index')
             ->with('success', 'FAQ updated successfully.');
     }
@@ -104,7 +104,7 @@ class FaqController extends Controller
     public function destroy(Faq $faq)
     {
         $faq->delete();
-        
+
         return redirect()->route('basedata.faq.index')
             ->with('success', 'FAQ deleted successfully.');
     }

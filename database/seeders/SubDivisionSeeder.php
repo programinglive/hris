@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Division;
 use App\Models\SubDivision;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -20,10 +19,10 @@ class SubDivisionSeeder extends Seeder
         DB::statement('PRAGMA foreign_keys = OFF');
         SubDivision::truncate();
         DB::statement('PRAGMA foreign_keys = ON');
-        
+
         // Get all divisions
         $divisions = Division::all();
-        
+
         // Sub-division templates by division name
         $subDivisionTemplates = [
             // HR Divisions
@@ -39,7 +38,7 @@ class SubDivisionSeeder extends Seeder
                 ['name' => 'Conflict Resolution', 'description' => 'Responsible for addressing workplace conflicts'],
                 ['name' => 'Employee Engagement', 'description' => 'Responsible for promoting positive workplace culture'],
             ],
-            
+
             // Finance Divisions
             'Accounting' => [
                 ['name' => 'Accounts Payable', 'description' => 'Responsible for managing outgoing payments'],
@@ -53,7 +52,7 @@ class SubDivisionSeeder extends Seeder
                 ['name' => 'Budgeting', 'description' => 'Responsible for budget creation and monitoring'],
                 ['name' => 'Forecasting', 'description' => 'Responsible for financial projections'],
             ],
-            
+
             // Operations Divisions
             'Production' => [
                 ['name' => 'Manufacturing', 'description' => 'Responsible for product creation'],
@@ -67,7 +66,7 @@ class SubDivisionSeeder extends Seeder
                 ['name' => 'Procurement', 'description' => 'Responsible for purchasing materials and supplies'],
                 ['name' => 'Logistics', 'description' => 'Responsible for transportation and distribution'],
             ],
-            
+
             // Marketing Divisions
             'Digital Marketing' => [
                 ['name' => 'Social Media', 'description' => 'Responsible for social media marketing'],
@@ -81,7 +80,7 @@ class SubDivisionSeeder extends Seeder
                 ['name' => 'Consumer Insights', 'description' => 'Responsible for understanding customer behavior'],
                 ['name' => 'Competitive Analysis', 'description' => 'Responsible for analyzing competitors'],
             ],
-            
+
             // IT Divisions
             'Software Development' => [
                 ['name' => 'Frontend Development', 'description' => 'Responsible for user interface development'],
@@ -95,7 +94,7 @@ class SubDivisionSeeder extends Seeder
                 ['name' => 'Helpdesk', 'description' => 'Responsible for first-line technical support'],
                 ['name' => 'Desktop Support', 'description' => 'Responsible for hardware and software support'],
             ],
-            
+
             // Customer Service Divisions
             'Call Center' => [
                 ['name' => 'Inbound', 'description' => 'Responsible for handling incoming customer calls'],
@@ -109,7 +108,7 @@ class SubDivisionSeeder extends Seeder
                 ['name' => 'Customer Feedback', 'description' => 'Responsible for collecting and analyzing customer feedback'],
                 ['name' => 'Service Improvement', 'description' => 'Responsible for enhancing customer service processes'],
             ],
-            
+
             // Sales Divisions
             'Direct Sales' => [
                 ['name' => 'Field Sales', 'description' => 'Responsible for in-person sales activities'],
@@ -124,33 +123,35 @@ class SubDivisionSeeder extends Seeder
                 ['name' => 'Strategic Partnerships', 'description' => 'Responsible for developing business alliances'],
             ],
         ];
-        
+
         foreach ($divisions as $division) {
             // Get users from the same company as the division manager
             $divisionManager = $division->manager;
-            if (!$divisionManager || !$divisionManager->detail || !$divisionManager->detail->company_id) {
+            if (! $divisionManager || ! $divisionManager->detail || ! $divisionManager->detail->company_id) {
                 $this->command->info("No valid manager found for division {$division->name}. Skipping sub-division creation.");
+
                 continue;
             }
-            
+
             $companyId = $divisionManager->detail->company_id;
             $users = User::whereHas('detail', function ($query) use ($companyId) {
                 $query->where('company_id', $companyId);
             })->get();
-            
+
             if ($users->isEmpty()) {
                 $this->command->info("No users found for division {$division->name}. Skipping sub-division creation.");
+
                 continue;
             }
-            
+
             // Get sub-division templates for this division
             $templates = $subDivisionTemplates[$division->name] ?? [];
-            
+
             // Create sub-divisions for this division
             foreach ($templates as $template) {
                 // Assign a random user as manager
                 $manager = $users->random();
-                
+
                 $subDivision = SubDivision::create([
                     'name' => $template['name'],
                     'description' => $template['description'],
@@ -158,7 +159,7 @@ class SubDivisionSeeder extends Seeder
                     'manager_id' => $manager->id,
                     'status' => 'active',
                 ]);
-                
+
                 $this->command->info("Created sub-division {$subDivision->name} for division {$division->name}");
             }
         }

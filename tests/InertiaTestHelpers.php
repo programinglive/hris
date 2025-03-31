@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Facade;
+use Inertia\Inertia;
 
 trait InertiaTestHelpers
 {
@@ -15,11 +15,12 @@ trait InertiaTestHelpers
     {
         // Skip the Vite manifest check for the test
         $this->withoutVite();
-        
+
         // Replace the Inertia facade with a fake version
         Facade::clearResolvedInstance('inertia');
         app()->singleton('inertia', function () {
-            $inertiaFake = new class {
+            $inertiaFake = new class
+            {
                 public function render($component, $props = [])
                 {
                     return response()->json([
@@ -28,13 +29,13 @@ trait InertiaTestHelpers
                         'url' => request()->url(),
                     ]);
                 }
-                
+
                 public function location($url)
                 {
                     return response('', 409)->header('X-Inertia-Location', $url);
                 }
             };
-            
+
             return $inertiaFake;
         });
     }

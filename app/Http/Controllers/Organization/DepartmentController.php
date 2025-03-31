@@ -8,14 +8,13 @@ use App\Models\Company;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Storage;
 use Spatie\SimpleExcel\SimpleExcelReader;
 use Spatie\SimpleExcel\SimpleExcelWriter;
-use Illuminate\Support\Facades\Log;
 
 class DepartmentController extends Controller
 {
@@ -25,23 +24,23 @@ class DepartmentController extends Controller
     public function index(Request $request)
     {
         $query = Department::with(['manager', 'company', 'branch']);
-        
+
         // Apply filters
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->has('search') && ! empty($request->search)) {
             $search = $request->search;
             $query->where('name', 'like', "%{$search}%");
         }
-        
-        if ($request->has('company_id') && !empty($request->company_id)) {
+
+        if ($request->has('company_id') && ! empty($request->company_id)) {
             $query->where('company_id', $request->company_id);
         }
-        
-        if ($request->has('branch_id') && !empty($request->branch_id)) {
+
+        if ($request->has('branch_id') && ! empty($request->branch_id)) {
             $query->where('branch_id', $request->branch_id);
         }
-        
+
         $departments = $query->paginate(10)->withQueryString();
-        
+
         // Transform the data
         $departments->getCollection()->transform(function ($department) {
             return [
@@ -64,7 +63,7 @@ class DepartmentController extends Controller
                 'created_at' => $department->created_at->format('Y-m-d'),
             ];
         });
-        
+
         // Get companies for filter
         $companies = Company::where('is_active', true)
             ->get()
@@ -74,7 +73,7 @@ class DepartmentController extends Controller
                     'name' => $company->name,
                 ];
             });
-            
+
         // Get branches for filter
         $branches = Branch::where('is_active', true)
             ->get()
@@ -84,7 +83,7 @@ class DepartmentController extends Controller
                     'name' => $branch->name,
                 ];
             });
-            
+
         return Inertia::render('organization/department/index', [
             'departments' => $departments,
             'companies' => $companies,
@@ -106,7 +105,7 @@ class DepartmentController extends Controller
                 'name' => $user->name,
             ];
         });
-        
+
         $companies = Company::where('is_active', true)
             ->get()
             ->map(function ($company) {
@@ -115,7 +114,7 @@ class DepartmentController extends Controller
                     'name' => $company->name,
                 ];
             });
-            
+
         $branches = Branch::where('is_active', true)
             ->get()
             ->map(function ($branch) {
@@ -125,7 +124,7 @@ class DepartmentController extends Controller
                     'company_id' => $branch->company_id,
                 ];
             });
-            
+
         return Inertia::render('organization/department/create', [
             'managers' => $managers,
             'companies' => $companies,
@@ -170,7 +169,7 @@ class DepartmentController extends Controller
                 ->with('success', 'Department created successfully.');
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Failed to create department. ' . $e->getMessage())
+                ->with('error', 'Failed to create department. '.$e->getMessage())
                 ->withInput();
         }
     }
@@ -182,7 +181,7 @@ class DepartmentController extends Controller
     {
         $department = Department::with(['manager', 'company', 'branch', 'employees.user'])
             ->findOrFail($id);
-            
+
         $departmentData = [
             'id' => $department->id,
             'name' => $department->name,
@@ -209,9 +208,9 @@ class DepartmentController extends Controller
                 ];
             }),
         ];
-        
+
         return Inertia::render('organization/department/details', [
-            'department' => $departmentData
+            'department' => $departmentData,
         ]);
     }
 
@@ -221,7 +220,7 @@ class DepartmentController extends Controller
     public function edit(string $id)
     {
         $department = Department::findOrFail($id);
-        
+
         $managers = User::whereHas('detail', function ($query) {
             $query->whereIn('position', ['Manager', 'Director', 'System Administrator']);
         })->get()->map(function ($user) {
@@ -230,7 +229,7 @@ class DepartmentController extends Controller
                 'name' => $user->name,
             ];
         });
-        
+
         $companies = Company::where('is_active', true)
             ->get()
             ->map(function ($company) {
@@ -239,7 +238,7 @@ class DepartmentController extends Controller
                     'name' => $company->name,
                 ];
             });
-            
+
         $branches = Branch::where('is_active', true)
             ->get()
             ->map(function ($branch) {
@@ -249,7 +248,7 @@ class DepartmentController extends Controller
                     'company_id' => $branch->company_id,
                 ];
             });
-            
+
         return Inertia::render('organization/department/edit', [
             'department' => [
                 'id' => $department->id,
@@ -273,9 +272,9 @@ class DepartmentController extends Controller
     public function update(Request $request, string $id)
     {
         $department = Department::findOrFail($id);
-        
+
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:departments,name,' . $id,
+            'name' => 'required|string|max:255|unique:departments,name,'.$id,
             'description' => 'nullable|string',
             'manager_id' => 'nullable|exists:users,id',
             'company_id' => 'required|exists:companies,id',
@@ -305,7 +304,7 @@ class DepartmentController extends Controller
                 ->with('success', 'Department updated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Failed to update department. ' . $e->getMessage())
+                ->with('error', 'Failed to update department. '.$e->getMessage())
                 ->withInput();
         }
     }
@@ -316,14 +315,15 @@ class DepartmentController extends Controller
     public function destroy(string $id)
     {
         $department = Department::findOrFail($id);
-        
+
         try {
             $department->delete();
+
             return redirect('/organization/department/index')
                 ->with('success', 'Department deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Failed to delete department. ' . $e->getMessage());
+                ->with('error', 'Failed to delete department. '.$e->getMessage());
         }
     }
 
@@ -336,16 +336,16 @@ class DepartmentController extends Controller
     {
         // Create the file
         $filename = 'department_import_template.xlsx';
-        $tempPath = storage_path('app/temp/' . $filename);
-        
+        $tempPath = storage_path('app/temp/'.$filename);
+
         // Ensure the directory exists
-        if (!file_exists(storage_path('app/temp'))) {
+        if (! file_exists(storage_path('app/temp'))) {
             mkdir(storage_path('app/temp'), 0755, true);
         }
-        
+
         // Create a writer and add the headers
         $writer = SimpleExcelWriter::create($tempPath);
-        
+
         // Add headers by adding a row with the header values
         $writer->addRow([
             'name' => 'name',
@@ -353,9 +353,9 @@ class DepartmentController extends Controller
             'company_id' => 'company_id',
             'branch_id' => 'branch_id',
             'manager_id' => 'manager_id',
-            'status' => 'status'
+            'status' => 'status',
         ]);
-        
+
         // Add example data
         $writer->addRow([
             'name' => 'Example Department',
@@ -363,21 +363,20 @@ class DepartmentController extends Controller
             'company_id' => '1',
             'branch_id' => '1',
             'manager_id' => '',
-            'status' => 'active'
+            'status' => 'active',
         ]);
-        
+
         // Close the writer to save the file
         $writer->close();
-        
+
         return response()->download($tempPath, $filename, [
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         ])->deleteFileAfterSend(true);
     }
-    
+
     /**
      * Process the imported department file
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse|\Inertia\Response
      */
     public function processImport(Request $request)
@@ -386,7 +385,7 @@ class DepartmentController extends Controller
         $validator = Validator::make($request->all(), [
             'file' => 'required|file|mimes:xlsx,xls,csv|max:10240',
         ]);
-        
+
         if ($validator->fails()) {
             if ($request->wantsJson()) {
                 return response()->json([
@@ -394,45 +393,45 @@ class DepartmentController extends Controller
                     'errors' => $validator->errors(),
                 ], 422);
             }
-            
+
             return back()->withErrors($validator);
         }
-        
-        if (!$request->hasFile('file')) {
+
+        if (! $request->hasFile('file')) {
             if ($request->wantsJson()) {
                 return response()->json([
                     'success' => false,
                     'errors' => ['file' => ['No file was uploaded.']],
                 ], 422);
             }
-            
+
             return back()->withErrors(['file' => 'No file was uploaded.']);
         }
-        
+
         $file = $request->file('file');
-        
+
         // Process the file directly from the uploaded file path
         try {
             $reader = SimpleExcelReader::create($file->getPathname());
-            
+
             $importResults = [
                 'total' => 0,
                 'success' => 0,
                 'failed' => 0,
                 'errors' => [],
             ];
-            
+
             DB::beginTransaction();
-            
+
             try {
-                $reader->getRows()->each(function(array $row) use (&$importResults) {
+                $reader->getRows()->each(function (array $row) use (&$importResults) {
                     $importResults['total']++;
-                    
+
                     // Skip header row if it exists
                     if (isset($row['name']) && strtolower($row['name']) === 'name') {
                         return;
                     }
-                    
+
                     // Validate row data
                     $validator = Validator::make($row, [
                         'name' => 'required|string|max:255',
@@ -442,7 +441,7 @@ class DepartmentController extends Controller
                         'manager_id' => 'nullable|exists:users,id',
                         'status' => 'required|in:active,inactive',
                     ]);
-                    
+
                     if ($validator->fails()) {
                         $importResults['failed']++;
                         $importResults['errors'][] = [
@@ -450,27 +449,28 @@ class DepartmentController extends Controller
                             'name' => $row['name'] ?? 'Unknown',
                             'errors' => $validator->errors()->all(),
                         ];
+
                         return;
                     }
-                    
+
                     try {
                         // Ensure we have all required fields with proper types
                         $departmentData = [
                             'name' => $row['name'],
                             'description' => $row['description'] ?? null,
-                            'company_id' => (int)$row['company_id'],
-                            'branch_id' => (int)$row['branch_id'],
+                            'company_id' => (int) $row['company_id'],
+                            'branch_id' => (int) $row['branch_id'],
                             'status' => $row['status'],
                         ];
-                        
+
                         // Only add manager_id if it's not empty
-                        if (!empty($row['manager_id'])) {
-                            $departmentData['manager_id'] = (int)$row['manager_id'];
+                        if (! empty($row['manager_id'])) {
+                            $departmentData['manager_id'] = (int) $row['manager_id'];
                         }
-                        
+
                         // Create department
                         Department::create($departmentData);
-                        
+
                         $importResults['success']++;
                     } catch (\Exception $e) {
                         $importResults['failed']++;
@@ -481,9 +481,9 @@ class DepartmentController extends Controller
                         ];
                     }
                 });
-                
+
                 DB::commit();
-                
+
                 if ($request->wantsJson()) {
                     return response()->json([
                         'success' => true,
@@ -491,35 +491,35 @@ class DepartmentController extends Controller
                         'results' => $importResults,
                     ]);
                 }
-                
+
                 return redirect()->route('organization.department.index')
                     ->with('success', 'Import completed successfully.')
                     ->with('results', $importResults);
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error('Import transaction error: ' . $e->getMessage());
-                
+                Log::error('Import transaction error: '.$e->getMessage());
+
                 if ($request->wantsJson()) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'An error occurred during import: ' . $e->getMessage(),
+                        'message' => 'An error occurred during import: '.$e->getMessage(),
                     ], 500);
                 }
-                
-                return back()->with('error', 'An error occurred during import: ' . $e->getMessage());
+
+                return back()->with('error', 'An error occurred during import: '.$e->getMessage());
             }
         } catch (\Exception $e) {
             // Handle file reading errors
-            Log::error('File reading error: ' . $e->getMessage());
-            
+            Log::error('File reading error: '.$e->getMessage());
+
             if ($request->wantsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error reading the import file: ' . $e->getMessage(),
+                    'message' => 'Error reading the import file: '.$e->getMessage(),
                 ], 500);
             }
-            
-            return back()->with('error', 'Error reading the import file: ' . $e->getMessage());
+
+            return back()->with('error', 'Error reading the import file: '.$e->getMessage());
         }
     }
 }

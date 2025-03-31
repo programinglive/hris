@@ -2,19 +2,20 @@
 
 namespace Tests\Feature\Organization;
 
+use App\Models\Company;
 use App\Models\Level;
 use App\Models\User;
-use App\Models\Company;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class LevelControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
     protected User $user;
+
     protected Company $company;
 
     protected function setUp(): void

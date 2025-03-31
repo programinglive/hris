@@ -16,11 +16,14 @@ class LeaveRequestTest extends TestCase
     use RefreshDatabase;
 
     protected $user;
+
     protected $employee;
+
     protected $company;
+
     protected $leaveType;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -219,7 +222,7 @@ class LeaveRequestTest extends TestCase
         ]);
 
         $response->assertRedirect('/attendance/leave');
-        
+
         // Check if leave balance was updated
         $updatedBalance = LeaveBalance::find($leaveBalance->id);
         $this->assertEquals(3, $updatedBalance->used_days);
@@ -258,7 +261,7 @@ class LeaveRequestTest extends TestCase
         ]);
 
         $response->assertRedirect('/attendance/leave');
-        
+
         // Check if leave balance was updated
         $updatedBalance = LeaveBalance::find($leaveBalance->id);
         $this->assertEquals(0, $updatedBalance->used_days);

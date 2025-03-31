@@ -22,10 +22,10 @@ class DepartmentSeeder extends Seeder
         Division::truncate();
         SubDivision::truncate();
         DB::statement('PRAGMA foreign_keys = ON');
-        
+
         // Get all companies
         $companies = Company::all();
-        
+
         // Sample departments for each company
         $departmentTemplates = [
             [
@@ -41,14 +41,14 @@ class DepartmentSeeder extends Seeder
                             [
                                 'name' => 'Sourcing',
                                 'description' => 'Responsible for finding qualified candidates',
-                                'code' => 'SRC-001'
+                                'code' => 'SRC-001',
                             ],
                             [
                                 'name' => 'Interviewing',
                                 'description' => 'Responsible for conducting interviews',
-                                'code' => 'INT-001'
-                            ]
-                        ]
+                                'code' => 'INT-001',
+                            ],
+                        ],
                     ],
                     [
                         'name' => 'Employee Relations',
@@ -58,16 +58,16 @@ class DepartmentSeeder extends Seeder
                             [
                                 'name' => 'Benefits',
                                 'description' => 'Responsible for managing employee benefits',
-                                'code' => 'BEN-001'
+                                'code' => 'BEN-001',
                             ],
                             [
                                 'name' => 'Training',
                                 'description' => 'Responsible for employee training programs',
-                                'code' => 'TRN-001'
-                            ]
-                        ]
-                    ]
-                ]
+                                'code' => 'TRN-001',
+                            ],
+                        ],
+                    ],
+                ],
             ],
             [
                 'name' => 'Finance',
@@ -82,14 +82,14 @@ class DepartmentSeeder extends Seeder
                             [
                                 'name' => 'Accounts Payable',
                                 'description' => 'Responsible for paying invoices',
-                                'code' => 'AP-001'
+                                'code' => 'AP-001',
                             ],
                             [
                                 'name' => 'Accounts Receivable',
                                 'description' => 'Responsible for collecting payments',
-                                'code' => 'AR-001'
-                            ]
-                        ]
+                                'code' => 'AR-001',
+                            ],
+                        ],
                     ],
                     [
                         'name' => 'Budgeting',
@@ -99,16 +99,16 @@ class DepartmentSeeder extends Seeder
                             [
                                 'name' => 'Forecasting',
                                 'description' => 'Responsible for financial forecasting',
-                                'code' => 'FOR-001'
+                                'code' => 'FOR-001',
                             ],
                             [
                                 'name' => 'Analysis',
                                 'description' => 'Responsible for financial analysis',
-                                'code' => 'ANA-001'
-                            ]
-                        ]
-                    ]
-                ]
+                                'code' => 'ANA-001',
+                            ],
+                        ],
+                    ],
+                ],
             ],
             [
                 'name' => 'Information Technology',
@@ -123,14 +123,14 @@ class DepartmentSeeder extends Seeder
                             [
                                 'name' => 'Network',
                                 'description' => 'Responsible for network infrastructure',
-                                'code' => 'NET-001'
+                                'code' => 'NET-001',
                             ],
                             [
                                 'name' => 'Servers',
                                 'description' => 'Responsible for server management',
-                                'code' => 'SRV-001'
-                            ]
-                        ]
+                                'code' => 'SRV-001',
+                            ],
+                        ],
                     ],
                     [
                         'name' => 'Development',
@@ -140,73 +140,73 @@ class DepartmentSeeder extends Seeder
                             [
                                 'name' => 'Frontend',
                                 'description' => 'Responsible for frontend development',
-                                'code' => 'FRT-001'
+                                'code' => 'FRT-001',
                             ],
                             [
                                 'name' => 'Backend',
                                 'description' => 'Responsible for backend development',
-                                'code' => 'BCK-001'
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                'code' => 'BCK-001',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
-        
+
         foreach ($companies as $company) {
             // Limit to first 3 companies to reduce total number of departments
             if ($company->id > 3) {
                 continue;
             }
-            
+
             DB::transaction(function () use ($company, $departmentTemplates) {
                 try {
                     foreach ($departmentTemplates as $template) {
                         // Create unique code by combining company ID with department code
-                        $uniqueCode = $company->id . '-' . $template['code'];
-                        
+                        $uniqueCode = $company->id.'-'.$template['code'];
+
                         $department = Department::create([
                             'name' => $template['name'],
                             'description' => $template['description'],
                             'company_id' => $company->id,
                             'is_active' => true,
-                            'code' => $uniqueCode
+                            'code' => $uniqueCode,
                         ]);
-                        
+
                         $this->command->info("Created department {$department->name} for company {$company->name}");
-                        
+
                         // Create divisions for the department
                         foreach ($template['divisions'] as $divisionTemplate) {
-                            $divisionCode = $department->code . '-' . $divisionTemplate['code'];
-                            
+                            $divisionCode = $department->code.'-'.$divisionTemplate['code'];
+
                             $division = Division::create([
                                 'name' => $divisionTemplate['name'],
                                 'description' => $divisionTemplate['description'],
                                 'department_id' => $department->id,
                                 'is_active' => true,
-                                'code' => $divisionCode
+                                'code' => $divisionCode,
                             ]);
-                            
+
                             $this->command->info("Created division {$division->name} for department {$department->name}");
-                            
+
                             // Create sub-divisions for the division
                             foreach ($divisionTemplate['sub_divisions'] as $subDivisionTemplate) {
-                                $subDivisionCode = $division->code . '-' . $subDivisionTemplate['code'];
-                                
+                                $subDivisionCode = $division->code.'-'.$subDivisionTemplate['code'];
+
                                 $subDivision = SubDivision::create([
                                     'name' => $subDivisionTemplate['name'],
                                     'description' => $subDivisionTemplate['description'],
                                     'division_id' => $division->id,
                                     'is_active' => true,
-                                    'code' => $subDivisionCode
+                                    'code' => $subDivisionCode,
                                 ]);
-                                
+
                                 $this->command->info("Created sub-division {$subDivision->name} for division {$division->name}");
                             }
                         }
                     }
                 } catch (\Exception $e) {
-                    $this->command->error("Error creating departments for company {$company->name}: " . $e->getMessage());
+                    $this->command->error("Error creating departments for company {$company->name}: ".$e->getMessage());
                     throw $e;
                 }
             });

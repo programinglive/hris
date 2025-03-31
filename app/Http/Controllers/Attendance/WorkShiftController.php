@@ -26,7 +26,7 @@ class WorkShiftController extends Controller
             'workShifts' => $workShifts->map(function ($shift) {
                 return [
                     ...$shift->toArray(),
-                    'working_days_formatted' => $this->formatWorkingDays($shift->working_days)
+                    'working_days_formatted' => $this->formatWorkingDays($shift->working_days),
                 ];
             }),
         ]);
@@ -41,7 +41,7 @@ class WorkShiftController extends Controller
             3 => 'Wed',
             4 => 'Thu',
             5 => 'Fri',
-            6 => 'Sat'
+            6 => 'Sat',
         ];
 
         return implode(', ', array_map(function ($day) use ($days) {
@@ -104,7 +104,7 @@ class WorkShiftController extends Controller
     public function show(WorkingShift $workShift): Response
     {
         $workShift->load('company');
-        
+
         return Inertia::render('attendance/working-shift/show', [
             'workShift' => $workShift,
         ]);

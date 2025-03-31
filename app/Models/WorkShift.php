@@ -45,7 +45,7 @@ class WorkShift extends Model
 
         static::creating(function ($shift) {
             if (empty($shift->code)) {
-                $shift->code = 'WSH' . str_pad($shift->id ?? 1, 4, '0', STR_PAD_LEFT);
+                $shift->code = 'WSH'.str_pad($shift->id ?? 1, 4, '0', STR_PAD_LEFT);
             }
         });
     }
@@ -68,7 +68,7 @@ class WorkShift extends Model
             ->withPivot([
                 'date',
                 'created_at',
-                'updated_at'
+                'updated_at',
             ])
             ->withTimestamps();
     }

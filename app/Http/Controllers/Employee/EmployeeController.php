@@ -4,25 +4,9 @@ namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\UserDetail;
-use App\Models\Company;
-use App\Models\Branch;
-use App\Models\Brand;
-use App\Models\Department;
-use App\Models\Division;
-use App\Models\SubDivision;
-use App\Models\Level;
-use App\Models\WorkShift;
 use App\Models\WorkSchedule;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use Inertia\Inertia;
-use Spatie\SimpleExcel\SimpleExcelReader;
-use Spatie\SimpleExcel\SimpleExcelWriter;
 
 class EmployeeController extends Controller
 {

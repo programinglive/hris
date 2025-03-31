@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LeaveType extends Model
 {
@@ -62,20 +62,20 @@ class LeaveType extends Model
     {
         // Convert to uppercase and remove special characters
         $code = strtoupper(preg_replace('/[^a-zA-Z0-9]/', '', $name));
-        
+
         // Take first 3 characters, or pad if shorter
         $code = substr($code, 0, 3);
         $code = str_pad($code, 3, 'X');
-        
+
         // Check if code exists and append numbers if needed
         $baseCode = $code;
         $counter = 1;
-        
+
         while (self::where('code', $code)->exists()) {
-            $code = $baseCode . $counter;
+            $code = $baseCode.$counter;
             $counter++;
         }
-        
+
         return $code;
     }
 

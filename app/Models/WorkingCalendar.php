@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class WorkingCalendar extends Model
 {
@@ -15,13 +15,13 @@ class WorkingCalendar extends Model
         'end_date',
         'description',
         'is_active',
-        'company_id'
+        'company_id',
     ];
 
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
     ];
 
     public function company()

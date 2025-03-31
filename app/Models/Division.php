@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Division extends Model
@@ -47,14 +47,14 @@ class Division extends Model
             if (empty($division->code)) {
                 $baseCode = Str::upper(Str::substr(Str::slug($division->name), 0, 3));
                 $counter = 1;
-                $code = $baseCode . '-' . sprintf('%03d', $counter);
-                
+                $code = $baseCode.'-'.sprintf('%03d', $counter);
+
                 // Make sure the code is unique
                 while (static::where('code', $code)->exists()) {
                     $counter++;
-                    $code = $baseCode . '-' . sprintf('%03d', $counter);
+                    $code = $baseCode.'-'.sprintf('%03d', $counter);
                 }
-                
+
                 $division->code = $code;
             }
         });

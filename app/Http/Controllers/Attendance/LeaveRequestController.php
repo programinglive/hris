@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Attendance;
 
 use App\Http\Controllers\Controller;
-use App\Models\LeaveRequest;
+use App\Http\Requests\StoreLeaveRequestRequest;
 use App\Models\LeaveBalance;
+use App\Models\LeaveRequest;
 use App\Models\LeaveType;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
-use Carbon\Carbon;
-use App\Http\Requests\StoreLeaveRequestRequest;
 
 class LeaveRequestController extends Controller
 {
@@ -21,28 +20,28 @@ class LeaveRequestController extends Controller
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'status', 'user_id', 'leave_type_id']);
-        
+
         $query = LeaveRequest::query()
             ->with(['user', 'leaveType'])
             ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc');
-        
+
         if (isset($filters['search']) && $filters['search'] !== '') {
             $search = $filters['search'];
-            $query->where(function($q) use ($search) {
-                $q->whereHas('user', function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('user', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
                 })
-                ->orWhereHas('leaveType', function($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%");
-                });
+                    ->orWhereHas('leaveType', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
             });
         }
-        
+
         if (isset($filters['status']) && $filters['status'] !== '') {
             $query->where('status', $filters['status']);
         }
-        
+
         if (isset($filters['leave_type_id']) && $filters['leave_type_id'] !== '') {
             $query->where('leave_type_id', $filters['leave_type_id']);
         }
@@ -65,7 +64,7 @@ class LeaveRequestController extends Controller
         $leaveTypes = LeaveType::where('is_active', true)
             ->orderBy('name')
             ->get(['id', 'name']);
-        
+
         return Inertia::render('attendance/leave/create', [
             'leaveTypes' => $leaveTypes,
         ]);
@@ -77,7 +76,7 @@ class LeaveRequestController extends Controller
     public function store(StoreLeaveRequestRequest $request)
     {
         $validated = $request->validated();
-        
+
         $startDate = Carbon::parse($validated['start_date']);
         $endDate = Carbon::parse($validated['end_date']);
         $totalDays = $startDate->diffInDays($endDate) + 1;
@@ -89,7 +88,7 @@ class LeaveRequestController extends Controller
             'year' => $startDate->year,
         ])->first();
 
-        if (!$leaveBalance || $leaveBalance->remaining_days < $totalDays) {
+        if (! $leaveBalance || $leaveBalance->remaining_days < $totalDays) {
             return redirect()->back()->withErrors([
                 'leave_type_id' => 'Insufficient leave balance.',
             ]);
@@ -115,7 +114,7 @@ class LeaveRequestController extends Controller
     public function show(LeaveRequest $leave)
     {
         $leave->load(['user', 'leaveType']);
-        
+
         return Inertia::render('attendance/leave/show', [
             'leave' => $leave,
         ]);
@@ -129,7 +128,7 @@ class LeaveRequestController extends Controller
         $leaveTypes = LeaveType::where('is_active', true)
             ->orderBy('name')
             ->get(['id', 'name']);
-        
+
         return Inertia::render('attendance/leave/edit', [
             'leave' => $leave,
             'leaveTypes' => $leaveTypes,
@@ -150,7 +149,7 @@ class LeaveRequestController extends Controller
         }
 
         $validated = $request->validated();
-        
+
         $startDate = Carbon::parse($validated['start_date']);
         $endDate = Carbon::parse($validated['end_date']);
         $totalDays = $startDate->diffInDays($endDate) + 1;
@@ -162,7 +161,7 @@ class LeaveRequestController extends Controller
             'year' => $startDate->year,
         ])->first();
 
-        if (!$leaveBalance || $leaveBalance->remaining_days < $totalDays) {
+        if (! $leaveBalance || $leaveBalance->remaining_days < $totalDays) {
             return redirect()->back()->withErrors([
                 'leave_type_id' => 'Insufficient leave balance.',
             ]);
@@ -186,7 +185,7 @@ class LeaveRequestController extends Controller
     public function destroy(LeaveRequest $leave)
     {
         $leave->delete();
-        
+
         return redirect()->route('attendance.leave.index')
             ->with('success', 'Leave request deleted successfully.');
     }

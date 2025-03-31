@@ -18,16 +18,17 @@ class BrandSeeder extends Seeder
         DB::statement('PRAGMA foreign_keys = OFF');
         Brand::truncate();
         DB::statement('PRAGMA foreign_keys = ON');
-        
+
         // Get all companies
         $companies = Company::all();
-        
+
         if ($companies->isEmpty()) {
             // This should not happen as CompanySeeder should have been run first
             $this->command->info('No companies found. Please run CompanySeeder first.');
+
             return;
         }
-        
+
         // Company-specific brand mappings
         $companySpecificBrands = [
             'Beauty World Corporation' => [
@@ -79,7 +80,7 @@ class BrandSeeder extends Seeder
                 ],
             ],
         ];
-        
+
         // Generic brands for any company not specifically mapped
         $genericBrands = [
             [
@@ -101,18 +102,18 @@ class BrandSeeder extends Seeder
                 'is_active' => true,
             ],
         ];
-        
+
         // Create brands for each company
         foreach ($companies as $company) {
             // Use company-specific brands if available, otherwise use generic brands
             $brandsToCreate = $companySpecificBrands[$company->name] ?? $genericBrands;
-            
+
             foreach ($brandsToCreate as $brandData) {
                 Brand::create(array_merge($brandData, [
                     'company_id' => $company->id,
                 ]));
             }
-            
+
             // Add 1-2 random brands per company
             $randomBrandCount = rand(1, 2);
             Brand::factory()

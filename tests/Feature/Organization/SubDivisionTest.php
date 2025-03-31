@@ -6,27 +6,28 @@ use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
-use App\Models\Position;
 use App\Models\SubDivision;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Organization\SubDivisionController;
+use Tests\TestCase;
 
 class SubDivisionTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
     protected $user;
+
     protected $company;
+
     protected $branch;
+
     protected $department;
+
     protected $division;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -57,7 +58,7 @@ class SubDivisionTest extends TestCase
             'company_id' => $this->company->id,
             'is_active' => true,
         ]);
-        
+
         // Create a department
         $this->department = Department::create([
             'name' => 'Test Department',
@@ -149,7 +150,7 @@ class SubDivisionTest extends TestCase
             'branch_id' => $this->branch->id,
             'status' => 'active',
         ]);
-        
+
         // Create another division
         $anotherDivision = Division::create([
             'name' => 'Another Division',
@@ -176,7 +177,7 @@ class SubDivisionTest extends TestCase
         ]);
 
         // Filter by division
-        $response = $this->get('/organization/subdivision?division_id=' . $this->division->id);
+        $response = $this->get('/organization/subdivision?division_id='.$this->division->id);
 
         $response->assertStatus(200);
         $response->assertInertia(fn ($page) => $page
@@ -224,7 +225,7 @@ class SubDivisionTest extends TestCase
             'status' => 'active',
         ]);
 
-        $response = $this->get('/organization/subdivision/' . $subdivision->id);
+        $response = $this->get('/organization/subdivision/'.$subdivision->id);
 
         $response->assertStatus(200);
         $response->assertInertia(fn ($page) => $page
@@ -251,7 +252,7 @@ class SubDivisionTest extends TestCase
             'status' => 'active',
         ];
 
-        $response = $this->put('/organization/subdivision/' . $subdivision->id, $updatedData);
+        $response = $this->put('/organization/subdivision/'.$subdivision->id, $updatedData);
 
         $response->assertRedirect('/organization/subdivision');
         $this->assertDatabaseHas('sub_divisions', [
@@ -271,7 +272,7 @@ class SubDivisionTest extends TestCase
             'status' => 'active',
         ]);
 
-        $response = $this->put('/organization/subdivision/' . $subdivision->id, [
+        $response = $this->put('/organization/subdivision/'.$subdivision->id, [
             // Missing required fields
         ]);
 
@@ -288,21 +289,21 @@ class SubDivisionTest extends TestCase
             'division_id' => $this->division->id,
             'status' => 'active',
         ]);
-        
+
         // Mock the controller to bypass the positions check
         $this->mock(\App\Http\Controllers\Organization\SubDivisionController::class, function ($mock) {
             $mock->shouldReceive('destroy')
                 ->once()
                 ->andReturn(redirect()->route('organization.subdivision.index')
-                ->with('success', 'Sub-division deleted successfully.'));
+                    ->with('success', 'Sub-division deleted successfully.'));
         });
-        
+
         // Attempt to delete the subdivision
-        $response = $this->delete('/organization/subdivision/' . $subdivision->id);
-        
+        $response = $this->delete('/organization/subdivision/'.$subdivision->id);
+
         // Assert the response is a redirect to the index page
         $response->assertRedirect('/organization/subdivision');
-        
+
         // Assert the success message is set
         $response->assertSessionHas('success', 'Sub-division deleted successfully.');
     }
@@ -317,28 +318,28 @@ class SubDivisionTest extends TestCase
             'division_id' => $this->division->id,
             'status' => 'active',
         ]);
-        
+
         // Mock the controller to simulate a subdivision with positions
         $this->mock(\App\Http\Controllers\Organization\SubDivisionController::class, function ($mock) {
             $mock->shouldReceive('destroy')
                 ->once()
                 ->andReturn(redirect()->route('organization.subdivision.index')
-                ->with('error', 'Cannot delete sub-division with positions. Please delete positions first.'));
+                    ->with('error', 'Cannot delete sub-division with positions. Please delete positions first.'));
         });
-        
+
         // Attempt to delete the subdivision
-        $response = $this->delete('/organization/subdivision/' . $subdivision->id);
-        
+        $response = $this->delete('/organization/subdivision/'.$subdivision->id);
+
         // Assert the response is a redirect to the index page
         $response->assertRedirect('/organization/subdivision');
-        
+
         // Assert the error message is set
         $response->assertSessionHas('error', 'Cannot delete sub-division with positions. Please delete positions first.');
-        
+
         // Assert the subdivision still exists in the database
         $this->assertDatabaseHas('sub_divisions', [
             'id' => $subdivision->id,
-            'name' => 'Test SubDivision'
+            'name' => 'Test SubDivision',
         ]);
     }
 }

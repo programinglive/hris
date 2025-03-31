@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Faq extends Model
 {
     use HasFactory;
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,7 +20,7 @@ class Faq extends Model
         'order',
         'status',
     ];
-    
+
     /**
      * Get active FAQs.
      *
@@ -30,10 +30,10 @@ class Faq extends Model
     {
         return self::where('status', 'active')->orderBy('order');
     }
-    
+
     /**
      * Check if the answer contains a Mermaid diagram
-     * 
+     *
      * @return bool
      */
     public function hasMermaidDiagram()
@@ -43,27 +43,28 @@ class Faq extends Model
 
     /**
      * Extract Mermaid diagram code from the answer
-     * 
+     *
      * @return string|null
      */
     public function getMermaidDiagram()
     {
-        if (!$this->hasMermaidDiagram()) {
+        if (! $this->hasMermaidDiagram()) {
             return null;
         }
 
         preg_match('/```mermaid\n(.+?)```/s', $this->answer, $matches);
+
         return $matches[1] ?? null;
     }
 
     /**
      * Get the answer with the Mermaid diagram code removed
-     * 
+     *
      * @return string
      */
     public function getAnswerWithoutMermaid()
     {
-        if (!$this->hasMermaidDiagram()) {
+        if (! $this->hasMermaidDiagram()) {
             return $this->answer;
         }
 

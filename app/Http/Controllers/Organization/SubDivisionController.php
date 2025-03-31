@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Division;
 use App\Models\SubDivision;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Facades\Validator;
 use Spatie\SimpleExcel\SimpleExcelReader;
 use Spatie\SimpleExcel\SimpleExcelWriter;
 
@@ -23,36 +23,36 @@ class SubDivisionController extends Controller
     {
         // Query all sub-divisions without company filtering
         $query = SubDivision::query();
-        
+
         // Apply filters if provided
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhereHas('division', function ($q) use ($search) {
-                      $q->where('name', 'like', "%{$search}%");
-                  });
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('division', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
             });
         }
-        
+
         if ($request->filled('division_id')) {
             $query->where('division_id', $request->input('division_id'));
         }
-        
+
         if ($request->filled('status')) {
             $query->where('status', $request->input('status'));
         }
-        
+
         // Get sub-divisions with pagination
         $subdivisions = $query->with(['division.department', 'manager'])
-                          ->orderBy('name')
-                          ->paginate(10)
-                          ->withQueryString();
-        
+            ->orderBy('name')
+            ->paginate(10)
+            ->withQueryString();
+
         // Get divisions for filter dropdown
         $divisions = Division::with('department')->orderBy('name')->get();
-        
+
         return Inertia::render('organization/subdivision/index', [
             'subdivisions' => $subdivisions,
             'divisions' => $divisions,
@@ -67,15 +67,15 @@ class SubDivisionController extends Controller
     {
         // Get divisions
         $divisions = Division::orderBy('name')->get();
-        
+
         if ($divisions->isEmpty()) {
             return redirect()->route('organization.division.index')
                 ->with('error', 'You must create at least one division before creating sub-divisions.');
         }
-        
+
         // Get all potential managers
         $managers = User::all();
-        
+
         return Inertia::render('organization/subdivision/create', [
             'divisions' => $divisions,
             'managers' => $managers,
@@ -94,9 +94,9 @@ class SubDivisionController extends Controller
             'manager_id' => 'nullable|exists:users,id',
             'status' => 'required|in:active,inactive',
         ]);
-        
+
         SubDivision::create($validated);
-        
+
         return redirect()->route('organization.subdivision.index')
             ->with('success', 'Sub-division created successfully.');
     }
@@ -107,7 +107,7 @@ class SubDivisionController extends Controller
     public function show(SubDivision $subdivision): Response
     {
         $subdivision->load(['division.department', 'manager']);
-        
+
         return Inertia::render('organization/subdivision/show', [
             'subdivision' => $subdivision,
         ]);
@@ -119,13 +119,13 @@ class SubDivisionController extends Controller
     public function edit(SubDivision $subdivision): Response
     {
         $subdivision->load(['division.department', 'manager']);
-        
+
         // Get all divisions
         $divisions = Division::orderBy('name')->get();
-        
+
         // Get all potential managers
         $managers = User::all();
-        
+
         return Inertia::render('organization/subdivision/edit', [
             'subdivision' => $subdivision,
             'divisions' => $divisions,
@@ -145,9 +145,9 @@ class SubDivisionController extends Controller
             'manager_id' => 'nullable|exists:users,id',
             'status' => 'required|in:active,inactive',
         ]);
-        
+
         $subdivision->update($validated);
-        
+
         return redirect()->route('organization.subdivision.index')
             ->with('success', 'Sub-division updated successfully.');
     }
@@ -162,9 +162,9 @@ class SubDivisionController extends Controller
             return redirect()->route('organization.subdivision.index')
                 ->with('error', 'Cannot delete sub-division with positions. Please delete positions first.');
         }
-        
+
         $subdivision->delete();
-        
+
         return redirect()->route('organization.subdivision.index')
             ->with('success', 'Sub-division deleted successfully.');
     }
@@ -189,36 +189,36 @@ class SubDivisionController extends Controller
     {
         $filename = 'subdivision_import_template.xlsx';
         $path = storage_path('app/temp');
-        
-        if (!file_exists($path)) {
+
+        if (! file_exists($path)) {
             mkdir($path, 0755, true);
         }
-        
-        $filepath = $path . '/' . $filename;
-        
+
+        $filepath = $path.'/'.$filename;
+
         $writer = SimpleExcelWriter::create($filepath);
-        
+
         // Add header row
         $writer->addRow([
             'name' => 'name',
             'description' => 'description',
             'division_id' => 'division_id',
             'manager_id' => 'manager_id',
-            'status' => 'status'
+            'status' => 'status',
         ]);
-        
+
         // Add sample data row
         $writer->addRow([
             'name' => 'Sample Sub-Division',
             'description' => 'Sample Description',
             'division_id' => 'Enter Division ID',
             'manager_id' => 'Enter Manager ID (optional)',
-            'status' => 'active'
+            'status' => 'active',
         ]);
-        
+
         // Close the writer
         $writer->close();
-        
+
         return response()->download($filepath, $filename, [
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         ])->deleteFileAfterSend(true);
@@ -234,41 +234,42 @@ class SubDivisionController extends Controller
             'file' => 'required|file|mimes:xlsx,xls,csv|max:10240',
             'division_id' => 'nullable|exists:divisions,id',
         ]);
-        
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
-        
+
         $file = $request->file('file');
         $divisionId = $request->input('division_id');
-        
+
         // Process the file
         $path = $file->getRealPath();
         $reader = SimpleExcelReader::create($path);
-        
+
         $total = 0;
         $success = 0;
         $failed = 0;
         $errors = [];
-        
+
         $reader->getRows()->each(function (array $row) use (&$total, &$success, &$failed, &$errors, $divisionId) {
             $total++;
-            
+
             // Skip header row if it exists
             if (isset($row['name']) && $row['name'] === 'name') {
                 $total--;
+
                 return;
             }
-            
+
             // Validate row data
             $rowValidator = Validator::make($row, [
                 'name' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'division_id' => 'required_without:' . $divisionId . '|exists:divisions,id',
+                'division_id' => 'required_without:'.$divisionId.'|exists:divisions,id',
                 'manager_id' => 'nullable|exists:users,id',
                 'status' => 'required|in:active,inactive',
             ]);
-            
+
             if ($rowValidator->fails()) {
                 $failed++;
                 $errors[] = [
@@ -276,9 +277,10 @@ class SubDivisionController extends Controller
                     'name' => $row['name'] ?? 'Unknown',
                     'errors' => $rowValidator->errors()->all(),
                 ];
+
                 return;
             }
-            
+
             try {
                 // Create the subdivision
                 SubDivision::create([
@@ -288,7 +290,7 @@ class SubDivisionController extends Controller
                     'manager_id' => $row['manager_id'] ?? null,
                     'status' => $row['status'],
                 ]);
-                
+
                 $success++;
             } catch (\Exception $e) {
                 $failed++;
@@ -299,9 +301,9 @@ class SubDivisionController extends Controller
                 ];
             }
         });
-        
+
         $reader->close();
-        
+
         // Return response based on request type
         if ($request->wantsJson()) {
             return response()->json([
@@ -315,7 +317,7 @@ class SubDivisionController extends Controller
                 ],
             ]);
         }
-        
+
         return redirect()->route('organization.subdivision.index')
             ->with('success', "Import completed. {$success} of {$total} sub-divisions imported successfully.");
     }

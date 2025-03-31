@@ -19,7 +19,7 @@ test('dashboard contains highlight cards', function () {
     $this->actingAs($user = User::factory()->create());
 
     $response = $this->get('/dashboard');
-    
+
     $response->assertInertia(function ($page) {
         $page->component('dashboard');
     });
@@ -29,7 +29,7 @@ test('dashboard contains charts', function () {
     $this->actingAs($user = User::factory()->create());
 
     $response = $this->get('/dashboard');
-    
+
     $response->assertInertia(function ($page) {
         $page->component('dashboard');
     });

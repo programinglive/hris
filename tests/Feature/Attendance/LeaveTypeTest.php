@@ -16,7 +16,7 @@ class LeaveTypeTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->company = Company::factory()->create();
     }
 

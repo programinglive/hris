@@ -16,7 +16,7 @@ class UserWorkShift extends Pivot
     protected $fillable = [
         'user_id',
         'work_shift_id',
-        'date'
+        'date',
     ];
 
     /**

@@ -2,45 +2,47 @@
 
 namespace Tests\Feature\Employee;
 
-use App\Models\User;
-use App\Models\UserDetail;
-use App\Models\Company;
 use App\Models\Brand;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use App\Models\Company;
+use App\Models\User;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class BrandAssociationTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $user;
+
     protected $company;
+
     protected $brand1;
+
     protected $brand2;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a company
         $this->company = Company::factory()->create();
 
         // Create test brands
         $this->brand1 = Brand::factory()->create([
             'company_id' => $this->company->id,
-            'name' => 'Brand 1'
+            'name' => 'Brand 1',
         ]);
 
         $this->brand2 = Brand::factory()->create([
             'company_id' => $this->company->id,
-            'name' => 'Brand 2'
+            'name' => 'Brand 2',
         ]);
 
         // Create test user
         $this->user = User::factory()->create([
-            'company_id' => $this->company->id
+            'company_id' => $this->company->id,
         ]);
     }
 
@@ -54,13 +56,13 @@ class BrandAssociationTest extends TestCase
             $brand1->id => [
                 'role' => 'employee',
                 'is_primary' => false,
-                'company_id' => $this->company->id
+                'company_id' => $this->company->id,
             ],
             $brand2->id => [
                 'role' => 'employee',
                 'is_primary' => false,
-                'company_id' => $this->company->id
-            ]
+                'company_id' => $this->company->id,
+            ],
         ]);
 
         $this->assertDatabaseHas('user_brands', [
@@ -68,7 +70,7 @@ class BrandAssociationTest extends TestCase
             'brand_id' => $brand1->id,
             'role' => 'employee',
             'is_primary' => false,
-            'company_id' => $this->company->id
+            'company_id' => $this->company->id,
         ]);
 
         $this->assertDatabaseHas('user_brands', [
@@ -76,7 +78,7 @@ class BrandAssociationTest extends TestCase
             'brand_id' => $brand2->id,
             'role' => 'employee',
             'is_primary' => false,
-            'company_id' => $this->company->id
+            'company_id' => $this->company->id,
         ]);
 
         $this->assertCount(2, $this->user->brands);
@@ -96,7 +98,7 @@ class BrandAssociationTest extends TestCase
         $this->user->brands()->attach($brand->id, [
             'company_id' => $otherCompany->id,
             'role' => 'employee',
-            'is_primary' => false
+            'is_primary' => false,
         ]);
     }
 
@@ -110,7 +112,7 @@ class BrandAssociationTest extends TestCase
         $this->user->brands()->attach($brand->id, [
             'role' => 'employee',
             'is_primary' => false,
-            'company_id' => $this->company->id
+            'company_id' => $this->company->id,
         ]);
 
         $this->assertCount(1, $this->user->brands);
@@ -121,7 +123,7 @@ class BrandAssociationTest extends TestCase
         $this->assertCount(0, $this->user->brands);
         $this->assertDatabaseMissing('user_brands', [
             'user_id' => $this->user->id,
-            'brand_id' => $brand->id
+            'brand_id' => $brand->id,
         ]);
     }
 }

@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
-use App\Models\Level;
 use App\Models\Company;
-use Illuminate\Http\Request;
+use App\Models\Level;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Facades\Validator;
 use Spatie\SimpleExcel\SimpleExcelReader;
 use Spatie\SimpleExcel\SimpleExcelWriter;
 
@@ -22,26 +22,26 @@ class LevelController extends Controller
     {
         // Query all levels without company filtering
         $query = Level::query();
-        
+
         // Apply filters if provided
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
-        
+
         if ($request->filled('status')) {
             $query->where('status', $request->input('status'));
         }
-        
+
         // Get levels with pagination
         $levels = $query->with(['company'])
-                      ->orderBy('level_order')
-                      ->paginate(10)
-                      ->withQueryString();
-        
+            ->orderBy('level_order')
+            ->paginate(10)
+            ->withQueryString();
+
         return Inertia::render('organization/level/index', [
             'levels' => $levels,
             'filters' => $request->only(['search', 'status']),
@@ -55,7 +55,7 @@ class LevelController extends Controller
     {
         // Get companies for dropdown
         $companies = Company::orderBy('name')->get();
-        
+
         return Inertia::render('organization/level/create', [
             'companies' => $companies,
         ]);
@@ -73,9 +73,9 @@ class LevelController extends Controller
             'company_id' => 'required|exists:companies,id',
             'status' => 'required|in:active,inactive',
         ]);
-        
+
         Level::create($validated);
-        
+
         return redirect()->route('organization.level.index')
             ->with('success', 'Level created successfully.');
     }
@@ -86,7 +86,7 @@ class LevelController extends Controller
     public function show(Level $level): Response
     {
         $level->load(['company', 'positions']);
-        
+
         return Inertia::render('organization/level/show', [
             'level' => $level,
         ]);
@@ -98,10 +98,10 @@ class LevelController extends Controller
     public function edit(Level $level): Response
     {
         $level->load(['company']);
-        
+
         // Get companies for dropdown
         $companies = Company::orderBy('name')->get();
-        
+
         return Inertia::render('organization/level/edit', [
             'level' => $level,
             'companies' => $companies,
@@ -120,9 +120,9 @@ class LevelController extends Controller
             'company_id' => 'required|exists:companies,id',
             'status' => 'required|in:active,inactive',
         ]);
-        
+
         $level->update($validated);
-        
+
         return redirect()->route('organization.level.index')
             ->with('success', 'Level updated successfully.');
     }
@@ -137,9 +137,9 @@ class LevelController extends Controller
             return redirect()->route('organization.level.index')
                 ->with('error', 'Cannot delete level with positions. Please delete positions first.');
         }
-        
+
         $level->delete();
-        
+
         return redirect()->route('organization.level.index')
             ->with('success', 'Level deleted successfully.');
     }
@@ -151,7 +151,7 @@ class LevelController extends Controller
     {
         // Get companies for dropdown
         $companies = Company::orderBy('name')->get();
-        
+
         // Return JSON response for the dialog component
         return response()->json([
             'companies' => $companies,
@@ -165,36 +165,36 @@ class LevelController extends Controller
     {
         $filename = 'level_import_template.xlsx';
         $path = storage_path('app/temp');
-        
-        if (!file_exists($path)) {
+
+        if (! file_exists($path)) {
             mkdir($path, 0755, true);
         }
-        
-        $filepath = $path . '/' . $filename;
-        
+
+        $filepath = $path.'/'.$filename;
+
         $writer = SimpleExcelWriter::create($filepath);
-        
+
         // Add header row
         $writer->addRow([
             'name' => 'name',
             'description' => 'description',
             'level_order' => 'level_order',
             'company_id' => 'company_id',
-            'status' => 'status'
+            'status' => 'status',
         ]);
-        
+
         // Add sample data row
         $writer->addRow([
             'name' => 'Sample Level',
             'description' => 'Sample Description',
             'level_order' => '1',
             'company_id' => 'Enter Company ID',
-            'status' => 'active'
+            'status' => 'active',
         ]);
-        
+
         // Close the writer
         $writer->close();
-        
+
         return response()->download($filepath, $filename, [
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         ])->deleteFileAfterSend(true);
@@ -210,41 +210,42 @@ class LevelController extends Controller
             'file' => 'required|file|mimes:xlsx,xls,csv|max:10240',
             'company_id' => 'nullable|exists:companies,id',
         ]);
-        
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
-        
+
         $file = $request->file('file');
         $companyId = $request->input('company_id');
-        
+
         // Process the file
         $path = $file->getRealPath();
         $reader = SimpleExcelReader::create($path);
-        
+
         $total = 0;
         $success = 0;
         $failed = 0;
         $errors = [];
-        
+
         $reader->getRows()->each(function (array $row) use (&$total, &$success, &$failed, &$errors, $companyId) {
             $total++;
-            
+
             // Skip header row if it exists
             if (isset($row['name']) && $row['name'] === 'name') {
                 $total--;
+
                 return;
             }
-            
+
             // Validate row data
             $rowValidator = Validator::make($row, [
                 'name' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'level_order' => 'required|integer|min:0',
-                'company_id' => 'required_without:' . $companyId . '|exists:companies,id',
+                'company_id' => 'required_without:'.$companyId.'|exists:companies,id',
                 'status' => 'required|in:active,inactive',
             ]);
-            
+
             if ($rowValidator->fails()) {
                 $failed++;
                 $errors[] = [
@@ -252,9 +253,10 @@ class LevelController extends Controller
                     'name' => $row['name'] ?? 'Unknown',
                     'errors' => $rowValidator->errors()->all(),
                 ];
+
                 return;
             }
-            
+
             try {
                 // Create the level
                 Level::create([
@@ -264,7 +266,7 @@ class LevelController extends Controller
                     'company_id' => $companyId ?: $row['company_id'],
                     'status' => $row['status'],
                 ]);
-                
+
                 $success++;
             } catch (\Exception $e) {
                 $failed++;
@@ -275,9 +277,9 @@ class LevelController extends Controller
                 ];
             }
         });
-        
+
         $reader->close();
-        
+
         // Return response based on request type
         if ($request->wantsJson()) {
             return response()->json([
@@ -291,7 +293,7 @@ class LevelController extends Controller
                 ],
             ]);
         }
-        
+
         return redirect()->route('organization.level.index')
             ->with('success', "Import completed. {$success} of {$total} levels imported successfully.");
     }

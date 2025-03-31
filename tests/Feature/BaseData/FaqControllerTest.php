@@ -18,7 +18,7 @@ class FaqControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a test user
         $this->user = User::factory()->create([
             'email' => 'test@example.com',
@@ -64,9 +64,9 @@ class FaqControllerTest extends TestCase
                             'answer' => 'Test Answer 2',
                             'order' => 2,
                             'status' => 'active',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ]));
 
         // Act as the authenticated user
@@ -100,7 +100,7 @@ class FaqControllerTest extends TestCase
 
         // Act as the authenticated user
         $response = $this->actingAs($this->user)
-            ->get('/basedata/faq/' . $faq->id);
+            ->get('/basedata/faq/'.$faq->id);
 
         // Assert response is successful
         $response->assertStatus(200);
@@ -122,7 +122,7 @@ class FaqControllerTest extends TestCase
 
         // Assert the FAQ was created in the database
         $this->assertDatabaseHas('faqs', $faqData);
-        
+
         // Assert redirection to the FAQ list page
         $response->assertRedirect(route('basedata.faq.index'));
     }
@@ -151,7 +151,7 @@ class FaqControllerTest extends TestCase
 
         // Assert the FAQ was updated in the database
         $this->assertDatabaseHas('faqs', array_merge(['id' => $faq->id], $updatedData));
-        
+
         // Assert redirection to the FAQ list page
         $response->assertRedirect(route('basedata.faq.index'));
     }
@@ -173,7 +173,7 @@ class FaqControllerTest extends TestCase
 
         // Assert the FAQ was deleted from the database
         $this->assertDatabaseMissing('faqs', ['id' => $faq->id]);
-        
+
         // Assert redirection to the FAQ list page
         $response->assertRedirect(route('basedata.faq.index'));
     }

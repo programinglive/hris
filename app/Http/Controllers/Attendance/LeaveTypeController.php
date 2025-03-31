@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\LeaveType;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -18,31 +17,31 @@ class LeaveTypeController extends Controller
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'status']);
-        
+
         $query = LeaveType::query()
             ->with('company')
             ->orderBy('name');
-        
+
         if (isset($filters['search']) && $filters['search'] !== '') {
             $search = $filters['search'];
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('code', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('code', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
-        
+
         if (isset($filters['status']) && $filters['status'] !== '') {
             $query->where('is_active', $filters['status'] === 'active');
         }
-        
+
         $leaveTypes = $query->paginate(10)
             ->withQueryString();
-        
+
         $companies = Company::where('is_active', true)
             ->orderBy('name')
             ->get(['id', 'name']);
-        
+
         return Inertia::render('attendance/leave/type/index', [
             'leaveTypes' => $leaveTypes,
             'companies' => $companies,
@@ -58,7 +57,7 @@ class LeaveTypeController extends Controller
         $companies = Company::where('is_active', true)
             ->orderBy('name')
             ->get(['id', 'name']);
-        
+
         return Inertia::render('attendance/leave/type/create', [
             'companies' => $companies,
         ]);
@@ -79,9 +78,9 @@ class LeaveTypeController extends Controller
             'is_active' => 'required|boolean',
             'company_id' => 'required|exists:companies,id',
         ]);
-        
+
         LeaveType::create($validated);
-        
+
         return redirect()->route('attendance.leave.type.index')
             ->with('success', 'Leave type created successfully.');
     }
@@ -92,7 +91,7 @@ class LeaveTypeController extends Controller
     public function show(LeaveType $type)
     {
         $type->load('company');
-        
+
         return Inertia::render('attendance/leave/type/show', [
             'leaveType' => $type,
         ]);
@@ -106,7 +105,7 @@ class LeaveTypeController extends Controller
         $companies = Company::where('is_active', true)
             ->orderBy('name')
             ->get(['id', 'name']);
-        
+
         return Inertia::render('attendance/leave/type/edit', [
             'leaveType' => $type,
             'companies' => $companies,
@@ -133,9 +132,9 @@ class LeaveTypeController extends Controller
             'is_active' => 'required|boolean',
             'company_id' => 'required|exists:companies,id',
         ]);
-        
+
         $type->update($validated);
-        
+
         return redirect()->route('attendance.leave.type.index')
             ->with('success', 'Leave type updated successfully.');
     }
@@ -150,15 +149,15 @@ class LeaveTypeController extends Controller
             return redirect()->route('attendance.leave.type.index')
                 ->with('error', 'Cannot delete leave type that is being used by leave requests.');
         }
-        
+
         // Check if the leave type is being used by any leave balances
         if ($type->leaveBalances()->count() > 0) {
             return redirect()->route('attendance.leave.type.index')
                 ->with('error', 'Cannot delete leave type that is being used by leave balances.');
         }
-        
+
         $type->delete();
-        
+
         return redirect()->route('attendance.leave.type.index')
             ->with('success', 'Leave type deleted successfully.');
     }

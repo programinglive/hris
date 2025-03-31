@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Company;
 use App\Models\Level;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -19,10 +18,10 @@ class LevelSeeder extends Seeder
         DB::statement('PRAGMA foreign_keys = OFF');
         Level::truncate();
         DB::statement('PRAGMA foreign_keys = ON');
-        
+
         // Get all companies
         $companies = Company::all();
-        
+
         // Level templates
         $levelTemplates = [
             ['name' => 'Entry', 'description' => 'Entry level position', 'level_order' => 1],
@@ -36,7 +35,7 @@ class LevelSeeder extends Seeder
             ['name' => 'VP', 'description' => 'Vice President level position', 'level_order' => 9],
             ['name' => 'C-Level', 'description' => 'C-Level executive position', 'level_order' => 10],
         ];
-        
+
         foreach ($companies as $company) {
             // Create levels for this company
             foreach ($levelTemplates as $template) {
@@ -47,7 +46,7 @@ class LevelSeeder extends Seeder
                     'company_id' => $company->id,
                     'is_active' => true,
                 ]);
-                
+
                 $this->command->info("Created level {$level->name} for company {$company->name}");
             }
         }

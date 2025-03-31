@@ -4,11 +4,10 @@ namespace Tests\Unit;
 
 use App\Models\Company;
 use App\Models\WorkingCalendar;
-use App\Models\Holiday;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class WorkingCalendarTest extends TestCase
 {
@@ -19,7 +18,7 @@ class WorkingCalendarTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a test company without using factory to avoid dependencies
         $this->company = new Company([
             'name' => 'Test Company',
@@ -42,7 +41,7 @@ class WorkingCalendarTest extends TestCase
             'is_active' => true,
             'company_id' => $this->company->id,
         ]);
-        
+
         $workingCalendar->save();
 
         $this->assertDatabaseHas('working_calendars', [
@@ -64,7 +63,7 @@ class WorkingCalendarTest extends TestCase
             'is_active' => true,
             'company_id' => $this->company->id,
         ]);
-        
+
         $workingCalendar->save();
 
         $this->assertInstanceOf(Carbon::class, $workingCalendar->start_date);
@@ -84,7 +83,7 @@ class WorkingCalendarTest extends TestCase
             'is_active' => true,
             'company_id' => $this->company->id,
         ]);
-        
+
         $workingCalendar->save();
 
         $this->assertIsBool($workingCalendar->is_active);
@@ -102,7 +101,7 @@ class WorkingCalendarTest extends TestCase
             'is_active' => true,
             'company_id' => $this->company->id,
         ]);
-        
+
         $workingCalendar->save();
 
         $this->assertInstanceOf(Company::class, $workingCalendar->company);
@@ -120,7 +119,7 @@ class WorkingCalendarTest extends TestCase
             'is_active' => true,
             'company_id' => $this->company->id,
         ]);
-        
+
         $workingCalendar->save();
 
         $dateWithin = Carbon::create(2025, 6, 15);

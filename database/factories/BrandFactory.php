@@ -24,14 +24,14 @@ class BrandFactory extends Factory
     {
         $brandPrefixes = ['Beauty', 'Glow', 'Shine', 'Radiant', 'Natural', 'Pure', 'Fresh', 'Elegant', 'Luxe', 'Premium'];
         $brandSuffixes = ['Skin', 'Care', 'Cosmetics', 'Beauty', 'Spa', 'Wellness', 'Essentials', 'Products', 'Collection', 'Line'];
-        
+
         $prefix = $this->faker->randomElement($brandPrefixes);
         $suffix = $this->faker->randomElement($brandSuffixes);
-        $brandName = $prefix . $suffix;
-        
+        $brandName = $prefix.$suffix;
+
         return [
             'name' => $brandName,
-            'code' => strtoupper(substr($prefix, 0, 2) . substr($suffix, 0, 2)) . '-' . $this->faker->numerify('###'),
+            'code' => strtoupper(substr($prefix, 0, 2).substr($suffix, 0, 2)).'-'.$this->faker->numerify('###'),
             'logo' => null, // We'll handle logo uploads separately if needed
             'description' => $this->faker->paragraph(),
             'company_id' => Company::factory(),

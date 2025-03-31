@@ -4,10 +4,10 @@ namespace Tests\Unit;
 
 use App\Models\Company;
 use App\Models\Holiday;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class HolidayTest extends TestCase
 {
@@ -18,7 +18,7 @@ class HolidayTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a test company without using factory to avoid dependencies
         $this->company = new Company([
             'name' => 'Test Company',
@@ -131,10 +131,10 @@ class HolidayTest extends TestCase
 
         $this->assertCount(1, $newYearHolidays);
         $this->assertEquals('New Year', $newYearHolidays->first()->name);
-        
+
         $this->assertCount(1, $christmasHolidays);
         $this->assertEquals('Christmas', $christmasHolidays->first()->name);
-        
+
         $this->assertCount(0, $regularDateHolidays);
     }
 }

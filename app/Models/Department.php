@@ -4,16 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Company;
-use App\Models\Branch;
-use App\Models\Division;
-use App\Models\Position;
-use App\Models\User;
-use App\Models\UserDetail;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Department extends Model
 {
@@ -54,14 +48,14 @@ class Department extends Model
             if (empty($department->code)) {
                 $baseCode = Str::upper(Str::substr(Str::slug($department->name), 0, 3));
                 $counter = 1;
-                $code = $baseCode . '-' . sprintf('%03d', $counter);
-                
+                $code = $baseCode.'-'.sprintf('%03d', $counter);
+
                 // Make sure the code is unique
                 while (static::where('code', $code)->exists()) {
                     $counter++;
-                    $code = $baseCode . '-' . sprintf('%03d', $counter);
+                    $code = $baseCode.'-'.sprintf('%03d', $counter);
                 }
-                
+
                 $department->code = $code;
             }
         });
@@ -82,7 +76,7 @@ class Department extends Model
     {
         return $this->hasMany(UserDetail::class, 'department_id');
     }
-    
+
     /**
      * Get the company that owns the department.
      */

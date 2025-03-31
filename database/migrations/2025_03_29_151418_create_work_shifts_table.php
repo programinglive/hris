@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
-            
+
             // Add indexes for better performance
             $table->index('start_time');
             $table->index('end_time');

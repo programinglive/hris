@@ -8,19 +8,20 @@ use App\Models\Department;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use Mockery;
+use Tests\TestCase;
 
 class DepartmentTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
     protected $user;
+
     protected $company;
+
     protected $branch;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -123,11 +124,11 @@ class DepartmentTest extends TestCase
                                 'branch_id' => $this->branch->id,
                                 'status' => 'active',
                                 'company' => ['name' => 'Test Company'],
-                                'branch' => ['name' => 'Test Branch']
-                            ]
+                                'branch' => ['name' => 'Test Branch'],
+                            ],
                         ],
                         'companies' => [],
-                        'branches' => []
+                        'branches' => [],
                     ])
                 );
         });
@@ -189,17 +190,17 @@ class DepartmentTest extends TestCase
                                 'branch_id' => $this->branch->id,
                                 'status' => 'active',
                                 'company' => ['name' => 'Test Company'],
-                                'branch' => ['name' => 'Test Branch']
-                            ]
+                                'branch' => ['name' => 'Test Branch'],
+                            ],
                         ],
                         'companies' => [],
-                        'branches' => []
+                        'branches' => [],
                     ])
                 );
         });
 
         // Filter by company
-        $response = $this->get('/organization/department?company_id=' . $this->company->id);
+        $response = $this->get('/organization/department?company_id='.$this->company->id);
 
         $response->assertStatus(200);
         $response->assertInertia(fn ($page) => $page
@@ -255,17 +256,17 @@ class DepartmentTest extends TestCase
                                 'branch_id' => $this->branch->id,
                                 'status' => 'active',
                                 'company' => ['name' => 'Test Company'],
-                                'branch' => ['name' => 'Test Branch']
-                            ]
+                                'branch' => ['name' => 'Test Branch'],
+                            ],
                         ],
                         'companies' => [],
-                        'branches' => []
+                        'branches' => [],
                     ])
                 );
         });
 
         // Filter by branch
-        $response = $this->get('/organization/department?branch_id=' . $this->branch->id);
+        $response = $this->get('/organization/department?branch_id='.$this->branch->id);
 
         $response->assertStatus(200);
         $response->assertInertia(fn ($page) => $page
@@ -314,7 +315,7 @@ class DepartmentTest extends TestCase
         ]);
 
         // View the department
-        $response = $this->get('/organization/department/' . $department->id);
+        $response = $this->get('/organization/department/'.$department->id);
 
         $response->assertStatus(200);
         $response->assertInertia(fn ($page) => $page
@@ -337,11 +338,11 @@ class DepartmentTest extends TestCase
         ]);
 
         // Visit the edit page
-        $response = $this->get('/organization/department/' . $department->id . '/edit');
+        $response = $this->get('/organization/department/'.$department->id.'/edit');
         $response->assertStatus(200);
 
         // Update the department
-        $response = $this->put('/organization/department/' . $department->id, [
+        $response = $this->put('/organization/department/'.$department->id, [
             'name' => 'Updated Department',
             'description' => 'Updated Description',
             'company_id' => $this->company->id,
@@ -371,7 +372,7 @@ class DepartmentTest extends TestCase
         ]);
 
         // Delete the department
-        $response = $this->delete('/organization/department/' . $department->id);
+        $response = $this->delete('/organization/department/'.$department->id);
 
         $response->assertRedirect('/organization/department/index');
         $this->assertSoftDeleted('departments', [

@@ -5,30 +5,30 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Inertia;
-use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
-use Tests\InertiaTestHelpers;
 use Inertia\Response;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\InertiaTestHelpers;
+use Tests\TestCase;
 
 class AttendanceRoutesTest extends TestCase
 {
-    use RefreshDatabase, InertiaTestHelpers;
+    use InertiaTestHelpers, RefreshDatabase;
 
     protected $user;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a user for testing
         $this->user = User::factory()->create();
-        
+
         // Disable the HandleAppearance middleware to avoid RouteNotFoundException
         $this->withoutMiddleware(\App\Http\Middleware\HandleAppearance::class);
-        
+
         // Skip the Vite manifest check for the test
         $this->withoutVite();
-        
+
         // Setup Inertia testing
         $this->setupInertiaTest();
     }
@@ -41,8 +41,8 @@ class AttendanceRoutesTest extends TestCase
 
         // Create a mock Inertia response
         $mockResponse = $this->getMockBuilder(Response::class)
-                            ->disableOriginalConstructor()
-                            ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         // Mock the TimeController
         $this->mock(\App\Http\Controllers\Attendance\TimeController::class)
@@ -62,11 +62,11 @@ class AttendanceRoutesTest extends TestCase
         // Test the time.index route
         $response = $this->get('/attendance/time');
         $this->assertTrue($response->isOk(), 'Time route is not accessible');
-        
+
         // Test the working-calendar.index route
         $response = $this->get('/attendance/working-calendar');
         $this->assertTrue($response->isOk(), 'Working calendar route is not accessible');
-        
+
         // Test the working-shift route
         $response = $this->get('/attendance/working-shift');
         $this->assertTrue($response->isOk(), 'Working shift route is not accessible');

@@ -16,7 +16,7 @@ class LeaveRequestFactory extends Factory
     {
         $startDate = Carbon::now()->addDays(rand(1, 30));
         $endDate = $startDate->copy()->addDays(rand(1, 5));
-        
+
         return [
             'user_id' => User::factory(),
             'leave_type_id' => LeaveType::factory(),

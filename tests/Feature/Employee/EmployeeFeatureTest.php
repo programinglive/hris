@@ -2,44 +2,50 @@
 
 namespace Tests\Feature\Employee;
 
-use App\Models\User;
-use App\Models\UserDetail;
+use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Position;
-use App\Models\Branch;
 use App\Models\Role;
-use App\Models\Division;
-use App\Models\SubDivision;
-use App\Models\Level;
+use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class EmployeeFeatureTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
     protected $user;
+
     protected $company;
+
     protected $branch;
+
     protected $department;
+
     protected $position;
+
     protected $adminRole;
+
     protected $employeeRole;
+
     protected $employee;
+
     protected $division;
+
     protected $subdivision;
+
     protected $level;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a company
         $this->company = Company::factory()->create([
             'name' => 'Test Company',
@@ -52,7 +58,7 @@ class EmployeeFeatureTest extends TestCase
             'display_name' => 'Administrator',
             'description' => 'Full access to all system features',
             'is_system' => true,
-            'slug' => 'administrator_' . uniqid(),
+            'slug' => 'administrator_'.uniqid(),
         ]);
 
         $this->employeeRole = Role::create([
@@ -60,7 +66,7 @@ class EmployeeFeatureTest extends TestCase
             'display_name' => 'Employee',
             'description' => 'Regular employee access',
             'is_system' => true,
-            'slug' => 'employee_' . uniqid(),
+            'slug' => 'employee_'.uniqid(),
         ]);
 
         // Create a test user with admin role
@@ -76,7 +82,7 @@ class EmployeeFeatureTest extends TestCase
         // Create user details
         $this->user->userDetails()->create([
             'company_id' => $this->company->id,
-            'employee_code' => 'EMP' . $this->faker->unique()->numerify('######'),
+            'employee_code' => 'EMP'.$this->faker->unique()->numerify('######'),
             'status' => 'active',
             'join_date' => now(),
             'branch_id' => null,
@@ -113,7 +119,7 @@ class EmployeeFeatureTest extends TestCase
     public function user_can_view_employee_list()
     {
         $this->actingAs($this->user);
-        
+
         // Create an employee
         $employee = User::factory()->create([
             'company_id' => $this->company->id,
@@ -122,7 +128,7 @@ class EmployeeFeatureTest extends TestCase
         // Create user details
         $employee->userDetails()->create([
             'company_id' => $this->company->id,
-            'employee_code' => 'EMP' . $this->faker->unique()->numerify('######'),
+            'employee_code' => 'EMP'.$this->faker->unique()->numerify('######'),
             'status' => 'active',
             'join_date' => now(),
             'branch_id' => $this->branch->id,
@@ -137,7 +143,7 @@ class EmployeeFeatureTest extends TestCase
         $this->user->roles()->detach($this->employeeRole);
 
         $response = $this->get(route('employee.index'));
-        
+
         $response->assertInertia(function (Assert $page) {
             $page->component('Employee/Index')
                 ->has('employees.data', 1)
@@ -165,7 +171,7 @@ class EmployeeFeatureTest extends TestCase
         $userDetail = UserDetail::create([
             'user_id' => $employee->id,
             'company_id' => $this->company->id,
-            'employee_code' => 'EMP' . $this->faker->unique()->numerify('######'),
+            'employee_code' => 'EMP'.$this->faker->unique()->numerify('######'),
             'status' => 'active',
             'join_date' => now(),
             'branch_id' => $this->branch->id,
@@ -202,7 +208,7 @@ class EmployeeFeatureTest extends TestCase
         // Create user details
         $employee->userDetails()->create([
             'company_id' => $this->company->id,
-            'employee_code' => 'EMP' . $this->faker->unique()->numerify('######'),
+            'employee_code' => 'EMP'.$this->faker->unique()->numerify('######'),
             'status' => 'active',
             'join_date' => now(),
             'branch_id' => $this->branch->id,
@@ -217,11 +223,11 @@ class EmployeeFeatureTest extends TestCase
         $this->user->roles()->detach($this->employeeRole);
 
         $this->actingAs($this->user);
-        
+
         $response = $this->get(route('employee.index', [
             'search' => 'John',
         ]));
-        
+
         $response->assertInertia(function (Assert $page) use ($employee) {
             $page->component('Employee/Index')
                 ->has('employees.data', 1)
@@ -290,7 +296,7 @@ class EmployeeFeatureTest extends TestCase
         ])->each(function ($user) use ($department1) {
             $user->userDetails()->update([
                 'department_id' => $department1->id,
-                'department' => $department1->name
+                'department' => $department1->name,
             ]);
             $user->assignRole($this->employeeRole);
         });
@@ -300,17 +306,17 @@ class EmployeeFeatureTest extends TestCase
         ])->each(function ($user) use ($department2) {
             $user->userDetails()->update([
                 'department_id' => $department2->id,
-                'department' => $department2->name
+                'department' => $department2->name,
             ]);
             $user->assignRole($this->employeeRole);
         });
 
         $this->actingAs($this->user);
-        
+
         $response = $this->get(route('employee.index', [
             'department_id' => $department1->id,
         ]));
-        
+
         $response->assertInertia(function (Assert $page) use ($department1) {
             $page->component('Employee/Index')
                 ->has('employees.data', 3)
@@ -332,7 +338,7 @@ class EmployeeFeatureTest extends TestCase
         ])->each(function ($user) use ($position1) {
             $user->userDetails()->update([
                 'position_id' => $position1->id,
-                'position' => $position1->name
+                'position' => $position1->name,
             ]);
             $user->assignRole($this->employeeRole);
         });
@@ -342,17 +348,17 @@ class EmployeeFeatureTest extends TestCase
         ])->each(function ($user) use ($position2) {
             $user->userDetails()->update([
                 'position_id' => $position2->id,
-                'position' => $position2->name
+                'position' => $position2->name,
             ]);
             $user->assignRole($this->employeeRole);
         });
 
         $this->actingAs($this->user);
-        
+
         $response = $this->get(route('employee.index', [
             'position_id' => $position1->id,
         ]));
-        
+
         $response->assertInertia(function (Assert $page) use ($position1) {
             $page->component('Employee/Index')
                 ->has('employees.data', 3)
@@ -401,10 +407,10 @@ class EmployeeFeatureTest extends TestCase
     public function user_can_view_employee_create_form()
     {
         $this->actingAs($this->user);
-        
+
         $response = $this->get(route('employee.create'));
         $response->assertStatus(200);
-        
+
         $response->assertInertia(function (Assert $page) {
             $page->component('Employee/Create')
                 ->has('companies')
@@ -418,7 +424,7 @@ class EmployeeFeatureTest extends TestCase
     public function user_can_create_employee_with_required_fields()
     {
         $this->actingAs($this->user);
-        
+
         $response = $this->post(route('employee.store'), [
             'name' => 'John Doe',
             'email' => 'john@example.com',
@@ -460,10 +466,10 @@ class EmployeeFeatureTest extends TestCase
         ])->assignRole($this->employeeRole);
 
         $this->actingAs($this->user);
-        
+
         $response = $this->get(route('employee.edit', $employee));
         $response->assertStatus(200);
-        
+
         $response->assertInertia(function (Assert $page) {
             $page->component('Employee/Edit')
                 ->has('companies')
@@ -481,7 +487,7 @@ class EmployeeFeatureTest extends TestCase
         ])->assignRole($this->employeeRole);
 
         $this->actingAs($this->user);
-        
+
         $response = $this->put(route('employee.update', $employee), [
             'name' => 'Updated Name',
             'email' => 'updated@example.com',
@@ -517,11 +523,11 @@ class EmployeeFeatureTest extends TestCase
     public function user_can_view_employee_import_form()
     {
         $this->actingAs($this->user);
-        
+
         $response = $this->get(route('employee.import'));
-        
+
         $response->assertStatus(200);
-        
+
         $response->assertInertia(function (Assert $page) {
             $page->component('Employee/Import')
                 ->has('companies');
@@ -555,7 +561,7 @@ class EmployeeFeatureTest extends TestCase
         $userDetail = UserDetail::factory()->create([
             'user_id' => $employee->id,
             'company_id' => $this->company->id,
-            'employee_code' => 'EMP' . $this->faker->unique()->numerify('######'),
+            'employee_code' => 'EMP'.$this->faker->unique()->numerify('######'),
             'status' => 'active',
             'join_date' => now(),
             'branch_id' => $this->branch->id,

@@ -24,20 +24,20 @@ class BranchFactory extends Factory
     {
         $cities = ['Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Makassar', 'Bali', 'Yogyakarta', 'Semarang', 'Palembang', 'Balikpapan'];
         $city = $this->faker->randomElement($cities);
-        
+
         $branchTypes = ['Main Office', 'Regional Office', 'Sales Office', 'Service Center', 'Warehouse', 'Retail Store'];
         $branchType = $this->faker->randomElement($branchTypes);
-        
+
         return [
-            'name' => $city . ' ' . $branchType,
-            'code' => strtoupper(substr($city, 0, 3)) . '-' . $this->faker->numerify('###'),
+            'name' => $city.' '.$branchType,
+            'code' => strtoupper(substr($city, 0, 3)).'-'.$this->faker->numerify('###'),
             'address' => $this->faker->streetAddress(),
             'city' => $city,
             'state' => $this->faker->state(),
             'postal_code' => $this->faker->postcode(),
             'country' => 'Indonesia',
-            'phone' => '+62' . $this->faker->numerify('##########'),
-            'email' => strtolower(substr($city, 0, 3)) . '.' . $this->faker->word() . '@beautyhris.com',
+            'phone' => '+62'.$this->faker->numerify('##########'),
+            'email' => strtolower(substr($city, 0, 3)).'.'.$this->faker->word().'@beautyhris.com',
             'company_id' => Company::factory(),
             'is_main_branch' => false,
             'is_active' => $this->faker->boolean(90), // 90% chance of being active

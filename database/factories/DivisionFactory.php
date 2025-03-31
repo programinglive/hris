@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Department;
 use App\Models\Division;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DivisionFactory extends Factory

@@ -112,7 +112,7 @@ class UserWorkShiftController extends Controller
     public function show(UserWorkShift $userWorkShift): Response
     {
         $userWorkShift->load(['user', 'workShift']);
-        
+
         return Inertia::render('attendance/working-shift/assignment/Show', [
             'userWorkShift' => $userWorkShift,
         ]);
@@ -124,7 +124,7 @@ class UserWorkShiftController extends Controller
     public function edit(UserWorkShift $userWorkShift): Response
     {
         $userWorkShift->load(['user', 'workShift']);
-        
+
         $users = User::with('userDetail')
             ->whereHas('userDetail', function ($query) {
                 $query->where('status', 'active');

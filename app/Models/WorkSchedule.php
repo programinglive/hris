@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class WorkSchedule extends Model
 {
@@ -71,9 +71,8 @@ class WorkSchedule extends Model
 
     /**
      * Check if a specific day is a working day.
-     * 
-     * @param int $dayOfWeek 0 (Sunday) through 6 (Saturday)
-     * @return bool
+     *
+     * @param  int  $dayOfWeek  0 (Sunday) through 6 (Saturday)
      */
     public function isWorkingDay(int $dayOfWeek): bool
     {
@@ -82,19 +81,17 @@ class WorkSchedule extends Model
 
     /**
      * Get the expected working hours per day.
-     * 
-     * @return float
      */
     public function getWorkingHoursPerDay(): float
     {
         $startTime = strtotime($this->start_time);
         $endTime = strtotime($this->end_time);
-        
+
         // Handle schedules that cross midnight
         if ($endTime <= $startTime) {
             $endTime += 24 * 60 * 60; // Add 24 hours
         }
-        
+
         return round(($endTime - $startTime) / 3600, 2);
     }
 }

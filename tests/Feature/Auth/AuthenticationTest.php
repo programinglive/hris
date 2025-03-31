@@ -1,9 +1,6 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);

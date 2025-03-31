@@ -68,7 +68,7 @@ class WorkingCalendarController extends Controller
     public function show($id)
     {
         $workingCalendar = WorkingCalendar::findOrFail($id);
-        
+
         $holidays = Holiday::where('company_id', Auth::user()->company_id)
             ->whereDate('date', '>=', $workingCalendar->start_date)
             ->whereDate('date', '<=', $workingCalendar->end_date)

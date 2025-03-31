@@ -19,7 +19,9 @@ class BranchFeatureTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     protected $user;
+
     protected $company;
+
     protected $timestamp;
 
     protected function setUp(): void
@@ -29,15 +31,15 @@ class BranchFeatureTest extends TestCase
         // Create a user and authenticate
         $this->user = User::factory()->create();
         $this->actingAs($this->user);
-        
+
         // Create a company for testing
         $this->company = Company::factory()->create([
-            'owner_id' => $this->user->id
+            'owner_id' => $this->user->id,
         ]);
-        
+
         // Set up storage for file uploads
         Storage::fake('local');
-        
+
         // Store timestamp for consistent testing
         $this->timestamp = time();
     }
@@ -49,37 +51,33 @@ class BranchFeatureTest extends TestCase
         $branches = Branch::factory()->count(3)->create([
             'company_id' => $this->company->id,
         ]);
-        
+
         $response = $this->get(route('organization.branch.index'));
-        
+
         $response->assertStatus(200);
-        $response->assertInertia(fn (Assert $page) => 
-            $page->component('organization/branch/index')
-                ->has('branches.data', 3)
-                ->has('branches.data.0', fn (Assert $branch) => 
-                    $branch->has('id')
-                        ->has('name')
-                        ->has('code')
-                        ->has('address')
-                        ->has('city')
-                        ->has('company')
-                        ->has('company.id')
-                        ->has('company.name')
-                        ->has('company_id')
-                        ->has('is_main_branch')
-                        ->has('is_active')
-                        ->has('created_at')
+        $response->assertInertia(fn (Assert $page) => $page->component('organization/branch/index')
+            ->has('branches.data', 3)
+            ->has('branches.data.0', fn (Assert $branch) => $branch->has('id')
+                ->has('name')
+                ->has('code')
+                ->has('address')
+                ->has('city')
+                ->has('company')
+                ->has('company.id')
+                ->has('company.name')
+                ->has('company_id')
+                ->has('is_main_branch')
+                ->has('is_active')
+                ->has('created_at')
+            )
+            ->has('branches.current_page')
+            ->has('branches.per_page')
+            ->has('branches.total')
+            ->has('companies', fn (Assert $companies) => $companies->has(1)
+                ->has(0, fn (Assert $company) => $company->where('id', $this->company->id)
+                    ->where('name', $this->company->name)
                 )
-                ->has('branches.current_page')
-                ->has('branches.per_page')
-                ->has('branches.total')
-                ->has('companies', fn (Assert $companies) => 
-                    $companies->has(1)
-                        ->has(0, fn (Assert $company) => 
-                            $company->where('id', $this->company->id)
-                                ->where('name', $this->company->name)
-                        )
-                )
+            )
         );
     }
 
@@ -92,21 +90,20 @@ class BranchFeatureTest extends TestCase
             'code' => 'ALPHA001',
             'company_id' => $this->company->id,
         ]);
-        
+
         Branch::factory()->create([
             'name' => 'Beta Branch',
             'code' => 'BETA001',
             'company_id' => $this->company->id,
         ]);
-        
+
         // Test search by name
         $response = $this->get(route('organization.branch.index', [
-            'search' => 'Alpha'
+            'search' => 'Alpha',
         ]));
-        
+
         $response->assertStatus(200);
-        $response->assertInertia(fn (Assert $page) => 
-            $page->component('organization/branch/index')
+        $response->assertInertia(fn (Assert $page) => $page->component('organization/branch/index')
             ->has('branches.data', 1)
             ->where('branches.data.0.name', 'Alpha Branch')
         );
@@ -116,10 +113,9 @@ class BranchFeatureTest extends TestCase
     public function can_view_branch_create_form()
     {
         $response = $this->get(route('organization.branch.create'));
-        
+
         $response->assertStatus(200);
-        $response->assertInertia(fn (Assert $page) => 
-            $page->component('organization/branch/create')
+        $response->assertInertia(fn (Assert $page) => $page->component('organization/branch/create')
         );
     }
 
@@ -128,17 +124,17 @@ class BranchFeatureTest extends TestCase
     {
         $response = $this->post(route('organization.branch.store'), [
             'name' => 'Test Branch',
-            'code' => 'TEST' . $this->timestamp,
+            'code' => 'TEST'.$this->timestamp,
             'company_id' => $this->company->id,
             'is_active' => true,
             'is_main_branch' => false,
         ]);
-        
+
         $response->assertRedirect(route('organization.branch.index'));
-        
+
         $this->assertDatabaseHas('branches', [
             'name' => 'Test Branch',
-            'code' => 'TEST' . $this->timestamp,
+            'code' => 'TEST'.$this->timestamp,
             'company_id' => $this->company->id,
             'is_active' => true,
             'is_main_branch' => false,
@@ -151,29 +147,27 @@ class BranchFeatureTest extends TestCase
         $branch = Branch::factory()->create([
             'company_id' => $this->company->id,
         ]);
-        
+
         $response = $this->get(route('organization.branch.show', $branch));
-        
+
         $response->assertStatus(200);
-        $response->assertInertia(fn (Assert $page) => 
-            $page->component('organization/branch/details')
-            ->has('branch', fn (Assert $branchData) => 
-                $branchData->where('id', $branch->id)
-                    ->where('name', $branch->name)
-                    ->where('code', $branch->code)
-                    ->where('address', $branch->address)
-                    ->where('city', $branch->city)
-                    ->where('state', $branch->state)
-                    ->where('postal_code', $branch->postal_code)
-                    ->where('country', $branch->country)
-                    ->where('phone', $branch->phone)
-                    ->where('email', $branch->email)
-                    ->where('description', $branch->description)
-                    ->where('created_at', $branch->created_at->format('Y-m-d'))
-                    ->where('is_main_branch', $branch->is_main_branch ? 1 : 0)
-                    ->where('is_active', $branch->is_active ? 1 : 0)
-                    ->where('company.id', $this->company->id)
-                    ->where('company.name', $this->company->name)
+        $response->assertInertia(fn (Assert $page) => $page->component('organization/branch/details')
+            ->has('branch', fn (Assert $branchData) => $branchData->where('id', $branch->id)
+                ->where('name', $branch->name)
+                ->where('code', $branch->code)
+                ->where('address', $branch->address)
+                ->where('city', $branch->city)
+                ->where('state', $branch->state)
+                ->where('postal_code', $branch->postal_code)
+                ->where('country', $branch->country)
+                ->where('phone', $branch->phone)
+                ->where('email', $branch->email)
+                ->where('description', $branch->description)
+                ->where('created_at', $branch->created_at->format('Y-m-d'))
+                ->where('is_main_branch', $branch->is_main_branch ? 1 : 0)
+                ->where('is_active', $branch->is_active ? 1 : 0)
+                ->where('company.id', $this->company->id)
+                ->where('company.name', $this->company->name)
             )
         );
     }
@@ -184,30 +178,28 @@ class BranchFeatureTest extends TestCase
         $branch = Branch::factory()->create([
             'company_id' => $this->company->id,
         ]);
-        
+
         $response = $this->get(route('organization.branch.edit', $branch));
-        
+
         $response->assertStatus(200);
-        $response->assertInertia(fn (Assert $page) => 
-            $page->component('organization/branch/edit')
-            ->has('branch', fn (Assert $branchData) => 
-                $branchData->where('id', $branch->id)
-                    ->has('name')
-                    ->has('code')
-                    ->has('address')
-                    ->has('city')
-                    ->has('state')
-                    ->has('postal_code')
-                    ->has('country')
-                    ->has('phone')
-                    ->has('email')
-                    ->has('description')
-                    ->has('is_main_branch')
-                    ->has('is_active')
-                    ->has('company_id')
-                    ->has('created_at')
-                    ->has('updated_at')
-                    ->has('deleted_at')
+        $response->assertInertia(fn (Assert $page) => $page->component('organization/branch/edit')
+            ->has('branch', fn (Assert $branchData) => $branchData->where('id', $branch->id)
+                ->has('name')
+                ->has('code')
+                ->has('address')
+                ->has('city')
+                ->has('state')
+                ->has('postal_code')
+                ->has('country')
+                ->has('phone')
+                ->has('email')
+                ->has('description')
+                ->has('is_main_branch')
+                ->has('is_active')
+                ->has('company_id')
+                ->has('created_at')
+                ->has('updated_at')
+                ->has('deleted_at')
             )
         );
     }
@@ -218,21 +210,21 @@ class BranchFeatureTest extends TestCase
         $branch = Branch::factory()->create([
             'company_id' => $this->company->id,
         ]);
-        
+
         $response = $this->put(route('organization.branch.update', $branch), [
             'name' => 'Updated Branch',
-            'code' => 'UPDATED' . $this->timestamp,
+            'code' => 'UPDATED'.$this->timestamp,
             'company_id' => $this->company->id,
             'is_active' => false,
             'is_main_branch' => true,
         ]);
-        
+
         $response->assertRedirect(route('organization.branch.index'));
-        
+
         $this->assertDatabaseHas('branches', [
             'id' => $branch->id,
             'name' => 'Updated Branch',
-            'code' => 'UPDATED' . $this->timestamp,
+            'code' => 'UPDATED'.$this->timestamp,
             'company_id' => $this->company->id,
             'is_active' => false,
             'is_main_branch' => true,
@@ -245,10 +237,10 @@ class BranchFeatureTest extends TestCase
         $branch = Branch::factory()->create([
             'company_id' => $this->company->id,
         ]);
-        
+
         $response = $this->delete(route('organization.branch.destroy', $branch));
         $response->assertRedirect(route('organization.branch.index'));
-        
+
         // Verify the branch was deleted
         $this->assertDatabaseMissing('branches', [
             'id' => $branch->id,
@@ -259,7 +251,7 @@ class BranchFeatureTest extends TestCase
     public function can_download_branch_import_template()
     {
         $response = $this->get(route('organization.branch.import.template'));
-        
+
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         $response->assertHeader('Content-Disposition', 'attachment; filename=branch_import_template.xlsx');
@@ -270,15 +262,15 @@ class BranchFeatureTest extends TestCase
     {
         // Create a test Excel file with branch data
         $templatePath = storage_path('app/temp/branch_import_template.xlsx');
-        
+
         // Ensure the directory exists
-        if (!file_exists(storage_path('app/temp'))) {
+        if (! file_exists(storage_path('app/temp'))) {
             mkdir(storage_path('app/temp'), 0755, true);
         }
-        
+
         // Create a writer and add the headers
         $writer = SimpleExcelWriter::create($templatePath);
-        
+
         // Add headers
         $writer->addRow([
             'name' => 'Branch Name*',
@@ -293,9 +285,9 @@ class BranchFeatureTest extends TestCase
             'phone' => 'Phone',
             'email' => 'Email',
             'is_active' => 'Is Active (Yes/No)',
-            'description' => 'Description'
+            'description' => 'Description',
         ]);
-        
+
         // Add test data
         $writer->addRow([
             'name' => 'Test Import Branch 1',
@@ -310,9 +302,9 @@ class BranchFeatureTest extends TestCase
             'phone' => '555-123-4567',
             'email' => 'import1@example.com',
             'is_active' => 'Yes',
-            'description' => 'First imported branch'
+            'description' => 'First imported branch',
         ]);
-        
+
         $writer->addRow([
             'name' => 'Test Import Branch 2',
             'code' => 'IMPORT002',
@@ -326,11 +318,11 @@ class BranchFeatureTest extends TestCase
             'phone' => '555-987-6543',
             'email' => 'import2@example.com',
             'is_active' => 'Yes',
-            'description' => 'Second imported branch'
+            'description' => 'Second imported branch',
         ]);
-        
+
         $writer->close();
-        
+
         // Create an uploaded file from the template
         $file = new UploadedFile(
             $templatePath,
@@ -339,14 +331,14 @@ class BranchFeatureTest extends TestCase
             null,
             true
         );
-        
+
         // Send the import request
         $response = $this->post(route('organization.branch.import.process'), [
             'file' => $file,
         ]);
-        
+
         $response->assertStatus(200);
-        
+
         // Verify the branches were created
         $this->assertDatabaseHas('branches', [
             'name' => 'Test Import Branch 1',
@@ -361,9 +353,9 @@ class BranchFeatureTest extends TestCase
             'email' => 'import1@example.com',
             'is_main_branch' => 0,
             'is_active' => 1,
-            'description' => 'First imported branch'
+            'description' => 'First imported branch',
         ]);
-        
+
         $this->assertDatabaseHas('branches', [
             'name' => 'Test Import Branch 2',
             'code' => 'IMPORT002',
@@ -377,7 +369,7 @@ class BranchFeatureTest extends TestCase
             'email' => 'import2@example.com',
             'is_main_branch' => 0,
             'is_active' => 1,
-            'description' => 'Second imported branch'
+            'description' => 'Second imported branch',
         ]);
     }
 
@@ -390,14 +382,14 @@ class BranchFeatureTest extends TestCase
             'company_id' => '',  // Empty required field
             'is_active' => true,
         ]);
-        
+
         $response->assertSessionHasErrors(['name', 'code', 'company_id']);
-        
+
         $errors = session('errors');
         expect($errors->getMessages())->toHaveKey('name');
         expect($errors->getMessages())->toHaveKey('code');
         expect($errors->getMessages())->toHaveKey('company_id');
-        
+
         expect($errors->get('name')[0])->toContain('The name field is required');
         expect($errors->get('code')[0])->toContain('The code field is required');
         expect($errors->get('company_id')[0])->toContain('The company id field is required');
@@ -409,19 +401,19 @@ class BranchFeatureTest extends TestCase
         // Create first branch
         $branch1 = Branch::factory()->create([
             'company_id' => $this->company->id,
-            'code' => 'TEST' . $this->timestamp,
+            'code' => 'TEST'.$this->timestamp,
         ]);
-        
+
         // Try to create second branch with same code
         $response = $this->post(route('organization.branch.store'), [
             'name' => 'Test Branch 2',
-            'code' => 'TEST' . $this->timestamp,
+            'code' => 'TEST'.$this->timestamp,
             'company_id' => $this->company->id,
             'is_active' => true,
         ]);
-        
+
         $response->assertSessionHasErrors(['code']);
-        
+
         $errors = session('errors');
         expect($errors->getMessages())->toHaveKey('code');
         expect($errors->get('code')[0])->toContain('The code has already been taken');
@@ -431,27 +423,26 @@ class BranchFeatureTest extends TestCase
     public function filters_are_reset_when_filter_dialog_opens()
     {
         $this->actingAs($this->user);
-        
+
         // Create some branches
         $branches = Branch::factory()->count(3)->create([
             'company_id' => $this->company->id,
         ]);
-        
+
         // Open filter dialog
         $response = $this->get(route('organization.branch.index', [
             'company_id' => $this->company->id,
             'city' => 'Test City',
-            'filter_dialog' => true
+            'filter_dialog' => true,
         ]));
-        
+
         $response->assertStatus(200);
-        $response->assertInertia(fn (Assert $page) => 
-            $page->component('organization/branch/index')
-                ->has('branches.data')
+        $response->assertInertia(fn (Assert $page) => $page->component('organization/branch/index')
+            ->has('branches.data')
                 // Verify filters are reset
-                ->where('filters.search', null)
-                ->where('filters.company_id', null)
-                ->where('filters.city', null)
+            ->where('filters.search', null)
+            ->where('filters.company_id', null)
+            ->where('filters.city', null)
         );
     }
 
@@ -459,27 +450,26 @@ class BranchFeatureTest extends TestCase
     public function query_string_is_cleared_when_filter_dialog_opens()
     {
         $this->actingAs($this->user);
-        
+
         // Create some branches
         $branches = Branch::factory()->count(3)->create([
             'company_id' => $this->company->id,
         ]);
-        
+
         // Open filter dialog
         $response = $this->get(route('organization.branch.index', [
             'company_id' => $this->company->id,
             'city' => 'Test City',
-            'filter_dialog' => true
+            'filter_dialog' => true,
         ]));
-        
+
         $response->assertStatus(200);
-        $response->assertInertia(fn (Assert $page) => 
-            $page->component('organization/branch/index')
-                ->has('branches.data')
+        $response->assertInertia(fn (Assert $page) => $page->component('organization/branch/index')
+            ->has('branches.data')
                 // Verify only page parameter exists in query string
-                ->where('filters.search', null)
-                ->where('filters.company_id', null)
-                ->where('filters.city', null)
+            ->where('filters.search', null)
+            ->where('filters.company_id', null)
+            ->where('filters.city', null)
         );
     }
 }

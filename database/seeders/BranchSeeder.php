@@ -18,16 +18,17 @@ class BranchSeeder extends Seeder
         DB::statement('PRAGMA foreign_keys = OFF');
         Branch::truncate();
         DB::statement('PRAGMA foreign_keys = ON');
-        
+
         // Get all companies
         $companies = Company::all();
-        
+
         if ($companies->isEmpty()) {
             // This should not happen as CompanySeeder should have been run first
             $this->command->info('No companies found. Please run CompanySeeder first.');
+
             return;
         }
-        
+
         // Branch templates - we'll customize these for each company
         $branchTemplates = [
             [
@@ -81,7 +82,7 @@ class BranchSeeder extends Seeder
                 'is_active' => true,
             ],
         ];
-        
+
         // Create branches for each company
         foreach ($branchTemplates as $template) {
             // Create branch for each company
@@ -94,8 +95,8 @@ class BranchSeeder extends Seeder
                     'state' => $template['state'],
                     'postal_code' => $template['postal_code'],
                     'country' => $template['country'],
-                    'phone' => '+62' . fake()->numerify('##########'),
-                    'email' => strtolower(str_replace(' ', '.', $template['name_template'])) . '@beautyhris.com',
+                    'phone' => '+62'.fake()->numerify('##########'),
+                    'email' => strtolower(str_replace(' ', '.', $template['name_template'])).'@beautyhris.com',
                     'company_id' => $company->id,
                     'is_main_branch' => $template['is_main_branch'],
                     'is_active' => $template['is_active'],

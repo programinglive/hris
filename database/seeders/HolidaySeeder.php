@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Company;
 use App\Models\Holiday;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class HolidaySeeder extends Seeder
 {
@@ -19,17 +19,18 @@ class HolidaySeeder extends Seeder
         DB::statement('PRAGMA foreign_keys = OFF');
         Holiday::truncate();
         DB::statement('PRAGMA foreign_keys = ON');
-        
+
         $this->command->info('Seeding holidays...');
-        
+
         // Get all companies
         $companies = Company::all();
-        
+
         if ($companies->isEmpty()) {
             $this->command->info('No companies found. Please run the CompanySeeder first.');
+
             return;
         }
-        
+
         // National holidays for the current year (Indonesia)
         $currentYear = Carbon::now()->year;
         $nationalHolidays = [
@@ -106,7 +107,7 @@ class HolidaySeeder extends Seeder
                 'is_recurring' => true,
             ],
         ];
-        
+
         // Create holidays for each company
         foreach ($companies as $company) {
             // Add national holidays for each company
@@ -119,7 +120,7 @@ class HolidaySeeder extends Seeder
                     'company_id' => $company->id,
                 ]);
             }
-            
+
             // Add company-specific holidays
             Holiday::create([
                 'name' => 'Company Anniversary',
@@ -128,7 +129,7 @@ class HolidaySeeder extends Seeder
                 'is_recurring' => true,
                 'company_id' => $company->id,
             ]);
-            
+
             Holiday::create([
                 'name' => 'Company Retreat',
                 'date' => Carbon::create($currentYear, rand(1, 12), rand(1, 28)),
@@ -136,14 +137,14 @@ class HolidaySeeder extends Seeder
                 'is_recurring' => true,
                 'company_id' => $company->id,
             ]);
-            
+
             // Add some random one-time holidays
             for ($i = 0; $i < 3; $i++) {
                 $month = rand(1, 12);
                 $day = rand(1, 28);
-                
+
                 Holiday::create([
-                    'name' => "Special Event " . ($i + 1),
+                    'name' => 'Special Event '.($i + 1),
                     'date' => Carbon::create($currentYear, $month, $day),
                     'description' => "Special one-time event for {$company->name}",
                     'is_recurring' => false,
@@ -151,7 +152,7 @@ class HolidaySeeder extends Seeder
                 ]);
             }
         }
-        
+
         $this->command->info('Holidays seeded successfully!');
     }
 }

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +17,7 @@ class RoleSeeder extends Seeder
         DB::statement('PRAGMA foreign_keys = OFF');
         Role::truncate();
         DB::statement('PRAGMA foreign_keys = ON');
-        
+
         // Create system roles
         $roles = [
             [
@@ -46,7 +45,7 @@ class RoleSeeder extends Seeder
                 'is_system' => true,
             ],
         ];
-        
+
         foreach ($roles as $role) {
             Role::create($role);
         }

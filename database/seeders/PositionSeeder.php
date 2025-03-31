@@ -21,26 +21,26 @@ class PositionSeeder extends Seeder
         DB::statement('PRAGMA foreign_keys = OFF');
         Position::truncate();
         DB::statement('PRAGMA foreign_keys = ON');
-        
+
         // Get the first company
         $company = Company::with([
             'departments' => function ($query) {
                 $query->with([
                     'divisions' => function ($query) {
                         $query->with(['subDivisions']);
-                    }
+                    },
                 ]);
             },
-            'levels'
+            'levels',
         ])->first();
 
-        if (!$company) {
+        if (! $company) {
             throw new \Exception('No company found');
         }
-        
+
         // Get the departments for the first company
         $departments = $company->departments;
-        
+
         if ($departments->isEmpty()) {
             // Create a default department structure
             $departmentWithDivisions = Department::create([
@@ -48,7 +48,7 @@ class PositionSeeder extends Seeder
                 'description' => 'Responsible for technology infrastructure and software development',
                 'company_id' => $company->id,
                 'is_active' => true,
-                'code' => 'IT-' . $company->id . '-001'
+                'code' => 'IT-'.$company->id.'-001',
             ]);
 
             // Create a division
@@ -57,7 +57,7 @@ class PositionSeeder extends Seeder
                 'description' => 'Responsible for software development',
                 'department_id' => $departmentWithDivisions->id,
                 'is_active' => true,
-                'code' => 'DEV-' . $departmentWithDivisions->id . '-001'
+                'code' => 'DEV-'.$departmentWithDivisions->id.'-001',
             ]);
 
             // Create a sub-division
@@ -66,7 +66,7 @@ class PositionSeeder extends Seeder
                 'description' => 'Responsible for backend development',
                 'division_id' => $division->id,
                 'is_active' => true,
-                'code' => 'BCK-' . $division->id . '-001'
+                'code' => 'BCK-'.$division->id.'-001',
             ]);
         } else {
             // Find a department with at least one division and sub-division
@@ -74,23 +74,23 @@ class PositionSeeder extends Seeder
                 if ($department->divisions->isEmpty()) {
                     return false;
                 }
-                
+
                 $firstDivision = $department->divisions->first();
-                if (!$firstDivision || $firstDivision->subDivisions->isEmpty()) {
+                if (! $firstDivision || $firstDivision->subDivisions->isEmpty()) {
                     return false;
                 }
-                
+
                 return true;
             });
 
-            if (!$departmentWithDivisions) {
+            if (! $departmentWithDivisions) {
                 // Create a default department structure
                 $departmentWithDivisions = Department::create([
                     'name' => 'Information Technology',
                     'description' => 'Responsible for technology infrastructure and software development',
                     'company_id' => $company->id,
                     'is_active' => true,
-                    'code' => 'IT-' . $company->id . '-001'
+                    'code' => 'IT-'.$company->id.'-001',
                 ]);
 
                 // Create a division
@@ -99,7 +99,7 @@ class PositionSeeder extends Seeder
                     'description' => 'Responsible for software development',
                     'department_id' => $departmentWithDivisions->id,
                     'is_active' => true,
-                    'code' => 'DEV-' . $departmentWithDivisions->id . '-001'
+                    'code' => 'DEV-'.$departmentWithDivisions->id.'-001',
                 ]);
 
                 // Create a sub-division
@@ -108,14 +108,14 @@ class PositionSeeder extends Seeder
                     'description' => 'Responsible for backend development',
                     'division_id' => $division->id,
                     'is_active' => true,
-                    'code' => 'BCK-' . $division->id . '-001'
+                    'code' => 'BCK-'.$division->id.'-001',
                 ]);
             }
         }
 
         // Get the levels for the company
         $levels = $company->levels;
-        
+
         // Create CEO position
         $ceoPosition = Position::create([
             'name' => 'CEO',
@@ -126,9 +126,9 @@ class PositionSeeder extends Seeder
             'sub_division_id' => $departmentWithDivisions->divisions->first()->subDivisions->first()->id,
             'level_id' => $levels->where('level_order', 1)->first()->id,
             'is_active' => true,
-            'code' => 'CEO-001'
+            'code' => 'CEO-001',
         ]);
-        
+
         // Create COO position
         $cooPosition = Position::create([
             'name' => 'COO',
@@ -139,9 +139,9 @@ class PositionSeeder extends Seeder
             'sub_division_id' => $departmentWithDivisions->divisions->first()->subDivisions->first()->id,
             'level_id' => $levels->where('level_order', 2)->first()->id,
             'is_active' => true,
-            'code' => 'COO-001'
+            'code' => 'COO-001',
         ]);
-        
+
         // Create CFO position
         $cfoPosition = Position::create([
             'name' => 'CFO',
@@ -152,9 +152,9 @@ class PositionSeeder extends Seeder
             'sub_division_id' => $departmentWithDivisions->divisions->first()->subDivisions->first()->id,
             'level_id' => $levels->where('level_order', 3)->first()->id,
             'is_active' => true,
-            'code' => 'CFO-001'
+            'code' => 'CFO-001',
         ]);
-        
+
         // Create HR Manager position
         $hrManagerPosition = Position::create([
             'name' => 'HR Manager',
@@ -165,9 +165,9 @@ class PositionSeeder extends Seeder
             'sub_division_id' => $departmentWithDivisions->divisions->first()->subDivisions->first()->id,
             'level_id' => $levels->where('level_order', 4)->first()->id,
             'is_active' => true,
-            'code' => 'HRM-001'
+            'code' => 'HRM-001',
         ]);
-        
+
         // Create HR Assistant position
         $hrAssistantPosition = Position::create([
             'name' => 'HR Assistant',
@@ -178,9 +178,9 @@ class PositionSeeder extends Seeder
             'sub_division_id' => $departmentWithDivisions->divisions->first()->subDivisions->first()->id,
             'level_id' => $levels->where('level_order', 5)->first()->id,
             'is_active' => true,
-            'code' => 'HRA-001'
+            'code' => 'HRA-001',
         ]);
-        
-        $this->command->info("Created a total of 5 positions.");
+
+        $this->command->info('Created a total of 5 positions.');
     }
 }

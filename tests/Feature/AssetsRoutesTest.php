@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class AssetsRoutesTest extends TestCase
 {
@@ -16,7 +16,7 @@ class AssetsRoutesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a user for testing
         $this->user = User::factory()->create();
     }
@@ -29,19 +29,19 @@ class AssetsRoutesTest extends TestCase
         // Test Category route
         $response = $this->get(route('assets.category'));
         $response->assertStatus(200)->assertOk();
-        
+
         // Test Sub Category route
         $response = $this->get(route('assets.sub-category'));
         $response->assertStatus(200)->assertOk();
-        
+
         // Test Inventory route
         $response = $this->get(route('assets.inventory'));
         $response->assertSuccessful();
-        
+
         // Test Assets Lists route
         $response = $this->get(route('assets.lists'));
         $response->assertSuccessful();
-        
+
         // Test Request route
         $response = $this->get(route('assets.request'));
         $response->assertSuccessful();

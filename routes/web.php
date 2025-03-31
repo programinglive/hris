@@ -8,11 +8,12 @@ Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard');
     }
+
     return Inertia::render('welcome');
 })->name('home');
 
 // Include landing page routes (for company registration)
-include('module/landingpage.php');
+include 'module/landingpage.php';
 
 // Sentry test route
 Route::get('/sentry-test', function () {
@@ -30,19 +31,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     // Employee routes
-    include('module/employee.php');
+    include 'module/employee.php';
 
     // Organization routes
-    include('module/organization.php');
+    include 'module/organization.php';
 
     // Attendance routes
-    include('module/attendance.php');
+    include 'module/attendance.php';
 
     // Base Data routes
-    include('module/base-data.php');
+    include 'module/base-data.php';
 
     // Assets routes
-    include('module/assets.php');
+    include 'module/assets.php';
 });
 
 require __DIR__.'/settings.php';

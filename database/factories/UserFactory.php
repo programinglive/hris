@@ -2,12 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\Models\Company;
-use App\Models\Role;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -51,7 +49,7 @@ class UserFactory extends Factory
         return $this->afterCreating(function (User $user) {
             $user->userDetails()->create([
                 'user_id' => $user->id,
-                'employee_code' => 'EMP' . $this->faker->unique()->numerify('######'),
+                'employee_code' => 'EMP'.$this->faker->unique()->numerify('######'),
                 'status' => 'active',
                 'company_id' => $user->company_id,
                 'join_date' => now(),

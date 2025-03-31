@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\WorkShift;
 use App\Models\Company;
+use App\Models\WorkShift;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class WorkShiftFactory extends Factory
@@ -16,7 +16,7 @@ class WorkShiftFactory extends Factory
             'name' => $this->faker->jobTitle,
             'start_time' => $this->faker->time('H:i:s'),
             'end_time' => $this->faker->time('H:i:s'),
-            'code' => 'WSH' . str_pad($this->faker->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT),
+            'code' => 'WSH'.str_pad($this->faker->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT),
             'company_id' => Company::factory(),
             'is_active' => true,
         ];

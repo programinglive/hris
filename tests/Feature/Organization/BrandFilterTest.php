@@ -2,24 +2,30 @@
 
 namespace Tests\Feature\Organization;
 
-use App\Models\Brand;
 use App\Models\Branch;
+use App\Models\Brand;
 use App\Models\Company;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class BrandFilterTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $user;
+
     protected $company;
+
     protected $branch1;
+
     protected $branch2;
+
     protected $brand1;
+
     protected $brand2;
+
     protected $brand3;
 
     protected function setUp(): void
@@ -81,10 +87,9 @@ class BrandFilterTest extends TestCase
             ->get(route('organization.brand.index', ['search' => 'One']));
 
         $response->assertStatus(200);
-        $response->assertInertia(fn ($page) => 
-            $page->component('organization/brand/index')
-                ->has('brands.data', 1)
-                ->where('brands.data.0.name', 'Brand One')
+        $response->assertInertia(fn ($page) => $page->component('organization/brand/index')
+            ->has('brands.data', 1)
+            ->where('brands.data.0.name', 'Brand One')
         );
     }
 
@@ -95,9 +100,8 @@ class BrandFilterTest extends TestCase
             ->get(route('organization.brand.index', ['company_id' => $this->company->id]));
 
         $response->assertStatus(200);
-        $response->assertInertia(fn ($page) => 
-            $page->component('organization/brand/index')
-                ->has('brands.data', 3)
+        $response->assertInertia(fn ($page) => $page->component('organization/brand/index')
+            ->has('brands.data', 3)
         );
     }
 
@@ -108,10 +112,9 @@ class BrandFilterTest extends TestCase
             ->get(route('organization.brand.index', ['branch_id' => $this->branch1->id]));
 
         $response->assertStatus(200);
-        $response->assertInertia(fn ($page) => 
-            $page->component('organization/brand/index')
-                ->has('brands.data', 1)
-                ->where('brands.data.0.name', 'Brand One')
+        $response->assertInertia(fn ($page) => $page->component('organization/brand/index')
+            ->has('brands.data', 1)
+            ->where('brands.data.0.name', 'Brand One')
         );
     }
 
@@ -121,14 +124,13 @@ class BrandFilterTest extends TestCase
         $response = $this->actingAs($this->user)
             ->get(route('organization.brand.index', [
                 'company_id' => $this->company->id,
-                'branch_id' => $this->branch2->id
+                'branch_id' => $this->branch2->id,
             ]));
 
         $response->assertStatus(200);
-        $response->assertInertia(fn ($page) => 
-            $page->component('organization/brand/index')
-                ->has('brands.data', 1)
-                ->where('brands.data.0.name', 'Brand Two')
+        $response->assertInertia(fn ($page) => $page->component('organization/brand/index')
+            ->has('brands.data', 1)
+            ->where('brands.data.0.name', 'Brand Two')
         );
     }
 
@@ -139,9 +141,8 @@ class BrandFilterTest extends TestCase
             ->get(route('organization.brand.index'));
 
         $response->assertStatus(200);
-        $response->assertInertia(fn ($page) => 
-            $page->component('organization/brand/index')
-                ->has('brands.data', 3)
+        $response->assertInertia(fn ($page) => $page->component('organization/brand/index')
+            ->has('brands.data', 3)
         );
     }
 }

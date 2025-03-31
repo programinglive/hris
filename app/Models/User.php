@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -80,12 +79,12 @@ class User extends Authenticatable
                 'role',
                 'is_primary',
                 'created_at',
-                'updated_at'
+                'updated_at',
             ])
             ->withTimestamps()
             ->wherePivot('company_id', $this->company_id);
     }
-    
+
     /**
      * Get the company this user belongs to through user details.
      */
@@ -93,7 +92,7 @@ class User extends Authenticatable
     {
         return $this->hasOneThrough(Company::class, UserDetail::class, 'user_id', 'id', 'id', 'company_id');
     }
-    
+
     /**
      * Get the branch this user belongs to through user details.
      */
@@ -101,78 +100,68 @@ class User extends Authenticatable
     {
         return $this->hasOneThrough(Branch::class, UserDetail::class, 'user_id', 'id', 'id', 'branch_id');
     }
-    
+
     /**
      * Get the roles that belong to the user.
      */
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
-    
+
     /**
      * Check if the user has a specific role.
-     *
-     * @param string $roleName
-     * @return bool
      */
     public function hasRole(string $roleName): bool
     {
         return $this->roles()->where('name', $roleName)->exists();
     }
-    
+
     /**
      * Check if the user is an administrator.
-     *
-     * @return bool
      */
     public function isAdministrator(): bool
     {
         return $this->hasRole('administrator');
     }
-    
+
     /**
      * Check if the user is an employee.
-     *
-     * @return bool
      */
     public function isEmployee(): bool
     {
         return $this->hasRole('employee');
     }
-    
+
     /**
      * Assign a role to the user.
-     *
-     * @param  string|Role  $role
-     * @return void
      */
     public function assignRole(string|Role $role): void
     {
         if (is_string($role)) {
             $role = Role::where('name', $role)->firstOrFail();
         }
-        
-        if (!$this->hasRole($role->name)) {
+
+        if (! $this->hasRole($role->name)) {
             $this->roles()->attach($role);
         }
     }
-    
+
     /**
      * Remove a role from the user.
      *
-     * @param string|Role $role
-     * @return void
+     * @param  string|Role  $role
      */
     public function removeRole($role): void
     {
         if (is_string($role)) {
             $role = Role::where('name', $role)->firstOrFail();
         }
-        
+
         $this->roles()->detach($role);
     }
+
     /**
      * Get the leave requests for this user.
      */
@@ -191,7 +180,7 @@ class User extends Authenticatable
             ->withPivot([
                 'date',
                 'created_at',
-                'updated_at'
+                'updated_at',
             ])
             ->withTimestamps()
             ->where('work_shifts.company_id', $this->company_id);
@@ -213,15 +202,15 @@ class User extends Authenticatable
     public function getActiveWorkScheduleAttribute()
     {
         $today = now()->format('Y-m-d');
-        
+
         return $this->hasOne(UserWorkSchedule::class)
             ->where('is_active', true)
             ->where(function ($query) use ($today) {
                 $query->where('effective_date', '<=', $today)
-                      ->where(function ($q) use ($today) {
-                          $q->where('end_date', '>=', $today)
+                    ->where(function ($q) use ($today) {
+                        $q->where('end_date', '>=', $today)
                             ->orWhereNull('end_date');
-                      });
+                    });
             })
             ->latest('effective_date')
             ->first();

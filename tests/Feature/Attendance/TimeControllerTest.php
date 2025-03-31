@@ -6,11 +6,10 @@ use App\Models\Attendance\TimeLog;
 use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Support\Facades\Hash;
-use Mockery;
 use Inertia\Inertia;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class TimeControllerTest extends TestCase
 {
@@ -21,7 +20,7 @@ class TimeControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a user for testing
         $this->user = User::factory()->create([
             'name' => 'Test User',
@@ -91,9 +90,9 @@ class TimeControllerTest extends TestCase
             'check_in_time' => now()->subHours(8)->toDateTimeString(),
             'check_out_time' => now()->toDateTimeString(),
             'status' => 'present',
-            'notes' => 'Regular day'
+            'notes' => 'Regular day',
         ]);
-        
+
         $response->assertRedirect('/attendance/time');
     }
 
@@ -111,7 +110,7 @@ class TimeControllerTest extends TestCase
             'check_in_time' => now()->subHours(8)->toDateTimeString(),
             'check_out_time' => now()->toDateTimeString(),
             'status' => 'present',
-            'notes' => 'Regular day'
+            'notes' => 'Regular day',
         ]);
 
         // Mock the redirect method to avoid the RouteNotFoundException
@@ -127,15 +126,15 @@ class TimeControllerTest extends TestCase
             ->andReturn(redirect('/attendance/time'));
 
         // Test the route directly
-        $response = $this->put('/attendance/time/' . $timeLog->id, [
+        $response = $this->put('/attendance/time/'.$timeLog->id, [
             'user_id' => $this->user->id,
             'log_date' => now()->toDateString(),
             'check_in_time' => now()->subHours(9)->toDateTimeString(),
             'check_out_time' => now()->subHour()->toDateTimeString(),
             'status' => 'present',
-            'notes' => 'Updated notes'
+            'notes' => 'Updated notes',
         ]);
-        
+
         $response->assertRedirect('/attendance/time');
     }
 
@@ -153,7 +152,7 @@ class TimeControllerTest extends TestCase
             'check_in_time' => now()->subHours(8)->toDateTimeString(),
             'check_out_time' => now()->toDateTimeString(),
             'status' => 'present',
-            'notes' => 'Regular day'
+            'notes' => 'Regular day',
         ]);
 
         // Mock the redirect method to avoid the RouteNotFoundException
@@ -169,8 +168,8 @@ class TimeControllerTest extends TestCase
             ->andReturn(redirect('/attendance/time'));
 
         // Test the route directly
-        $response = $this->delete('/attendance/time/' . $timeLog->id);
-        
+        $response = $this->delete('/attendance/time/'.$timeLog->id);
+
         $response->assertRedirect('/attendance/time');
     }
 
@@ -194,9 +193,9 @@ class TimeControllerTest extends TestCase
             ->andReturn(Inertia::render('attendance/time/index', ['timeLogs' => ['data' => []]]));
 
         // Test the route directly with filters
-        $response = $this->get('/attendance/time?status=present&date_from=' . 
-            now()->subDays(7)->toDateString() . '&date_to=' . now()->toDateString());
-        
+        $response = $this->get('/attendance/time?status=present&date_from='.
+            now()->subDays(7)->toDateString().'&date_to='.now()->toDateString());
+
         $response->assertStatus(200);
     }
 }

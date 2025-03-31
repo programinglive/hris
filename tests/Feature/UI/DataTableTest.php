@@ -2,44 +2,44 @@
 
 namespace Tests\Feature\UI;
 
-use App\Models\User;
 use App\Models\Company;
-use App\Models\UserDetail;
 use App\Models\Role;
+use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Inertia\Testing\AssertableInertia as Assert;
 
 class DataTableTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
     protected $user;
+
     protected $company;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a company
         $this->company = Company::factory()->create([
             'name' => 'Test Company',
             'is_active' => true,
         ]);
-        
+
         // Create a user for authentication
         $this->user = User::factory()->create([
             'email' => 'test@example.com',
             'password' => bcrypt('password'),
         ]);
-        
+
         // Create user detail with company association
-        $userDetail = new UserDetail();
+        $userDetail = new UserDetail;
         $userDetail->user_id = $this->user->id;
         $userDetail->company_id = $this->company->id;
         $userDetail->save();
-        
+
         // Create and assign admin role
         $adminRole = Role::firstOrCreate(
             ['name' => 'administrator'],

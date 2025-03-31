@@ -6,14 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
-use Spatie\SimpleExcel\SimpleExcelWriter;
 use Spatie\SimpleExcel\SimpleExcelReader;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 class CompanyController extends Controller
 {
@@ -24,7 +23,7 @@ class CompanyController extends Controller
     {
         $query = Company::query()
             ->select('id', 'name', 'email', 'phone', 'city', 'country', 'is_active');
-            
+
         // Reset filters if filter_dialog is open
         if ($request->boolean('filter_dialog')) {
             $request->replace([
@@ -33,18 +32,18 @@ class CompanyController extends Controller
                 'country' => null,
             ]);
         }
-        
+
         // Apply search filter if provided
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('city', 'like', "%{$search}%")
-                  ->orWhere('country', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('city', 'like', "%{$search}%")
+                    ->orWhere('country', 'like', "%{$search}%");
             });
         }
-        
+
         // Apply status filter if provided
         if ($request->filled('status')) {
             $status = $request->input('status');
@@ -62,14 +61,14 @@ class CompanyController extends Controller
             $country = $request->input('country');
             $query->where('country', 'like', "%{$country}%");
         }
-        
+
         $companies = $query->orderBy('name')
-                          ->paginate(10)
-                          ->withQueryString();
-        
+            ->paginate(10)
+            ->withQueryString();
+
         return Inertia::render('organization/company/index', [
             'companies' => $companies,
-            'filters' => $request->only(['search', 'status', 'city', 'country'])
+            'filters' => $request->only(['search', 'status', 'city', 'country']),
         ]);
     }
 
@@ -123,7 +122,7 @@ class CompanyController extends Controller
     public function show(Company $company)
     {
         return Inertia::render('organization/company/show', [
-            'company' => $company
+            'company' => $company,
         ]);
     }
 
@@ -133,7 +132,7 @@ class CompanyController extends Controller
     public function edit(Company $company)
     {
         return Inertia::render('organization/company/edit', [
-            'company' => $company
+            'company' => $company,
         ]);
     }
 
@@ -147,7 +146,7 @@ class CompanyController extends Controller
             'legal_name' => 'nullable|string|max:255',
             'tax_id' => 'nullable|string|max:50',
             'registration_number' => 'nullable|string|max:50',
-            'email' => 'required|email|unique:companies,email,' . $company->id,
+            'email' => 'required|email|unique:companies,email,'.$company->id,
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
             'city' => 'nullable|string|max:100',
@@ -173,23 +172,23 @@ class CompanyController extends Controller
 
         return Redirect::route('organization.company.index')->with('success', 'Company deleted successfully.');
     }
-    
+
     /**
      * Download the import template for companies.
      */
     public function downloadTemplate()
     {
         $filename = 'company_import_template.xlsx';
-        $tempPath = storage_path('app/temp/' . $filename);
-        
+        $tempPath = storage_path('app/temp/'.$filename);
+
         // Ensure the directory exists
-        if (!file_exists(storage_path('app/temp'))) {
+        if (! file_exists(storage_path('app/temp'))) {
             mkdir(storage_path('app/temp'), 0755, true);
         }
-        
+
         // Create a writer and add the headers
         $writer = SimpleExcelWriter::create($tempPath);
-        
+
         // Add headers by adding a row with the header values
         $writer->addRow([
             'name' => 'Name*',
@@ -205,9 +204,9 @@ class CompanyController extends Controller
             'country' => 'Country',
             'website' => 'Website',
             'description' => 'Description',
-            'is_active' => 'Is Active (Yes/No)'
+            'is_active' => 'Is Active (Yes/No)',
         ]);
-        
+
         // Add example data
         $writer->addRow([
             'name' => 'ABC Company',
@@ -223,24 +222,24 @@ class CompanyController extends Controller
             'country' => 'USA',
             'website' => 'https://www.abccompany.com',
             'description' => 'A sample company description',
-            'is_active' => 'Yes'
+            'is_active' => 'Yes',
         ]);
-        
+
         // Add notes in additional rows
         $writer->addRow([]);
         $writer->addRow(['Notes:']);
         $writer->addRow(['* Required fields']);
         $writer->addRow(['* Email must be unique']);
         $writer->addRow(['* For Is Active field, use Yes/No, True/False, or 1/0']);
-        
+
         // Close the writer to save the file
         $writer->close();
-        
+
         return response()->download($tempPath, $filename, [
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         ])->deleteFileAfterSend(true);
     }
-    
+
     /**
      * Process the import file.
      */
@@ -250,22 +249,22 @@ class CompanyController extends Controller
         $validator = Validator::make($request->all(), [
             'file' => 'required|file|mimes:xlsx,xls,csv|max:10240',
         ]);
-        
+
         if ($validator->fails()) {
             return back()->withErrors($validator);
         }
-        
-        if (!$request->hasFile('file')) {
+
+        if (! $request->hasFile('file')) {
             return back()->withErrors(['file' => 'No file was uploaded.']);
         }
-        
+
         $file = $request->file('file');
-        
+
         // Process the file directly from the uploaded file path
         try {
             // Get file extension to determine reader type
             $extension = strtolower($file->getClientOriginalExtension());
-            
+
             // Map extension to reader type
             $readerType = 'xlsx'; // Default
             if ($extension === 'csv') {
@@ -273,41 +272,41 @@ class CompanyController extends Controller
             } elseif ($extension === 'xls') {
                 $readerType = 'xls';
             }
-            
+
             $reader = SimpleExcelReader::create($file->getPathname(), $readerType);
-            
+
             $importResults = [
                 'total' => 0,
                 'success' => 0,
                 'failed' => 0,
                 'errors' => [],
             ];
-            
+
             $ownerId = Auth::id();
-            
+
             DB::beginTransaction();
-            
+
             try {
-                $reader->getRows()->each(function(array $row) use (&$importResults, $ownerId) {
+                $reader->getRows()->each(function (array $row) use (&$importResults, $ownerId) {
                     $importResults['total']++;
-                    
+
                     // Skip header row if it exists
                     if (isset($row['name']) && $row['name'] === 'Name*') {
                         return;
                     }
-                    
+
                     // Skip empty rows
                     if (empty($row['name']) && empty($row['email'])) {
                         return;
                     }
-                    
+
                     // Prepare data for validation and creation
                     $isActive = false;
                     if (isset($row['is_active'])) {
                         $isActiveValue = strtolower(trim($row['is_active']));
                         $isActive = in_array($isActiveValue, ['yes', 'true', '1', 'y']);
                     }
-                    
+
                     $data = [
                         'name' => $row['name'] ?? null,
                         'legal_name' => $row['legal_name'] ?? null,
@@ -325,7 +324,7 @@ class CompanyController extends Controller
                         'is_active' => $isActive,
                         'owner_id' => $ownerId,
                     ];
-                    
+
                     // Validate row data
                     $rowValidator = Validator::make($data, [
                         'name' => 'required|string|max:255',
@@ -343,7 +342,7 @@ class CompanyController extends Controller
                         'description' => 'nullable|string',
                         'is_active' => 'boolean',
                     ]);
-                    
+
                     if ($rowValidator->fails()) {
                         $importResults['failed']++;
                         $importResults['errors'][] = [
@@ -352,9 +351,10 @@ class CompanyController extends Controller
                             'code' => $data['email'] ?? '',
                             'errors' => $rowValidator->errors()->all(),
                         ];
+
                         return;
                     }
-                    
+
                     try {
                         Company::create($data);
                         $importResults['success']++;
@@ -368,9 +368,9 @@ class CompanyController extends Controller
                         ];
                     }
                 });
-                
+
                 DB::commit();
-                
+
                 return back()->with([
                     'success' => true,
                     'message' => "Import completed: {$importResults['success']} companies imported successfully, {$importResults['failed']} failed.",
@@ -378,17 +378,17 @@ class CompanyController extends Controller
                 ]);
             } catch (\Exception $e) {
                 DB::rollBack();
-                
+
                 return back()->with([
                     'success' => false,
-                    'message' => 'An error occurred during import: ' . $e->getMessage(),
+                    'message' => 'An error occurred during import: '.$e->getMessage(),
                 ]);
             }
         } catch (\Exception $e) {
             // Handle file reading errors
             return back()->with([
                 'success' => false,
-                'message' => 'Error reading the import file: ' . $e->getMessage(),
+                'message' => 'Error reading the import file: '.$e->getMessage(),
             ]);
         }
     }

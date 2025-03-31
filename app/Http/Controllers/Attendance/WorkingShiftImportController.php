@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Spatie\SimpleExcel\SimpleExcelReader;
 use Spatie\SimpleExcel\SimpleExcelWriter;
@@ -31,16 +30,16 @@ class WorkingShiftImportController extends Controller
     public function downloadTemplate()
     {
         $fileName = 'working_shift_import_template.xlsx';
-        $filePath = Storage::path('templates/' . $fileName);
-        
+        $filePath = Storage::path('templates/'.$fileName);
+
         // Create directory if it doesn't exist
-        if (!Storage::exists('templates')) {
+        if (! Storage::exists('templates')) {
             Storage::makeDirectory('templates');
         }
-        
+
         // Create the template file
         $writer = SimpleExcelWriter::create($filePath);
-        
+
         // Add header row
         $writer->addRow([
             'name' => 'Morning Shift',
@@ -51,7 +50,7 @@ class WorkingShiftImportController extends Controller
             'description' => 'Standard morning shift with 1-hour lunch break',
             'is_active' => 'yes',
         ]);
-        
+
         // Add another example row
         $writer->addRow([
             'name' => 'Night Shift',
@@ -62,7 +61,7 @@ class WorkingShiftImportController extends Controller
             'description' => 'Night shift with 45-minute break',
             'is_active' => 'no',
         ]);
-        
+
         return response()->download($filePath, $fileName);
     }
 
@@ -75,35 +74,35 @@ class WorkingShiftImportController extends Controller
         $request->validate([
             'file' => 'required|file|mimes:xlsx,csv',
         ]);
-        
+
         // Get the user's company
         $userDetail = Auth::user()->detail;
-        if (!$userDetail) {
+        if (! $userDetail) {
             return back()->with('error', 'User details not found');
         }
-        
+
         $company = Company::find($userDetail->company_id);
-        if (!$company) {
+        if (! $company) {
             return back()->with('error', 'Company not found');
         }
-        
+
         // Process the file
         $file = $request->file('file');
         $filePath = $file->getPathname();
-        
+
         try {
             // Start transaction
             DB::beginTransaction();
-            
+
             $reader = SimpleExcelReader::create($filePath);
-            
+
             $rowCount = 0;
             $successCount = 0;
             $errorRows = [];
-            
+
             $reader->getRows()->each(function (array $rowData) use ($company, &$rowCount, &$successCount, &$errorRows) {
                 $rowCount++;
-                
+
                 // Validate the row data
                 $validator = Validator::make($rowData, [
                     'name' => 'required|string|max:255',
@@ -114,24 +113,25 @@ class WorkingShiftImportController extends Controller
                     'description' => 'nullable|string',
                     'is_active' => 'required|in:yes,no,true,false,1,0',
                 ]);
-                
+
                 if ($validator->fails()) {
                     $errorRows[] = [
                         'row' => $rowCount,
                         'data' => $rowData,
                         'errors' => $validator->errors()->toArray(),
                     ];
+
                     return;
                 }
-                
+
                 // Convert is_active to boolean
                 $isActive = in_array(strtolower($rowData['is_active']), ['yes', 'true', '1']);
-                
+
                 // Check if code already exists for this company
                 $existingShift = WorkingShift::where('code', $rowData['code'])
                     ->where('company_id', $company->id)
                     ->first();
-                
+
                 if ($existingShift) {
                     // Update existing shift
                     $existingShift->update([
@@ -155,26 +155,26 @@ class WorkingShiftImportController extends Controller
                         'company_id' => $company->id,
                     ]);
                 }
-                
+
                 $successCount++;
             });
-            
+
             // Commit transaction
             DB::commit();
-            
+
             // Return response
             return back()->with([
                 'success' => true,
-                'message' => "Import completed: {$successCount} working shifts imported successfully, " . count($errorRows) . " rows had errors.",
+                'message' => "Import completed: {$successCount} working shifts imported successfully, ".count($errorRows).' rows had errors.',
                 'errors' => $errorRows,
             ]);
-            
+
         } catch (\Exception $e) {
             // Rollback transaction
             DB::rollBack();
-            
+
             return back()->with([
-                'error' => 'Import failed: ' . $e->getMessage(),
+                'error' => 'Import failed: '.$e->getMessage(),
             ]);
         }
     }
@@ -186,30 +186,30 @@ class WorkingShiftImportController extends Controller
     {
         // Get the user's company
         $userDetail = Auth::user()->detail;
-        if (!$userDetail) {
+        if (! $userDetail) {
             return back()->with('error', 'User details not found');
         }
-        
+
         $company = Company::find($userDetail->company_id);
-        if (!$company) {
+        if (! $company) {
             return back()->with('error', 'Company not found');
         }
-        
+
         // Get all working shifts for the company
         $workingShifts = WorkingShift::where('company_id', $company->id)->get();
-        
+
         // Create the export file
-        $fileName = 'working_shifts_export_' . date('Y-m-d_His') . '.xlsx';
-        $filePath = Storage::path('exports/' . $fileName);
-        
+        $fileName = 'working_shifts_export_'.date('Y-m-d_His').'.xlsx';
+        $filePath = Storage::path('exports/'.$fileName);
+
         // Create directory if it doesn't exist
-        if (!Storage::exists('exports')) {
+        if (! Storage::exists('exports')) {
             Storage::makeDirectory('exports');
         }
-        
+
         // Create the Excel file
         $writer = SimpleExcelWriter::create($filePath);
-        
+
         // Add data rows
         foreach ($workingShifts as $shift) {
             $writer->addRow([
@@ -222,7 +222,7 @@ class WorkingShiftImportController extends Controller
                 'is_active' => $shift->is_active ? 'yes' : 'no',
             ]);
         }
-        
+
         return response()->download($filePath, $fileName);
     }
 }

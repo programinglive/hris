@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
-use App\Models\User;
-use App\Models\Branch;
-use App\Models\Brand;
-use App\Models\Department;
-use App\Models\Level;
 
 class Company extends Model
 {
@@ -64,13 +59,13 @@ class Company extends Model
                 $baseCode = Str::upper(Str::substr(Str::slug($company->name), 0, 5));
                 $counter = 1;
                 $code = $baseCode;
-                
+
                 // Make sure the code is unique
                 while (static::where('code', $code)->exists()) {
-                    $code = $baseCode . $counter;
+                    $code = $baseCode.$counter;
                     $counter++;
                 }
-                
+
                 $company->code = $code;
             }
         });

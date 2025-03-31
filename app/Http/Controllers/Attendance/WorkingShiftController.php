@@ -20,7 +20,7 @@ class WorkingShiftController extends Controller
     {
         $user = Auth::user();
         $companyId = $user->detail->company_id ?? null;
-        
+
         $workingShifts = WorkingShift::where('company_id', $companyId)
             ->orderBy('name')
             ->get()
@@ -37,12 +37,12 @@ class WorkingShiftController extends Controller
                     'is_active' => $shift->is_active,
                 ];
             });
-        
+
         // If no working shifts exist, add some dummy data
         if ($workingShifts->isEmpty()) {
             $workingShifts = $this->getDummyWorkingShifts();
         }
-        
+
         return Inertia::render('attendance/working-shift/index', [
             'workingShifts' => $workingShifts,
         ]);
@@ -51,7 +51,6 @@ class WorkingShiftController extends Controller
     /**
      * Store a newly created working shift in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
@@ -72,7 +71,7 @@ class WorkingShiftController extends Controller
 
         $user = Auth::user();
         $companyId = $user->detail->company_id ?? null;
-        
+
         WorkingShift::create([
             'name' => $request->name,
             'code' => $request->code,
@@ -97,10 +96,10 @@ class WorkingShiftController extends Controller
     {
         $user = Auth::user();
         $companyId = $user->detail->company_id ?? null;
-        
+
         $workingShift = WorkingShift::where('company_id', $companyId)
             ->findOrFail($id);
-        
+
         return Inertia::render('attendance/working-shift/show', [
             'workingShift' => [
                 'id' => $workingShift->id,
@@ -119,7 +118,6 @@ class WorkingShiftController extends Controller
     /**
      * Update the specified working shift in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -127,13 +125,13 @@ class WorkingShiftController extends Controller
     {
         $user = Auth::user();
         $companyId = $user->detail->company_id ?? null;
-        
+
         $workingShift = WorkingShift::where('company_id', $companyId)
             ->findOrFail($id);
-        
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:working_shifts,code,' . $id,
+            'code' => 'required|string|max:50|unique:working_shifts,code,'.$id,
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
             'break_duration' => 'required|integer|min:0|max:240',
@@ -168,15 +166,15 @@ class WorkingShiftController extends Controller
     {
         $user = Auth::user();
         $companyId = $user->detail->company_id ?? null;
-        
+
         $workingShift = WorkingShift::where('company_id', $companyId)
             ->findOrFail($id);
-        
+
         $workingShift->delete();
 
         return redirect()->route('attendance.working-shift.index')->with('success', 'Working shift deleted successfully.');
     }
-    
+
     /**
      * Get dummy working shifts for demonstration purposes.
      *

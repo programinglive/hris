@@ -24,7 +24,7 @@ class CompanyFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'legal_name' => $this->faker->company() . ' ' . $this->faker->companySuffix(),
+            'legal_name' => $this->faker->company().' '.$this->faker->companySuffix(),
             'tax_id' => $this->faker->numerify('##-#######'),
             'registration_number' => $this->faker->numerify('REG-########'),
             'email' => $this->faker->unique()->companyEmail(),

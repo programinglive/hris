@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Company;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 use Spatie\SimpleExcel\SimpleExcelReader;
 use Spatie\SimpleExcel\SimpleExcelWriter;
 
@@ -31,7 +31,7 @@ class BranchController extends Controller
             'company_id',
             'is_main_branch',
             'is_active',
-            'created_at'
+            'created_at',
         ]);
 
         // Reset filters if filter dialog is opened
@@ -46,10 +46,10 @@ class BranchController extends Controller
             if ($request->has('search')) {
                 $search = $request->input('search');
                 $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', '%' . $search . '%')
-                        ->orWhere('code', 'like', '%' . $search . '%')
-                        ->orWhere('address', 'like', '%' . $search . '%')
-                        ->orWhere('city', 'like', '%' . $search . '%');
+                    $q->where('name', 'like', '%'.$search.'%')
+                        ->orWhere('code', 'like', '%'.$search.'%')
+                        ->orWhere('address', 'like', '%'.$search.'%')
+                        ->orWhere('city', 'like', '%'.$search.'%');
                 });
             }
 
@@ -58,7 +58,7 @@ class BranchController extends Controller
             }
 
             if ($request->has('city')) {
-                $query->where('city', 'like', '%' . $request->input('city') . '%');
+                $query->where('city', 'like', '%'.$request->input('city').'%');
             }
 
             $filters = [
@@ -77,7 +77,7 @@ class BranchController extends Controller
         return Inertia::render('organization/branch/index', [
             'branches' => $branches,
             'companies' => $companies,
-            'filters' => $filters
+            'filters' => $filters,
         ]);
     }
 
@@ -90,7 +90,7 @@ class BranchController extends Controller
     {
         $companies = Company::where('is_active', true)
             ->get(['id', 'name']);
-        
+
         $statuses = ['active', 'inactive'];
 
         return Inertia::render('organization/branch/create', [
@@ -102,7 +102,6 @@ class BranchController extends Controller
     /**
      * Store a newly created branch in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
@@ -163,7 +162,7 @@ class BranchController extends Controller
     public function show($id)
     {
         $branch = Branch::with('company')->findOrFail($id);
-        
+
         return Inertia::render('organization/branch/details', [
             'branch' => [
                 'id' => $branch->id,
@@ -199,7 +198,7 @@ class BranchController extends Controller
         $branch = Branch::findOrFail($id);
         $companies = Company::where('is_active', true)
             ->get(['id', 'name']);
-        
+
         $statuses = ['active', 'inactive'];
 
         return Inertia::render('organization/branch/edit', [
@@ -212,7 +211,6 @@ class BranchController extends Controller
     /**
      * Update the specified branch in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -222,7 +220,7 @@ class BranchController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:branches,code,' . $id,
+            'code' => 'required|string|max:50|unique:branches,code,'.$id,
             'address' => 'nullable|string|max:500',
             'city' => 'nullable|string|max:100',
             'state' => 'nullable|string|max:100',
@@ -241,7 +239,7 @@ class BranchController extends Controller
         }
 
         // If this is set as main branch, unset any existing main branch for this company
-        if ($request->is_main_branch && (!$branch->is_main_branch || $branch->company_id != $request->company_id)) {
+        if ($request->is_main_branch && (! $branch->is_main_branch || $branch->company_id != $request->company_id)) {
             Branch::where('company_id', $request->company_id)
                 ->where('is_main_branch', true)
                 ->update(['is_main_branch' => false]);
@@ -276,22 +274,22 @@ class BranchController extends Controller
     public function destroy($id)
     {
         $branch = Branch::findOrFail($id);
-        
+
         // Check if this is the main branch
         if ($branch->is_main_branch) {
             return redirect()->back()
                 ->with('error', 'Cannot delete the main branch. Please set another branch as main first.');
         }
-        
+
         // Check if the branch has any associated employees or other dependencies
         // Add checks here if needed
-        
+
         $branch->delete();
-        
+
         return redirect()->route('organization.branch.index')
             ->with('success', 'Branch deleted successfully.');
     }
-    
+
     /**
      * Download an Excel template for branch import
      *
@@ -300,16 +298,16 @@ class BranchController extends Controller
     public function downloadTemplate()
     {
         $filename = 'branch_import_template.xlsx';
-        $tempPath = storage_path('app/temp/' . $filename);
-        
+        $tempPath = storage_path('app/temp/'.$filename);
+
         // Ensure the directory exists
-        if (!file_exists(storage_path('app/temp'))) {
+        if (! file_exists(storage_path('app/temp'))) {
             mkdir(storage_path('app/temp'), 0755, true);
         }
-        
+
         // Create a writer and add the headers
         $writer = SimpleExcelWriter::create($tempPath);
-        
+
         // Add headers by adding a row with the header values
         $writer->addRow([
             'name' => 'Branch Name*',
@@ -324,9 +322,9 @@ class BranchController extends Controller
             'phone' => 'Phone',
             'email' => 'Email',
             'is_active' => 'Is Active (Yes/No)',
-            'description' => 'Description'
+            'description' => 'Description',
         ]);
-        
+
         // Add example data
         $writer->addRow([
             'name' => 'Main Branch',
@@ -341,28 +339,27 @@ class BranchController extends Controller
             'phone' => '+1234567890',
             'email' => 'branch@example.com',
             'is_active' => 'Yes',
-            'description' => 'Main branch description'
+            'description' => 'Main branch description',
         ]);
-        
+
         // Add notes in additional rows
         $writer->addRow([]);
         $writer->addRow(['Notes:']);
         $writer->addRow(['* Required fields']);
         $writer->addRow(['* Branch Code must be unique']);
         $writer->addRow(['* For Is Active field, use Yes/No, True/False, or 1/0']);
-        
+
         // Close the writer to save the file
         $writer->close();
-        
+
         return response()->download($tempPath, $filename, [
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         ])->deleteFileAfterSend(true);
     }
-    
+
     /**
      * Process the imported branch file
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function processImport(Request $request)
@@ -371,22 +368,22 @@ class BranchController extends Controller
         $validator = Validator::make($request->all(), [
             'file' => 'required|file|mimes:xlsx,xls,csv|max:10240',
         ]);
-        
+
         if ($validator->fails()) {
             return back()->withErrors($validator);
         }
-        
-        if (!$request->hasFile('file')) {
+
+        if (! $request->hasFile('file')) {
             return back()->withErrors(['file' => 'No file was uploaded.']);
         }
-        
+
         $file = $request->file('file');
 
         // Process the file directly from the uploaded file path
         try {
             // Get file extension to determine reader type
             $extension = strtolower($file->getClientOriginalExtension());
-            
+
             // Map extension to reader type
             $readerType = 'xlsx'; // Default
             if ($extension === 'csv') {
@@ -394,32 +391,32 @@ class BranchController extends Controller
             } elseif ($extension === 'xls') {
                 $readerType = 'xls';
             }
-            
+
             $reader = SimpleExcelReader::create($file->getPathname(), $readerType);
-            
+
             $importResults = [
                 'total' => 0,
                 'success' => 0,
                 'failed' => 0,
                 'errors' => [],
             ];
-            
+
             DB::beginTransaction();
 
             try {
-                $reader->getRows()->each(function(array $row) use (&$importResults) {
+                $reader->getRows()->each(function (array $row) use (&$importResults) {
                     $importResults['total']++;
-                    
+
                     // Skip header row if it exists
                     if (isset($row['name']) && $row['name'] === 'Branch Name*') {
                         return;
                     }
-                    
+
                     // Skip empty rows
                     if (empty($row['name']) && empty($row['code'])) {
                         return;
                     }
-                    
+
                     try {
                         // Get company using both code and name
                         $company = \App\Models\Company::where(function ($query) use ($row) {
@@ -427,17 +424,17 @@ class BranchController extends Controller
                                 ->orWhere('name', $row['company_name']);
                         })->first();
 
-                        if (!$company) {
+                        if (! $company) {
                             throw new \Exception("Company not found: Code={$row['company_code']}, Name={$row['company_name']}");
                         }
-                        
+
                         // Prepare data for validation and creation
                         $isActive = false;
                         if (isset($row['is_active'])) {
                             $isActiveValue = strtolower(trim($row['is_active']));
                             $isActive = in_array($isActiveValue, ['yes', 'true', '1', 'y']);
                         }
-                        
+
                         $data = [
                             'name' => $row['name'] ?? null,
                             'code' => $row['code'] ?? null,
@@ -453,7 +450,7 @@ class BranchController extends Controller
                             'is_main_branch' => false,
                             'description' => $row['description'] ?? null,
                         ];
-                        
+
                         // Validate row data
                         $rowValidator = Validator::make($data, [
                             'name' => 'required|string|max:255',
@@ -470,15 +467,15 @@ class BranchController extends Controller
                             'is_main_branch' => 'boolean',
                             'description' => 'nullable|string|max:255',
                         ]);
-                        
+
                         if ($rowValidator->fails()) {
-                            throw new \Exception('Validation failed: ' . json_encode($rowValidator->errors()->all()));
+                            throw new \Exception('Validation failed: '.json_encode($rowValidator->errors()->all()));
                         }
 
                         // Create branch
                         Branch::create($data);
                         $importResults['success']++;
-                        
+
                     } catch (\Exception $e) {
                         $importResults['failed']++;
                         $importResults['errors'][] = [
@@ -489,9 +486,9 @@ class BranchController extends Controller
                         ];
                     }
                 });
-                
+
                 DB::commit();
-                
+
                 // Get the updated branches with company_id
                 $branches = Branch::with('company')->select([
                     'id',
@@ -502,12 +499,12 @@ class BranchController extends Controller
                     'company_id',
                     'is_main_branch',
                     'is_active',
-                    'created_at'
+                    'created_at',
                 ])->paginate(10);
-                
+
                 // Get companies for filter
                 $companies = Company::select(['id', 'name'])->get();
-                
+
                 return Inertia::render('organization/branch/index', [
                     'branches' => $branches,
                     'companies' => $companies,
@@ -518,23 +515,23 @@ class BranchController extends Controller
                     ],
                     'importResults' => $importResults,
                     'importMessage' => "Import completed: {$importResults['success']} branches imported successfully, {$importResults['failed']} failed.",
-                    'importStatus' => $importResults['failed'] > 0 ? 'warning' : 'success'
+                    'importStatus' => $importResults['failed'] > 0 ? 'warning' : 'success',
                 ]);
             } catch (\Exception $e) {
                 DB::rollBack();
-                
+
                 return Inertia::render('organization/branch/index', [
                     'importResults' => $importResults,
-                    'importMessage' => 'An error occurred during import: ' . $e->getMessage(),
-                    'importStatus' => 'error'
+                    'importMessage' => 'An error occurred during import: '.$e->getMessage(),
+                    'importStatus' => 'error',
                 ]);
             }
         } catch (\Exception $e) {
             // Handle file reading errors
             return Inertia::render('organization/branch/index', [
                 'importResults' => null,
-                'importMessage' => 'Error reading the import file: ' . $e->getMessage(),
-                'importStatus' => 'error'
+                'importMessage' => 'Error reading the import file: '.$e->getMessage(),
+                'importStatus' => 'error',
             ]);
         }
     }

@@ -2,10 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use App\Models\UserDetail;
-use App\Models\Company;
-use App\Models\Branch;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserDetailFactory extends Factory
@@ -25,10 +22,10 @@ class UserDetailFactory extends Factory
     public function definition(): array
     {
         $statuses = ['active', 'inactive', 'on_leave', 'terminated'];
-        
+
         return [
             'user_id' => null, // Will be set by UserFactory
-            'employee_code' => 'EMP' . $this->faker->unique()->numerify('######'),
+            'employee_code' => 'EMP'.$this->faker->unique()->numerify('######'),
             'status' => $this->faker->randomElement($statuses),
             'company_id' => null, // Will be set by UserFactory
             'branch_id' => null,

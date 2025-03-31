@@ -2,44 +2,46 @@
 
 namespace Tests\Feature\Employee;
 
-use App\Models\User;
-use App\Models\UserDetail;
 use App\Models\Company;
+use App\Models\User;
 use App\Models\WorkShift;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class WorkShiftTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $user;
+
     protected $company;
+
     protected $shift1;
+
     protected $shift2;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a company
         $this->company = Company::factory()->create();
 
         // Create test shifts
         $this->shift1 = WorkShift::factory()->create([
             'company_id' => $this->company->id,
-            'name' => 'Shift 1'
+            'name' => 'Shift 1',
         ]);
 
         $this->shift2 = WorkShift::factory()->create([
             'company_id' => $this->company->id,
-            'name' => 'Shift 2'
+            'name' => 'Shift 2',
         ]);
 
         // Create test user
         $this->user = User::factory()->create([
-            'company_id' => $this->company->id
+            'company_id' => $this->company->id,
         ]);
     }
 
@@ -63,10 +65,10 @@ class WorkShiftTest extends TestCase
 
         // Try to assign two shifts on the same day
         $this->expectException(\Illuminate\Database\QueryException::class);
-        
+
         $this->user->workShifts()->attach([
             $this->shift1->id => ['date' => now()->toDateString()],
-            $this->shift2->id => ['date' => now()->toDateString()]
+            $this->shift2->id => ['date' => now()->toDateString()],
         ]);
     }
 
@@ -76,7 +78,7 @@ class WorkShiftTest extends TestCase
         // Create a shift from different company
         $otherCompany = Company::factory()->create();
         $otherShift = WorkShift::factory()->create([
-            'company_id' => $otherCompany->id
+            'company_id' => $otherCompany->id,
         ]);
 
         $this->actingAs($this->user);

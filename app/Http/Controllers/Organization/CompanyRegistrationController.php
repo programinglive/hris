@@ -3,19 +3,17 @@
 namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
-use App\Models\Company;
 use App\Models\Branch;
+use App\Models\Company;
 use App\Models\User;
-use App\Models\VerificationCode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class CompanyRegistrationController extends Controller
@@ -54,7 +52,7 @@ class CompanyRegistrationController extends Controller
 
         // Generate a 6-digit verification code
         $verificationCode = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-        
+
         // Store verification data in session
         Session::put('registration_data', [
             'contact' => $contact,
@@ -66,26 +64,26 @@ class CompanyRegistrationController extends Controller
         // Send verification code
         if ($contactType === 'email') {
             // Send email with verification code
-            Log::info('Verification code for ' . $contact . ': ' . $verificationCode);
-            
+            Log::info('Verification code for '.$contact.': '.$verificationCode);
+
             try {
                 // Send verification email
                 Mail::to($contact)->send(new \App\Mail\VerificationCodeMail($verificationCode));
             } catch (\Exception $e) {
                 // Log the error but don't fail the process
-                Log::error('Failed to send verification email: ' . $e->getMessage());
+                Log::error('Failed to send verification email: '.$e->getMessage());
                 // Email sending failed, but we still want to proceed with the verification
                 // In production, you might want to handle this differently
             }
         } else {
             // Send SMS with verification code
             // In a real app, you would integrate with an SMS service
-            Log::info('SMS verification code for ' . $contact . ': ' . $verificationCode);
+            Log::info('SMS verification code for '.$contact.': '.$verificationCode);
         }
 
         return response()->json([
             'success' => true,
-            'message' => 'Verification code sent to ' . $contact,
+            'message' => 'Verification code sent to '.$contact,
             'next_step' => 'verify_code',
         ]);
     }
@@ -100,8 +98,8 @@ class CompanyRegistrationController extends Controller
         ]);
 
         $registrationData = Session::get('registration_data');
-        
-        if (!$registrationData) {
+
+        if (! $registrationData) {
             return response()->json([
                 'success' => false,
                 'message' => 'Registration session expired. Please start over.',
@@ -132,8 +130,8 @@ class CompanyRegistrationController extends Controller
     public function saveCompanyDetails(Request $request)
     {
         $registrationData = Session::get('registration_data');
-        
-        if (!$registrationData || !$registrationData['verified']) {
+
+        if (! $registrationData || ! $registrationData['verified']) {
             return response()->json([
                 'success' => false,
                 'message' => 'Please complete verification first.',
@@ -143,7 +141,7 @@ class CompanyRegistrationController extends Controller
         $validated = $request->validate([
             // Company information
             'company_name' => 'required|string|max:255',
-            
+
             // Admin user information
             'admin_name' => 'required|string|max:255',
             'admin_email' => 'required|email|unique:users,email',
@@ -180,7 +178,7 @@ class CompanyRegistrationController extends Controller
             // Create the main branch
             Branch::create([
                 'name' => 'Main Branch',
-                'code' => 'MB-' . strtoupper(substr(str_replace(' ', '', $company->name), 0, 3)) . '001',
+                'code' => 'MB-'.strtoupper(substr(str_replace(' ', '', $company->name), 0, 3)).'001',
                 'email' => $company->email,
                 'phone' => $company->phone,
                 'company_id' => $company->id,
@@ -208,7 +206,7 @@ class CompanyRegistrationController extends Controller
     {
         // This is kept for backward compatibility
         // The new flow uses the step-by-step methods above
-        
+
         $validated = $request->validate([
             // Company information
             'company_name' => 'required|string|max:255',
@@ -219,18 +217,18 @@ class CompanyRegistrationController extends Controller
             'company_state' => 'nullable|string|max:100',
             'company_postal_code' => 'nullable|string|max:20',
             'company_country' => 'nullable|string|max:100',
-            
+
             // User information
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            
+
             // Main branch information
             'branch_name' => 'required|string|max:255',
         ]);
 
         // Use a transaction to ensure all related records are created or none
-        return DB::transaction(function () use ($validated, $request) {
+        return DB::transaction(function () use ($validated) {
             // Create the user
             $user = User::create([
                 'name' => $validated['name'],

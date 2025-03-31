@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Company;
 use App\Models\LeaveType;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Model;
 
 class LeaveTypeFactory extends Factory
 {

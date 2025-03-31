@@ -3,35 +3,33 @@
 namespace Tests\Feature;
 
 use App\Models\Company;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\UserDetail;
 use App\Models\WorkingCalendar;
-use App\Models\Holiday;
-use App\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-use Carbon\Carbon;
 use PHPUnit\Framework\Attributes\Test;
-use Mockery;
+use Tests\TestCase;
 
 class WorkingCalendarControllerTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $user;
+
     protected $company;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a role
         $role = Role::create([
             'name' => 'admin',
             'display_name' => 'Administrator',
-            'slug' => 'admin'
+            'slug' => 'admin',
         ]);
-        
+
         // Create a test company
         $this->company = new Company([
             'name' => 'Test Company',
@@ -41,7 +39,7 @@ class WorkingCalendarControllerTest extends TestCase
             'website' => 'https://testcompany.com',
         ]);
         $this->company->save();
-        
+
         // Create a test user
         $this->user = new User([
             'name' => 'Test User',
@@ -49,10 +47,10 @@ class WorkingCalendarControllerTest extends TestCase
             'password' => bcrypt('password'),
         ]);
         $this->user->save();
-        
+
         // Assign role to user
         $this->user->assignRole('admin');
-        
+
         // Create user details
         $userDetail = new UserDetail([
             'user_id' => $this->user->id,
@@ -105,7 +103,7 @@ class WorkingCalendarControllerTest extends TestCase
         ];
 
         // Mock the controller method to avoid the company_id issue
-        $this->mock(\App\Http\Controllers\Attendance\WorkingCalendarController::class, function ($mock) use ($data) {
+        $this->mock(\App\Http\Controllers\Attendance\WorkingCalendarController::class, function ($mock) {
             $mock->shouldReceive('store')
                 ->once()
                 ->andReturn(redirect()->route('attendance.working-calendar.index'));

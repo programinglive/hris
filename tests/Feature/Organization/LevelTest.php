@@ -4,24 +4,22 @@ namespace Tests\Feature\Organization;
 
 use App\Models\Company;
 use App\Models\Level;
-use App\Models\Position;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use PHPUnit\Framework\Attributes\Test;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Spatie\SimpleExcel\SimpleExcelReader;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class LevelTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
     protected $user;
+
     protected $company;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -178,7 +176,7 @@ class LevelTest extends TestCase
             'status' => 'active',
         ]);
 
-        $response = $this->get('/organization/level/' . $level->id);
+        $response = $this->get('/organization/level/'.$level->id);
 
         $response->assertStatus(200);
         $response->assertInertia(fn ($page) => $page
@@ -207,7 +205,7 @@ class LevelTest extends TestCase
             'status' => 'active',
         ];
 
-        $response = $this->put('/organization/level/' . $level->id, $updatedData);
+        $response = $this->put('/organization/level/'.$level->id, $updatedData);
 
         $response->assertRedirect('/organization/level');
         $this->assertDatabaseHas('levels', [
@@ -228,7 +226,7 @@ class LevelTest extends TestCase
             'status' => 'active',
         ]);
 
-        $response = $this->put('/organization/level/' . $level->id, [
+        $response = $this->put('/organization/level/'.$level->id, [
             // Missing required fields
         ]);
 
@@ -246,21 +244,21 @@ class LevelTest extends TestCase
             'company_id' => $this->company->id,
             'status' => 'active',
         ]);
-        
+
         // Mock the controller to bypass the positions check
         $this->mock(\App\Http\Controllers\Organization\LevelController::class, function ($mock) {
             $mock->shouldReceive('destroy')
                 ->once()
                 ->andReturn(redirect('/organization/level')
-                ->with('success', 'Level deleted successfully.'));
+                    ->with('success', 'Level deleted successfully.'));
         });
-        
+
         // Attempt to delete the level
-        $response = $this->delete('/organization/level/' . $level->id);
-        
+        $response = $this->delete('/organization/level/'.$level->id);
+
         // Assert the response is a redirect to the index page
         $response->assertRedirect('/organization/level');
-        
+
         // Assert the success message is set
         $response->assertSessionHas('success', 'Level deleted successfully.');
     }
@@ -276,28 +274,28 @@ class LevelTest extends TestCase
             'company_id' => $this->company->id,
             'status' => 'active',
         ]);
-        
+
         // Mock the controller to simulate a level with positions
         $this->mock(\App\Http\Controllers\Organization\LevelController::class, function ($mock) {
             $mock->shouldReceive('destroy')
                 ->once()
                 ->andReturn(redirect('/organization/level')
-                ->with('error', 'Cannot delete level with positions. Please delete positions first.'));
+                    ->with('error', 'Cannot delete level with positions. Please delete positions first.'));
         });
-        
+
         // Attempt to delete the level
-        $response = $this->delete('/organization/level/' . $level->id);
-        
+        $response = $this->delete('/organization/level/'.$level->id);
+
         // Assert the response is a redirect to the index page
         $response->assertRedirect('/organization/level');
-        
+
         // Assert the error message is set
         $response->assertSessionHas('error', 'Cannot delete level with positions. Please delete positions first.');
-        
+
         // Assert the level still exists in the database
         $this->assertDatabaseHas('levels', [
             'id' => $level->id,
-            'name' => 'Test Level'
+            'name' => 'Test Level',
         ]);
     }
 
@@ -310,7 +308,7 @@ class LevelTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJson([
-            'companies' => []
+            'companies' => [],
         ]);
     }
 
@@ -330,49 +328,49 @@ class LevelTest extends TestCase
     public function it_can_process_import()
     {
         Storage::fake('local');
-        
+
         // Create a valid Excel file for testing
         $filePath = 'test_level_import.xlsx';
-        
+
         // Create a simple Excel file using Spatie Simple Excel
-        $writer = \Spatie\SimpleExcel\SimpleExcelWriter::create(storage_path('app/' . $filePath));
+        $writer = \Spatie\SimpleExcel\SimpleExcelWriter::create(storage_path('app/'.$filePath));
         $writer->addRow([
             'name' => 'Imported Level Test',
             'description' => 'Imported Level Description',
             'level_order' => 5,
             'company_id' => $this->company->id,
-            'status' => 'active'
+            'status' => 'active',
         ]);
         $writer->close();
-        
+
         // Create an uploaded file from the Excel file
         $file = new \Illuminate\Http\UploadedFile(
-            storage_path('app/' . $filePath),
+            storage_path('app/'.$filePath),
             $filePath,
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             null,
             true
         );
-        
+
         // Submit the import request
         $response = $this->post(route('organization.level.import.process'), [
             'file' => $file,
-            'company_id' => $this->company->id
+            'company_id' => $this->company->id,
         ]);
-        
+
         // Check if the import was successful
         $response->assertRedirect(route('organization.level.index'));
         $response->assertSessionHas('success');
-        
+
         // Check if the level was created in the database
         $this->assertDatabaseHas('levels', [
             'name' => 'Imported Level Test',
             'description' => 'Imported Level Description',
             'level_order' => 5,
             'company_id' => $this->company->id,
-            'status' => 'active'
+            'status' => 'active',
         ]);
-        
+
         // Clean up using Storage facade
         Storage::disk('local')->delete($filePath);
     }

@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
-use App\Models\Position;
-use App\Models\Level;
-use App\Models\SubDivision;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
-use Illuminate\Http\Request;
+use App\Models\Level;
+use App\Models\Position;
+use App\Models\SubDivision;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -23,38 +23,38 @@ class PositionController extends Controller
     {
         // Query all positions without company filtering
         $query = Position::query();
-        
+
         // Apply filters if provided
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
-        
+
         if ($request->filled('level_id')) {
             $query->where('level_id', $request->input('level_id'));
         }
-        
+
         if ($request->filled('sub_division_id')) {
             $query->where('sub_division_id', $request->input('sub_division_id'));
         }
-        
+
         if ($request->filled('status')) {
             $query->where('status', $request->input('status'));
         }
-        
+
         // Get positions with their relationships and paginate
         $positions = $query->with(['level', 'subDivision.division.department', 'company'])
-                      ->orderBy('name')
-                      ->paginate(10)
-                      ->withQueryString();
-        
+            ->orderBy('name')
+            ->paginate(10)
+            ->withQueryString();
+
         // Get levels and subdivisions for filters
         $levels = Level::orderBy('level_order')->get();
         $subDivisions = SubDivision::with('division.department')->orderBy('name')->get();
-        
+
         return Inertia::render('organization/position/index', [
             'positions' => $positions,
             'levels' => $levels,
@@ -74,7 +74,7 @@ class PositionController extends Controller
         $companies = Company::orderBy('name')->get();
         $departments = Department::orderBy('name')->get();
         $divisions = Division::orderBy('name')->get();
-        
+
         return Inertia::render('organization/position/create', [
             'levels' => $levels,
             'subDivisions' => $subDivisions,
@@ -113,7 +113,7 @@ class PositionController extends Controller
     public function show(Position $position): Response
     {
         $position->load(['level', 'subDivision.division.department', 'company']);
-        
+
         return Inertia::render('organization/position/show', [
             'position' => $position,
         ]);
@@ -125,14 +125,14 @@ class PositionController extends Controller
     public function edit(Position $position): Response
     {
         $position->load(['level', 'subDivision', 'company']);
-        
+
         // Get levels, sub-divisions, and companies for dropdowns
         $levels = Level::orderBy('level_order')->get();
         $subDivisions = SubDivision::with('division')->orderBy('name')->get();
         $companies = Company::orderBy('name')->get();
         $departments = Department::orderBy('name')->get();
         $divisions = Division::orderBy('name')->get();
-        
+
         return Inertia::render('organization/position/edit', [
             'position' => $position,
             'levels' => $levels,
@@ -149,8 +149,8 @@ class PositionController extends Controller
     public function update(Request $request, Position $position): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:positions,name,' . $position->id . ',id,deleted_at,NULL',
-            'code' => 'nullable|string|max:255|unique:positions,code,' . $position->id . ',id,deleted_at,NULL',
+            'name' => 'required|string|max:255|unique:positions,name,'.$position->id.',id,deleted_at,NULL',
+            'code' => 'nullable|string|max:255|unique:positions,code,'.$position->id.',id,deleted_at,NULL',
             'description' => 'nullable|string',
             'company_id' => 'required|exists:companies,id',
             'department_id' => 'required|exists:departments,id',
@@ -176,9 +176,9 @@ class PositionController extends Controller
             return redirect()->route('organization.position.index')
                 ->with('error', 'Cannot delete position with employees. Please reassign employees first.');
         }
-        
+
         $position->delete();
-        
+
         return redirect()->route('organization.position.index')
             ->with('success', 'Position deleted successfully.');
     }

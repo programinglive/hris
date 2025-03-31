@@ -2,16 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Models\Branch;
+use App\Models\Company;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
-use App\Models\User;
-use App\Models\UserDetail;
-use App\Models\Company;
-use App\Models\Branch;
-use Spatie\SimpleExcel\SimpleExcelReader;
 
 class EmployeeImportTest extends TestCase
 {
@@ -49,10 +46,10 @@ class EmployeeImportTest extends TestCase
 
         // Create an uploaded file from the existing template
         $templatePath = storage_path('app/public/templates/employee_import_template.xlsx');
-        
+
         // Ensure the template exists
         $this->assertFileExists($templatePath, 'Employee import template file not found');
-        
+
         // Create an uploaded file from the template
         $file = new UploadedFile(
             $templatePath,
@@ -69,18 +66,18 @@ class EmployeeImportTest extends TestCase
 
         // Assert the response
         $response->assertStatus(200)
-                 ->assertJsonPath('success', true);
-        
+            ->assertJsonPath('success', true);
+
         // Assert that the employee was created in the database
         // The template has a sample employee "John Doe" with email "john.doe@example.com"
         $this->assertDatabaseHas('users', [
             'email' => 'john.doe@example.com',
         ]);
-        
+
         // Get the user and check if user details were created properly
         $user = User::where('email', 'john.doe@example.com')->first();
         $this->assertNotNull($user);
-        
+
         $this->assertDatabaseHas('user_details', [
             'user_id' => $user->id,
             'employee_code' => 'EMP001',
@@ -102,8 +99,8 @@ class EmployeeImportTest extends TestCase
         // Create an invalid file (PDF file instead of Excel)
         Storage::fake('local');
         $file = UploadedFile::fake()->create(
-            'employees.pdf', 
-            1000, 
+            'employees.pdf',
+            1000,
             'application/pdf'
         );
 
@@ -114,11 +111,11 @@ class EmployeeImportTest extends TestCase
 
         // Assert the response has validation errors
         $response->assertStatus(422)
-                 ->assertJsonPath('success', false)
-                 ->assertJsonStructure([
-                     'success',
-                     'errors' => ['file']
-                 ]);
+            ->assertJsonPath('success', false)
+            ->assertJsonStructure([
+                'success',
+                'errors' => ['file'],
+            ]);
     }
 
     /**
@@ -135,13 +132,13 @@ class EmployeeImportTest extends TestCase
 
         // Assert the response has validation errors
         $response->assertStatus(422)
-                 ->assertJson([
-                     'success' => false,
-                     'errors' => [
-                         'file' => [
-                             // The validation error message for required file
-                         ]
-                     ]
-                 ]);
+            ->assertJson([
+                'success' => false,
+                'errors' => [
+                    'file' => [
+                        // The validation error message for required file
+                    ],
+                ],
+            ]);
     }
 }

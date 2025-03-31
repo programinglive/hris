@@ -7,14 +7,15 @@ use App\Models\User;
 use App\Models\UserDetail;
 use App\Models\WorkingShift;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use PHPUnit\Framework\Test;
+use Tests\TestCase;
 
 class WorkingShiftTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $user;
+
     protected $company;
 
     protected function setUp(): void
@@ -51,7 +52,7 @@ class WorkingShiftTest extends TestCase
     public function it_can_display_working_shift_list_page()
     {
         $response = $this->get(route('attendance.working-shift.index'));
-        
+
         $response->assertStatus(200);
         $response->assertInertia(fn ($assert) => $assert
             ->component('attendance/working-shift/lists')
@@ -73,7 +74,7 @@ class WorkingShiftTest extends TestCase
         ];
 
         $response = $this->post(route('attendance.working-shift.store'), $data);
-        
+
         $response->assertRedirect(route('attendance.working-shift.index'));
         $this->assertDatabaseHas('working_shifts', [
             'name' => 'Morning Shift',
@@ -96,12 +97,12 @@ class WorkingShiftTest extends TestCase
         ];
 
         $response = $this->post(route('attendance.working-shift.store'), $data);
-        
+
         $response->assertRedirect(route('attendance.working-shift.index'));
         $this->assertDatabaseHas('working_shifts', [
             'name' => 'Morning Shift',
             'company_id' => $this->company->id,
-            'working_days' => [1, 2, 3, 4, 5]
+            'working_days' => [1, 2, 3, 4, 5],
         ]);
     }
 
@@ -131,14 +132,14 @@ class WorkingShiftTest extends TestCase
         ];
 
         $response = $this->put(route('attendance.working-shift.update', $shift->id), $updatedData);
-        
+
         $response->assertRedirect(route('attendance.working-shift.index'));
         $this->assertDatabaseHas('working_shifts', [
             'id' => $shift->id,
             'name' => 'Updated Morning Shift',
             'break_duration' => 45,
         ]);
-        
+
         // Get the updated shift and check the time values
         $updatedShift = WorkingShift::find($shift->id);
         $this->assertEquals('09:00:00', $updatedShift->start_time->format('H:i:s'));
@@ -173,7 +174,7 @@ class WorkingShiftTest extends TestCase
         $response->assertRedirect(route('attendance.working-shift.index'));
         $this->assertDatabaseHas('working_shifts', [
             'id' => $shift->id,
-            'is_default' => true
+            'is_default' => true,
         ]);
 
         // Ensure no other shifts are default for this company
@@ -189,7 +190,7 @@ class WorkingShiftTest extends TestCase
 
         $this->assertDatabaseHas('working_shifts', [
             'id' => $otherShift->id,
-            'is_default' => false
+            'is_default' => false,
         ]);
     }
 
@@ -209,7 +210,7 @@ class WorkingShiftTest extends TestCase
         ]);
 
         $response = $this->delete(route('attendance.working-shift.destroy', $shift->id));
-        
+
         $response->assertRedirect(route('attendance.working-shift.index'));
         $this->assertSoftDeleted('working_shifts', ['id' => $shift->id]);
     }
@@ -218,7 +219,7 @@ class WorkingShiftTest extends TestCase
     public function it_validates_required_fields_when_creating_a_working_shift()
     {
         $response = $this->post(route('attendance.working-shift.store'), []);
-        
+
         $response->assertSessionHasErrors(['name', 'code', 'start_time', 'end_time', 'break_duration']);
     }
 
@@ -247,7 +248,7 @@ class WorkingShiftTest extends TestCase
             'description' => 'Another morning shift',
             'is_active' => true,
         ]);
-        
+
         $response->assertSessionHasErrors(['code']);
     }
 
@@ -301,7 +302,7 @@ class WorkingShiftTest extends TestCase
         $this->user->detail()->update(['working_shift_id' => $shift->id]);
 
         $response = $this->delete(route('attendance.working-shift.destroy', $shift->id));
-        
+
         $response->assertRedirect(route('attendance.working-shift.index'));
         $this->assertDatabaseHas('working_shifts', ['id' => $shift->id]); // Should not be deleted
     }
@@ -337,7 +338,7 @@ class WorkingShiftTest extends TestCase
         ]);
 
         $response = $this->get(route('attendance.working-shift.show', $shift->id));
-        
+
         $response->assertStatus(200);
         $response->assertInertia(fn ($assert) => $assert
             ->component('attendance/working-shift/show')

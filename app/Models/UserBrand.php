@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\QueryException;
 use Exception;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\QueryException;
 
 class UserBrand extends Pivot
 {
@@ -21,7 +21,7 @@ class UserBrand extends Pivot
         'brand_id',
         'role',
         'is_primary',
-        'company_id'
+        'company_id',
     ];
 
     /**
@@ -70,7 +70,7 @@ class UserBrand extends Pivot
                     'Company ID mismatch between user and brand',
                     'Company ID mismatch between user and brand',
                     [],
-                    new Exception()
+                    new Exception
                 );
             }
         });

@@ -4,9 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class OrganizationRoutesTest extends TestCase
 {
@@ -17,7 +16,7 @@ class OrganizationRoutesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a user for testing
         $this->user = User::factory()->create();
     }
@@ -30,28 +29,28 @@ class OrganizationRoutesTest extends TestCase
         // Test Company routes
         $response = $this->get(route('organization.company.index'));
         $response->assertStatus(200)->assertOk();
-        
+
         $response = $this->get(route('organization.company.create'));
         $response->assertStatus(200)->assertOk();
-        
+
         // Test Branch route
         $response = $this->get(route('organization.branch.index'));
         $response->assertSuccessful();
-        
+
         // Test Brand route
         $response = $this->get(route('organization.brand.index'));
         $response->assertSuccessful();
-        
+
         // Test Department route
         $response = $this->get(route('organization.department.index'));
         $response->assertSuccessful();
-        
+
         // Skip Division and Subdivision routes as controllers are not implemented yet
-        
+
         // Test Level route
         $response = $this->get(route('organization.level.index'));
         $response->assertSuccessful();
-        
+
         // Test Position route
         $response = $this->get(route('organization.position.index'));
         $response->assertSuccessful();

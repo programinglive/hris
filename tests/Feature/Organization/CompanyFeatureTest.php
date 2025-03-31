@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Organization;
 
+use App\Mail\VerificationCodeMail;
 use App\Models\Company;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,23 +11,24 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Tests\TestCase;
-use App\Mail\VerificationCodeMail;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class CompanyFeatureTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
     protected $user;
+
     protected $company;
+
     protected $timestamp;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a test user with admin role
         $this->user = User::factory()->create([
             'email' => 'test@example.com',
@@ -58,25 +60,25 @@ class CompanyFeatureTest extends TestCase
         Mail::fake();
 
         $response = $this->postJson('/register-company/validate-contact', [
-            'contact' => 'test' . $this->timestamp . '@example.com',
+            'contact' => 'test'.$this->timestamp.'@example.com',
             'contact_type' => 'email',
         ]);
 
         $response->assertStatus(200)
             ->assertJson([
                 'success' => true,
-                'message' => 'Verification code sent to test' . $this->timestamp . '@example.com',
+                'message' => 'Verification code sent to test'.$this->timestamp.'@example.com',
                 'next_step' => 'verify_code',
             ]);
 
         $registrationData = Session::get('registration_data');
-        $this->assertEquals('test' . $this->timestamp . '@example.com', $registrationData['contact']);
+        $this->assertEquals('test'.$this->timestamp.'@example.com', $registrationData['contact']);
         $this->assertEquals('email', $registrationData['contact_type']);
         $this->assertFalse($registrationData['verified']);
         $this->assertNotEmpty($registrationData['verification_code']);
 
         Mail::assertSent(VerificationCodeMail::class, function ($mail) use ($registrationData) {
-            return $mail->hasTo('test' . $this->timestamp . '@example.com') && 
+            return $mail->hasTo('test'.$this->timestamp.'@example.com') &&
                    $mail->verificationCode === $registrationData['verification_code'];
         });
     }
@@ -86,7 +88,7 @@ class CompanyFeatureTest extends TestCase
     {
         $verificationCode = '123456';
         Session::put('registration_data', [
-            'contact' => 'test' . $this->timestamp . '@example.com',
+            'contact' => 'test'.$this->timestamp.'@example.com',
             'contact_type' => 'email',
             'verification_code' => $verificationCode,
             'verified' => false,
@@ -111,7 +113,7 @@ class CompanyFeatureTest extends TestCase
     public function save_company_details_step()
     {
         Session::put('registration_data', [
-            'contact' => 'admin' . $this->timestamp . '@example.com',
+            'contact' => 'admin'.$this->timestamp.'@example.com',
             'contact_type' => 'email',
             'verification_code' => '123456',
             'verified' => true,
@@ -120,7 +122,7 @@ class CompanyFeatureTest extends TestCase
         $response = $this->postJson('/register-company/save-details', [
             'company_name' => 'Test Company',
             'admin_name' => 'Admin User',
-            'admin_email' => 'admin' . $this->timestamp . '@example.com',
+            'admin_email' => 'admin'.$this->timestamp.'@example.com',
             'admin_password' => 'password',
         ]);
 
@@ -137,7 +139,7 @@ class CompanyFeatureTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'name' => 'Admin User',
-            'email' => 'admin' . $this->timestamp . '@example.com',
+            'email' => 'admin'.$this->timestamp.'@example.com',
         ]);
 
         $this->assertAuthenticated();
@@ -148,10 +150,10 @@ class CompanyFeatureTest extends TestCase
     public function user_can_view_company_list()
     {
         $this->actingAs($this->user);
-        
+
         $response = $this->get(route('organization.company.index'));
         $response->assertStatus(200);
-        
+
         $response->assertInertia(function (Assert $page) {
             $page->component('organization/company/index')
                 ->has('companies.data', 1)
@@ -163,9 +165,9 @@ class CompanyFeatureTest extends TestCase
     public function company_list_has_correct_structure()
     {
         $this->actingAs($this->user);
-        
+
         $response = $this->get(route('organization.company.index'));
-        
+
         $response->assertInertia(function (Assert $page) {
             $page->component('organization/company/index')
                 ->has('companies.data', 1)
@@ -182,11 +184,11 @@ class CompanyFeatureTest extends TestCase
     public function companies_can_be_filtered_by_search()
     {
         $this->actingAs($this->user);
-        
+
         $response = $this->get(route('organization.company.index', [
             'search' => $this->company->name,
         ]));
-        
+
         $response->assertInertia(function (Assert $page) {
             $page->component('organization/company/index')
                 ->has('companies.data', 1)
@@ -198,10 +200,10 @@ class CompanyFeatureTest extends TestCase
     public function user_can_view_company_create_form()
     {
         $this->actingAs($this->user);
-        
+
         $response = $this->get(route('organization.company.create'));
         $response->assertStatus(200);
-        
+
         $response->assertInertia(function (Assert $page) {
             $page->component('organization/company/create');
         });
@@ -211,21 +213,21 @@ class CompanyFeatureTest extends TestCase
     public function user_can_create_a_company()
     {
         $this->actingAs($this->user);
-        
+
         $response = $this->post(route('organization.company.store'), [
             'name' => 'New Company',
-            'email' => 'new' . $this->timestamp . '@example.com',
+            'email' => 'new'.$this->timestamp.'@example.com',
             'phone' => '1234567890',
             'city' => 'Test City',
             'country' => 'Test Country',
             'is_active' => true,
         ]);
-        
+
         $response->assertRedirect(route('organization.company.index'));
-        
+
         $this->assertDatabaseHas('companies', [
             'name' => 'New Company',
-            'email' => 'new' . $this->timestamp . '@example.com',
+            'email' => 'new'.$this->timestamp.'@example.com',
             'phone' => '1234567890',
             'city' => 'Test City',
             'country' => 'Test Country',
@@ -237,10 +239,10 @@ class CompanyFeatureTest extends TestCase
     public function user_can_view_company_details()
     {
         $this->actingAs($this->user);
-        
+
         $response = $this->get(route('organization.company.show', $this->company));
         $response->assertStatus(200);
-        
+
         $response->assertInertia(function (Assert $page) {
             $page->component('organization/company/show')
                 ->where('company.name', $this->company->name)
@@ -256,10 +258,10 @@ class CompanyFeatureTest extends TestCase
     public function user_can_view_company_edit_form()
     {
         $this->actingAs($this->user);
-        
+
         $response = $this->get(route('organization.company.edit', $this->company));
         $response->assertStatus(200);
-        
+
         $response->assertInertia(function (Assert $page) {
             $page->component('organization/company/edit')
                 ->where('company.name', $this->company->name)
@@ -275,22 +277,22 @@ class CompanyFeatureTest extends TestCase
     public function user_can_update_a_company()
     {
         $this->actingAs($this->user);
-        
+
         $response = $this->put(route('organization.company.update', $this->company), [
             'name' => 'Updated Company',
-            'email' => 'updated' . $this->timestamp . '@example.com',
+            'email' => 'updated'.$this->timestamp.'@example.com',
             'phone' => '0987654321',
             'city' => 'Updated City',
             'country' => 'Updated Country',
             'is_active' => false,
         ]);
-        
+
         $response->assertRedirect(route('organization.company.index'));
-        
+
         $this->assertDatabaseHas('companies', [
             'id' => $this->company->id,
             'name' => 'Updated Company',
-            'email' => 'updated' . $this->timestamp . '@example.com',
+            'email' => 'updated'.$this->timestamp.'@example.com',
             'phone' => '0987654321',
             'city' => 'Updated City',
             'country' => 'Updated Country',
@@ -302,27 +304,27 @@ class CompanyFeatureTest extends TestCase
     public function user_can_delete_a_company()
     {
         $this->actingAs($this->user);
-        
+
         // Create a company with a unique email
         $company = Company::factory()->create([
             'owner_id' => $this->user->id,
-            'email' => 'delete-test' . $this->timestamp . '@example.com',
+            'email' => 'delete-test'.$this->timestamp.'@example.com',
         ]);
-        
+
         $response = $this->delete(route('organization.company.destroy', $company));
         $response->assertRedirect(route('organization.company.index'));
-        
+
         // Verify the company was soft deleted
         $this->assertSoftDeleted('companies', [
             'id' => $company->id,
             'owner_id' => $this->user->id,
-            'email' => 'delete-test' . $this->timestamp . '@example.com',
+            'email' => 'delete-test'.$this->timestamp.'@example.com',
         ]);
-        
+
         // Verify the company no longer exists in the active records
         $this->assertDatabaseMissing('companies', [
             'id' => $company->id,
-            'deleted_at' => null
+            'deleted_at' => null,
         ]);
     }
 
@@ -330,39 +332,39 @@ class CompanyFeatureTest extends TestCase
     public function company_can_have_logo()
     {
         $this->actingAs($this->user);
-        
+
         Storage::fake('public');
-        
+
         $logo = UploadedFile::fake()->image('logo.png');
-        
+
         $response = $this->post(route('organization.company.store'), [
             'name' => 'Company with Logo',
-            'email' => 'logo' . $this->timestamp . '@example.com',
+            'email' => 'logo'.$this->timestamp.'@example.com',
             'phone' => '1234567890',
             'city' => 'Test City',
             'country' => 'Test Country',
             'is_active' => true,
             'logo' => $logo,
         ]);
-        
+
         $response->assertRedirect(route('organization.company.index'));
-        
-        $company = Company::where('email', 'logo' . $this->timestamp . '@example.com')->first();
+
+        $company = Company::where('email', 'logo'.$this->timestamp.'@example.com')->first();
         $this->assertNotNull($company);
-        
+
         // Get the logo path from the database
         $logoPath = $company->logo;
         $this->assertNotNull($logoPath);
-        
+
         // Check if the file exists in the storage
         $this->assertTrue(Storage::disk('public')->exists($logoPath));
-        
+
         // Verify the logo path is in the correct format
         $this->assertStringContainsString('logos/', $logoPath);
-        
+
         // Verify the logo file has the correct extension
         $this->assertStringEndsWith('.png', $logoPath);
-        
+
         // Check if the logo was actually uploaded
         $this->assertGreaterThan(0, Storage::disk('public')->size($logoPath));
     }
@@ -371,7 +373,7 @@ class CompanyFeatureTest extends TestCase
     public function company_validation_rules_are_enforced()
     {
         $this->actingAs($this->user);
-        
+
         $response = $this->post(route('organization.company.store'), [
             'name' => '',  // Empty required field
             'email' => 'invalid-email',  // Invalid email format
@@ -379,15 +381,15 @@ class CompanyFeatureTest extends TestCase
             'country' => 'Test Country',
             'is_active' => true,
         ]);
-        
+
         // Verify the response has validation errors
         $response->assertSessionHasErrors(['name', 'email']);
-        
+
         // Get the error messages from the session
         $errors = session('errors');
         $this->assertArrayHasKey('name', $errors->getMessages());
         $this->assertArrayHasKey('email', $errors->getMessages());
-        
+
         // Verify the error messages contain the correct validation messages
         $this->assertStringContainsString('The name field is required.', $errors->get('name')[0]);
         $this->assertStringContainsString('The email field must be a valid email address.', $errors->get('email')[0]);
@@ -397,12 +399,12 @@ class CompanyFeatureTest extends TestCase
     public function company_email_must_be_unique()
     {
         $this->actingAs($this->user);
-        
+
         $response = $this->post(route('organization.company.store'), [
             'name' => 'Duplicate Company',
             'email' => $this->company->email,  // Using existing company's email
         ]);
-        
+
         $response->assertSessionHasErrors(['email']);
     }
 
@@ -410,24 +412,24 @@ class CompanyFeatureTest extends TestCase
     public function companies_can_be_filtered_by_city()
     {
         $this->actingAs($this->user);
-        
+
         // Create a company with a specific city
         $city = 'Test City Filter';
         $company = Company::factory()->create([
             'owner_id' => $this->user->id,
             'city' => $city,
         ]);
-        
+
         // Create another company with a different city
         Company::factory()->create([
             'owner_id' => $this->user->id,
             'city' => 'Different City',
         ]);
-        
+
         $response = $this->get(route('organization.company.index', [
             'city' => $city,
         ]));
-        
+
         $response->assertInertia(function (Assert $page) use ($company, $city) {
             $page->component('organization/company/index')
                 ->has('companies.data', 1)
@@ -440,24 +442,24 @@ class CompanyFeatureTest extends TestCase
     public function companies_can_be_filtered_by_country()
     {
         $this->actingAs($this->user);
-        
+
         // Create a company with a specific country
         $country = 'Test Country Filter';
         $company = Company::factory()->create([
             'owner_id' => $this->user->id,
             'country' => $country,
         ]);
-        
+
         // Create another company with a different country
         Company::factory()->create([
             'owner_id' => $this->user->id,
             'country' => 'Different Country',
         ]);
-        
+
         $response = $this->get(route('organization.company.index', [
             'country' => $country,
         ]));
-        
+
         $response->assertInertia(function (Assert $page) use ($company, $country) {
             $page->component('organization/company/index')
                 ->has('companies.data', 1)
@@ -470,33 +472,33 @@ class CompanyFeatureTest extends TestCase
     public function companies_can_be_filtered_by_status()
     {
         $this->actingAs($this->user);
-        
+
         // Update existing company to be inactive
         $this->company->update(['is_active' => false]);
-        
+
         // Create an active company
         $activeCompany = Company::factory()->create([
             'owner_id' => $this->user->id,
             'is_active' => true,
         ]);
-        
+
         // Test active filter
         $response = $this->get(route('organization.company.index', [
             'status' => 'active',
         ]));
-        
+
         $response->assertInertia(function (Assert $page) use ($activeCompany) {
             $page->component('organization/company/index')
                 ->has('companies.data', 1)
                 ->where('companies.data.0.is_active', true)
                 ->where('companies.data.0.id', $activeCompany->id);
         });
-        
+
         // Test inactive filter
         $response = $this->get(route('organization.company.index', [
             'status' => 'inactive',
         ]));
-        
+
         $response->assertInertia(function (Assert $page) {
             $page->component('organization/company/index')
                 ->has('companies.data', 1)
@@ -508,7 +510,7 @@ class CompanyFeatureTest extends TestCase
     public function companies_can_be_filtered_by_multiple_criteria()
     {
         $this->actingAs($this->user);
-        
+
         // Create a company matching all criteria
         $matchingCompany = Company::factory()->create([
             'owner_id' => $this->user->id,
@@ -517,7 +519,7 @@ class CompanyFeatureTest extends TestCase
             'country' => 'Test Country',
             'is_active' => true,
         ]);
-        
+
         // Create companies that don't match all criteria
         Company::factory()->create([
             'owner_id' => $this->user->id,
@@ -526,7 +528,7 @@ class CompanyFeatureTest extends TestCase
             'country' => 'Test Country',
             'is_active' => true,
         ]);
-        
+
         Company::factory()->create([
             'owner_id' => $this->user->id,
             'name' => 'Test Company',
@@ -534,7 +536,7 @@ class CompanyFeatureTest extends TestCase
             'country' => 'Different Country',
             'is_active' => true,
         ]);
-        
+
         Company::factory()->create([
             'owner_id' => $this->user->id,
             'name' => 'Test Company',
@@ -542,14 +544,14 @@ class CompanyFeatureTest extends TestCase
             'country' => 'Test Country',
             'is_active' => false,
         ]);
-        
+
         $response = $this->get(route('organization.company.index', [
             'search' => 'Test Company',
             'city' => 'Test City',
             'country' => 'Test Country',
             'status' => 'active',
         ]));
-        
+
         $response->assertInertia(function (Assert $page) use ($matchingCompany) {
             $page->component('organization/company/index')
                 ->has('companies.data', 1)
@@ -565,14 +567,14 @@ class CompanyFeatureTest extends TestCase
     public function filters_are_reset_when_filter_dialog_opens()
     {
         $this->actingAs($this->user);
-        
+
         // Apply some filters
         $response = $this->get(route('organization.company.index', [
             'status' => 'active',
             'city' => 'Test City',
             'country' => 'Test Country',
         ]));
-        
+
         // Open filter dialog
         $response = $this->get(route('organization.company.index', [
             'status' => 'active',
@@ -580,7 +582,7 @@ class CompanyFeatureTest extends TestCase
             'country' => 'Test Country',
             'filter_dialog' => 'true',
         ]));
-        
+
         $response->assertInertia(function (Assert $page) {
             $page->component('organization/company/index')
                 ->has('companies.data')
@@ -595,14 +597,14 @@ class CompanyFeatureTest extends TestCase
     public function query_string_is_cleared_when_filter_dialog_opens()
     {
         $this->actingAs($this->user);
-        
+
         // Apply some filters
         $response = $this->get(route('organization.company.index', [
             'status' => 'active',
             'city' => 'Test City',
             'country' => 'Test Country',
         ]));
-        
+
         // Open filter dialog
         $response = $this->get(route('organization.company.index', [
             'status' => 'active',
@@ -610,7 +612,7 @@ class CompanyFeatureTest extends TestCase
             'country' => 'Test Country',
             'filter_dialog' => 'true',
         ]));
-        
+
         $response->assertInertia(function (Assert $page) {
             $page->component('organization/company/index')
                 ->has('companies.data')

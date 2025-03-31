@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Providers\RouteServiceProvider;
 use Inertia\Inertia;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
@@ -10,14 +8,14 @@ test('registration screen can be rendered', function () {
     // Disable Vite and exception handling for testing
     $this->withoutVite();
     $this->withoutExceptionHandling();
-    
+
     // Mock the RegisteredUserController to avoid actual rendering
     $this->partialMock(\App\Http\Controllers\Auth\RegisteredUserController::class)
         ->shouldReceive('create')
         ->andReturn(Inertia::render('auth/register'));
-    
+
     $response = $this->get('/register');
-    
+
     $response->assertStatus(200);
 });
 

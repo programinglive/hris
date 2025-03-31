@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Employee;
 
+use App\Models\Company;
 use App\Models\User;
 use App\Models\UserDetail;
-use App\Models\Company;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class CompanyRequirementTest extends TestCase
 {
@@ -18,7 +18,7 @@ class CompanyRequirementTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create a company
         $this->company = Company::factory()->create();
     }
@@ -30,7 +30,7 @@ class CompanyRequirementTest extends TestCase
 
         // Try to create user without company_id
         User::factory()->create([
-            'company_id' => null
+            'company_id' => null,
         ]);
     }
 
@@ -39,7 +39,7 @@ class CompanyRequirementTest extends TestCase
     {
         // Create a user
         $user = User::factory()->create([
-            'company_id' => $this->company->id
+            'company_id' => $this->company->id,
         ]);
 
         $this->expectException(\Illuminate\Validation\ValidationException::class);
@@ -47,7 +47,7 @@ class CompanyRequirementTest extends TestCase
         // Try to create user details without company_id
         UserDetail::factory()->create([
             'user_id' => $user->id,
-            'company_id' => null
+            'company_id' => null,
         ]);
     }
 
@@ -60,7 +60,7 @@ class CompanyRequirementTest extends TestCase
 
         // Create a user in company1
         $user = User::factory()->create([
-            'company_id' => $company1->id
+            'company_id' => $company1->id,
         ]);
 
         $this->expectException(\Illuminate\Validation\ValidationException::class);
@@ -68,7 +68,7 @@ class CompanyRequirementTest extends TestCase
         // Try to create user details with different company_id
         UserDetail::factory()->create([
             'user_id' => $user->id,
-            'company_id' => $company2->id
+            'company_id' => $company2->id,
         ]);
     }
 
@@ -77,14 +77,14 @@ class CompanyRequirementTest extends TestCase
     {
         // Create a user
         $user = User::factory()->create([
-            'company_id' => $this->company->id
+            'company_id' => $this->company->id,
         ]);
 
         $this->expectException(\Illuminate\Validation\ValidationException::class);
 
         // Try to update company_id
         $user->update([
-            'company_id' => Company::factory()->create()->id
+            'company_id' => Company::factory()->create()->id,
         ]);
     }
 
@@ -95,7 +95,7 @@ class CompanyRequirementTest extends TestCase
 
         // Try to create user with non-existent company_id
         User::factory()->create([
-            'company_id' => 999999 // Non-existent company
+            'company_id' => 999999, // Non-existent company
         ]);
     }
 }

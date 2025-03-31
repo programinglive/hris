@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserDetail extends Model
 {
@@ -84,7 +84,7 @@ class UserDetail extends Model
     {
         return $this->belongsTo(Branch::class);
     }
-    
+
     /**
      * Get the department this user belongs to.
      */
@@ -92,7 +92,7 @@ class UserDetail extends Model
     {
         return $this->belongsTo(Department::class);
     }
-    
+
     /**
      * Get the division this user belongs to.
      */
@@ -100,7 +100,7 @@ class UserDetail extends Model
     {
         return $this->belongsTo(Division::class);
     }
-    
+
     /**
      * Get the sub-division this user belongs to.
      */
@@ -108,7 +108,7 @@ class UserDetail extends Model
     {
         return $this->belongsTo(SubDivision::class);
     }
-    
+
     /**
      * Get the level this user belongs to.
      */
@@ -116,7 +116,7 @@ class UserDetail extends Model
     {
         return $this->belongsTo(Level::class);
     }
-    
+
     /**
      * Get the position this user holds.
      */
@@ -133,24 +133,24 @@ class UserDetail extends Model
     public function toArray()
     {
         $array = parent::toArray();
-        
+
         // Load relationships if they exist
         if ($this->relationLoaded('company')) {
             $array['company'] = $this->company->only('id', 'name');
         }
-        
+
         if ($this->relationLoaded('branch')) {
             $array['branch'] = $this->branch->only('id', 'name');
         }
-        
+
         if ($this->relationLoaded('department')) {
             $array['department'] = $this->department->only('id', 'name');
         }
-        
+
         if ($this->relationLoaded('position')) {
             $array['position'] = $this->position->only('id', 'name');
         }
-        
+
         return $array;
     }
 }
