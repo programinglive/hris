@@ -33,7 +33,7 @@ class BranchTest extends TestCase
         $this->actingAs($this->user);
 
         // Create a company for testing
-        $this->company = Company::create([
+        $this->company = Company::factory()->withOwner()->create([
             'name' => 'Test Company',
             'code' => 'TEST',
             'email' => 'test@company.com',
@@ -56,7 +56,7 @@ class BranchTest extends TestCase
             'company_id' => $this->company->id,
         ]);
 
-        $response = $this->get(route('organization.branch.index'));
+        $response = $this->get(route('organization.branch.index', ['company' => $this->company]));
 
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page) => $page
@@ -88,7 +88,7 @@ class BranchTest extends TestCase
         ]);
 
         // Test search by name
-        $response = $this->get(route('organization.branch.index', ['search' => 'Main']));
+        $response = $this->get(route('organization.branch.index', ['company' => $this->company, 'search' => 'Main']));
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page) => $page
             ->component('organization/branch/index')
@@ -97,7 +97,7 @@ class BranchTest extends TestCase
         );
 
         // Test filter by city
-        $response = $this->get(route('organization.branch.index', ['city' => 'Los Angeles']));
+        $response = $this->get(route('organization.branch.index', ['company' => $this->company, 'city' => 'Los Angeles']));
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page) => $page
             ->component('organization/branch/index')
@@ -106,7 +106,7 @@ class BranchTest extends TestCase
         );
 
         // Test filter by company
-        $response = $this->get(route('organization.branch.index', ['company_id' => $this->company->id]));
+        $response = $this->get(route('organization.branch.index', ['company' => $this->company, 'company_id' => $this->company->id]));
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page) => $page
             ->component('organization/branch/index')
@@ -117,7 +117,7 @@ class BranchTest extends TestCase
     #[Test]
     public function user_can_view_branch_create_form()
     {
-        $response = $this->get(route('organization.branch.create'));
+        $response = $this->get(route('organization.branch.create', ['company' => $this->company]));
 
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page) => $page
@@ -145,9 +145,9 @@ class BranchTest extends TestCase
             'description' => 'This is a test branch',
         ];
 
-        $response = $this->post(route('organization.branch.store'), $branchData);
+        $response = $this->post(route('organization.branch.store', ['company' => $this->company]), $branchData);
 
-        $response->assertRedirect(route('organization.branch.index'));
+        $response->assertRedirect(route('organization.branch.index', ['company' => $this->company]));
         $response->assertSessionHas('success');
 
         $this->assertDatabaseHas('branches', [
@@ -167,7 +167,7 @@ class BranchTest extends TestCase
             'is_active' => true,
         ]);
 
-        $response = $this->get(route('organization.branch.edit', $branch->id));
+        $response = $this->get(route('organization.branch.edit', ['company' => $this->company, 'branch' => $branch]));
 
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page) => $page
@@ -205,9 +205,9 @@ class BranchTest extends TestCase
             'description' => 'This is an updated test branch',
         ];
 
-        $response = $this->put(route('organization.branch.update', $branch->id), $updatedData);
+        $response = $this->put(route('organization.branch.update', ['company' => $this->company, 'branch' => $branch]), $updatedData);
 
-        $response->assertRedirect(route('organization.branch.index'));
+        $response->assertRedirect(route('organization.branch.index', ['company' => $this->company]));
         $response->assertSessionHas('success');
 
         $this->assertDatabaseHas('branches', [
@@ -229,9 +229,9 @@ class BranchTest extends TestCase
             'is_active' => true,
         ]);
 
-        $response = $this->delete(route('organization.branch.destroy', $branch->id));
+        $response = $this->delete(route('organization.branch.destroy', ['company' => $this->company, 'branch' => $branch]));
 
-        $response->assertRedirect(route('organization.branch.index'));
+        $response->assertRedirect(route('organization.branch.index', ['company' => $this->company]));
         $response->assertSessionHas('success');
 
         $this->assertDatabaseMissing('branches', [
@@ -254,7 +254,7 @@ class BranchTest extends TestCase
             'is_active' => true,
         ]);
 
-        $response = $this->get(route('organization.branch.index'));
+        $response = $this->get(route('organization.branch.index', ['company' => $this->company]));
 
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page) => $page
@@ -280,7 +280,7 @@ class BranchTest extends TestCase
     #[Test]
     public function branch_create_form_has_correct_layout_structure()
     {
-        $response = $this->get(route('organization.branch.create'));
+        $response = $this->get(route('organization.branch.create', ['company' => $this->company]));
 
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page) => $page
@@ -299,7 +299,7 @@ class BranchTest extends TestCase
             'is_active' => true,
         ]);
 
-        $response = $this->get(route('organization.branch.edit', $branch->id));
+        $response = $this->get(route('organization.branch.edit', ['company' => $this->company, 'branch' => $branch]));
 
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page) => $page
@@ -317,7 +317,7 @@ class BranchTest extends TestCase
     #[Test]
     public function user_can_download_branch_import_template()
     {
-        $response = $this->get(route('organization.branch.import.template'));
+        $response = $this->get(route('organization.branch.import.template', ['company' => $this->company]));
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -382,7 +382,7 @@ class BranchTest extends TestCase
         );
 
         // Send the import request
-        $response = $this->post(route('organization.branch.import.process'), [
+        $response = $this->post(route('organization.branch.import.process', ['company' => $this->company]), [
             'file' => $file,
         ]);
 
@@ -454,7 +454,7 @@ class BranchTest extends TestCase
         );
 
         // Send the import request
-        $response = $this->post(route('organization.branch.import.process'), [
+        $response = $this->post(route('organization.branch.import.process', ['company' => $this->company]), [
             'file' => $file,
         ]);
 
@@ -488,7 +488,7 @@ class BranchTest extends TestCase
         );
 
         // Send the import request
-        $response = $this->postJson(route('organization.branch.import.process'), [
+        $response = $this->postJson(route('organization.branch.import.process', ['company' => $this->company]), [
             'file' => $file,
         ]);
 
@@ -545,7 +545,7 @@ class BranchTest extends TestCase
         );
 
         // Send the import request
-        $response = $this->post(route('organization.branch.import.process'), [
+        $response = $this->post(route('organization.branch.import.process', ['company' => $this->company]), [
             'file' => $file,
         ]);
 

@@ -2,14 +2,17 @@
 
 namespace Database\Factories;
 
+use App\Models\Brand;
 use App\Models\Company;
 use App\Models\User;
+use App\Models\UserBrand;
+use App\Models\UserDetail;
+use App\Models\UserRole;
+use App\Models\WorkSchedule;
+use App\Models\WorkShift;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
 class UserFactory extends Factory
 {
     /**
@@ -30,8 +33,58 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
-            'company_id' => Company::factory(),
+            'primary_company_id' => null, // Will be set when creating first user
         ];
+    }
+
+    /**
+     * Configure user with initial data
+     */
+    public function configureInitialData(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            // Create user details
+            $user->userDetails()->create([
+                'user_id' => $user->id,
+                'phone' => $this->faker->phoneNumber(),
+                'address' => $this->faker->address(),
+                'date_of_birth' => $this->faker->dateTimeBetween('-50 years', '-20 years'),
+            ]);
+
+            // Assign default work schedule
+            $defaultSchedule = WorkSchedule::where('is_default', true)
+                ->where('company_id', $user->primary_company_id)
+                ->first();
+
+            if ($defaultSchedule) {
+                $user->workSchedules()->attach($defaultSchedule->id, [
+                    'effective_date' => now(),
+                    'is_active' => true,
+                ]);
+            }
+
+            // Assign work shift for today
+            $shifts = WorkShift::where('company_id', $user->primary_company_id)
+                ->where('is_active', true)
+                ->get();
+
+            if ($shifts->count() > 0) {
+                $randomShift = $shifts->random();
+                $user->workShifts()->attach($randomShift->id, [
+                    'date' => now()->toDateString(),
+                ]);
+            }
+
+            // Assign default role
+            $defaultRole = \App\Models\Role::where('name', 'employee')
+                ->first();
+
+            if ($defaultRole) {
+                $user->roles()->attach($defaultRole->id, [
+                    'company_id' => $user->primary_company_id,
+                ]);
+            }
+        });
     }
 
     /**
@@ -42,45 +95,5 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
-    }
-
-    public function configure(): static
-    {
-        return $this->afterCreating(function (User $user) {
-            $user->userDetails()->create([
-                'user_id' => $user->id,
-                'employee_code' => 'EMP'.$this->faker->unique()->numerify('######'),
-                'status' => 'active',
-                'company_id' => $user->company_id,
-                'join_date' => now(),
-                'branch_id' => $user->branch_id ?? null,
-                'department_id' => $user->department_id ?? null,
-                'division_id' => null,
-                'sub_division_id' => null,
-                'level_id' => null,
-                'position_id' => $user->position_id ?? null,
-                'exit_date' => null,
-                'gender' => null,
-                'date_of_birth' => null,
-                'place_of_birth' => null,
-                'nationality' => null,
-                'marital_status' => null,
-                'religion' => null,
-                'blood_type' => null,
-                'emergency_contact_name' => null,
-                'emergency_contact_phone' => null,
-                'emergency_contact_relationship' => null,
-                'address' => null,
-                'city' => null,
-                'state' => null,
-                'postal_code' => null,
-                'country' => null,
-                'phone' => null,
-                'mobile_phone' => null,
-                'email' => null,
-                'photo' => null,
-                'notes' => null,
-            ]);
-        });
     }
 }

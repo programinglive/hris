@@ -19,6 +19,7 @@ class Role extends Model
         'description',
         'is_system',
         'slug',
+        'company_id',
     ];
 
     /**
@@ -55,11 +56,21 @@ class Role extends Model
     }
 
     /**
+     * The company that the role belongs to.
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    /**
      * The users that belong to the role.
      */
-    public function users(): BelongsToMany
+    public function users()
     {
-        return $this->belongsToMany(User::class, 'user_roles');
+        return $this->belongsToMany(User::class, 'user_roles')
+            ->using(UserRole::class)
+            ->withPivot('company_id');
     }
 
     /**
@@ -76,5 +87,17 @@ class Role extends Model
     public function isEmployee(): bool
     {
         return $this->name === 'employee';
+    }
+
+    /**
+     * Check if the role has a specific permission.
+     *
+     * @param string $permission
+     * @return bool
+     */
+    public function hasPermission($permission)
+    {
+        // Implement permission checking logic here
+        return false;
     }
 }

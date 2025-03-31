@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Organization;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Company;
+use App\Models\Role;
 use App\Models\User;
+use App\Models\UserRole;
+use App\Models\WorkSchedule;
+use App\Models\WorkShift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -204,69 +208,142 @@ class CompanyRegistrationController extends Controller
      */
     public function register(Request $request)
     {
-        // This is kept for backward compatibility
-        // The new flow uses the step-by-step methods above
-
         $validated = $request->validate([
-            // Company information
+            'contact' => 'required|string',
+            'contact_type' => 'required|in:email,phone',
+            'verification_code' => 'required|string',
             'company_name' => 'required|string|max:255',
-            'company_email' => 'required|email|unique:companies,email',
-            'company_phone' => 'nullable|string|max:20',
-            'company_address' => 'nullable|string',
-            'company_city' => 'nullable|string|max:100',
-            'company_state' => 'nullable|string|max:100',
-            'company_postal_code' => 'nullable|string|max:20',
-            'company_country' => 'nullable|string|max:100',
-
-            // User information
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-
-            // Main branch information
-            'branch_name' => 'required|string|max:255',
+            'company_email' => 'required|email|unique:companies,email|unique:users,email',
+            'company_phone' => 'required|string|unique:companies,phone',
+            'company_address' => 'required|string',
+            'company_city' => 'required|string',
+            'company_country' => 'required|string',
+            'admin_name' => 'required|string|max:255',
+            'admin_email' => 'required|email|unique:users,email',
+            'admin_password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Use a transaction to ensure all related records are created or none
-        return DB::transaction(function () use ($validated) {
-            // Create the user
-            $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-            ]);
+        // Verify the verification code
+        $storedCode = session('verification_code');
+        if (!$storedCode || $validated['verification_code'] !== $storedCode) {
+            return redirect()->back()->withErrors([
+                'verification_code' => 'Invalid verification code',
+            ])->withInput();
+        }
 
-            // Create the company
+        DB::transaction(function () use ($validated) {
+            // Create company
             $company = Company::create([
                 'name' => $validated['company_name'],
                 'email' => $validated['company_email'],
-                'phone' => $validated['company_phone'] ?? null,
-                'address' => $validated['company_address'] ?? null,
-                'city' => $validated['company_city'] ?? null,
-                'state' => $validated['company_state'] ?? null,
-                'postal_code' => $validated['company_postal_code'] ?? null,
-                'country' => $validated['company_country'] ?? null,
-                'owner_id' => $user->id,
+                'phone' => $validated['company_phone'],
+                'address' => $validated['company_address'],
+                'city' => $validated['company_city'],
+                'country' => $validated['company_country'],
+                'is_primary' => true,
+                'is_active' => true,
             ]);
 
-            // Create the main branch
-            Branch::create([
-                'name' => $validated['branch_name'],
-                'address' => $validated['company_address'] ?? null,
-                'city' => $validated['company_city'] ?? null,
-                'state' => $validated['company_state'] ?? null,
-                'postal_code' => $validated['company_postal_code'] ?? null,
-                'country' => $validated['company_country'] ?? null,
-                'phone' => $validated['company_phone'] ?? null,
-                'email' => $validated['company_email'],
+            // Create admin user
+            $admin = User::create([
+                'name' => $validated['admin_name'],
+                'email' => $validated['admin_email'],
+                'password' => Hash::make($validated['admin_password']),
+                'primary_company_id' => $company->id,
+            ]);
+
+            // Create user details
+            $admin->userDetails()->create([
+                'user_id' => $admin->id,
+                'phone' => $validated['company_phone'],
+                'address' => $validated['company_address'],
+                'city' => $validated['company_city'],
+                'country' => $validated['company_country'],
+            ]);
+
+            // Create default work schedule
+            $workSchedule = WorkSchedule::create([
+                'name' => 'Default Work Schedule',
+                'start_time' => '09:00:00',
+                'end_time' => '17:00:00',
+                'grace_period_minutes' => 15,
+                'working_days' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+                'is_default' => true,
                 'company_id' => $company->id,
-                'is_main_branch' => true,
+                'is_active' => true,
             ]);
 
-            // Log the user in
-            Auth::login($user);
+            // Create work shifts
+            $morningShift = WorkShift::create([
+                'name' => 'Morning Shift',
+                'start_time' => '09:00:00',
+                'end_time' => '17:00:00',
+                'code' => 'WSH'.str_pad($company->id.'1', 4, '0', STR_PAD_LEFT),
+                'company_id' => $company->id,
+                'is_active' => true,
+            ]);
 
-            return Redirect::route('dashboard')->with('success', 'Your company has been registered successfully!');
+            $eveningShift = WorkShift::create([
+                'name' => 'Evening Shift',
+                'start_time' => '17:00:00',
+                'end_time' => '23:00:00',
+                'code' => 'WSH'.str_pad($company->id.'2', 4, '0', STR_PAD_LEFT),
+                'company_id' => $company->id,
+                'is_active' => true,
+            ]);
+
+            // Create default roles
+            $roles = [
+                'admin' => [
+                    'name' => 'admin',
+                    'display_name' => 'Administrator',
+                    'description' => 'Full access to all company features',
+                ],
+                'manager' => [
+                    'name' => 'manager',
+                    'display_name' => 'Manager',
+                    'description' => 'Manage employees and departments',
+                ],
+                'employee' => [
+                    'name' => 'employee',
+                    'display_name' => 'Employee',
+                    'description' => 'Basic employee access',
+                ],
+            ];
+
+            foreach ($roles as $role) {
+                $roleModel = Role::create([
+                    'name' => $role['name'],
+                    'display_name' => $role['display_name'],
+                    'description' => $role['description'],
+                    'company_id' => $company->id,
+                ]);
+
+                // Assign admin role to the admin user
+                if ($role['name'] === 'admin') {
+                    UserRole::create([
+                        'user_id' => $admin->id,
+                        'role_id' => $roleModel->id,
+                        'company_id' => $company->id,
+                    ]);
+                }
+            }
+
+            // Assign default work schedule to admin
+            $admin->workSchedules()->attach($workSchedule->id, [
+                'effective_date' => now(),
+                'is_active' => true,
+            ]);
+
+            // Assign morning shift to admin for today
+            $admin->workShifts()->attach($morningShift->id, [
+                'date' => now()->toDateString(),
+            ]);
+
+            // Login the admin user
+            Auth::login($admin);
         });
+
+        return redirect()->route('dashboard')->with('success', 'Company and admin account created successfully!');
     }
 }

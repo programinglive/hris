@@ -23,7 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'company_id',
+        'primary_company_id',
         'branch_id',
         'department_id',
         'position_id',
@@ -82,7 +82,7 @@ class User extends Authenticatable
                 'updated_at',
             ])
             ->withTimestamps()
-            ->wherePivot('company_id', $this->company_id);
+            ->wherePivot('company_id', $this->primary_company_id);
     }
 
     /**
@@ -104,18 +104,33 @@ class User extends Authenticatable
     /**
      * Get the roles that belong to the user.
      */
-    public function roles(): BelongsToMany
+    public function roles()
     {
-        return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id')
-            ->withTimestamps();
+        return $this->belongsToMany(Role::class, 'user_roles')
+            ->using(UserRole::class)
+            ->withPivot('company_id');
+    }
+
+    /**
+     * Get the user roles.
+     */
+    public function userRoles()
+    {
+        return $this->hasMany(UserRole::class);
     }
 
     /**
      * Check if the user has a specific role.
      */
-    public function hasRole(string $roleName): bool
+    public function hasRole($role, $company = null)
     {
-        return $this->roles()->where('name', $roleName)->exists();
+        if ($company) {
+            return $this->roles()->wherePivot('company_id', $company->id)
+                ->where('name', $role)
+                ->exists();
+        }
+
+        return $this->roles()->where('name', $role)->exists();
     }
 
     /**
@@ -171,29 +186,35 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all work schedules assigned to the user.
+     */
+    public function workSchedules(): BelongsToMany
+    {
+        return $this->belongsToMany(WorkSchedule::class, 'user_work_schedules')
+            ->using(UserWorkSchedule::class)
+            ->withPivot('effective_date', 'end_date', 'is_active')
+            ->withTimestamps();
+    }
+
+    /**
      * Get all work shifts assigned to the user.
      */
     public function workShifts(): BelongsToMany
     {
         return $this->belongsToMany(WorkShift::class, 'user_work_shifts')
             ->using(UserWorkShift::class)
-            ->withPivot([
-                'date',
-                'created_at',
-                'updated_at',
-            ])
-            ->withTimestamps()
-            ->where('work_shifts.company_id', $this->company_id);
+            ->withPivot('date')
+            ->withTimestamps();
     }
 
     /**
-     * Get all work schedules assigned to the user.
+     * Get the current work shift for the user.
      */
-    public function workSchedules(): BelongsToMany
+    public function currentWorkShift(): HasOne
     {
-        return $this->belongsToMany(WorkSchedule::class, 'user_work_schedules')
-            ->withPivot('effective_date', 'end_date', 'is_active')
-            ->withTimestamps();
+        return $this->hasOne(WorkShift::class)
+            ->wherePivot('date', now()->toDateString())
+            ->withPivot('date');
     }
 
     /**

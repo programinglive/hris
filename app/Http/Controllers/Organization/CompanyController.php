@@ -22,7 +22,8 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
         $query = Company::query()
-            ->select('id', 'name', 'email', 'phone', 'city', 'country', 'is_active');
+            ->select('id', 'name', 'email', 'phone', 'city', 'country', 'is_active')
+            ->where('owner_id', Auth::id());
 
         // Reset filters if filter_dialog is open
         if ($request->boolean('filter_dialog')) {

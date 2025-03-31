@@ -1,5 +1,7 @@
 "use client"
 
+import { usePage, Link } from '@inertiajs/react'
+import { route } from 'ziggy-js'
 import {
   BadgeCheck,
   Bell,
@@ -106,9 +108,11 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
+            <DropdownMenuItem asChild>
+              <Link href={route('logout')} method="post" as="button">
+                <LogOut />
+                Log out
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

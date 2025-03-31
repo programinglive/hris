@@ -3,15 +3,25 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Sentry\Sentry;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
 
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard');
     }
 
-    return Inertia::render('welcome');
-})->name('home');
+    // Check if there are any companies in the database
+    $hasCompanies = \App\Models\Company::count() > 0;
+    
+    if ($hasCompanies) {
+        return Inertia::render('welcome');
+    }
+
+    return redirect()->route('landing-page.installation-wizard');
+})->name('home')->middleware('check.installation.wizard');
 
 // Include landing page routes (for company registration)
 include 'module/landingpage.php';
@@ -29,10 +39,37 @@ Route::get('/test-sentry', function () {
     }
 });
 
+// Apply installation wizard check middleware to all guest routes
+Route::middleware(['guest', 'check.installation.wizard'])->group(function () {
+    // Login route
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])
+        ->name('login');
+
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
+    // Password reset routes
+    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+        ->name('password.request');
+
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->name('password.email');
+
+    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+        ->name('password.reset');
+
+    Route::post('reset-password', [NewPasswordController::class, 'store'])
+        ->name('password.store');
+});
+
+// Authenticated routes
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    // Logout route
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
 
     // Employee routes
     include 'module/employee.php';

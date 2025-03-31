@@ -35,12 +35,13 @@ class CompanyFeatureTest extends TestCase
             'password' => bcrypt('password'),
         ]);
 
-        dd($this->user);
-
-        // Create a test company
+        // Create a test company with the existing user as owner
         $this->company = Company::factory()->create([
             'owner_id' => $this->user->id,
         ]);
+
+        // Create another company that shouldn't be visible
+        Company::factory()->create();
 
         // Store timestamp for consistent testing
         $this->timestamp = time();
@@ -151,7 +152,10 @@ class CompanyFeatureTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $response = $this->get(route('organization.company.index'));
+        $response = $this->get(route('organization.company.index', [
+            'company' => $this->company->id,
+        ]));
+
         $response->assertStatus(200);
 
         $response->assertInertia(function (Assert $page) {
@@ -166,7 +170,11 @@ class CompanyFeatureTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $response = $this->get(route('organization.company.index'));
+        $response = $this->get(route('organization.company.index', [
+            'company' => $this->company->id,
+        ]));
+
+        $response->assertStatus(200);
 
         $response->assertInertia(function (Assert $page) {
             $page->component('organization/company/index')
@@ -187,6 +195,7 @@ class CompanyFeatureTest extends TestCase
 
         $response = $this->get(route('organization.company.index', [
             'search' => $this->company->name,
+            'company' => $this->company->id,
         ]));
 
         $response->assertInertia(function (Assert $page) {
@@ -428,6 +437,7 @@ class CompanyFeatureTest extends TestCase
 
         $response = $this->get(route('organization.company.index', [
             'city' => $city,
+            'company' => $this->company->id,
         ]));
 
         $response->assertInertia(function (Assert $page) use ($company, $city) {
@@ -458,6 +468,7 @@ class CompanyFeatureTest extends TestCase
 
         $response = $this->get(route('organization.company.index', [
             'country' => $country,
+            'company' => $this->company->id,
         ]));
 
         $response->assertInertia(function (Assert $page) use ($company, $country) {
@@ -485,6 +496,7 @@ class CompanyFeatureTest extends TestCase
         // Test active filter
         $response = $this->get(route('organization.company.index', [
             'status' => 'active',
+            'company' => $this->company->id,
         ]));
 
         $response->assertInertia(function (Assert $page) use ($activeCompany) {
@@ -497,6 +509,7 @@ class CompanyFeatureTest extends TestCase
         // Test inactive filter
         $response = $this->get(route('organization.company.index', [
             'status' => 'inactive',
+            'company' => $this->company->id,
         ]));
 
         $response->assertInertia(function (Assert $page) {
@@ -550,6 +563,7 @@ class CompanyFeatureTest extends TestCase
             'city' => 'Test City',
             'country' => 'Test Country',
             'status' => 'active',
+            'company' => $this->company->id,
         ]));
 
         $response->assertInertia(function (Assert $page) use ($matchingCompany) {
@@ -573,6 +587,7 @@ class CompanyFeatureTest extends TestCase
             'status' => 'active',
             'city' => 'Test City',
             'country' => 'Test Country',
+            'company' => $this->company->id,
         ]));
 
         // Open filter dialog
@@ -581,6 +596,7 @@ class CompanyFeatureTest extends TestCase
             'city' => 'Test City',
             'country' => 'Test Country',
             'filter_dialog' => 'true',
+            'company' => $this->company->id,
         ]));
 
         $response->assertInertia(function (Assert $page) {
@@ -603,6 +619,7 @@ class CompanyFeatureTest extends TestCase
             'status' => 'active',
             'city' => 'Test City',
             'country' => 'Test Country',
+            'company' => $this->company->id,
         ]));
 
         // Open filter dialog
@@ -611,6 +628,7 @@ class CompanyFeatureTest extends TestCase
             'city' => 'Test City',
             'country' => 'Test Country',
             'filter_dialog' => 'true',
+            'company' => $this->company->id,
         ]));
 
         $response->assertInertia(function (Assert $page) {

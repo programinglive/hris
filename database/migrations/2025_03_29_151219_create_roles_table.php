@@ -18,7 +18,11 @@ return new class extends Migration
             $table->string('display_name');
             $table->text('description')->nullable();
             $table->boolean('is_system')->default(false);
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+
+            // Ensure a role name is unique per company
+            $table->unique(['name', 'company_id']);
         });
     }
 
