@@ -25,6 +25,11 @@ class CheckInstallationWizard
             return redirect()->route('landing-page.installation-wizard');
         }
 
+        // If no companies exist and user is authenticated, redirect to company registration
+        if (!$hasCompanies && $request->user()) {
+            return redirect()->route('register.company.show');
+        }
+
         return $next($request);
     }
 }

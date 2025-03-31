@@ -23,42 +23,33 @@ class WorkingCalendarControllerTest extends TestCase
     {
         parent::setUp();
 
-        // Create a role
+        // Create a test company first
+        $this->company = Company::factory()->create();
+
+        // Create a role with company_id
         $role = Role::create([
             'name' => 'admin',
             'display_name' => 'Administrator',
             'slug' => 'admin',
+            'company_id' => $this->company->id,
         ]);
 
-        // Create a test company
-        $this->company = new Company([
-            'name' => 'Test Company',
-            'address' => 'Test Address',
-            'phone' => '1234567890',
-            'email' => 'test@company.com',
-            'website' => 'https://testcompany.com',
+        // Create a test user with company_id
+        $this->user = User::factory()->create([
+            'company_id' => $this->company->id,
         ]);
-        $this->company->save();
-
-        // Create a test user
-        $this->user = new User([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'),
-        ]);
-        $this->user->save();
 
         // Assign role to user
-        $this->user->assignRole('admin');
+        $this->user->roles()->attach($role);
 
         // Create user details
-        $userDetail = new UserDetail([
+        UserDetail::create([
             'user_id' => $this->user->id,
-            'employee_code' => 'EMP-000001',
+            'employee_code' => 'EMP001',
+            'join_date' => now()->subYear(),
             'status' => 'active',
             'company_id' => $this->company->id,
         ]);
-        $userDetail->save();
     }
 
     #[Test]
@@ -90,8 +81,7 @@ class WorkingCalendarControllerTest extends TestCase
     #[Test]
     public function it_can_create_a_working_calendar()
     {
-        // Create a test company
-        $company = $this->company;
+        $this->actingAs($this->user);
 
         $data = [
             'name' => 'Test Working Calendar',
@@ -99,34 +89,24 @@ class WorkingCalendarControllerTest extends TestCase
             'end_date' => '2025-12-31',
             'description' => 'Test description',
             'is_active' => true,
-            'company_id' => $company->id,
+            'company_id' => $this->company->id,
         ];
 
-        // Mock the controller method to avoid the company_id issue
-        $this->mock(\App\Http\Controllers\Attendance\WorkingCalendarController::class, function ($mock) {
-            $mock->shouldReceive('store')
-                ->once()
-                ->andReturn(redirect()->route('attendance.working-calendar.index'));
-        });
-
-        $response = $this->actingAs($this->user)
-            ->post(route('attendance.working-calendar.store'), $data);
+        $response = $this->post(route('attendance.working-calendar.store'), $data);
 
         $response->assertRedirect(route('attendance.working-calendar.index'));
+        $this->assertDatabaseHas('working_calendars', [
+            'name' => 'Test Working Calendar',
+            'company_id' => $this->company->id,
+        ]);
     }
 
     #[Test]
     public function it_can_display_edit_working_calendar_page()
     {
-        $workingCalendar = new WorkingCalendar([
-            'name' => 'Test Working Calendar',
-            'start_date' => '2025-01-01',
-            'end_date' => '2025-12-31',
-            'description' => 'Test description',
-            'is_active' => true,
+        $workingCalendar = WorkingCalendar::factory()->create([
             'company_id' => $this->company->id,
         ]);
-        $workingCalendar->save();
 
         $response = $this->actingAs($this->user)
             ->get(route('attendance.working-calendar.edit', $workingCalendar->id));
@@ -141,15 +121,9 @@ class WorkingCalendarControllerTest extends TestCase
     #[Test]
     public function it_can_update_a_working_calendar()
     {
-        $workingCalendar = new WorkingCalendar([
-            'name' => 'Test Working Calendar',
-            'start_date' => '2025-01-01',
-            'end_date' => '2025-12-31',
-            'description' => 'Test description',
-            'is_active' => true,
+        $workingCalendar = WorkingCalendar::factory()->create([
             'company_id' => $this->company->id,
         ]);
-        $workingCalendar->save();
 
         $data = [
             'name' => 'Updated Working Calendar',
@@ -176,15 +150,9 @@ class WorkingCalendarControllerTest extends TestCase
     #[Test]
     public function it_can_display_show_working_calendar_page()
     {
-        $workingCalendar = new WorkingCalendar([
-            'name' => 'Test Working Calendar',
-            'start_date' => '2025-01-01',
-            'end_date' => '2025-12-31',
-            'description' => 'Test description',
-            'is_active' => true,
+        $workingCalendar = WorkingCalendar::factory()->create([
             'company_id' => $this->company->id,
         ]);
-        $workingCalendar->save();
 
         $response = $this->actingAs($this->user)
             ->get(route('attendance.working-calendar.show', $workingCalendar->id));
@@ -200,15 +168,9 @@ class WorkingCalendarControllerTest extends TestCase
     #[Test]
     public function it_can_delete_a_working_calendar()
     {
-        $workingCalendar = new WorkingCalendar([
-            'name' => 'Test Working Calendar',
-            'start_date' => '2025-01-01',
-            'end_date' => '2025-12-31',
-            'description' => 'Test description',
-            'is_active' => true,
+        $workingCalendar = WorkingCalendar::factory()->create([
             'company_id' => $this->company->id,
         ]);
-        $workingCalendar->save();
 
         $response = $this->actingAs($this->user)
             ->delete(route('attendance.working-calendar.destroy', $workingCalendar->id));

@@ -1,5 +1,8 @@
+# Readme.md
+
 1. This is laravel project with inertiajs and reactjs
 2. for authentication use inertia auth
+3. Never update laravel default migration file
 
 # Commit
 1. Use conventional commit
@@ -27,7 +30,13 @@
 10. When run test check on config associate with model
 11. When run test check on package associate with model
 12. use TestCase
-13. don't use /** @test */ use #[Test] attribute insteat
+13. don't use /** @test */ use #[Test] attribute instead
+
+# Bug fixing
+1. Create issue first before fix
+2. Fix bug
+3. check the issue till all check lists is checked
+4. Close the issue
 
 # Organization
 
@@ -62,3 +71,6 @@
 # Documentation
 
 1. I want to create documentaion for the application so please suggest what's best practice. The documentation is show markdown files from resources/docs folder
+2. Because this is Open Source Base application someone can pull and install the application, so please add documentation on how to install the application.
+3. If fresh install they should install the application set first company to be primary company.
+4. Instalation must be step by step wizard

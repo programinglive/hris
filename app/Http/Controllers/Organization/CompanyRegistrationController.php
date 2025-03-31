@@ -46,7 +46,7 @@ class CompanyRegistrationController extends Controller
         // Additional validation based on contact type
         if ($contactType === 'email') {
             $request->validate([
-                'contact' => 'email|unique:users,email|unique:companies,email',
+                'contact' => 'email|unique:companies,email',
             ]);
         } else {
             $request->validate([
@@ -81,7 +81,6 @@ class CompanyRegistrationController extends Controller
             }
         } else {
             // Send SMS with verification code
-            // In a real app, you would integrate with an SMS service
             Log::info('SMS verification code for '.$contact.': '.$verificationCode);
         }
 
@@ -89,6 +88,7 @@ class CompanyRegistrationController extends Controller
             'success' => true,
             'message' => 'Verification code sent to '.$contact,
             'next_step' => 'verify_code',
+            'verification_code' => $verificationCode, // Send back the code for testing
         ]);
     }
 
@@ -103,18 +103,14 @@ class CompanyRegistrationController extends Controller
 
         $registrationData = Session::get('registration_data');
 
-        if (! $registrationData) {
+        if (!$registrationData || $validated['verification_code'] !== $registrationData['verification_code']) {
             return response()->json([
                 'success' => false,
-                'message' => 'Registration session expired. Please start over.',
-            ], 400);
-        }
-
-        if ($validated['verification_code'] !== $registrationData['verification_code']) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid verification code.',
-            ], 400);
+                'message' => 'Invalid verification code',
+                'errors' => [
+                    'verification_code' => ['The verification code is invalid.'],
+                ],
+            ], 422);
         }
 
         // Mark as verified
@@ -148,7 +144,7 @@ class CompanyRegistrationController extends Controller
 
             // Admin user information
             'admin_name' => 'required|string|max:255',
-            'admin_email' => 'required|email|unique:users,email',
+            'admin_email' => 'required|email|unique:companies,email|unique:users,email',
             'admin_password' => 'required|string|min:8',
         ]);
 

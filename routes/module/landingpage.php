@@ -9,11 +9,13 @@ Route::get('/', function () {
     return redirect()->route('landing-page.installation-wizard');
 })->name('landing');
 
-Route::prefix('register-company')->name('register.company.')->group(function () {
-    Route::get('/', [CompanyRegistrationController::class, 'showRegistrationForm'])
-        ->name('show')
-        ->middleware('guest');
+// Installation wizard route
+Route::get('/installation-wizard', [CompanyRegistrationController::class, 'showRegistrationForm'])
+    ->name('landing-page.installation-wizard')
+    ->middleware('guest');
 
+// Company registration routes
+Route::prefix('register-company')->name('register.company.')->group(function () {
     Route::post('/validate-contact', [CompanyRegistrationController::class, 'validateContact'])
         ->name('validate-contact')
         ->middleware('guest');
@@ -25,14 +27,4 @@ Route::prefix('register-company')->name('register.company.')->group(function () 
     Route::post('/save-details', [CompanyRegistrationController::class, 'saveCompanyDetails'])
         ->name('save-details')
         ->middleware('guest');
-
-    // Keep the original route for backward compatibility
-    Route::post('/', [CompanyRegistrationController::class, 'register'])
-        ->name('submit')
-        ->middleware('guest');
 });
-
-// Installation wizard route
-Route::get('/installation-wizard', function () {
-    return Inertia::render('auth/register-company');
-})->name('landing-page.installation-wizard');

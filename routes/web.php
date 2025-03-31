@@ -8,21 +8,6 @@ use Sentry\Sentry;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 
-Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect()->route('dashboard');
-    }
-
-    // Check if there are any companies in the database
-    $hasCompanies = \App\Models\Company::count() > 0;
-    
-    if ($hasCompanies) {
-        return Inertia::render('welcome');
-    }
-
-    return redirect()->route('landing-page.installation-wizard');
-})->name('home')->middleware('check.installation.wizard');
-
 // Include landing page routes (for company registration)
 include 'module/landingpage.php';
 
@@ -58,13 +43,13 @@ Route::middleware(['guest', 'check.installation.wizard'])->group(function () {
         ->name('password.reset');
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
-        ->name('password.store');
+        ->name('password.update');
 });
 
 // Authenticated routes
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
     })->name('dashboard');
 
     // Logout route
@@ -92,3 +77,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+
+Route::get('logs', [Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
