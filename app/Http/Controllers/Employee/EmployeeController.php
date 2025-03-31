@@ -7,9 +7,109 @@ use App\Models\User;
 use App\Models\WorkSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 
 class EmployeeController extends Controller
 {
+    /**
+     * Display a listing of employees.
+     */
+    public function index()
+    {
+        $employees = User::with(['roles', 'brands', 'workSchedules'])
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'employee');
+            })
+            ->paginate(10);
+
+        return Inertia::render('employee/index', [
+            'employees' => $employees,
+            'filters' => request()->only(['search', 'status'])
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new employee.
+     */
+    public function create()
+    {
+        return Inertia::render('employee/create');
+    }
+
+    /**
+     * Store a newly created employee in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'phone' => 'required|string|unique:users',
+            'company_id' => 'required|exists:companies,id',
+            'password' => 'required|string|min:8',
+        ]);
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'company_id' => $validated['company_id'],
+            'password' => bcrypt($validated['password']),
+        ]);
+
+        // Assign employee role
+        $user->roles()->attach(1); // Assuming role_id 1 is 'employee'
+
+        return redirect()->route('employee.index')->with('success', 'Employee created successfully');
+    }
+
+    /**
+     * Display the specified employee.
+     */
+    public function show(User $user)
+    {
+        return Inertia::render('employee/show', [
+            'employee' => $user->load(['roles', 'brands', 'workSchedules']),
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified employee.
+     */
+    public function edit(User $user)
+    {
+        return Inertia::render('employee/edit', [
+            'employee' => $user->load(['roles', 'brands', 'workSchedules']),
+        ]);
+    }
+
+    /**
+     * Update the specified employee in storage.
+     */
+    public function update(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'phone' => 'required|string|unique:users,phone,' . $user->id,
+            'company_id' => 'required|exists:companies,id',
+        ]);
+
+        $user->update($validated);
+
+        return redirect()->route('employee.index')->with('success', 'Employee updated successfully');
+    }
+
+    /**
+     * Remove the specified employee from storage.
+     */
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return redirect()->route('employee.index')->with('success', 'Employee deleted successfully');
+    }
+
     /**
      * Assign a work schedule to an employee.
      */
@@ -53,5 +153,4 @@ class EmployeeController extends Controller
             'message' => 'Work schedule removed successfully.',
         ]);
     }
-    // ... rest of the code remains the same ...
 }

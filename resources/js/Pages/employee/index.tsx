@@ -29,19 +29,18 @@ interface Employee {
   id: number;
   name: string;
   email: string;
-  employee_code: string;
-  position: string | null;
-  department: string | null;
-  join_date: string | null;
-  status: string;
-  userDetails: {
-    company: {
-      name: string;
-    };
-    branch: {
-      name: string;
-    };
-  };
+  phone: string;
+  company_id: number;
+  is_active: boolean;
+  roles: Array<{
+    name: string;
+  }>;
+  brands: Array<{
+    name: string;
+  }>;
+  workSchedules: Array<{
+    name: string;
+  }>;
 }
 
 interface FilterState {
@@ -103,11 +102,6 @@ export default function EmployeeLists({ employees, filters }: Props) {
   // Define columns
   const columns = [
     {
-      accessorKey: 'employee_code' as keyof Employee,
-      header: 'Employee Code',
-      cell: ({ row }: { row: Employee }) => row.employee_code,
-    },
-    {
       accessorKey: 'name' as keyof Employee,
       header: 'Name',
       cell: ({ row }: { row: Employee }) => row.name,
@@ -118,36 +112,33 @@ export default function EmployeeLists({ employees, filters }: Props) {
       cell: ({ row }: { row: Employee }) => row.email,
     },
     {
-      accessorKey: 'position' as keyof Employee,
-      header: 'Position',
-      cell: ({ row }: { row: Employee }) => row.position || '-',
+      accessorKey: 'phone' as keyof Employee,
+      header: 'Phone',
+      cell: ({ row }: { row: Employee }) => row.phone,
     },
     {
-      accessorKey: 'department' as keyof Employee,
-      header: 'Department',
-      cell: ({ row }: { row: Employee }) => row.department || '-',
+      accessorKey: 'roles' as keyof Employee,
+      header: 'Role',
+      cell: ({ row }: { row: Employee }) => row.roles?.[0]?.name || '-',
     },
     {
-      accessorKey: 'join_date' as keyof Employee,
-      header: 'Join Date',
-      cell: ({ row }: { row: Employee }) => row.join_date || '-',
+      accessorKey: 'brands' as keyof Employee,
+      header: 'Brands',
+      cell: ({ row }: { row: Employee }) => 
+        row.brands?.map(brand => brand.name).join(', ') || '-',
     },
     {
-      accessorKey: 'userDetails.company.name' as keyof Employee,
-      header: 'Company',
-      cell: ({ row }: { row: Employee }) => row.userDetails?.company?.name || '-',
+      accessorKey: 'workSchedules' as keyof Employee,
+      header: 'Work Schedules',
+      cell: ({ row }: { row: Employee }) => 
+        row.workSchedules?.map(schedule => schedule.name).join(', ') || '-',
     },
     {
-      accessorKey: 'userDetails.branch.name' as keyof Employee,
-      header: 'Branch',
-      cell: ({ row }: { row: Employee }) => row.userDetails?.branch?.name || '-',
-    },
-    {
-      accessorKey: 'status' as keyof Employee,
+      accessorKey: 'is_active' as keyof Employee,
       header: 'Status',
       cell: ({ row }: { row: Employee }) => (
-        <Badge variant={row.status === 'active' ? 'default' : 'secondary'}>
-          {row.status}
+        <Badge variant={row.is_active ? 'default' : 'secondary'}>
+          {row.is_active ? 'Active' : 'Inactive'}
         </Badge>
       ),
     },
@@ -321,29 +312,26 @@ export default function EmployeeLists({ employees, filters }: Props) {
           />
         </Card>
 
-        {/* Delete Confirmation Dialog */}
         <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Are you sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action will permanently delete this employee.
-                This action cannot be undone.
+                This action cannot be undone. This will permanently delete the employee.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              <AlertDialogAction onClick={confirmDelete} className="bg-red-600 hover:bg-red-700">
                 Delete
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
 
-        {/* Import Dialog */}
-        <ImportDialog 
-          isOpen={isImportDialogOpen} 
-          onClose={() => setIsImportDialogOpen(false)} 
+        <ImportDialog
+          isOpen={isImportDialogOpen}
+          onClose={() => setIsImportDialogOpen(false)}
           templateUrl="/employee/import/template"
         />
       </div>

@@ -58,3 +58,7 @@
 8. Role use roles -> user_roles table because 1 users can have multiple roles
 
 1. Employee Page
+
+# Documentation
+
+1. I want to create documentaion for the application so please suggest what's best practice. The documentation is show markdown files from resources/docs folder
