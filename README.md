@@ -129,6 +129,28 @@ After installation, you can:
 
 The Company Registration Wizard is a step-by-step process that guides administrators through setting up their organization in HRIS Project. This wizard is essential for new installations and ensures that all necessary company information is properly configured before users can access the system.
 
+### Installation Process
+
+1. **System Setup**
+   - Environment configuration
+   - Database connection
+   - Initial data setup
+
+2. **Company Setup**
+   - Company information
+   - Contact verification
+   - Admin user creation
+
+3. **Basic Configuration**
+   - Company logo
+   - Description
+   - Settings
+
+4. **Final Configuration**
+   - Email settings
+   - Storage configuration
+   - Application settings
+
 ### Registration Process
 
 1. **Company Information**
@@ -160,17 +182,26 @@ The Company Registration Wizard is a step-by-step process that guides administra
 - Company information is validated against existing records
 - Session-based security to prevent unauthorized access
 
-### Building for production
+### Verification System
 
-```bash
-npm run build
-```
+- Contact verification through email or phone
+- 6-digit verification code system
+- Automatic code sending
+- Secure session-based verification
 
-### Running tests
+### Error Handling
 
-```bash
-php artisan test
-```
+- Clear error messages for each step
+- Validation feedback
+- Progress tracking
+- Ability to go back and edit previous steps
+
+### Technical Requirements
+
+- Uses Inertia.js for frontend
+- Laravel middleware for routing
+- Secure session handling
+- Comprehensive testing coverage
 
 ## License
 
