@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Sentry\Sentry;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -15,13 +16,16 @@ Route::get('/', function () {
 // Include landing page routes (for company registration)
 include 'module/landingpage.php';
 
-// Sentry test route
-Route::get('/sentry-test', function () {
+// Test Sentry route
+Route::get('/test-sentry', function () {
     try {
-        throw new \Exception('Sentry test error');
+        throw new \Exception('This is a test error for Sentry');
     } catch (\Exception $e) {
-        \Sentry\captureException($e);
-        throw $e;
+        \Sentry\SentrySdk::getCurrentHub()->captureException($e);
+
+        return response()->json([
+            'message' => 'Error sent to Sentry. Check your Sentry dashboard for the error.',
+        ], 500);
     }
 });
 
