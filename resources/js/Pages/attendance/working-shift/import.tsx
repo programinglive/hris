@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { DownloadIcon, UploadIcon, FileIcon, AlertCircleIcon, CheckCircleIcon } from 'lucide-react'
 import { useToast } from '@/components/ui/use-toast'
-import { FormError } from '@/Components/FormError'
+import { FormError } from '@/components/FormError'
 
 interface ImportError {
   message: string
