@@ -2,13 +2,11 @@ import { type PageProps } from '@/types';
 import AppLayout from '@/layouts/app/app-layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Form } from '@/components/Form';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useForm } from '@inertiajs/react';
-import { type ReactNode } from 'react';
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 
 interface Props extends PageProps {
   leaveTypes: Array<{ id: string; name: string }>;

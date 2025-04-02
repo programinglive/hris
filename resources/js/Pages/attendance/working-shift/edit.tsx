@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ArrowLeft } from 'lucide-react'
-import { FormError } from '@/components/FormError'
+import { FormError } from '@/components/formerror'
 import { WorkShift } from '@/types/models'
 import { useToast } from '@/components/ui/use-toast';
 
