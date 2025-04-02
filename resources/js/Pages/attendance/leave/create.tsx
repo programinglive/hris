@@ -1,6 +1,6 @@
 import { type PageProps } from '@/types';
 import AppLayout from '@/layouts/app/app-layout';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from '@/components/ui/select';
 import { useForm } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
@@ -37,6 +37,9 @@ export default function Create({ leaveTypes }: Props) {
         </div>
 
         <Card>
+          <CardHeader>
+            <CardTitle>Leave Request Details</CardTitle>
+          </CardHeader>
           <CardContent>
             <Form onSubmit={handleSubmit}>
               <div className="space-y-4">
