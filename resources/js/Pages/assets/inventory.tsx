@@ -1,10 +1,10 @@
 import AppLayout from '@/layouts/app/app-layout';
-import { DataTable } from '@/components/ui/data-table';
+import { DataTable, type ColumnDef } from '@/components/ui/data-table';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2, Plus, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { usePage } from '@inertiajs/react';
-import { type BreadcrumbItem, type ColumnDef } from '@/types';
+import { type BreadcrumbItem } from '@/types';
 
 interface Asset {
   id: number;
@@ -174,7 +174,7 @@ export default function AssetInventory() {
         </div>
         
         <DataTable
-          columns={columns as ColumnDef<Asset>[]}
+          columns={columns}
           data={paginatedData}
           title="Asset Inventory"
           searchPlaceholder="Search assets..."
