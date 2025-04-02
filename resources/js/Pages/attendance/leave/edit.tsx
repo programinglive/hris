@@ -2,7 +2,6 @@ import { type PageProps } from '@/types';
 import AppLayout from '@/layouts/app/app-layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Form } from '@/components/form';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
