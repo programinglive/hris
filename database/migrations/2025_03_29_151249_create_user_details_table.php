@@ -16,13 +16,13 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('employee_code')->unique()->nullable();
             $table->enum('status', ['active', 'inactive', 'on_leave', 'terminated'])->default('active')->nullable();
-            $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('branch_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('department_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('division_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('sub_division_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('level_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('position_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('primary_company_id')->nullable()->constrained('companies')->onDelete('cascade');
             $table->date('join_date')->nullable();
             $table->date('exit_date')->nullable();
             $table->string('gender')->nullable();

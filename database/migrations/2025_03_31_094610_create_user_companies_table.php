@@ -19,10 +19,6 @@ return new class extends Migration
             $table->unique(['user_id', 'company_id']);
             $table->timestamps();
         });
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->renameColumn('company_id', 'primary_company_id');
-        });
     }
 
     /**
@@ -30,10 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->renameColumn('primary_company_id', 'company_id');
-        });
-
         Schema::dropIfExists('user_companies');
     }
 };

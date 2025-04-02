@@ -45,6 +45,7 @@
 1. Company Page
     - Company can has multiple branches
     - Company can has multiple brands
+    - user must have primary company
 2. Branch Page
 3. Department Page
 4. Division Page

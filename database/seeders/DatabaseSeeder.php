@@ -170,7 +170,7 @@ class DatabaseSeeder extends Seeder
                 'user_id' => $testUser->id,
                 'employee_code' => 'EMP-'.str_pad($testUser->id, 6, '0', STR_PAD_LEFT),
                 'status' => 'active',
-                'company_id' => $firstCompany->id,
+                'primary_company_id' => $firstCompany->id,
                 'branch_id' => $firstCompany->branches->first()->id ?? null,
                 'department_id' => $itDepartment->id,
                 'division_id' => $itDepartment->divisions->first()->id,
