@@ -9,6 +9,7 @@ import { useForm } from '@inertiajs/react';
 import { type ReactNode } from 'react';
 import { Link } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
+import { Form } from '@/components/Form';
 
 interface Props extends PageProps {
   leave: {
