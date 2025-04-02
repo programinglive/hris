@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Edit, Trash2, Plus, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { usePage } from '@inertiajs/react';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type ColumnDef } from '@/types';
 
 interface Asset {
   id: number;
@@ -46,61 +46,40 @@ const generateDummyData = (count: number): Asset[] => {
 export default function AssetInventory() {
   const { url } = usePage();
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
-  const perPage = 10;
-  
-  // Generate breadcrumbs
-  const breadcrumbs: BreadcrumbItem[] = [
-    {
-      title: 'Dashboard',
-      href: '/dashboard',
-    },
-    {
-      title: 'Assets',
-      href: '#',
-    },
-    {
-      title: 'Inventory',
-      href: url,
-    }
-  ];
-  
-  // Generate dummy data
-  const allData = generateDummyData(45);
-  
-  // Filter data based on search query
-  const filteredData = searchQuery
-    ? allData.filter(
-        (item) =>
-          item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.serialNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.assignedTo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.status.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : allData;
-  
-  // Paginate data
-  const paginatedData = filteredData.slice(
-    (currentPage - 1) * perPage,
-    currentPage * perPage
-  );
-  
-  // Define columns
+  const [perPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState('');
+
   const columns = [
-    { key: 'id', label: 'ID' },
-    { key: 'name', label: 'Name' },
-    { key: 'category', label: 'Category' },
-    { key: 'serialNumber', label: 'Serial Number' },
-    { key: 'purchaseDate', label: 'Purchase Date' },
-    { key: 'assignedTo', label: 'Assigned To' },
-    { key: 'value', label: 'Value' },
-    { 
-      key: 'status', 
-      label: 'Status',
-      render: (value: string) => {
+    {
+      accessorKey: 'name' as keyof Asset,
+      header: 'Name'
+    },
+    {
+      accessorKey: 'category' as keyof Asset,
+      header: 'Category'
+    },
+    {
+      accessorKey: 'serialNumber' as keyof Asset,
+      header: 'Serial Number'
+    },
+    {
+      accessorKey: 'purchaseDate' as keyof Asset,
+      header: 'Purchase Date'
+    },
+    {
+      accessorKey: 'assignedTo' as keyof Asset,
+      header: 'Assigned To'
+    },
+    {
+      accessorKey: 'location' as keyof Asset,
+      header: 'Location'
+    },
+    {
+      accessorKey: 'status' as keyof Asset,
+      header: 'Status',
+      cell: ({ row }: { row: Asset }) => {
         let colorClass = '';
-        switch (value) {
+        switch (row.status) {
           case 'In Use':
             colorClass = 'bg-blue-100 text-blue-800';
             break;
@@ -122,15 +101,15 @@ export default function AssetInventory() {
         
         return (
           <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${colorClass}`}>
-            {value}
+            {row.status}
           </span>
         );
       }
     },
     {
-      key: 'actions',
-      label: 'Actions',
-      render: (_: any, row: Asset) => (
+      accessorKey: 'actions' as keyof Asset,
+      header: 'Actions',
+      cell: ({ row }: { row: Asset }) => (
         <div className="flex space-x-2">
           <Button variant="outline" size="sm">
             <Eye className="h-4 w-4" />
@@ -142,22 +121,50 @@ export default function AssetInventory() {
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>
-      ),
-    },
+      )
+    }
   ];
-  
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    setCurrentPage(1);
-  };
-  
+
+  const assets = generateDummyData(45);
+  const filteredData = assets.filter(
+    (asset) =>
+      Object.values(asset).some((value) =>
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      )
+  );
+  const paginatedData = filteredData.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
+  );
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-  
+
+  const handleSearch = (search: string) => {
+    setSearchTerm(search);
+    setCurrentPage(1);
+  };
+
+  // Generate breadcrumbs
+  const breadcrumbs: BreadcrumbItem[] = [
+    {
+      title: 'Dashboard',
+      href: '/dashboard',
+    },
+    {
+      title: 'Assets',
+      href: '#',
+    },
+    {
+      title: 'Inventory',
+      href: url,
+    }
+  ];
+
   return (
     <AppLayout title="Asset Inventory" breadcrumbs={breadcrumbs}>
-      <div className="p-6">
+      <div className="container mx-auto p-4">
         <div className="mb-6 flex justify-between items-center">
           <h1 className="text-2xl font-bold">Asset Inventory</h1>
           <Button>
@@ -167,14 +174,16 @@ export default function AssetInventory() {
         </div>
         
         <DataTable
-          columns={columns}
+          columns={columns as ColumnDef<Asset>[]}
           data={paginatedData}
           title="Asset Inventory"
           searchPlaceholder="Search assets..."
-          totalItems={filteredData.length}
-          currentPage={currentPage}
-          perPage={perPage}
-          onPageChange={handlePageChange}
+          pagination={{
+            totalItems: filteredData.length,
+            currentPage: currentPage,
+            perPage: perPage,
+            onPageChange: handlePageChange
+          }}
           onSearch={handleSearch}
         />
       </div>
