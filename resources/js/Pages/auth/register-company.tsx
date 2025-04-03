@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import axios from 'axios';
+import { Head, router, Link } from '@inertiajs/react';
 
-import AuthSimpleLayout from '@/layouts/auth/auth-simple-layout';
+import InstallationLayout from '@/layouts/installation-layout';
 import { 
   Form,
   FormControl,
@@ -18,7 +18,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import RegistrationSuccess from '@/components/installation/RegistrationSuccess';
 
 // Step 1: Contact Information Schema
 const contactSchema = z.object({
@@ -72,15 +73,20 @@ enum RegistrationStep {
   Contact = 1,
   Verification = 2,
   Details = 3,
+  Success = 4,
 }
 
 export default function RegisterCompany() {
-  const { auth } = usePage().props;
   const [currentStep, setCurrentStep] = useState<RegistrationStep>(RegistrationStep.Contact);
   const [contactData, setContactData] = useState<z.infer<typeof contactSchema> | null>(null);
   const [verificationCode, setVerificationCode] = useState<string>(Array(6).fill('').join(''));
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+  const [successData, setSuccessData] = useState<{
+    companyName: string;
+    redirectUrl: string;
+  } | null>(null);
 
   // Form instances for each step
   const contactForm = useForm<z.infer<typeof contactSchema>>({
@@ -113,7 +119,7 @@ export default function RegisterCompany() {
       setVerificationCode(response.data.verification_code);
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message: string } } };
-      setError(error.response?.data?.message || 'An error occurred');
+      setError(error.response?.data?.message || 'Failed to validate contact');
     } finally {
       setIsLoading(false);
     }
@@ -125,8 +131,9 @@ export default function RegisterCompany() {
     
     try {
       await axios.post(route('register.company.verify-code'), {
-        ...contactData,
-        verification_code: verificationCode,
+        ...data,
+        contact: contactData?.contact,
+        contact_type: contactData?.contact_type,
       });
       setCurrentStep(RegistrationStep.Details);
     } catch (err: unknown) {
@@ -138,38 +145,30 @@ export default function RegisterCompany() {
   };
 
   const handleDetailsSubmit = async (data: z.infer<typeof detailsSchema>) => {
-    if (!contactData) {
-      setError('Contact data not found');
-      return;
-    }
-
     setIsLoading(true);
-    setError(null);
-    
     try {
-      await axios.post(route('register.company.save-details'), {
-        ...contactData,
+      await axios.post(route('register.company.complete'), {
         ...data,
+        contact: contactData?.contact,
+        contact_type: contactData?.contact_type,
+        verification_code: verificationCode,
       });
-      
-      // Clear form data
-      contactForm.reset();
-      verificationForm.reset();
-      detailsForm.reset();
-      
-      // Reset state
-      setContactData(null);
-      setVerificationCode('');
-      setCurrentStep(RegistrationStep.Contact);
-      
-      // Redirect to login page
-      window.location.href = '/';
+
+      handleSuccessRedirect(data.company_name);
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message: string } } };
-      setError(error.response?.data?.message || 'An error occurred');
+      setError(error.response?.data?.message || 'Failed to complete registration');
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSuccessRedirect = (companyName: string) => {
+    setSuccessData({
+      companyName,
+      redirectUrl: route('dashboard'),
+    });
+    setCurrentStep(RegistrationStep.Success);
   };
 
   const handleDigitChange = (index: number, value: string) => {
@@ -190,23 +189,43 @@ export default function RegisterCompany() {
     }
   };
 
+  const handleNextStep = () => {
+    setCurrentStep(currentStep + 1);
+  };
+
+  const handleBackStep = () => {
+    setCurrentStep(currentStep - 1);
+  };
+
+  const resendVerificationCode = async () => {
+    setIsResending(true);
+    try {
+      await axios.post(route('register.company.resend-verification-code'), contactData);
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message: string } } };
+      setError(error.response?.data?.message || 'Failed to resend verification code');
+    } finally {
+      setIsResending(false);
+    }
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case RegistrationStep.Contact:
         return (
           <Form {...contactForm}>
-            <form onSubmit={contactForm.handleSubmit(handleContactSubmit)}>
+            <form onSubmit={contactForm.handleSubmit(handleContactSubmit)} className="space-y-6">
               <FormField
                 control={contactForm.control}
                 name="contact"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Contact</FormLabel>
+                    <FormLabel>Contact Information</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input placeholder="Enter email or phone number" {...field} />
                     </FormControl>
                     <FormDescription>
-                      Enter your email address
+                      Enter your email address or phone number for verification
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -216,58 +235,71 @@ export default function RegisterCompany() {
                 control={contactForm.control}
                 name="contact_type"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="space-y-3">
                     <FormLabel>Contact Type</FormLabel>
                     <FormControl>
-                      <select value={field.value} onChange={field.onChange}>
+                      <select
+                        {...field}
+                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
                         <option value="email">Email</option>
                         <option value="phone">Phone</option>
                       </select>
                     </FormControl>
+                    <FormDescription>
+                      Choose whether you want to verify via email or phone
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Sending...' : 'Next'}
+              <Button type="submit" className="w-full">
+                Next
               </Button>
             </form>
           </Form>
         );
-
+      
       case RegistrationStep.Verification:
         return (
           <Form {...verificationForm}>
-            <form onSubmit={verificationForm.handleSubmit(handleVerificationSubmit)}>
+            <form onSubmit={verificationForm.handleSubmit(handleVerificationSubmit)} className="space-y-6">
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-semibold">Step 2: Verify Your Contact</h3>
+                <p className="text-gray-600 mt-2">
+                  We've sent a 6-digit verification code to your {contactData?.contact_type === 'email' ? 'email' : 'phone'}. Please enter it below.
+                </p>
+              </div>
+
               <div className="space-y-4">
-                <div className="text-center">
-                  <p className="text-lg font-semibold">Step 2 of 3</p>
-                  <p className="text-gray-500">Verify your email address</p>
-                </div>
-                
                 <FormField
                   control={verificationForm.control}
                   name="verification_code"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Verification Code</FormLabel>
-                      <FormControl>
-                        <div className="flex space-x-2">
-                          {Array.from({ length: 6 }).map((_, index) => (
+                      <div className="flex items-center justify-center space-x-2">
+                        {Array.from({ length: 6 }).map((_, index) => (
+                          <FormControl key={index}>
                             <Input
-                              key={index}
-                              id={`digit-${index}`}
+                              {...field}
                               type="text"
                               maxLength={1}
-                              className="w-12 text-center"
-                              value={verificationCode[index]}
+                              className="w-12 h-12 text-center rounded-md border border-input focus:ring-2 focus:ring-primary focus:border-primary"
+                              value={field.value[index] || ''}
                               onChange={(e) => {
                                 const value = e.target.value;
                                 if (value.match(/^[0-9]$/)) {
-                                  handleDigitChange(index, value);
+                                  const newValue = field.value.substring(0, index) + value + field.value.substring(index + 1);
+                                  field.onChange(newValue);
+                                  if (index < 5) {
+                                    const nextInput = document.getElementById(`digit-${index + 1}`);
+                                    if (nextInput) {
+                                      nextInput.focus();
+                                    }
+                                  }
                                 } else if (value === '') {
-                                  // Handle backspace
-                                  handleDigitChange(index, '');
+                                  const newValue = field.value.substring(0, index) + field.value.substring(index + 1);
+                                  field.onChange(newValue);
                                   if (index > 0) {
                                     const prevInput = document.getElementById(`digit-${index - 1}`);
                                     if (prevInput) {
@@ -276,22 +308,35 @@ export default function RegisterCompany() {
                                   }
                                 }
                               }}
+                              id={`digit-${index}`}
                             />
-                          ))}
-                        </div>
-                      </FormControl>
-                      <FormDescription>
-                        Enter the 6-digit code sent to your email
+                          </FormControl>
+                        ))}
+                      </div>
+                      <FormDescription className="text-center mt-2">
+                        Enter the 6-digit code sent to your {contactData?.contact_type === 'email' ? 'email' : 'phone'}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-              
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Verifying...' : 'Verify'}
-              </Button>
+
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    resendVerificationCode();
+                  }}
+                  disabled={isResending}
+                >
+                  {isResending ? 'Resending...' : 'Resend Code'}
+                </Button>
+                <Button type="submit" className="w-full sm:w-auto">
+                  Verify
+                </Button>
+              </div>
             </form>
           </Form>
         );
@@ -299,173 +344,164 @@ export default function RegisterCompany() {
       case RegistrationStep.Details:
         return (
           <Form {...detailsForm}>
-            <form onSubmit={detailsForm.handleSubmit(handleDetailsSubmit)}>
-              {/* Company Information and Admin Information */}
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-8">
-                  {/* Company Information */}
-                  <div className="w-full">
-                    <Card className="w-full">
-                      <CardHeader>
-                        <CardTitle>Company Information</CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-6">
-                        <div className="grid grid-cols-2 gap-6">
-                          <FormField
-                            control={detailsForm.control}
-                            name="company_name"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Company Name</FormLabel>
-                                <FormControl>
-                                  <Input {...field} className="w-full" />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={detailsForm.control}
-                            name="company_email"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Company Email</FormLabel>
-                                <FormControl>
-                                  <Input {...field} type="email" className="w-full" />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={detailsForm.control}
-                            name="company_phone"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Company Phone</FormLabel>
-                                <FormControl>
-                                  <Input {...field} className="w-full" />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={detailsForm.control}
-                            name="company_country"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Country</FormLabel>
-                                <FormControl>
-                                  <Input {...field} className="w-full" />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={detailsForm.control}
-                            name="company_address"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Company Address</FormLabel>
-                                <FormControl>
-                                  <Input {...field} className="w-full" />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={detailsForm.control}
-                            name="company_city"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>City</FormLabel>
-                                <FormControl>
-                                  <Input {...field} className="w-full" />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-
-                  {/* Admin Information */}
-                  <div className="w-full">
-                    <Card className="w-full">
-                      <CardHeader>
-                        <CardTitle>Admin Information</CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-6">
-                        <div className="space-y-6">
-                          <FormField
-                            control={detailsForm.control}
-                            name="admin_name"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Admin Name</FormLabel>
-                                <FormControl>
-                                  <Input {...field} className="w-full" />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={detailsForm.control}
-                            name="admin_email"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Admin Email</FormLabel>
-                                <FormControl>
-                                  <Input {...field} type="email" className="w-full" />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={detailsForm.control}
-                            name="admin_password"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Password</FormLabel>
-                                <FormControl>
-                                  <Input {...field} type="password" className="w-full" />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={detailsForm.control}
-                            name="admin_password_confirmation"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Confirm Password</FormLabel>
-                                <FormControl>
-                                  <Input {...field} type="password" className="w-full" />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+            <form onSubmit={detailsForm.handleSubmit(handleDetailsSubmit)} className="space-y-6">
+              {/* Company Information */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-medium">Company Information</h3>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <FormField
+                    control={detailsForm.control}
+                    name="company_name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Company Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={detailsForm.control}
+                    name="company_email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Company Email</FormLabel>
+                        <FormControl>
+                          <Input type="email" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={detailsForm.control}
+                    name="company_phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Company Phone</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={detailsForm.control}
+                    name="company_address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Company Address</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={detailsForm.control}
+                    name="company_city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>City</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={detailsForm.control}
+                    name="company_country"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Country</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
               </div>
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Registering...' : 'Register'}
+              {/* Admin Information */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-medium">Admin Information</h3>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <FormField
+                    control={detailsForm.control}
+                    name="admin_name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Admin Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={detailsForm.control}
+                    name="admin_email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Admin Email</FormLabel>
+                        <FormControl>
+                          <Input type="email" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={detailsForm.control}
+                    name="admin_password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input type="password" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={detailsForm.control}
+                    name="admin_password_confirmation"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm Password</FormLabel>
+                        <FormControl>
+                          <Input type="password" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
+              <Button type="submit" className="w-full">
+                Register
               </Button>
             </form>
           </Form>
+        );
+
+      case RegistrationStep.Success:
+        return (
+          <RegistrationSuccess
+            companyName={successData?.companyName || ''}
+            redirectUrl={successData?.redirectUrl || route('dashboard')}
+          />
         );
 
       default:
@@ -474,19 +510,14 @@ export default function RegisterCompany() {
   };
 
   return (
-    <AuthSimpleLayout>
-      <Head title="Register Company" />
-
-      <div className="w-full max-w-md space-y-8">
-        <div>
-          <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
-            Register Your Company
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Create a new company account
-          </p>
-        </div>
-
+    <InstallationLayout
+      currentStep={currentStep}
+      totalSteps={4}
+      onNext={handleNextStep}
+      onBack={handleBackStep}
+      isLoading={isLoading}
+    >
+      <div className="space-y-8">
         {error && (
           <Alert variant="destructive">
             <AlertTitle>Error</AlertTitle>
@@ -494,37 +525,9 @@ export default function RegisterCompany() {
           </Alert>
         )}
 
-        {/* Step Indicator */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-center">
-            <div className="flex items-center space-x-4">
-              <div className={`w-8 h-8 flex items-center justify-center rounded-full ${
-                currentStep === RegistrationStep.Contact ? 'bg-primary text-white' : 'bg-gray-200'
-              }`}>
-                1
-              </div>
-              <div className={`w-8 h-8 flex items-center justify-center rounded-full ${
-                currentStep === RegistrationStep.Verification ? 'bg-primary text-white' : 'bg-gray-200'
-              }`}>
-                2
-              </div>
-              <div className={`w-8 h-8 flex items-center justify-center rounded-full ${
-                currentStep === RegistrationStep.Details ? 'bg-primary text-white' : 'bg-gray-200'
-              }`}>
-                3
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
-            <span>Contact</span>
-            <span>Verify</span>
-            <span>Details</span>
-          </div>
-        </div>
-
         {renderStep()}
 
-        <div className="mt-6">
+        <div className="mt-8">
           <Link
             href={route('login')}
             className="text-sm font-medium text-primary hover:underline"
@@ -533,6 +536,6 @@ export default function RegisterCompany() {
           </Link>
         </div>
       </div>
-    </AuthSimpleLayout>
+    </InstallationLayout>
   );
 }

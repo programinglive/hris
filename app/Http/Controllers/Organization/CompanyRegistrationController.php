@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
@@ -200,6 +199,86 @@ class CompanyRegistrationController extends Controller
     }
 
     /**
+     * Step 3: Complete registration with company and admin details
+     */
+    public function completeRegistration(Request $request)
+    {
+        $validated = $request->validate([
+            'company_name' => 'required|string|max:255',
+            'company_email' => 'required|email|unique:companies',
+            'company_phone' => 'required|string',
+            'company_address' => 'required|string',
+            'company_city' => 'required|string',
+            'company_country' => 'required|string',
+            'admin_name' => 'required|string|max:255',
+            'admin_email' => 'required|email|unique:users',
+            'admin_password' => 'required|string|min:8|confirmed',
+            'contact' => 'required|string',
+            'contact_type' => 'required|in:email,phone',
+            'verification_code' => 'required|string|size:6',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Create company
+            $company = Company::create([
+                'name' => $validated['company_name'],
+                'email' => $validated['company_email'],
+                'phone' => $validated['company_phone'],
+                'address' => $validated['company_address'],
+                'city' => $validated['company_city'],
+                'country' => $validated['company_country'],
+            ]);
+
+            // Create admin user
+            $admin = User::create([
+                'name' => $validated['admin_name'],
+                'email' => $validated['admin_email'],
+                'password' => Hash::make($validated['admin_password']),
+                'company_id' => $company->id,
+            ]);
+
+            // Create admin role
+            $adminRole = Role::firstOrCreate(['name' => 'admin']);
+            $admin->roles()->attach($adminRole);
+
+            // Set company as primary for admin
+            $admin->primary_company_id = $company->id;
+            $admin->save();
+
+            // Verify contact
+            if ($validated['contact_type'] === 'email') {
+                $admin->email_verified_at = now();
+                $admin->save();
+            } else {
+                // For phone verification, you might want to implement a different verification system
+                $admin->phone_verified_at = now();
+                $admin->save();
+            }
+
+            DB::commit();
+
+            // Log the user in
+            Auth::guard('web')->login($admin);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Registration completed successfully',
+                'company_name' => $validated['company_name'],
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Registration failed: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to complete registration',
+            ], 500);
+        }
+    }
+
+    /**
      * Complete registration and redirect to dashboard
      */
     public function register(Request $request)
@@ -337,7 +416,7 @@ class CompanyRegistrationController extends Controller
             ]);
 
             // Login the admin user
-            Auth::login($admin);
+            Auth::guard('web')->login($admin);
         });
 
         return redirect()->route('dashboard')->with('success', 'Company and admin account created successfully!');

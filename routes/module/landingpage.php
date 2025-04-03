@@ -15,6 +15,10 @@ Route::get('/installation-wizard', [CompanyRegistrationController::class, 'showR
 
 // Company registration routes
 Route::prefix('register-company')->name('register.company.')->group(function () {
+    Route::get('/', [CompanyRegistrationController::class, 'showRegistrationForm'])
+        ->name('show')
+        ->middleware('guest');
+
     Route::post('/validate-contact', [CompanyRegistrationController::class, 'validateContact'])
         ->name('validate-contact')
         ->middleware('guest');
@@ -25,5 +29,9 @@ Route::prefix('register-company')->name('register.company.')->group(function () 
 
     Route::post('/save-details', [CompanyRegistrationController::class, 'saveCompanyDetails'])
         ->name('save-details')
+        ->middleware('guest');
+
+    Route::post('/complete', [CompanyRegistrationController::class, 'completeRegistration'])
+        ->name('complete')
         ->middleware('guest');
 });
