@@ -23,23 +23,6 @@ Route::get('/test-sentry', function () {
     }
 });
 
-// Installation routes
-Route::middleware(['guest'])->prefix('install')->name('install.')->group(function () {
-    Route::get('/', [\App\Http\Controllers\Installation\SystemSetupController::class, 'index'])->name('system');
-    Route::post('/system', [\App\Http\Controllers\Installation\SystemSetupController::class, 'store'])->name('system.store');
-    
-    Route::get('/database', [\App\Http\Controllers\Installation\DatabaseSetupController::class, 'index'])->name('database');
-    Route::post('/database', [\App\Http\Controllers\Installation\DatabaseSetupController::class, 'store'])->name('database.store');
-    
-    Route::get('/company', [\App\Http\Controllers\Installation\CompanySetupController::class, 'index'])->name('company');
-    Route::post('/company', [\App\Http\Controllers\Installation\CompanySetupController::class, 'store'])->name('company.store');
-    
-    Route::get('/admin', [\App\Http\Controllers\Installation\AdminSetupController::class, 'index'])->name('admin');
-    Route::post('/admin', [\App\Http\Controllers\Installation\AdminSetupController::class, 'store'])->name('admin.store');
-    
-    Route::get('/complete', [\App\Http\Controllers\Installation\CompleteController::class, 'index'])->name('complete');
-});
-
 // Apply installation wizard check middleware to all guest routes
 Route::middleware(['guest', 'check.installation.wizard'])->group(function () {
     // Login route
