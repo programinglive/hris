@@ -15,6 +15,8 @@ interface VerificationStepProps {
   isLoading: boolean;
   isResending: boolean;
   error?: string;
+  countdown: number;
+  showCountdown: boolean;
 }
 
 export default function VerificationStep({
@@ -25,25 +27,11 @@ export default function VerificationStep({
   isLoading,
   isResending,
   error,
+  countdown,
+  showCountdown,
 }: VerificationStepProps) {
   const [inputValues, setInputValues] = useState<string[]>(Array(6).fill(''));
-  const [countdown, setCountdown] = useState(300); // 5 minutes in seconds
-  const [showCountdown, setShowCountdown] = useState(true);
-  const [showClearButton, setShowClearButton] = useState(false);
   const [isError, setIsError] = useState(false);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (countdown > 0) {
-        setCountdown(prev => prev - 1);
-      } else {
-        setShowCountdown(false);
-        clearInterval(timer);
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   const handleInputChange = (index: number, value: string) => {
     const newValues = [...inputValues];
@@ -66,11 +54,6 @@ export default function VerificationStep({
         prevInput.focus();
       }
     }
-  };
-
-  const clearInputs = () => {
-    setInputValues(Array(6).fill(''));
-    setIsError(false);
   };
 
   return (
@@ -102,63 +85,62 @@ export default function VerificationStep({
                     maxLength={1}
                     value={value}
                     onChange={(e) => handleInputChange(index, e.target.value)}
-                    className="w-12 text-center"
                     onKeyDown={(e) => handleKeyDown(index, e)}
-                    onFocus={() => setShowClearButton(true)}
-                    onBlur={() => setShowClearButton(false)}
+                    className="w-12 text-center"
+                    id={`input-${index}`}
                   />
                 ))}
               </div>
-
-              {showClearButton && (
-                <button
-                  type="button"
-                  onClick={clearInputs}
-                  className="absolute right-4 text-gray-400 hover:text-gray-500"
-                >
-                  ✕
-                </button>
+              {isError && (
+                <p className="mt-2 text-sm text-red-600">Invalid verification code</p>
               )}
             </div>
 
-            {isError && (
-              <p className="mt-2 text-sm text-red-600">
-                Invalid verification code. Please try again.
-              </p>
-            )}
+            <div className="mt-4 text-center">
+              {showCountdown ? (
+                <p className="text-sm text-gray-500">
+                  Didn't receive the code?{' '}
+                  <button
+                    type="button"
+                    onClick={onResend}
+                    disabled={isResending || countdown > 0}
+                    className="text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isResending ? 'Resending...' : countdown > 0 ? `Resend in ${Math.floor(countdown / 60)}:${(countdown % 60).toString().padStart(2, '0')}` : 'Resend'}
+                  </button>
+                </p>
+              ) : (
+                <p className="text-sm text-gray-500">
+                  Please check your {contactData.contact_type === 'email' ? 'email' : 'phone'} for the verification code.
+                </p>
+              )}
+            </div>
 
-            <div className="flex justify-between items-center">
+            <div className="mt-6 space-y-4">
+              <Button
+                type="button"
+                onClick={() => {
+                  const code = inputValues.join('');
+                  if (code.length === 6) {
+                    onVerify(code);
+                  } else {
+                    setIsError(true);
+                  }
+                }}
+                disabled={isLoading || inputValues.some(v => v === '')}
+                className="w-full"
+              >
+                {isLoading ? 'Processing...' : 'Verify'}
+              </Button>
+
               <Button
                 type="button"
                 variant="outline"
                 onClick={onBack}
-                disabled={isLoading}
+                className="w-full"
               >
                 Back
               </Button>
-
-              <div className="flex items-center space-x-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={onResend}
-                  disabled={isResending || showCountdown}
-                >
-                  {isResending
-                    ? 'Resending...'
-                    : showCountdown
-                    ? `${Math.floor(countdown / 60)}:${String(countdown % 60).padStart(2, '0')}`
-                    : 'Resend Code'}
-                </Button>
-
-                <Button
-                  type="submit"
-                  disabled={isLoading || !inputValues.every(v => v !== '')}
-                  onClick={() => onVerify(inputValues.join(''))}
-                >
-                  {isLoading ? 'Verifying...' : 'Verify'}
-                </Button>
-              </div>
             </div>
           </div>
         </CardContent>

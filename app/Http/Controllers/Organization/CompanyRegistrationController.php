@@ -136,7 +136,11 @@ class CompanyRegistrationController extends Controller
         $registrationData['verified'] = true;
         Session::put('registration_data', $registrationData);
 
-        return back()->with('success', 'Verification successful! Please proceed to the next step.');
+        return Inertia::render('auth/register-company', [
+            'contactData' => $registrationData,
+            'currentStep' => 'CompanyDetails',
+            'error' => null
+        ]);
     }
 
     /**

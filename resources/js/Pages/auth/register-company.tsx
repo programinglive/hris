@@ -48,6 +48,8 @@ export default function RegisterCompany({ title }: Props) {
   const [error, setError] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
+  const [countdown, setCountdown] = useState(300);
+  const [showCountdown, setShowCountdown] = useState(true);
   const { flash, errors, deferred } = usePage<PageProps>().props;
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -75,7 +77,7 @@ export default function RegisterCompany({ title }: Props) {
       setIsLoading(true);
       setError(undefined);
 
-      await router.post('/installation-wizard/validate-contact', data, {
+      await router.post(route('landing-page.installation-wizard.validate-contact'), data, {
         onSuccess: (page) => {
           setContactData(data);
           setCurrentStep(RegistrationStep.Verification);
@@ -96,18 +98,14 @@ export default function RegisterCompany({ title }: Props) {
       setIsLoading(true);
       setError(undefined);
 
-      await router.visit(route('landing-page.installation-wizard.verify-code'), {
-        method: 'post',
-        data: {
-          verification_code: code,
-          contact: contactData?.contact,
-          contact_type: contactData?.contact_type,
-        },
-        onSuccess: () => {
+      await router.post(route('landing-page.installation-wizard.verify-code'), {
+        verification_code: code
+      }, {
+        onSuccess: (page) => {
           setCurrentStep(RegistrationStep.CompanyDetails);
         },
         onError: (errors: any) => {
-          setError(errors.verification_code?.[0] || 'Failed to verify code');
+          setError(errors.verification_code?.[0] || 'Invalid verification code');
         }
       });
     } catch (err: any) {
@@ -123,9 +121,14 @@ export default function RegisterCompany({ title }: Props) {
       setError(undefined);
 
       if (contactData) {
-        await router.visit('/installation-wizard/resend-code', {
-          method: 'post',
-          data: contactData,
+        await router.post(route('landing-page.installation-wizard.resend-code'), {
+          contact: contactData.contact,
+          contact_type: contactData.contact_type
+        }, {
+          onSuccess: () => {
+            setCountdown(300);
+            setShowCountdown(true);
+          },
           onError: (errors: any) => {
             setError(errors.contact?.[0] || 'Failed to resend verification code');
           }
@@ -293,6 +296,8 @@ export default function RegisterCompany({ title }: Props) {
             isLoading={isLoading}
             isResending={isResending}
             error={error}
+            countdown={countdown}
+            showCountdown={showCountdown}
           />
         );
       case RegistrationStep.CompanyDetails:
