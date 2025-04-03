@@ -112,26 +112,60 @@ npm run dev
 
 After completing the setup steps, you'll need to run through the installation wizard to configure your HRIS system. The wizard consists of several steps:
 
-1. **Company Setup**
+1. **Verification Request**
+   - Enter your email or phone number
+   - Choose your preferred verification method
+   - Submit to receive verification code
+
+2. **Verify Code**
+   - Enter the 6-digit verification code
+   - Verify your contact information
+   - Confirm your identity
+
+3. **Company Setup**
    - Register your company information
    - Enter company name, email, and phone
    - Configure company address
    - Accept terms and conditions
 
-2. **System Setup**
+4. **System Setup**
    - Configure system settings
    - Set up default configurations
    - Configure email settings
 
-3. **Admin Setup**
+5. **Admin Setup**
    - Create the first admin user
    - Set up admin credentials
    - Configure admin permissions
 
-4. **Complete**
+6. **Complete**
    - Review all configurations
    - Complete the installation
    - Access the main HRIS system
+
+### Security Features
+
+- All registration data is validated before submission
+- Password requirements are enforced for admin accounts
+- Company information is validated against existing records
+- Session-based security to prevent unauthorized access
+- 6-digit verification code system
+- Contact verification through email or phone
+
+### Verification System
+
+- Contact verification through email or phone
+- 6-digit verification code system
+- Automatic code sending
+- Secure session-based verification
+- Multiple verification attempts allowed
+
+### Error Handling
+
+- Clear error messages for each step
+- Validation feedback
+- Progress tracking
+- Ability to go back and edit previous steps
 
 ## Usage
 
