@@ -173,14 +173,19 @@ export default function RegisterCompany({ title }: Props) {
     }
   };
 
-  const handleSystemSettingsSubmit = async (data: any) => {
+  const handleSystemSettingsSubmit = async (data: {
+    system_settings: {
+      setting1: string;
+      setting2: string;
+    };
+  }) => {
     try {
       setIsLoading(true);
       setError(undefined);
 
-      await router.visit(route('landing-page.installation-wizard.save-system-settings'), {
-        method: 'post',
-        data,
+      await router.post(route('landing-page.installation-wizard.save-system-settings'), {
+        system_settings: data.system_settings
+      }, {
         onSuccess: () => {
           setCurrentStep(RegistrationStep.AdminSetup);
         },
@@ -204,9 +209,9 @@ export default function RegisterCompany({ title }: Props) {
       setIsLoading(true);
       setError(undefined);
 
-      await router.visit(route('landing-page.installation-wizard.save-admin-details'), {
-        method: 'post',
-        data,
+      await router.post(route('landing-page.installation-wizard.save-admin-details'), {
+        admin_details: data
+      }, {
         onSuccess: () => {
           setCurrentStep(RegistrationStep.Completion);
         },
@@ -226,8 +231,7 @@ export default function RegisterCompany({ title }: Props) {
       setIsLoading(true);
       setError(undefined);
 
-      await router.visit(route('landing-page.installation-wizard.complete'), {
-        method: 'post',
+      await router.post(route('landing-page.installation-wizard.complete'), {
         onSuccess: () => {
           setCurrentStep(RegistrationStep.Complete);
         },
@@ -264,7 +268,12 @@ export default function RegisterCompany({ title }: Props) {
     } else if (currentStep === RegistrationStep.CompanyDetails) {
       handleCompanyDetailsSubmit(data);
     } else if (currentStep === RegistrationStep.SystemSettings) {
-      handleSystemSettingsSubmit(data);
+      handleSystemSettingsSubmit({
+        system_settings: {
+          setting1: data.setting1,
+          setting2: data.setting2,
+        }
+      });
     } else if (currentStep === RegistrationStep.AdminSetup) {
       handleAdminSetupSubmit(data);
     } else if (currentStep === RegistrationStep.Completion) {
@@ -313,7 +322,17 @@ export default function RegisterCompany({ title }: Props) {
       case RegistrationStep.SystemSettings:
         return (
           <SystemSettingsStep
-            onSubmit={handleSystemSettingsSubmit}
+            onSubmit={(data: {
+              setting1: string;
+              setting2: string;
+            }) => {
+              handleSystemSettingsSubmit({
+                system_settings: {
+                  setting1: data.setting1,
+                  setting2: data.setting2,
+                }
+              });
+            }}
             onBack={handleBack}
             isLoading={isLoading}
             error={error}

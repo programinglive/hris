@@ -198,7 +198,7 @@ class CompanyRegistrationController extends Controller
     }
 
     /**
-     * Step 3: Save company and admin details
+     * Step 3: Save company details
      */
     public function saveCompanyDetails(Request $request)
     {
@@ -210,11 +210,6 @@ class CompanyRegistrationController extends Controller
             'company_address' => 'required|string',
             'company_city' => 'required|string',
             'company_country' => 'required|string',
-
-            // Admin user information
-            'admin_name' => 'required|string|max:255',
-            'admin_email' => 'required|email|unique:users,email',
-            'admin_password' => 'required|string|min:8|confirmed',
 
             // Contact information (from previous steps)
             'contact_type' => 'required|in:email,phone',
@@ -232,14 +227,6 @@ class CompanyRegistrationController extends Controller
                 ]);
         }
 
-        // Create the user
-        $user = User::create([
-            'name' => $validated['admin_name'],
-            'email' => $validated['admin_email'],
-            'password' => Hash::make($validated['admin_password']),
-            'primary_company_id' => null, // Will be set after company creation
-        ]);
-
         // Create the company
         $company = Company::create([
             'name' => $validated['company_name'],
@@ -248,143 +235,15 @@ class CompanyRegistrationController extends Controller
             'address' => $validated['company_address'],
             'city' => $validated['company_city'],
             'country' => $validated['company_country'],
-            'owner_id' => $user->id,
+            'owner_id' => null, // Will be set when admin is created
         ]);
 
-        // Set company as primary for admin
-        $user->primary_company_id = $company->id;
-        $user->save();
+        // Update session with company ID
+        $registrationData = Session::get('registration_data');
+        $registrationData['company_id'] = $company->id;
+        Session::put('registration_data', $registrationData);
 
-        // Create the main branch
-        Branch::create([
-            'name' => 'Main Branch',
-            'code' => 'MB-'.strtoupper(substr(str_replace(' ', '', $company->name), 0, 3)).'001',
-            'email' => $company->email,
-            'phone' => $company->phone,
-            'company_id' => $company->id,
-            'is_main_branch' => true,
-        ]);
-
-        // Create admin role
-        $adminRole = Role::firstOrCreate([
-            'name' => 'admin',
-            'display_name' => 'Administrator',
-            'description' => 'System administrator with full access',
-            'is_system' => true,
-            'slug' => 'admin',
-            'company_id' => $company->id
-        ]);
-
-        // Create user role relationship
-        UserRole::create([
-            'user_id' => $user->id,
-            'role_id' => $adminRole->id,
-            'company_id' => $company->id
-        ]);
-
-        // Verify contact
-        if ($validated['contact_type'] === 'email') {
-            $user->email_verified_at = now();
-            $user->save();
-        } else {
-            $user->phone_verified_at = now();
-            $user->save();
-        }
-
-        // Log the user in
-        Auth::login($user);
-
-        // Clear registration session data
-        Session::forget('registration_data');
-
-        return redirect()->route('dashboard')->with('success', 'Company and admin account created successfully!');
-    }
-
-    /**
-     * Step 3: Complete registration with company and admin details
-     */
-    public function completeRegistration(Request $request)
-    {
-        $validated = $request->validate([
-            'company_name' => 'required|string|max:255',
-            'company_email' => 'required|email|unique:companies',
-            'company_phone' => 'required|string',
-            'company_address' => 'required|string',
-            'company_city' => 'required|string',
-            'company_country' => 'required|string',
-            'admin_name' => 'required|string|max:255',
-            'admin_email' => 'required|email|unique:users',
-            'admin_password' => 'required|string|min:8|confirmed',
-            'contact' => 'required|string',
-            'contact_type' => 'required|in:email,phone',
-            'verification_code' => 'required|string|size:6',
-        ]);
-
-        try {
-            DB::beginTransaction();
-
-            // Create company
-            $company = Company::create([
-                'name' => $validated['company_name'],
-                'email' => $validated['company_email'],
-                'phone' => $validated['company_phone'],
-                'address' => $validated['company_address'],
-                'city' => $validated['company_city'],
-                'country' => $validated['company_country'],
-            ]);
-
-            // Create admin user
-            $admin = User::create([
-                'name' => $validated['admin_name'],
-                'email' => $validated['admin_email'],
-                'password' => Hash::make($validated['admin_password']),
-                'company_id' => $company->id,
-            ]);
-
-            // Create admin role
-            $adminRole = Role::firstOrCreate([
-                'name' => 'admin',
-                'display_name' => 'Administrator',
-                'description' => 'System administrator with full access',
-                'is_system' => true,
-                'slug' => 'admin',
-                'company_id' => $company->id
-            ]);
-
-            // Create user role relationship
-            UserRole::create([
-                'user_id' => $admin->id,
-                'role_id' => $adminRole->id,
-                'company_id' => $company->id
-            ]);
-
-            // Set company as primary for admin
-            $admin->primary_company_id = $company->id;
-            $admin->save();
-
-            // Verify contact
-            if ($validated['contact_type'] === 'email') {
-                $admin->email_verified_at = now();
-                $admin->save();
-            } else {
-                // For phone verification, you might want to implement a different verification system
-                $admin->phone_verified_at = now();
-                $admin->save();
-            }
-
-            DB::commit();
-
-            // Log the user in
-            Auth::guard('web')->login($admin);
-
-            return redirect()->route('dashboard')->with('success', 'Company and admin account created successfully!');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Registration failed: ' . $e->getMessage());
-            return back()->withInput()->withErrors([
-                'company_name' => 'Failed to complete registration',
-            ]);
-        }
+        return Inertia::location(route('landing-page.installation-wizard.save-system-settings'));
     }
 
     /**
@@ -433,7 +292,7 @@ class CompanyRegistrationController extends Controller
                 'name' => $validated['admin_name'],
                 'email' => $validated['admin_email'],
                 'password' => Hash::make($validated['admin_password']),
-                'primary_company_id' => $company->id,
+                'company_id' => $company->id,
             ]);
 
             // Create user details
@@ -522,7 +381,7 @@ class CompanyRegistrationController extends Controller
                 'admin' => [
                     'name' => 'admin',
                     'display_name' => 'Administrator',
-                    'description' => 'Full access to all company features',
+                    'description' => 'System administrator with full access',
                 ],
                 'manager' => [
                     'name' => 'manager',
@@ -541,7 +400,7 @@ class CompanyRegistrationController extends Controller
                     'name' => $role['name'],
                     'display_name' => $role['display_name'],
                     'description' => $role['description'],
-                    'company_id' => $company->id,
+                    'company_id' => $company->id
                 ]);
 
                 // Assign admin role to the admin user
@@ -549,7 +408,7 @@ class CompanyRegistrationController extends Controller
                     UserRole::create([
                         'user_id' => $admin->id,
                         'role_id' => $roleModel->id,
-                        'company_id' => $company->id,
+                        'company_id' => $company->id
                     ]);
                 }
             }
