@@ -300,160 +300,165 @@ export default function RegisterCompany() {
         return (
           <Form {...detailsForm}>
             <form onSubmit={detailsForm.handleSubmit(handleDetailsSubmit)}>
-              {/* Company Information */}
+              {/* Company Information and Admin Information */}
               <div className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Company Information</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <FormField
-                        control={detailsForm.control}
-                        name="company_name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Company Name</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={detailsForm.control}
-                        name="company_email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Company Email</FormLabel>
-                            <FormControl>
-                              <Input {...field} type="email" />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={detailsForm.control}
-                        name="company_phone"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Company Phone</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={detailsForm.control}
-                        name="company_address"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Company Address</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={detailsForm.control}
-                        name="company_city"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>City</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={detailsForm.control}
-                        name="company_country"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Country</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+                <div className="grid grid-cols-2 gap-8">
+                  {/* Company Information */}
+                  <div className="w-full">
+                    <Card className="w-full">
+                      <CardHeader>
+                        <CardTitle>Company Information</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                        <div className="grid grid-cols-2 gap-6">
+                          <FormField
+                            control={detailsForm.control}
+                            name="company_name"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Company Name</FormLabel>
+                                <FormControl>
+                                  <Input {...field} className="w-full" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={detailsForm.control}
+                            name="company_email"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Company Email</FormLabel>
+                                <FormControl>
+                                  <Input {...field} type="email" className="w-full" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={detailsForm.control}
+                            name="company_phone"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Company Phone</FormLabel>
+                                <FormControl>
+                                  <Input {...field} className="w-full" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={detailsForm.control}
+                            name="company_country"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Country</FormLabel>
+                                <FormControl>
+                                  <Input {...field} className="w-full" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={detailsForm.control}
+                            name="company_address"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Company Address</FormLabel>
+                                <FormControl>
+                                  <Input {...field} className="w-full" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={detailsForm.control}
+                            name="company_city"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>City</FormLabel>
+                                <FormControl>
+                                  <Input {...field} className="w-full" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
 
-              {/* Admin Information */}
-              <div className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Admin Information</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <FormField
-                        control={detailsForm.control}
-                        name="admin_name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Admin Name</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={detailsForm.control}
-                        name="admin_email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Admin Email</FormLabel>
-                            <FormControl>
-                              <Input {...field} type="email" />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={detailsForm.control}
-                        name="admin_password"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Password</FormLabel>
-                            <FormControl>
-                              <Input {...field} type="password" />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={detailsForm.control}
-                        name="admin_password_confirmation"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Confirm Password</FormLabel>
-                            <FormControl>
-                              <Input {...field} type="password" />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
+                  {/* Admin Information */}
+                  <div className="w-full">
+                    <Card className="w-full">
+                      <CardHeader>
+                        <CardTitle>Admin Information</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                        <div className="space-y-6">
+                          <FormField
+                            control={detailsForm.control}
+                            name="admin_name"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Admin Name</FormLabel>
+                                <FormControl>
+                                  <Input {...field} className="w-full" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={detailsForm.control}
+                            name="admin_email"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Admin Email</FormLabel>
+                                <FormControl>
+                                  <Input {...field} type="email" className="w-full" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={detailsForm.control}
+                            name="admin_password"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                  <Input {...field} type="password" className="w-full" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={detailsForm.control}
+                            name="admin_password_confirmation"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Confirm Password</FormLabel>
+                                <FormControl>
+                                  <Input {...field} type="password" className="w-full" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
               </div>
 
               <Button type="submit" className="w-full" disabled={isLoading}>
