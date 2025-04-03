@@ -1,17 +1,28 @@
-import { useState, useEffect } from 'react';
-import { Head } from '@inertiajs/react';
+import { useState } from 'react';
 import { router } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import InstallationLayout from '@/layouts/installation-layout';
 import VerificationStep from '@/components/installation/steps/VerificationStep';
 import DetailsStep from '@/components/installation/steps/DetailsStep';
 import ContactStep from '@/components/installation/steps/ContactStep';
-import RegistrationSuccess from '@/components/installation/RegistrationSuccess';
+
+interface PageProps {
+  [key: string]: any;
+  flash: {
+    verification_code?: string;
+  };
+  errors: {
+    [key: string]: string[];
+  };
+  deferred?: {
+    [key: string]: string[];
+  };
+}
 
 enum RegistrationStep {
   Contact = 1,
   Verification = 2,
   Details = 3,
-  Success = 4,
 }
 
 export default function RegisterCompany({ title }: { title: string }) {
@@ -23,16 +34,7 @@ export default function RegisterCompany({ title }: { title: string }) {
   const [error, setError] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
-  const [successData, setSuccessData] = useState<{
-    companyName: string;
-    redirectUrl: string;
-  } | null>(null);
-
-  useEffect(() => {
-    if (successData) {
-      setCurrentStep(RegistrationStep.Success);
-    }
-  }, [successData]);
+  const { flash, errors, deferred } = usePage<PageProps>().props;
 
   const handleBack = () => {
     if (currentStep === RegistrationStep.Details) {
@@ -85,7 +87,7 @@ export default function RegisterCompany({ title }: { title: string }) {
       setError(undefined);
 
       if (contactData) {
-        await router.post('/installation-wizard/validate-contact', contactData);
+        await router.post('/installation-wizard/resend-code', contactData);
       }
     } catch (err: any) {
       setError(err.message || 'Failed to resend verification code');
@@ -104,26 +106,17 @@ export default function RegisterCompany({ title }: { title: string }) {
     admin_name: string;
     admin_email: string;
     admin_password: string;
+    admin_password_confirmation: string;
   }) => {
     try {
       setIsLoading(true);
       setError(undefined);
 
       await router.post('/installation-wizard/save-company-details', {
-        company_name: data.company_name,
-        company_email: data.company_email,
-        company_phone: data.company_phone,
-        company_address: data.company_address,
-        company_city: data.company_city,
-        company_country: data.company_country,
-        admin_name: data.admin_name,
-        admin_email: data.admin_email,
-        admin_password: data.admin_password,
-      });
-
-      setSuccessData({
-        companyName: data.company_name,
-        redirectUrl: window.location.origin + '/dashboard',
+        ...data,
+        contact_type: contactData?.contact_type,
+        contact: contactData?.contact,
+        verification_code: flash.verification_code,
       });
     } catch (err: any) {
       setError(err.message || 'Failed to save company details');
@@ -171,14 +164,9 @@ export default function RegisterCompany({ title }: { title: string }) {
             onBack={handleBack}
             isLoading={isLoading}
             error={error || undefined}
+            contactData={contactData}
+            verificationCode={flash.verification_code || ''}
           />
-        );
-
-      case RegistrationStep.Success:
-        return (
-          <div className="text-center">
-            <RegistrationSuccess companyName={successData?.companyName || ''} redirectUrl={successData?.redirectUrl || ''} />
-          </div>
         );
 
       default:
@@ -189,7 +177,7 @@ export default function RegisterCompany({ title }: { title: string }) {
   return (
     <InstallationLayout
       currentStep={currentStep}
-      totalSteps={Object.keys(RegistrationStep).length / 2}
+      totalSteps={Object.keys(RegistrationStep).length}
       onNext={(e: React.FormEvent<HTMLFormElement>) => {
         if (currentStep === RegistrationStep.Verification) {
           e.preventDefault();
@@ -197,18 +185,9 @@ export default function RegisterCompany({ title }: { title: string }) {
           if (form) {
             form.dispatchEvent(new Event('submit', { bubbles: true }));
           }
-        } else if (currentStep === RegistrationStep.Details) {
-          e.preventDefault();
-          handleDetailsSubmit(e.currentTarget as any);
         }
       }}
-      onBack={handleBack}
-      isLoading={isLoading}
     >
-      <Head>
-        <title>{title}</title>
-      </Head>
-      
       <div className="flex-1 flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div>
@@ -217,9 +196,7 @@ export default function RegisterCompany({ title }: { title: string }) {
                 ? 'Step 1: Contact Information'
                 : currentStep === RegistrationStep.Verification
                 ? 'Step 2: Verification'
-                : currentStep === RegistrationStep.Details
-                ? 'Step 3: Company & Admin Details'
-                : 'Step 4: Success'}
+                : 'Step 3: Company & Admin Details'}
             </h2>
           </div>
           

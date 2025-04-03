@@ -14,6 +14,7 @@
 3. npm run lint first before commit
 4. run vendor/bin/pint first before commit
 5. Commit to gitlab and github
+6. Before Push update documentation first
 
 # Handling Upload
 1. Use Simple Excel from spatie https://github.com/spatie/simple-excel

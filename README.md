@@ -13,6 +13,7 @@ HRIS Project is a modern human resource management system designed to help busin
   - Import branch data using templates
   - Manage multiple brands
   - Organize company structure hierarchically
+  - Secure company registration with verification
 
 - **Employee Management**
   - Comprehensive employee database with detailed records
@@ -110,38 +111,22 @@ npm run dev
 
 ## Installation Wizard
 
-After completing the setup steps, you'll need to run through the installation wizard to configure your HRIS system. The wizard consists of several steps:
+The HRIS Project includes an installation wizard to help you set up your company and admin user. The wizard consists of three steps:
 
-1. **Verification Request**
-   - Enter your email or phone number
-   - Choose your preferred verification method
-   - Submit to receive verification code
+1. **Contact Information Validation**
+   - Enter your contact information (email or phone)
+   - System validates the contact information for uniqueness
+   - Receive a verification code via email or SMS
 
-2. **Verify Code**
-   - Enter the 6-digit verification code
-   - Verify your contact information
-   - Confirm your identity
+2. **Verification Code**
+   - Enter the verification code received
+   - Code expires after 5 minutes
+   - Option to resend verification code if needed
 
-3. **Company Setup**
-   - Register your company information
-   - Enter company name, email, and phone
-   - Configure company address
-   - Accept terms and conditions
-
-4. **System Setup**
-   - Configure system settings
-   - Set up default configurations
-   - Configure email settings
-
-5. **Admin Setup**
-   - Create the first admin user
-   - Set up admin credentials
-   - Configure admin permissions
-
-6. **Complete**
-   - Review all configurations
-   - Complete the installation
-   - Access the main HRIS system
+3. **Company Registration**
+   - Enter company details (name, email, phone, address, city, country)
+   - Create admin user (name, email, password)
+   - Complete registration to access the system
 
 ### Security Features
 

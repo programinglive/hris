@@ -21,6 +21,10 @@ Route::post('/installation-wizard/verify-code', [CompanyRegistrationController::
     ->name('landing-page.installation-wizard.verify-code')
     ->middleware('guest');
 
+Route::post('/installation-wizard/resend-code', [CompanyRegistrationController::class, 'resendCode'])
+    ->name('landing-page.installation-wizard.resend-code')
+    ->middleware('guest');
+
 Route::post('/installation-wizard/save-company-details', [CompanyRegistrationController::class, 'saveCompanyDetails'])
     ->name('landing-page.installation-wizard.save-company-details')
     ->middleware('guest');

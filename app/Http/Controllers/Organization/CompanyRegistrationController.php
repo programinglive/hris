@@ -49,6 +49,7 @@ class CompanyRegistrationController extends Controller
             $request->validate([
                 'contact' => 'email|unique:companies,email',
             ]);
+
         } else {
             $request->validate([
                 'contact' => 'regex:/^[0-9+\s]+$/|unique:companies,phone',
@@ -58,39 +59,36 @@ class CompanyRegistrationController extends Controller
         // Generate a 6-digit verification code
         $verificationCode = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
-        // Store verification data in session
-        Session::put('registration_data', [
+        // Store verification data in session with expiration
+        $registrationData = [
             'contact' => $contact,
             'contact_type' => $contactType,
             'verification_code' => $verificationCode,
             'verified' => false,
-        ]);
+            'created_at' => now(),
+            'expires_at' => now()->addMinutes(5), // 5 minute expiration
+        ];
+
+        Session::put('registration_data', $registrationData);
 
         // Send verification code
         if ($contactType === 'email') {
-            // Send email with verification code
-            Log::info('Verification code for '.$contact.': '.$verificationCode);
-
             try {
-                // Send verification email
                 Mail::to($contact)->send(new \App\Mail\VerificationCodeMail($verificationCode));
+                Log::info('Verification code sent to email: '.$contact);
             } catch (\Exception $e) {
-                // Log the error but don't fail the process
                 Log::error('Failed to send verification email: '.$e->getMessage());
-                // Email sending failed, but we still want to proceed with the verification
-                // In production, you might want to handle this differently
+                return back()
+                    ->withInput()
+                    ->withErrors([
+                        'contact' => 'Failed to send verification code. Please try again.',
+                    ]);
             }
         } else {
-            // Send SMS with verification code
             Log::info('SMS verification code for '.$contact.': '.$verificationCode);
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Verification code sent to '.$contact,
-            'next_step' => 'verify_code',
-            'verification_code' => $verificationCode, // Send back the code for testing
-        ]);
+        return back()->with('success', 'Verification code sent to '.$contact);
     }
 
     /**
@@ -104,25 +102,90 @@ class CompanyRegistrationController extends Controller
 
         $registrationData = Session::get('registration_data');
 
-        if (! $registrationData || $validated['verification_code'] !== $registrationData['verification_code']) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid verification code',
-                'errors' => [
-                    'verification_code' => ['The verification code is invalid.'],
-                ],
-            ], 422);
+        if (! $registrationData) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'verification_code' => 'Session expired. Please start over.',
+                ]);
+        }
+
+        // Check if code has expired
+        if ($registrationData['expires_at'] < now()) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'verification_code' => 'Verification code has expired. Please request a new code.',
+                ]);
+        }
+
+        if ($validated['verification_code'] !== $registrationData['verification_code']) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'verification_code' => 'The verification code is invalid.',
+                ]);
         }
 
         // Mark as verified
         $registrationData['verified'] = true;
         Session::put('registration_data', $registrationData);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Verification successful',
-            'next_step' => 'company_details',
-        ]);
+        return redirect()->route('landing-page.installation-wizard.save-company-details');
+    }
+
+    /**
+     * Resend verification code
+     */
+    public function resendCode(Request $request)
+    {
+        $registrationData = Session::get('registration_data');
+
+        if (! $registrationData) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'contact' => 'Session expired. Please start over.',
+                ]);
+        }
+
+        if ($registrationData['verified']) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'contact' => 'Already verified. Please proceed to the next step.',
+                ]);
+        }
+
+        // Generate new verification code
+        $verificationCode = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        // Update session with new code and expiration
+        $registrationData['verification_code'] = $verificationCode;
+        $registrationData['expires_at'] = now()->addMinutes(5);
+        Session::put('registration_data', $registrationData);
+
+        // Send new verification code
+        $contact = $registrationData['contact'];
+        $contactType = $registrationData['contact_type'];
+
+        if ($contactType === 'email') {
+            try {
+                Mail::to($contact)->send(new \App\Mail\VerificationCodeMail($verificationCode));
+                Log::info('New verification code sent to email: '.$contact);
+            } catch (\Exception $e) {
+                Log::error('Failed to send new verification email: '.$e->getMessage());
+                return back()
+                    ->withInput()
+                    ->withErrors([
+                        'contact' => 'Failed to send new verification code. Please try again.',
+                    ]);
+            }
+        } else {
+            Log::info('New SMS verification code for '.$contact.': '.$verificationCode);
+        }
+
+        return back()->with('success', 'New verification code sent to '.$contact);
     }
 
     /**
@@ -130,74 +193,102 @@ class CompanyRegistrationController extends Controller
      */
     public function saveCompanyDetails(Request $request)
     {
-        $registrationData = Session::get('registration_data');
-
-        if (! $registrationData || ! $registrationData['verified']) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Please complete verification first.',
-            ], 400);
-        }
-
         $validated = $request->validate([
             // Company information
             'company_name' => 'required|string|max:255',
+            'company_email' => 'required|email|unique:companies,email|unique:users,email',
+            'company_phone' => 'required|string|unique:companies,phone',
+            'company_address' => 'required|string',
+            'company_city' => 'required|string',
+            'company_country' => 'required|string',
 
             // Admin user information
             'admin_name' => 'required|string|max:255',
-            'admin_email' => 'required|email|unique:companies,email|unique:users,email',
-            'admin_password' => 'required|string|min:8',
+            'admin_email' => 'required|email|unique:users,email',
+            'admin_password' => 'required|string|min:8|confirmed',
+
+            // Contact information (from previous steps)
+            'contact_type' => 'required|in:email,phone',
+            'contact' => 'required|string',
+            'verification_code' => 'required|string|size:6',
         ]);
 
-        // Store company and admin details in session
-        $registrationData = array_merge($registrationData, [
-            'company_name' => $validated['company_name'],
-            'admin_name' => $validated['admin_name'],
-            'admin_email' => $validated['admin_email'],
-            'admin_password' => $validated['admin_password'],
+        // Verify the verification code
+        $storedCode = Session::get('registration_data');
+        if (! $storedCode || $validated['verification_code'] !== $storedCode['verification_code']) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'verification_code' => 'Invalid verification code',
+                ]);
+        }
+
+        // Create the user
+        $user = User::create([
+            'name' => $validated['admin_name'],
+            'email' => $validated['admin_email'],
+            'password' => Hash::make($validated['admin_password']),
+            'primary_company_id' => null, // Will be set after company creation
         ]);
 
-        Session::put('registration_data', $registrationData);
+        // Create the company
+        $company = Company::create([
+            'name' => $validated['company_name'],
+            'email' => $validated['company_email'],
+            'phone' => $validated['company_phone'],
+            'address' => $validated['company_address'],
+            'city' => $validated['company_city'],
+            'country' => $validated['company_country'],
+            'owner_id' => $user->id,
+        ]);
 
-        // Use a transaction to ensure all related records are created or none
-        return DB::transaction(function () use ($registrationData) {
-            // Create the user
-            $user = User::create([
-                'name' => $registrationData['admin_name'],
-                'email' => $registrationData['admin_email'],
-                'password' => Hash::make($registrationData['admin_password']),
-            ]);
+        // Set company as primary for admin
+        $user->primary_company_id = $company->id;
+        $user->save();
 
-            // Create the company
-            $company = Company::create([
-                'name' => $registrationData['company_name'],
-                'email' => $registrationData['contact_type'] === 'email' ? $registrationData['contact'] : $registrationData['admin_email'],
-                'phone' => $registrationData['contact_type'] === 'phone' ? $registrationData['contact'] : null,
-                'owner_id' => $user->id,
-            ]);
+        // Create the main branch
+        Branch::create([
+            'name' => 'Main Branch',
+            'code' => 'MB-'.strtoupper(substr(str_replace(' ', '', $company->name), 0, 3)).'001',
+            'email' => $company->email,
+            'phone' => $company->phone,
+            'company_id' => $company->id,
+            'is_main_branch' => true,
+        ]);
 
-            // Create the main branch
-            Branch::create([
-                'name' => 'Main Branch',
-                'code' => 'MB-'.strtoupper(substr(str_replace(' ', '', $company->name), 0, 3)).'001',
-                'email' => $company->email,
-                'phone' => $company->phone,
-                'company_id' => $company->id,
-                'is_main_branch' => true,
-            ]);
+        // Create admin role
+        $adminRole = Role::firstOrCreate([
+            'name' => 'admin',
+            'display_name' => 'Administrator',
+            'description' => 'System administrator with full access',
+            'is_system' => true,
+            'slug' => 'admin',
+            'company_id' => $company->id
+        ]);
 
-            // Log the user in
-            Auth::login($user);
+        // Create user role relationship
+        UserRole::create([
+            'user_id' => $user->id,
+            'role_id' => $adminRole->id,
+            'company_id' => $company->id
+        ]);
 
-            // Clear registration session data
-            Session::forget('registration_data');
+        // Verify contact
+        if ($validated['contact_type'] === 'email') {
+            $user->email_verified_at = now();
+            $user->save();
+        } else {
+            $user->phone_verified_at = now();
+            $user->save();
+        }
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Registration completed successfully',
-                'redirect' => route('dashboard'),
-            ]);
-        });
+        // Log the user in
+        Auth::login($user);
+
+        // Clear registration session data
+        Session::forget('registration_data');
+
+        return redirect()->route('dashboard')->with('success', 'Company and admin account created successfully!');
     }
 
     /**
@@ -242,8 +333,21 @@ class CompanyRegistrationController extends Controller
             ]);
 
             // Create admin role
-            $adminRole = Role::firstOrCreate(['name' => 'admin']);
-            $admin->roles()->attach($adminRole);
+            $adminRole = Role::firstOrCreate([
+                'name' => 'admin',
+                'display_name' => 'Administrator',
+                'description' => 'System administrator with full access',
+                'is_system' => true,
+                'slug' => 'admin',
+                'company_id' => $company->id
+            ]);
+
+            // Create user role relationship
+            UserRole::create([
+                'user_id' => $admin->id,
+                'role_id' => $adminRole->id,
+                'company_id' => $company->id
+            ]);
 
             // Set company as primary for admin
             $admin->primary_company_id = $company->id;
@@ -264,19 +368,13 @@ class CompanyRegistrationController extends Controller
             // Log the user in
             Auth::guard('web')->login($admin);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Registration completed successfully',
-                'company_name' => $validated['company_name'],
-            ]);
-
+            return redirect()->route('dashboard')->with('success', 'Company and admin account created successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Registration failed: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to complete registration',
-            ], 500);
+            return back()->withInput()->withErrors([
+                'company_name' => 'Failed to complete registration',
+            ]);
         }
     }
 
