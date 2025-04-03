@@ -101,29 +101,66 @@ DB_PASSWORD=
 php artisan migrate --seed
 ```
 
-7. **Build assets**
+7. **Start the development server**
 
 ```bash
+php artisan serve
 npm run dev
 ```
 
-8. **Start the development server**
+## Installation Wizard
 
-```bash
-composer run dev
-```
+After completing the setup steps, you'll need to run through the installation wizard to configure your HRIS system. The wizard consists of several steps:
 
-The application will be available at http://localhost:8000
+1. **Database Setup**
+   - Configure your database connection
+   - Enter database host, port, name, username, and password
+   - Test the connection before proceeding
+
+2. **Company Setup**
+   - Register your company information
+   - Enter company name, email, and phone
+   - Configure company address
+   - Accept terms and conditions
+
+3. **System Setup**
+   - Configure system settings
+   - Set up default configurations
+   - Configure email settings
+
+4. **Admin Setup**
+   - Create the first admin user
+   - Set up admin credentials
+   - Configure admin permissions
+
+5. **Complete**
+   - Review all configurations
+   - Complete the installation
+   - Access the main HRIS system
 
 ## Usage
 
-After installation, you can:
+Once the installation wizard is complete, you can access the HRIS system through your web browser. The system provides a comprehensive interface for managing all HR-related tasks.
 
-1. Register your company through the registration page
-2. Log in with your admin credentials
-3. Set up your company structure (departments, positions, etc.)
-4. Add employees and manage their information
-5. Configure attendance settings and other HR policies
+### Accessing the System
+
+- Login URL: `http://localhost:8000`
+- Default admin credentials will be set during the installation wizard
+
+### Features
+
+1. **Organization Management**
+   - Create and manage companies, branches, departments, divisions, sub-divisions, positions, and position levels
+   - Import branch data using templates
+   - Manage multiple brands
+   - Organize company structure hierarchically
+
+2. **Employee Management**
+   - Comprehensive employee database with detailed records
+   - Import employee data in bulk
+   - View and manage employee users
+   - Support for multiple roles per user
+   - Associate employees with multiple brands
 
 ## Company Registration Wizard
 
