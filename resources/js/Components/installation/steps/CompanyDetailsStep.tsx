@@ -42,7 +42,7 @@ export default function CompanyDetailsStep({
     company_country: '',
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     onSubmit(form.data);
   };
@@ -57,131 +57,122 @@ export default function CompanyDetailsStep({
         </Card>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Company Details</CardTitle>
-            <CardDescription>
-              Please provide your company information.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <label htmlFor="company_name" className="block text-sm font-medium leading-6 text-gray-900">
-                Company Name
-              </label>
-              <div className="mt-2">
-                <Input
-                  id="company_name"
-                  type="text"
-                  value={form.data.company_name}
-                  onChange={(e) => form.setData('company_name', e.target.value)}
-                  required
-                />
-              </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Company Details</CardTitle>
+          <CardDescription>
+            Please provide your company information.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <label htmlFor="company_name" className="block text-sm font-medium leading-6 text-gray-900">
+              Company Name
+            </label>
+            <div className="mt-2">
+              <Input
+                id="company_name"
+                type="text"
+                value={form.data.company_name}
+                onChange={(e) => form.setData('company_name', e.target.value)}
+                required
+              />
             </div>
+          </div>
 
-            <div>
-              <label htmlFor="company_email" className="block text-sm font-medium leading-6 text-gray-900">
-                Company Email
-              </label>
-              <div className="mt-2">
-                <Input
-                  id="company_email"
-                  type="email"
-                  value={form.data.company_email}
-                  onChange={(e) => form.setData('company_email', e.target.value)}
-                  required
-                />
-              </div>
+          <div>
+            <label htmlFor="company_email" className="block text-sm font-medium leading-6 text-gray-900">
+              Company Email
+            </label>
+            <div className="mt-2">
+              <Input
+                id="company_email"
+                type="email"
+                value={form.data.company_email}
+                onChange={(e) => form.setData('company_email', e.target.value)}
+                required
+              />
             </div>
+          </div>
 
-            <div>
-              <label htmlFor="company_phone" className="block text-sm font-medium leading-6 text-gray-900">
-                Company Phone
-              </label>
-              <div className="mt-2">
-                <Input
-                  id="company_phone"
-                  type="tel"
-                  value={form.data.company_phone}
-                  onChange={(e) => form.setData('company_phone', e.target.value)}
-                  required
-                />
-              </div>
+          <div>
+            <label htmlFor="company_phone" className="block text-sm font-medium leading-6 text-gray-900">
+              Company Phone
+            </label>
+            <div className="mt-2">
+              <Input
+                id="company_phone"
+                type="tel"
+                value={form.data.company_phone}
+                onChange={(e) => form.setData('company_phone', e.target.value)}
+                required
+              />
             </div>
+          </div>
 
-            <div>
-              <label htmlFor="company_address" className="block text-sm font-medium leading-6 text-gray-900">
-                Company Address
-              </label>
-              <div className="mt-2">
-                <Input
-                  id="company_address"
-                  type="text"
-                  value={form.data.company_address}
-                  onChange={(e) => form.setData('company_address', e.target.value)}
-                  required
-                />
-              </div>
+          <div>
+            <label htmlFor="company_address" className="block text-sm font-medium leading-6 text-gray-900">
+              Company Address
+            </label>
+            <div className="mt-2">
+              <Input
+                id="company_address"
+                type="text"
+                value={form.data.company_address}
+                onChange={(e) => form.setData('company_address', e.target.value)}
+                required
+              />
             </div>
+          </div>
 
-            <div>
-              <label htmlFor="company_city" className="block text-sm font-medium leading-6 text-gray-900">
-                Company City
-              </label>
-              <div className="mt-2">
-                <Input
-                  id="company_city"
-                  type="text"
-                  value={form.data.company_city}
-                  onChange={(e) => form.setData('company_city', e.target.value)}
-                  required
-                />
-              </div>
+          <div>
+            <label htmlFor="company_city" className="block text-sm font-medium leading-6 text-gray-900">
+              City
+            </label>
+            <div className="mt-2">
+              <Input
+                id="company_city"
+                type="text"
+                value={form.data.company_city}
+                onChange={(e) => form.setData('company_city', e.target.value)}
+                required
+              />
             </div>
+          </div>
 
-            <div>
-              <label htmlFor="company_country" className="block text-sm font-medium leading-6 text-gray-900">
-                Company Country
-              </label>
-              <div className="mt-2">
-                <Select
-                  value={form.data.company_country}
-                  onValueChange={(value) => form.setData('company_country', value)}
-                  required
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select country" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="ID">Indonesia</SelectItem>
-                    <SelectItem value="US">United States</SelectItem>
-                    <SelectItem value="GB">United Kingdom</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+          <div>
+            <label htmlFor="company_country" className="block text-sm font-medium leading-6 text-gray-900">
+              Country
+            </label>
+            <div className="mt-2">
+              <Select
+                value={form.data.company_country}
+                onValueChange={(value) => form.setData('company_country', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select country" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ID">Indonesia</SelectItem>
+                  <SelectItem value="MY">Malaysia</SelectItem>
+                  <SelectItem value="SG">Singapore</SelectItem>
+                  <SelectItem value="TH">Thailand</SelectItem>
+                  <SelectItem value="VN">Vietnam</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        <div className="flex justify-end space-x-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onBack}
-            disabled={isLoading}
-          >
-            Back
-          </Button>
-          <Button
-            type="submit"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Loading...' : 'Next'}
-          </Button>
-        </div>
-      </form>
+          <div className="flex justify-end space-x-4">
+            <Button type="button" variant="outline" onClick={onBack}>
+              Back
+            </Button>
+            <Button type="button" onClick={handleSubmit} disabled={isLoading}>
+              {isLoading ? 'Processing...' : 'Next'}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

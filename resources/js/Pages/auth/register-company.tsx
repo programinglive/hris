@@ -153,14 +153,12 @@ export default function RegisterCompany({ title }: Props) {
       setIsLoading(true);
       setError(undefined);
 
-      await router.visit(route('landing-page.installation-wizard.save-company-details'), {
-        method: 'post',
-        data: {
-          ...data,
-          contact_type: contactData?.contact_type,
-          contact: contactData?.contact,
-          verification_code: flash.verification_code,
-        },
+      await router.post(route('landing-page.installation-wizard.save-company-details'), {
+        ...data,
+        contact: contactData?.contact,
+        contact_type: contactData?.contact_type,
+        verification_code: flash.verification_code
+      }, {
         onSuccess: () => {
           setCurrentStep(RegistrationStep.SystemSettings);
         },
