@@ -32,41 +32,73 @@ export default function InstallationLayout({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       <Head>
-        <title>Installation</title>
+        <title>Installation - BeautyWorld HRIS</title>
       </Head>
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Installation
-            </h1>
-            <p className="mt-2 text-lg leading-8 text-gray-600">
-              Step {currentStep} of {totalSteps}
-            </p>
-          </div>
-          <div className="mt-10">
-            <div className="space-y-6">
-              {children}
-            </div>
-            <div className="mt-6 flex justify-between space-x-4">
-              {onBack && (
-                <Button variant="outline" onClick={onBack} disabled={isLoading}>
-                  Back
+      
+      <div className="min-h-screen flex flex-col">
+        {/* Header */}
+        <header className="bg-white shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <div className="flex-shrink-0">
+                <h1 className="text-xl font-bold text-gray-900">BeautyWorld HRIS</h1>
+              </div>
+              <div className="flex items-center space-x-4">
+                {currentStep > 1 && (
+                  <Button 
+                    variant="outline" 
+                    onClick={onBack} 
+                    disabled={isLoading}
+                    className="whitespace-nowrap"
+                  >
+                    Back
+                  </Button>
+                )}
+                <Button
+                  type="button"
+                  onClick={handleButtonClick}
+                  disabled={isLoading}
+                  className="whitespace-nowrap"
+                >
+                  {isLoading ? 'Loading...' : currentStep === totalSteps ? 'Finish' : 'Next'}
                 </Button>
-              )}
-              <Button
-                type="button"
-                onClick={handleButtonClick}
-                disabled={isLoading}
-              >
-                {isLoading ? 'Loading...' : 'Next'}
-              </Button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Progress Bar */}
+        <div className="bg-white shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-gray-600">
+                Step {currentStep} of {totalSteps}
+              </div>
+              <div className="w-full max-w-xs">
+                <div className="bg-gray-200 rounded-full h-2">
+                  <div
+                    className="bg-primary h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </main>
+
+        {/* Main Content */}
+        <main className="flex-1">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="bg-white rounded-lg shadow-lg p-8">
+              <div className="space-y-6">
+                {children}
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

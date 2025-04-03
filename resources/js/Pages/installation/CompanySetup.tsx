@@ -20,7 +20,7 @@ export default function CompanySetup({ currentStep, totalSteps }: CompanySetupPr
   return (
     <>
       <Head>
-        <title>Company Setup</title>
+        <title>Company Setup - BeautyWorld HRIS</title>
       </Head>
 
       <InstallationLayout
