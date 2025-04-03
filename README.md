@@ -112,28 +112,23 @@ npm run dev
 
 After completing the setup steps, you'll need to run through the installation wizard to configure your HRIS system. The wizard consists of several steps:
 
-1. **Database Setup**
-   - Configure your database connection
-   - Enter database host, port, name, username, and password
-   - Test the connection before proceeding
-
-2. **Company Setup**
+1. **Company Setup**
    - Register your company information
    - Enter company name, email, and phone
    - Configure company address
    - Accept terms and conditions
 
-3. **System Setup**
+2. **System Setup**
    - Configure system settings
    - Set up default configurations
    - Configure email settings
 
-4. **Admin Setup**
+3. **Admin Setup**
    - Create the first admin user
    - Set up admin credentials
    - Configure admin permissions
 
-5. **Complete**
+4. **Complete**
    - Review all configurations
    - Complete the installation
    - Access the main HRIS system
