@@ -5,7 +5,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
 
-const appName = import.meta.env.VITE_APP_NAME || 'HRIS Project';
+const appName = import.meta.env.VITE_APP_NAME || 'HRIS Open Source';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

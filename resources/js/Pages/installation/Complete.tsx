@@ -11,7 +11,7 @@ export default function Complete({ currentStep, totalSteps }) {
   return (
     <>
       <Head>
-        <title>Installation Complete - BeautyWorld HRIS</title>
+        <title>Installation Complete - HRIS Open Source</title>
       </Head>
 
       <InstallationLayout

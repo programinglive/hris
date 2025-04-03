@@ -29,7 +29,7 @@ export default function DatabaseSetup({ currentStep, totalSteps }: DatabaseSetup
   return (
     <>
       <Head>
-        <title>Database Setup - BeautyWorld HRIS</title>
+        <title>Database Setup - HRIS Open Source</title>
       </Head>
 
       <InstallationLayout 

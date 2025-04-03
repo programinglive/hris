@@ -5,7 +5,7 @@ import InstallationLayout from '@/layouts/installation-layout';
 export default function SystemSetup({ currentStep, totalSteps }) {
   const [formData, setFormData] = useState({
     environment: 'development',
-    app_name: 'BeautyWorld HRIS',
+    app_name: 'HRIS Open Source',
     app_url: window.location.origin,
   });
 
@@ -22,7 +22,7 @@ export default function SystemSetup({ currentStep, totalSteps }) {
   return (
     <>
       <Head>
-        <title>System Setup - BeautyWorld HRIS</title>
+        <title>System Setup - HRIS Open Source</title>
       </Head>
 
       <InstallationLayout

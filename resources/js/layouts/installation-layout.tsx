@@ -34,16 +34,16 @@ export default function InstallationLayout({
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       <Head>
-        <title>Installation - BeautyWorld HRIS</title>
+        <title>Installation</title>
       </Head>
       
-      <div className="min-h-screen flex flex-col">
+      <div className="flex flex-col min-h-screen">
         {/* Header */}
         <header className="bg-white shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex justify-between items-center">
               <div className="flex-shrink-0">
-                <h1 className="text-xl font-bold text-gray-900">BeautyWorld HRIS</h1>
+                <h1 className="text-xl font-bold text-gray-900">Installation</h1>
               </div>
               <div className="flex items-center space-x-4">
                 {currentStep > 1 && (
@@ -90,7 +90,7 @@ export default function InstallationLayout({
 
         {/* Main Content */}
         <main className="flex-1">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="bg-white rounded-lg shadow-lg p-8">
               <div className="space-y-6">
                 {children}

@@ -23,7 +23,7 @@ export default function AdminSetup({ currentStep, totalSteps }) {
   return (
     <>
       <Head>
-        <title>Admin Setup - BeautyWorld HRIS</title>
+        <title>Admin Setup - HRIS Open Source</title>
       </Head>
 
       <InstallationLayout

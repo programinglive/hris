@@ -5,13 +5,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 
 interface RegistrationSuccessProps {
   companyName: string;
+  redirectUrl: string;
 }
 
-export default function RegistrationSuccess({ companyName }: RegistrationSuccessProps) {
+export default function RegistrationSuccess({ companyName, redirectUrl }: RegistrationSuccessProps) {
   const [countdown, setCountdown] = useState(5);
 
   const handleRedirect = () => {
-    router.visit('/dashboard');
+    router.visit(redirectUrl);
   };
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function RegistrationSuccess({ companyName }: RegistrationSuccess
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center">
       <Head>
-        <title>Registration Successful - BeautyWorld HRIS</title>
+        <title>Registration Successful - HRIS Open Source</title>
       </Head>
 
       <div className="max-w-md w-full space-y-8">

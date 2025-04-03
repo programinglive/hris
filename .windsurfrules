@@ -3,6 +3,10 @@
 1. This is laravel project with inertiajs and reactjs
 2. for authentication use inertia auth
 3. Never update laravel default migration file
+4. This is Open Source HRIS SAAS Project
+5. Use Tailwind CSS for styling
+6. Use shadcn ui for components
+7. don't use axios we use inertiajs
 
 # Commit
 1. Use conventional commit
@@ -32,6 +36,7 @@
 11. When run test check on package associate with model
 12. use TestCase
 13. don't use /** @test */ use #[Test] attribute instead
+14. use PHPUnit\Framework\Attributes\Test;
 
 # Bug fixing
 1. Create issue first before fix

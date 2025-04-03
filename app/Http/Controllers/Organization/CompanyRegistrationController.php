@@ -26,7 +26,9 @@ class CompanyRegistrationController extends Controller
      */
     public function showRegistrationForm()
     {
-        return Inertia::render('auth/register-company');
+        return Inertia::render('auth/register-company', [
+            'title' => 'Installation'
+        ]);
     }
 
     /**

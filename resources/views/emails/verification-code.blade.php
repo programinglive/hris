@@ -46,18 +46,18 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>BeautyWorld HRIS</h1>
+            <h1>HRIS Open Source</h1>
         </div>
         <div class="content">
             <h2>Your Verification Code</h2>
-            <p>Thank you for registering with BeautyWorld HRIS. Please use the following verification code to complete your registration:</p>
+            <p>Thank you for registering with HRIS Open Source. Please use the following verification code to complete your registration:</p>
             
             <div class="verification-code">{{ $verificationCode }}</div>
             
             <p>This code will expire in 10 minutes. If you did not request this code, please ignore this email.</p>
         </div>
         <div class="footer">
-            <p>&copy; {{ date('Y') }} BeautyWorld HRIS. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} HRIS Open Source. All rights reserved.</p>
         </div>
     </div>
 </body>

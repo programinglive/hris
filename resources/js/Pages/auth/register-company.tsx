@@ -1,73 +1,11 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import axios from 'axios';
-import { Head, router, Link } from '@inertiajs/react';
-
+import { useState, useEffect } from 'react';
+import { Head } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import InstallationLayout from '@/layouts/installation-layout';
-import { 
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import VerificationStep from '@/components/installation/steps/VerificationStep';
+import DetailsStep from '@/components/installation/steps/DetailsStep';
+import ContactStep from '@/components/installation/steps/ContactStep';
 import RegistrationSuccess from '@/components/installation/RegistrationSuccess';
-
-// Step 1: Contact Information Schema
-const contactSchema = z.object({
-  contact: z.string().min(1, { message: "Contact information is required" }),
-  contact_type: z.enum(["email", "phone"], {
-    required_error: "Please select a contact type",
-  }),
-}).refine(
-  (data) => {
-    if (data.contact_type === "email") {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.contact);
-    } else if (data.contact_type === "phone") {
-      return /^[0-9+\s]+$/.test(data.contact);
-    }
-    return false;
-  },
-  {
-    message: "Please enter a valid email or phone number",
-    path: ["contact"],
-  }
-);
-
-// Step 2: Verification Code Schema
-const verificationSchema = z.object({
-  verification_code: z.string().length(6, { message: "Verification code must be 6 digits" }),
-});
-
-// Step 3: Company and Admin Details Schema
-const detailsSchema = z.object({
-  // Company information
-  company_name: z.string().min(1, { message: "Company name is required" }),
-  company_email: z.string().email({ message: "Please enter a valid email address" }),
-  company_phone: z.string().min(1, { message: "Company phone is required" }),
-  company_address: z.string().min(1, { message: "Company address is required" }),
-  company_city: z.string().min(1, { message: "Company city is required" }),
-  company_country: z.string().min(1, { message: "Company country is required" }),
-  // Admin information
-  admin_name: z.string().min(1, { message: "Admin name is required" }),
-  admin_email: z.string().email({ message: "Please enter a valid email address" }),
-  admin_password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-  admin_password_confirmation: z.string(),
-}).refine(
-  (data) => data.admin_password === data.admin_password_confirmation,
-  {
-    message: "Passwords don't match",
-    path: ["admin_password_confirmation"],
-  }
-);
 
 enum RegistrationStep {
   Contact = 1,
@@ -76,11 +14,13 @@ enum RegistrationStep {
   Success = 4,
 }
 
-export default function RegisterCompany() {
+export default function RegisterCompany({ title }: { title: string }) {
   const [currentStep, setCurrentStep] = useState<RegistrationStep>(RegistrationStep.Contact);
-  const [contactData, setContactData] = useState<z.infer<typeof contactSchema> | null>(null);
-  const [verificationCode, setVerificationCode] = useState<string>(Array(6).fill('').join(''));
-  const [error, setError] = useState<string | null>(null);
+  const [contactData, setContactData] = useState<{
+    contact: string;
+    contact_type: 'email' | 'phone';
+  } | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [successData, setSuccessData] = useState<{
@@ -88,124 +28,107 @@ export default function RegisterCompany() {
     redirectUrl: string;
   } | null>(null);
 
-  // Form instances for each step
-  const contactForm = useForm<z.infer<typeof contactSchema>>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: {
-      contact: '',
-      contact_type: "email",
-    },
-  });
+  useEffect(() => {
+    if (successData) {
+      setCurrentStep(RegistrationStep.Success);
+    }
+  }, [successData]);
 
-  const verificationForm = useForm<z.infer<typeof verificationSchema>>({
-    resolver: zodResolver(verificationSchema),
-    defaultValues: {
-      verification_code: '',
-    },
-  });
+  const handleBack = () => {
+    if (currentStep === RegistrationStep.Details) {
+      setCurrentStep(RegistrationStep.Verification);
+    } else if (currentStep === RegistrationStep.Verification) {
+      setCurrentStep(RegistrationStep.Contact);
+    }
+  };
 
-  const detailsForm = useForm<z.infer<typeof detailsSchema>>({
-    resolver: zodResolver(detailsSchema),
-  });
-
-  const handleContactSubmit = async (data: z.infer<typeof contactSchema>) => {
-    setIsLoading(true);
-    setError(null);
-    
+  const handleContactSubmit = async (data: {
+    contact: string;
+    contact_type: 'email' | 'phone';
+  }) => {
     try {
-      const response = await axios.post(route('register.company.validate-contact'), data);
+      setIsLoading(true);
+      setError(undefined);
+
+      await router.post('/installation-wizard/validate-contact', data);
       setContactData(data);
       setCurrentStep(RegistrationStep.Verification);
-      setVerificationCode(response.data.verification_code);
-    } catch (err: unknown) {
-      const error = err as { response?: { data?: { message: string } } };
-      setError(error.response?.data?.message || 'Failed to validate contact');
+    } catch (err: any) {
+      setError(err.message || 'Failed to validate contact information');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleVerificationSubmit = async (data: z.infer<typeof verificationSchema>) => {
-    setIsLoading(true);
-    setError(null);
-    
+  const handleVerificationSubmit = async (code: string) => {
     try {
-      await axios.post(route('register.company.verify-code'), {
-        ...data,
+      setIsLoading(true);
+      setError(undefined);
+
+      await router.post('/installation-wizard/verify-code', {
+        verification_code: code,
         contact: contactData?.contact,
         contact_type: contactData?.contact_type,
       });
+
       setCurrentStep(RegistrationStep.Details);
-    } catch (err: unknown) {
-      const error = err as { response?: { data?: { message: string } } };
-      setError(error.response?.data?.message || 'Invalid verification code');
+    } catch (err: any) {
+      setError(err.message || 'Failed to verify code');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleDetailsSubmit = async (data: z.infer<typeof detailsSchema>) => {
-    setIsLoading(true);
+  const handleResendCode = async () => {
     try {
-      await axios.post(route('register.company.complete'), {
-        ...data,
-        contact: contactData?.contact,
-        contact_type: contactData?.contact_type,
-        verification_code: verificationCode,
-      });
+      setIsResending(true);
+      setError(undefined);
 
-      handleSuccessRedirect(data.company_name);
-    } catch (err: unknown) {
-      const error = err as { response?: { data?: { message: string } } };
-      setError(error.response?.data?.message || 'Failed to complete registration');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSuccessRedirect = (companyName: string) => {
-    setSuccessData({
-      companyName,
-      redirectUrl: route('dashboard'),
-    });
-    setCurrentStep(RegistrationStep.Success);
-  };
-
-  const handleDigitChange = (index: number, value: string) => {
-    const digits = verificationCode.split('');
-    digits[index] = value;
-    const newCode = digits.join('');
-    setVerificationCode(newCode);
-    
-    // Update form value
-    verificationForm.setValue('verification_code', newCode);
-    
-    // Focus next input if not last
-    if (index < 5) {
-      const nextInput = document.getElementById(`digit-${index + 1}`);
-      if (nextInput) {
-        nextInput.focus();
+      if (contactData) {
+        await router.post('/installation-wizard/validate-contact', contactData);
       }
-    }
-  };
-
-  const handleNextStep = () => {
-    setCurrentStep(currentStep + 1);
-  };
-
-  const handleBackStep = () => {
-    setCurrentStep(currentStep - 1);
-  };
-
-  const resendVerificationCode = async () => {
-    setIsResending(true);
-    try {
-      await axios.post(route('register.company.resend-verification-code'), contactData);
-    } catch (err: unknown) {
-      const error = err as { response?: { data?: { message: string } } };
-      setError(error.response?.data?.message || 'Failed to resend verification code');
+    } catch (err: any) {
+      setError(err.message || 'Failed to resend verification code');
     } finally {
       setIsResending(false);
+    }
+  };
+
+  const handleDetailsSubmit = async (data: {
+    company_name: string;
+    company_email: string;
+    company_phone: string;
+    company_address: string;
+    company_city: string;
+    company_country: string;
+    admin_name: string;
+    admin_email: string;
+    admin_password: string;
+  }) => {
+    try {
+      setIsLoading(true);
+      setError(undefined);
+
+      await router.post('/installation-wizard/save-company-details', {
+        company_name: data.company_name,
+        company_email: data.company_email,
+        company_phone: data.company_phone,
+        company_address: data.company_address,
+        company_city: data.company_city,
+        company_country: data.company_country,
+        admin_name: data.admin_name,
+        admin_email: data.admin_email,
+        admin_password: data.admin_password,
+      });
+
+      setSuccessData({
+        companyName: data.company_name,
+        redirectUrl: window.location.origin + '/dashboard',
+      });
+    } catch (err: any) {
+      setError(err.message || 'Failed to save company details');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -213,295 +136,49 @@ export default function RegisterCompany() {
     switch (currentStep) {
       case RegistrationStep.Contact:
         return (
-          <Form {...contactForm}>
-            <form onSubmit={contactForm.handleSubmit(handleContactSubmit)} className="space-y-6">
-              <FormField
-                control={contactForm.control}
-                name="contact"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Contact Information</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter email or phone number" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Enter your email address or phone number for verification
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={contactForm.control}
-                name="contact_type"
-                render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    <FormLabel>Contact Type</FormLabel>
-                    <FormControl>
-                      <select
-                        {...field}
-                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      >
-                        <option value="email">Email</option>
-                        <option value="phone">Phone</option>
-                      </select>
-                    </FormControl>
-                    <FormDescription>
-                      Choose whether you want to verify via email or phone
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full">
-                Next
-              </Button>
-            </form>
-          </Form>
+          <ContactStep
+            onSubmit={handleContactSubmit}
+            isLoading={isLoading}
+            error={error || undefined}
+          />
         );
-      
+
       case RegistrationStep.Verification:
+        if (!contactData) {
+          return (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+              <p className="mt-4 text-gray-600">Loading contact information...</p>
+            </div>
+          );
+        }
         return (
-          <Form {...verificationForm}>
-            <form onSubmit={verificationForm.handleSubmit(handleVerificationSubmit)} className="space-y-6">
-              <div className="text-center mb-6">
-                <h3 className="text-xl font-semibold">Step 2: Verify Your Contact</h3>
-                <p className="text-gray-600 mt-2">
-                  We've sent a 6-digit verification code to your {contactData?.contact_type === 'email' ? 'email' : 'phone'}. Please enter it below.
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <FormField
-                  control={verificationForm.control}
-                  name="verification_code"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex items-center justify-center space-x-2">
-                        {Array.from({ length: 6 }).map((_, index) => (
-                          <FormControl key={index}>
-                            <Input
-                              {...field}
-                              type="text"
-                              maxLength={1}
-                              className="w-12 h-12 text-center rounded-md border border-input focus:ring-2 focus:ring-primary focus:border-primary"
-                              value={field.value[index] || ''}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                if (value.match(/^[0-9]$/)) {
-                                  const newValue = field.value.substring(0, index) + value + field.value.substring(index + 1);
-                                  field.onChange(newValue);
-                                  if (index < 5) {
-                                    const nextInput = document.getElementById(`digit-${index + 1}`);
-                                    if (nextInput) {
-                                      nextInput.focus();
-                                    }
-                                  }
-                                } else if (value === '') {
-                                  const newValue = field.value.substring(0, index) + field.value.substring(index + 1);
-                                  field.onChange(newValue);
-                                  if (index > 0) {
-                                    const prevInput = document.getElementById(`digit-${index - 1}`);
-                                    if (prevInput) {
-                                      prevInput.focus();
-                                    }
-                                  }
-                                }
-                              }}
-                              id={`digit-${index}`}
-                            />
-                          </FormControl>
-                        ))}
-                      </div>
-                      <FormDescription className="text-center mt-2">
-                        Enter the 6-digit code sent to your {contactData?.contact_type === 'email' ? 'email' : 'phone'}
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    resendVerificationCode();
-                  }}
-                  disabled={isResending}
-                >
-                  {isResending ? 'Resending...' : 'Resend Code'}
-                </Button>
-                <Button type="submit" className="w-full sm:w-auto">
-                  Verify
-                </Button>
-              </div>
-            </form>
-          </Form>
+          <VerificationStep
+            contactData={contactData}
+            onVerify={handleVerificationSubmit}
+            onBack={handleBack}
+            onResend={handleResendCode}
+            isLoading={isLoading}
+            isResending={isResending}
+            error={error || undefined}
+          />
         );
 
       case RegistrationStep.Details:
         return (
-          <Form {...detailsForm}>
-            <form onSubmit={detailsForm.handleSubmit(handleDetailsSubmit)} className="space-y-6">
-              {/* Company Information */}
-              <div className="space-y-6">
-                <h3 className="text-lg font-medium">Company Information</h3>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                  <FormField
-                    control={detailsForm.control}
-                    name="company_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Company Name</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={detailsForm.control}
-                    name="company_email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Company Email</FormLabel>
-                        <FormControl>
-                          <Input type="email" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={detailsForm.control}
-                    name="company_phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Company Phone</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={detailsForm.control}
-                    name="company_address"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Company Address</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={detailsForm.control}
-                    name="company_city"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>City</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={detailsForm.control}
-                    name="company_country"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Country</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-
-              {/* Admin Information */}
-              <div className="space-y-6">
-                <h3 className="text-lg font-medium">Admin Information</h3>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                  <FormField
-                    control={detailsForm.control}
-                    name="admin_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Admin Name</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={detailsForm.control}
-                    name="admin_email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Admin Email</FormLabel>
-                        <FormControl>
-                          <Input type="email" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={detailsForm.control}
-                    name="admin_password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl>
-                          <Input type="password" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={detailsForm.control}
-                    name="admin_password_confirmation"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Confirm Password</FormLabel>
-                        <FormControl>
-                          <Input type="password" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-
-              <Button type="submit" className="w-full">
-                Register
-              </Button>
-            </form>
-          </Form>
+          <DetailsStep
+            onSubmit={handleDetailsSubmit}
+            onBack={handleBack}
+            isLoading={isLoading}
+            error={error || undefined}
+          />
         );
 
       case RegistrationStep.Success:
         return (
-          <RegistrationSuccess
-            companyName={successData?.companyName || ''}
-            redirectUrl={successData?.redirectUrl || route('dashboard')}
-          />
+          <div className="text-center">
+            <RegistrationSuccess companyName={successData?.companyName || ''} redirectUrl={successData?.redirectUrl || ''} />
+          </div>
         );
 
       default:
@@ -512,28 +189,54 @@ export default function RegisterCompany() {
   return (
     <InstallationLayout
       currentStep={currentStep}
-      totalSteps={4}
-      onNext={handleNextStep}
-      onBack={handleBackStep}
+      totalSteps={Object.keys(RegistrationStep).length / 2}
+      onNext={(e: React.FormEvent<HTMLFormElement>) => {
+        if (currentStep === RegistrationStep.Verification) {
+          e.preventDefault();
+          const form = e.currentTarget;
+          if (form) {
+            form.dispatchEvent(new Event('submit', { bubbles: true }));
+          }
+        } else if (currentStep === RegistrationStep.Details) {
+          e.preventDefault();
+          handleDetailsSubmit(e.currentTarget as any);
+        }
+      }}
+      onBack={handleBack}
       isLoading={isLoading}
     >
-      <div className="space-y-8">
-        {error && (
-          <Alert variant="destructive">
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+      <Head>
+        <title>{title}</title>
+      </Head>
+      
+      <div className="flex-1 flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md space-y-8">
+          <div>
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+              {currentStep === RegistrationStep.Contact
+                ? 'Step 1: Contact Information'
+                : currentStep === RegistrationStep.Verification
+                ? 'Step 2: Verification'
+                : currentStep === RegistrationStep.Details
+                ? 'Step 3: Company & Admin Details'
+                : 'Step 4: Success'}
+            </h2>
+          </div>
+          
+          {error && (
+            <div className="rounded-md bg-red-50 p-4">
+              <div className="flex">
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800">Error</h3>
+                  <div className="mt-2 text-sm text-red-700">
+                    <p>{error}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
-        {renderStep()}
-
-        <div className="mt-8">
-          <Link
-            href={route('login')}
-            className="text-sm font-medium text-primary hover:underline"
-          >
-            Already have an account? Sign in
-          </Link>
+          {renderStep()}
         </div>
       </div>
     </InstallationLayout>

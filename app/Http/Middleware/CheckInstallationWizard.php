@@ -18,14 +18,19 @@ class CheckInstallationWizard
         // Check if there are any companies in the database
         $hasCompanies = Company::count() > 0;
 
-        // If no companies exist and user is not authenticated, redirect to installation wizard
+        // If companies exist, redirect to login
+        if ($hasCompanies) {
+            return redirect()->route('login');
+        }
+
+        // If no companies exist and user is not authenticated, show installation wizard
         if (! $hasCompanies && ! $request->user()) {
             return redirect()->route('landing-page.installation-wizard');
         }
 
-        // If no companies exist and user is authenticated, redirect to company registration
+        // If no companies exist and user is authenticated, show installation wizard
         if (! $hasCompanies && $request->user()) {
-            return redirect()->route('register.company.show');
+            return redirect()->route('landing-page.installation-wizard');
         }
 
         return $next($request);

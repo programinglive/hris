@@ -1,6 +1,6 @@
-# HRIS Project
+# HRIS SaaS Open Source Project
 
-A comprehensive Human Resource Information System (HRIS) built with Laravel, Inertia.js, React, and TypeScript.
+A comprehensive Human Resource Information System (HRIS) built with Laravel, Inertia.js, React, and TypeScript. This open-source project is designed to help businesses streamline their HR operations, and while it's being used by BeautyWorld, it's available for anyone to use and contribute to.
 
 ## About HRIS Project
 
