@@ -12,7 +12,7 @@ interface InstallationLayoutProps {
 
 export default function InstallationLayout({
   currentStep,
-  totalSteps,
+  totalSteps = 6, // Contact, Verification, CompanyDetails, SystemSetup, AdminSetup, Complete
   onNext,
   onBack,
   isLoading = false,

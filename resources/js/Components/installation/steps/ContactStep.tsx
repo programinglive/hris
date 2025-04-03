@@ -23,8 +23,9 @@ export default function ContactStep({
     contact_type: 'email' as 'email' | 'phone',
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    form.clearErrors();
     onSubmit(form.data);
   };
 
@@ -38,68 +39,66 @@ export default function ContactStep({
         </Card>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Contact Information</CardTitle>
-            <CardDescription>
-              Please provide your contact information for verification.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <label htmlFor="contact_type" className="block text-sm font-medium leading-6 text-gray-900">
-                Contact Type
-              </label>
-              <div className="mt-2">
-                <Select
-                  value={form.data.contact_type}
-                  onValueChange={(value) => form.setData('contact_type', value as 'email' | 'phone')}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select contact type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="email">Email</SelectItem>
-                    <SelectItem value="phone">Phone</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              {form.errors.contact_type && (
-                <p className="mt-2 text-sm text-red-600">
-                  {form.errors.contact_type}
-                </p>
-              )}
+      <Card>
+        <CardHeader>
+          <CardTitle>Contact Information</CardTitle>
+          <CardDescription>
+            Please provide your contact information for verification.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <label htmlFor="contact_type" className="block text-sm font-medium leading-6 text-gray-900">
+              Contact Type
+            </label>
+            <div className="mt-2">
+              <Select
+                value={form.data.contact_type}
+                onValueChange={(value) => form.setData('contact_type', value as 'email' | 'phone')}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select contact type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="email">Email</SelectItem>
+                  <SelectItem value="phone">Phone</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div>
-              <label htmlFor="contact" className="block text-sm font-medium leading-6 text-gray-900">
-                Contact
-              </label>
-              <div className="mt-2">
-                <Input
-                  id="contact"
-                  type={form.data.contact_type === 'email' ? 'email' : 'tel'}
-                  value={form.data.contact}
-                  onChange={(e) => form.setData('contact', e.target.value)}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  autoComplete={form.data.contact_type === 'email' ? 'email' : 'tel'}
-                />
-              </div>
-              {form.errors.contact && (
-                <p className="mt-2 text-sm text-red-600">
-                  {form.errors.contact}
-                </p>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+            {form.errors.contact_type && (
+              <p className="mt-2 text-sm text-red-600">
+                {form.errors.contact_type}
+              </p>
+            )}
+          </div>
 
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? 'Submitting...' : 'Continue'}
+          <div>
+            <label htmlFor="contact" className="block text-sm font-medium leading-6 text-gray-900">
+              Contact
+            </label>
+            <div className="mt-2">
+              <Input
+                id="contact"
+                type={form.data.contact_type === 'email' ? 'email' : 'tel'}
+                value={form.data.contact}
+                onChange={(e) => form.setData('contact', e.target.value)}
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                placeholder={form.data.contact_type === 'email' ? 'Enter your email address' : 'Enter your phone number'}
+                autoComplete={form.data.contact_type === 'email' ? 'email' : 'tel'}
+              />
+            </div>
+            {form.errors.contact && (
+              <p className="mt-2 text-sm text-red-600">
+                {form.errors.contact}
+              </p>
+            )}
+          </div>
+
+          <Button type="submit" className="w-full" disabled={isLoading} onClick={handleSubmit}>
+            {isLoading ? 'Processing...' : 'Continue'}
           </Button>
-        </div>
-      </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

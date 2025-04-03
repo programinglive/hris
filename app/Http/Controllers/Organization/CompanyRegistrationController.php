@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Role;
+use App\Models\SystemSetting;
 use App\Models\User;
 use App\Models\UserRole;
 use App\Models\WorkSchedule;
@@ -88,7 +89,11 @@ class CompanyRegistrationController extends Controller
             Log::info('SMS verification code for '.$contact.': '.$verificationCode);
         }
 
-        return back()->with('success', 'Verification code sent to '.$contact);
+        return Inertia::render('auth/register-company', [
+            'contactData' => $validated,
+            'currentStep' => 'Verification',
+            'error' => null
+        ]);
     }
 
     /**
@@ -131,7 +136,7 @@ class CompanyRegistrationController extends Controller
         $registrationData['verified'] = true;
         Session::put('registration_data', $registrationData);
 
-        return redirect()->route('landing-page.installation-wizard.save-company-details');
+        return back()->with('success', 'Verification successful! Please proceed to the next step.');
     }
 
     /**
@@ -172,7 +177,7 @@ class CompanyRegistrationController extends Controller
         if ($contactType === 'email') {
             try {
                 Mail::to($contact)->send(new \App\Mail\VerificationCodeMail($verificationCode));
-                Log::info('New verification code sent to email: '.$contact);
+                Log::info('New verification code : '.$verificationCode);
             } catch (\Exception $e) {
                 Log::error('Failed to send new verification email: '.$e->getMessage());
                 return back()
@@ -448,6 +453,47 @@ class CompanyRegistrationController extends Controller
                 'is_active' => true,
             ]);
 
+            // Create system settings
+            $defaultSettings = [
+                'attendance' => [
+                    'late_threshold' => '15',
+                    'early_threshold' => '15',
+                    'overtime_start' => '18:00:00',
+                    'overtime_threshold' => '30',
+                    'allow_manual_attendance' => 'true',
+                ],
+                'leave' => [
+                    'maximum_leave_balance' => '30',
+                    'minimum_leave_balance' => '0',
+                    'leave_approval_required' => 'true',
+                    'maximum_leave_request_days' => '30',
+                ],
+                'payroll' => [
+                    'default_pay_period' => 'monthly',
+                    'payroll_processing_days' => '7',
+                    'tax_deduction' => 'true',
+                ],
+                'general' => [
+                    'company_time_zone' => 'Asia/Jakarta',
+                    'date_format' => 'Y-m-d',
+                    'time_format' => 'H:i',
+                    'language' => 'en',
+                ],
+            ];
+
+            foreach ($defaultSettings as $category => $settings) {
+                foreach ($settings as $key => $value) {
+                    $settingKey = $category . '.' . $key;
+                    SystemSetting::create([
+                        'company_id' => $company->id,
+                        'key' => $settingKey,
+                        'value' => $value,
+                        'type' => gettype($value),
+                        'is_active' => true,
+                    ]);
+                }
+            }
+
             // Create work shifts
             $morningShift = WorkShift::create([
                 'name' => 'Morning Shift',
@@ -520,5 +566,126 @@ class CompanyRegistrationController extends Controller
         });
 
         return redirect()->route('dashboard')->with('success', 'Company and admin account created successfully!');
+    }
+
+    /**
+     * Save system settings
+     */
+    public function saveSystemSettings(Request $request)
+    {
+        $validated = $request->validate([
+            'company_id' => 'required|exists:companies,id',
+            'attendance' => 'required|array',
+            'attendance.late_threshold' => 'required|integer|min:0',
+            'attendance.early_threshold' => 'required|integer|min:0',
+            'attendance.overtime_start' => 'required|date_format:H:i:s',
+            'attendance.overtime_threshold' => 'required|integer|min:0',
+            'attendance.allow_manual_attendance' => 'required|boolean',
+            'leave' => 'required|array',
+            'leave.maximum_leave_balance' => 'required|integer|min:0',
+            'leave.minimum_leave_balance' => 'required|integer|min:0',
+            'leave.leave_approval_required' => 'required|boolean',
+            'leave.maximum_leave_request_days' => 'required|integer|min:0',
+            'payroll' => 'required|array',
+            'payroll.default_pay_period' => 'required|in:monthly,biweekly,weekly',
+            'payroll.payroll_processing_days' => 'required|integer|min:0',
+            'payroll.tax_deduction' => 'required|boolean',
+            'general' => 'required|array',
+            'general.company_time_zone' => 'required|timezone',
+            'general.date_format' => 'required|in:Y-m-d,d-m-Y,m/d/Y',
+            'general.time_format' => 'required|in:H:i,h:i A',
+            'general.language' => 'required|in:en,id',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Delete existing settings for this company
+            SystemSetting::where('company_id', $validated['company_id'])->delete();
+
+            // Save new settings
+            foreach ($validated as $category => $settings) {
+                if ($category === 'company_id') continue;
+
+                foreach ($settings as $key => $value) {
+                    $settingKey = $category . '.' . $key;
+                    SystemSetting::create([
+                        'company_id' => $validated['company_id'],
+                        'key' => $settingKey,
+                        'value' => $value,
+                        'type' => gettype($value),
+                        'is_active' => true,
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return redirect()->route('landing-page.installation-wizard.save-admin-details');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Failed to save system settings: ' . $e->getMessage());
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'system_settings' => 'Failed to save system settings. Please try again.',
+                ]);
+        }
+    }
+
+    /**
+     * Save admin details
+     */
+    public function saveAdminDetails(Request $request)
+    {
+        $validated = $request->validate([
+            'company_id' => 'required|exists:companies,id',
+            'admin_name' => 'required|string|max:255',
+            'admin_email' => 'required|email|unique:users,email',
+            'admin_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Create admin user
+            $admin = User::create([
+                'name' => $validated['admin_name'],
+                'email' => $validated['admin_email'],
+                'password' => Hash::make($validated['admin_password']),
+                'primary_company_id' => $validated['company_id'],
+            ]);
+
+            // Create admin role
+            $adminRole = Role::firstOrCreate([
+                'name' => 'admin',
+                'display_name' => 'Administrator',
+                'description' => 'System administrator with full access',
+                'is_system' => true,
+                'slug' => 'admin',
+                'company_id' => $validated['company_id']
+            ]);
+
+            // Create user role relationship
+            UserRole::create([
+                'user_id' => $admin->id,
+                'role_id' => $adminRole->id,
+                'company_id' => $validated['company_id']
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('landing-page.installation-wizard.complete');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Failed to save admin details: ' . $e->getMessage());
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'admin_details' => 'Failed to save admin details. Please try again.',
+                ]);
+        }
     }
 }

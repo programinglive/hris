@@ -29,6 +29,18 @@ Route::post('/installation-wizard/save-company-details', [CompanyRegistrationCon
     ->name('landing-page.installation-wizard.save-company-details')
     ->middleware('guest');
 
+Route::post('/installation-wizard/save-system-settings', [CompanyRegistrationController::class, 'saveSystemSettings'])
+    ->name('landing-page.installation-wizard.save-system-settings')
+    ->middleware('guest');
+
+Route::post('/installation-wizard/save-admin-details', [CompanyRegistrationController::class, 'saveAdminDetails'])
+    ->name('landing-page.installation-wizard.save-admin-details')
+    ->middleware('guest');
+
+Route::post('/installation-wizard/complete', [CompanyRegistrationController::class, 'completeRegistration'])
+    ->name('landing-page.installation-wizard.complete')
+    ->middleware('guest');
+
 // Company registration routes
 Route::prefix('register-company')->name('register.company.')->group(function () {
     Route::get('/', [CompanyRegistrationController::class, 'showRegistrationForm'])

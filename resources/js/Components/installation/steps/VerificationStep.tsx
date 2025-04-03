@@ -26,10 +26,6 @@ export default function VerificationStep({
   isResending,
   error,
 }: VerificationStepProps) {
-  const form = useForm({
-    verification_code: '',
-  });
-
   const [inputValues, setInputValues] = useState<string[]>(Array(6).fill(''));
   const [countdown, setCountdown] = useState(300); // 5 minutes in seconds
   const [showCountdown, setShowCountdown] = useState(true);
@@ -72,15 +68,8 @@ export default function VerificationStep({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const code = inputValues.join('');
-    onVerify(code);
-  };
-
-  const handleClear = () => {
+  const clearInputs = () => {
     setInputValues(Array(6).fill(''));
-    form.setData('verification_code', '');
     setIsError(false);
   };
 
@@ -94,89 +83,86 @@ export default function VerificationStep({
         </Card>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Card>
-          <CardContent className="space-y-4">
-            <div>
-              <p className="text-lg font-semibold text-gray-900">
-                Verification Code
-              </p>
+      <Card>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="text-center">
+              <h3 className="text-lg font-medium leading-6 text-gray-900">Verification Code</h3>
               <p className="mt-1 text-sm text-gray-500">
-                Enter the 6-digit code sent to your {contactData.contact_type}
+                We've sent a verification code to {contactData.contact_type === 'email' ? 'your email' : 'your phone number'}. Please enter it below.
               </p>
             </div>
 
-            <div className="grid grid-cols-6 gap-2">
-              {inputValues.map((value, index) => (
-                <Input
-                  key={index}
-                  id={`input-${index}`}
-                  type="text"
-                  maxLength={1}
-                  value={value}
-                  onChange={(e) => handleInputChange(index, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(index, e)}
-                  className={`text-center ${
-                    isError ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                />
-              ))}
+            <div className="relative flex items-center justify-center">
+              <div className="flex space-x-2">
+                {inputValues.map((value, index) => (
+                  <Input
+                    key={index}
+                    type="text"
+                    maxLength={1}
+                    value={value}
+                    onChange={(e) => handleInputChange(index, e.target.value)}
+                    className="w-12 text-center"
+                    onKeyDown={(e) => handleKeyDown(index, e)}
+                    onFocus={() => setShowClearButton(true)}
+                    onBlur={() => setShowClearButton(false)}
+                  />
+                ))}
+              </div>
+
+              {showClearButton && (
+                <button
+                  type="button"
+                  onClick={clearInputs}
+                  className="absolute right-4 text-gray-400 hover:text-gray-500"
+                >
+                  ✕
+                </button>
+              )}
             </div>
 
             {isError && (
               <p className="mt-2 text-sm text-red-600">
-                Please enter a valid 6-digit verification code
+                Invalid verification code. Please try again.
               </p>
             )}
 
             <div className="flex justify-between items-center">
               <Button
+                type="button"
                 variant="outline"
-                onClick={handleClear}
-                disabled={!showClearButton}
+                onClick={onBack}
+                disabled={isLoading}
               >
-                Clear
+                Back
               </Button>
 
-              <div className="flex gap-2">
+              <div className="flex items-center space-x-4">
                 <Button
+                  type="button"
                   variant="outline"
-                  onClick={onBack}
-                  disabled={isLoading}
+                  onClick={onResend}
+                  disabled={isResending || showCountdown}
                 >
-                  Back
+                  {isResending
+                    ? 'Resending...'
+                    : showCountdown
+                    ? `${Math.floor(countdown / 60)}:${String(countdown % 60).padStart(2, '0')}`
+                    : 'Resend Code'}
                 </Button>
+
                 <Button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || !inputValues.every(v => v !== '')}
+                  onClick={() => onVerify(inputValues.join(''))}
                 >
                   {isLoading ? 'Verifying...' : 'Verify'}
                 </Button>
               </div>
             </div>
-
-            {showCountdown && (
-              <p className="mt-2 text-sm text-gray-500">
-                {Math.floor(countdown / 60)}:{
-                  (countdown % 60).toString().padStart(2, '0')
-                }
-              </p>
-            )}
-
-            {!showCountdown && (
-              <Button
-                variant="outline"
-                onClick={onResend}
-                disabled={isResending}
-              >
-                {isResending ? 'Resending...' : 'Resend Code'}
-              </Button>
-            )}
-          </CardContent>
-        </Card>
-      </form>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
