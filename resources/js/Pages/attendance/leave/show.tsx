@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app/app-layout';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/Components/ui/card';
 import { Loader2 } from 'lucide-react';
 import { type BreadcrumbItem } from '@/types';
 

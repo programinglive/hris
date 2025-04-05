@@ -1,8 +1,8 @@
 import { type PageProps } from '@/types';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { DataTable } from '@/components/ui/data-table';
-import { type ColumnDef } from '@/components/ui/data-table';
+import { Card } from '@/Components/ui/card';
+import { Button } from '@/Components/ui/button';
+import { DataTable } from '@/Components/ui/data-table';
+import { type ColumnDef } from '@/Components/ui/data-table';
 import { Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app/app-layout';
 import { type BreadcrumbItem } from '@/types';
