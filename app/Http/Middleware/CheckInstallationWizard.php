@@ -23,15 +23,8 @@ class CheckInstallationWizard
             return redirect()->route('login');
         }
 
-        // If no companies exist and user is not authenticated, show installation wizard
-        if (! $hasCompanies && ! $request->user()) {
-            return redirect()->route('landing-page.installation-wizard');
-        }
-
-        // If no companies exist and user is authenticated, show installation wizard
-        if (! $hasCompanies && $request->user()) {
-            return redirect()->route('landing-page.installation-wizard');
-        }
+        // If no companies exist, redirect to login
+        return redirect()->route('login');
 
         return $next($request);
     }

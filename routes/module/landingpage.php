@@ -2,11 +2,22 @@
 
 use App\Http\Controllers\Organization\CompanyRegistrationController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 // Landing page route
 Route::get('/', function () {
-    return redirect()->route('landing-page.installation-wizard');
+    return Inertia::render('Landing');
 })->name('landing');
+
+// Login route
+Route::get('/login', function () {
+    return Inertia::render('auth/Login');
+})->name('login')->middleware('guest');
+
+// Registration route
+Route::get('/register', function () {
+    return Inertia::render('auth/Register');
+})->name('register')->middleware('guest');
 
 // Installation wizard routes
 Route::get('/installation-wizard', [CompanyRegistrationController::class, 'showRegistrationForm'])
