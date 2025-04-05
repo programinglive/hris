@@ -65,6 +65,22 @@ interface RegisterCompanyProps {
     };
 }
 
+interface CompanyFormErrors {
+    name?: string;
+    code?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+    city?: string;
+    state?: string;
+    postal_code?: string;
+    country?: string;
+    'administrator.name'?: string;
+    'administrator.email'?: string;
+    'administrator.password'?: string;
+    session?: string;
+}
+
 export default function RegisterCompany({ errors }: RegisterCompanyProps) {
     const { toast } = useToast();
     

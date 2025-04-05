@@ -55,6 +55,7 @@ class CompanyRegistrationController extends Controller
                 'country' => $validated['country'],
                 'is_active' => true,
                 'is_primary' => true,
+                'owner_id' => null, // Will be set after admin user is created
             ]);
 
             // Create admin user
@@ -63,6 +64,11 @@ class CompanyRegistrationController extends Controller
                 'email' => $validated['administrator']['email'],
                 'password' => Hash::make($validated['administrator']['password']),
                 'company_id' => $company->id,
+            ]);
+
+            // Update company owner_id
+            $company->update([
+                'owner_id' => $admin->id,
             ]);
 
             // Create user details
@@ -91,11 +97,6 @@ class CompanyRegistrationController extends Controller
                 'user_id' => $admin->id,
                 'role_id' => $adminRole->id,
                 'company_id' => $company->id,
-            ]);
-
-            // Set primary company for the user
-            $admin->update([
-                'primary_company_id' => $company->id,
             ]);
 
             // Login the user

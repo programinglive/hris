@@ -23,10 +23,6 @@ class User extends Authenticatable implements \Illuminate\Contracts\Auth\Authent
         'name',
         'email',
         'password',
-        'primary_company_id',
-        'branch_id',
-        'department_id',
-        'position_id',
     ];
 
     /**
@@ -40,17 +36,13 @@ class User extends Authenticatable implements \Illuminate\Contracts\Auth\Authent
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 
     /**
      * Get the companies owned by the user.
