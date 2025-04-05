@@ -7,11 +7,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
+} from '@/Components/ui/form';
+import { Input } from '@/Components/ui/input';
+import { Button } from '@/Components/ui/button';
+import { Textarea } from '@/Components/ui/textarea';
+import { Switch } from '@/Components/ui/switch';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import AppLayout from '@/layouts/app/app-layout';

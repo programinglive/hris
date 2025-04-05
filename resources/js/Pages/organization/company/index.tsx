@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
-import { DataTable } from '@/components/ui/data-table';
-import { Button } from '@/components/ui/button';
+import { DataTable } from '@/Components/ui/data-table';
+import { Button } from '@/Components/ui/button';
 import { Plus, Edit, Trash2, Eye, MoreHorizontal } from 'lucide-react';
 import AppLayout from '@/layouts/app/app-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -10,7 +10,7 @@ import {
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
+} from '@/Components/ui/dropdown-menu';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,10 +20,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
-import { ImportDialog } from '@/components/company/import-dialog';
+} from '@/Components/ui/alert-dialog';
+import { Badge } from '@/Components/ui/badge';
+import { Card } from '@/Components/ui/card';
+import { ImportDialog } from '@/Components/company/import-dialog';
 
 interface Company {
   id: number;

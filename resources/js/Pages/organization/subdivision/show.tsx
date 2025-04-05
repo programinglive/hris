@@ -1,12 +1,12 @@
 import AppLayout from '@/layouts/app/app-layout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { DataTable } from '@/components/ui/data-table';
+import { Button } from '@/Components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs';
+import { DataTable } from '@/Components/ui/data-table';
 import { Edit, Plus, Eye, Trash2, ArrowLeft } from 'lucide-react';
 import { Link, router } from '@inertiajs/react';
 import { type BreadcrumbItem } from '@/types';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/Components/ui/badge';
 import { useState } from 'react';
 import {
   AlertDialog,
@@ -17,7 +17,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+} from '@/Components/ui/alert-dialog';
 
 interface Position {
   id: number;

@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/Components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Badge } from "@/Components/ui/badge";
 import AppLayout from '@/layouts/app/app-layout'
 import { Head, Link } from "@inertiajs/react";
 import { ArrowLeft, Pencil } from "lucide-react";
-import { MermaidDiagram } from "@/components/ui/mermaid-diagram";
+import { MermaidDiagram } from "@/Components/ui/mermaid-diagram";
 import { useEffect, useState } from "react";
 
 interface Faq {

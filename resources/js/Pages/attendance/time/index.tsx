@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, router } from '@inertiajs/react';
-import { ToastProvider, useToast } from '@/components/ui/simple-toast';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { ToastProvider, useToast } from '@/Components/ui/simple-toast';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
 import {
   Table,
   TableBody,
@@ -10,10 +10,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+} from '@/Components/ui/table';
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { format } from 'date-fns';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/Components/ui/alert-dialog';
 import AppLayout from '@/layouts/app-layout'; // Update import path
 import { type BreadcrumbItem } from '@/types';
 

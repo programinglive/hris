@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { Head, useForm, Link } from '@inertiajs/react'
 import AppLayout from '@/layouts/app/app-layout'
 import { type BreadcrumbItem } from '@/types'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/Components/ui/card'
+import { Button } from '@/Components/ui/button'
+import { Input } from '@/Components/ui/input'
+import { Label } from '@/Components/ui/label'
+import { Checkbox } from '@/Components/ui/checkbox'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { ArrowLeft } from 'lucide-react'
-import { FormError } from '@/components/formerror'
+import { FormError } from '@/Components/formerror'
 import { WorkShift } from '@/types/models'
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/Components/ui/use-toast';
 
 interface Company {
   id: number;

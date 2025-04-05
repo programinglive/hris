@@ -1,8 +1,8 @@
 import AppLayout from '@/layouts/app/app-layout';
 import { usePage, Link } from '@inertiajs/react';
 import { type BreadcrumbItem } from '@/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
+import { Button } from '@/Components/ui/button';
 import { Edit, ArrowLeft } from 'lucide-react';
 
 interface Level {

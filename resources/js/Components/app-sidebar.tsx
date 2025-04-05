@@ -1,6 +1,6 @@
-import { NavFooter } from '@/components/nav-footer';
-import { NavUser } from '@/components/nav-user';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarMenuSub, SidebarMenuSubButton } from '@/components/ui/sidebar';
+import { NavFooter } from '@/Components/nav-footer';
+import { NavUser } from '@/Components/nav-user';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarMenuSub, SidebarMenuSubButton } from '@/Components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { Clock, FileText, LayoutGrid, Users, Building, Package, ChevronRight } from 'lucide-react';
@@ -9,7 +9,7 @@ import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+} from "@/Components/ui/collapsible";
 import { useMemo } from 'react';
 
 const mainNavItems: NavItem[] = [

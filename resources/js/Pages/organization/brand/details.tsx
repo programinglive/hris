@@ -1,11 +1,11 @@
 import AppLayout from '@/layouts/app/app-layout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/Components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { Edit, ArrowLeft } from 'lucide-react';
 import { usePage, Link } from '@inertiajs/react';
 import { type BreadcrumbItem } from '@/types';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/Components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 
 interface Company {
   id: number;

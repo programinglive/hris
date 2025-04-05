@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app/app-layout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ImportDialog } from '@/components/brand/import-dialog';
+import { Button } from '@/Components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
+import { ImportDialog } from '@/Components/brand/import-dialog';
 import { FileSpreadsheet } from 'lucide-react';
 
 interface Company {

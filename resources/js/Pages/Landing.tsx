@@ -1,9 +1,7 @@
 import { Head } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import { Button } from '@/Components/ui/button';
 import { motion } from 'framer-motion';
-import { User, Users, Calendar, DollarSign, FileText, BookOpen, UserPlus, Rocket } from 'lucide-react';
+import { User, Users, DollarSign, BookOpen, UserPlus, Rocket } from 'lucide-react';
 
 export default function Landing() {
     return (

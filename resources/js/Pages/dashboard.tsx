@@ -1,8 +1,8 @@
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import { PlaceholderPattern } from '@/Components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/Components/ui/card';
 import { BarChart as BarChartIcon, PieChart, TrendingUp, Users, User, Calendar, FileSpreadsheet } from 'lucide-react';
 import {
     Area,
@@ -21,8 +21,8 @@ import {
 import {
     ChartConfig,
     ChartContainer,
-} from "@/components/ui/chart"
-import { HighlightCard } from '@/components/ui/highlight-card';
+} from "@/Components/ui/chart"
+import { HighlightCard } from '@/Components/ui/highlight-card';
 
 const chartConfig = {
     employees: {

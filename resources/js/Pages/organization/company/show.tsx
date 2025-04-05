@@ -1,7 +1,7 @@
 import { Link, usePage } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/Components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
+import { Badge } from '@/Components/ui/badge';
 import { ArrowLeft, Building2, Mail, Phone, MapPin, Globe, FileText, Edit, Calendar, User } from 'lucide-react';
 import AppLayout from '@/layouts/app/app-layout';
 import { type BreadcrumbItem } from '@/types';

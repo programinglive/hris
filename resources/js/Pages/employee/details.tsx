@@ -1,8 +1,8 @@
 import AppLayout from '@/layouts/app/app-layout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/Components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs';
+import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import { usePage } from '@inertiajs/react';
 import { type BreadcrumbItem } from '@/types';
 import { ArrowLeft, Mail, Phone, MapPin, Building, Calendar, Edit } from 'lucide-react';

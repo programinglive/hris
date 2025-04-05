@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app/app-layout';
-import { DataTable } from '@/components/ui/data-table';
-import { Button } from '@/components/ui/button';
+import { DataTable } from '@/Components/ui/data-table';
+import { Button } from '@/Components/ui/button';
 import { Edit, Trash2, Eye, MoreHorizontal } from 'lucide-react';
 import { useState } from 'react';
 import { Link, router } from '@inertiajs/react';
@@ -14,16 +14,16 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+} from '@/Components/ui/alert-dialog';
+import { Badge } from '@/Components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { ImportDialog } from '@/components/brand/import-dialog';
+} from '@/Components/ui/dropdown-menu';
+import { ImportDialog } from '@/Components/brand/import-dialog';
 
 interface Company {
   id: number;

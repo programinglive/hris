@@ -1,11 +1,11 @@
 import React from 'react'
 import AppLayout from '@/layouts/app/app-layout'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import { Button } from '@/Components/ui/button'
 import { Link } from '@inertiajs/react'
 import { type BreadcrumbItem } from '@/types'
 import { ArrowLeft, Edit } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@/Components/ui/badge'
 
 interface LeaveType {
   id: number;

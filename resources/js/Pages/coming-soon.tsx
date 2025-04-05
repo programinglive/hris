@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app/app-layout';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/Components/ui/button';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, Construction } from 'lucide-react';
 import { type BreadcrumbItem } from '@/types';

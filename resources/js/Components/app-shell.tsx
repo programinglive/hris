@@ -1,4 +1,4 @@
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { SidebarProvider } from '@/Components/ui/sidebar';
 import { useState } from 'react';
 
 interface AppShellProps {

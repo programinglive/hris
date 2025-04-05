@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useForm } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/Components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,8 +8,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+} from '@/Components/ui/dialog';
+import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert';
 import { AlertCircle, FileSpreadsheet, Upload, X, CheckCircle2 } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
 

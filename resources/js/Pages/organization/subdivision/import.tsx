@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import AppLayout from '@/layouts/app/app-layout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/Components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
+import { Label } from '@/Components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { useForm } from '@inertiajs/react';
 import { FileSpreadsheet, Upload } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert';
 import { AlertCircle } from 'lucide-react';
 
 interface Division {
