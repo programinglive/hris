@@ -22,6 +22,7 @@ import {
     ChartContainer,
 } from "@/Components/ui/chart"
 import { HighlightCard } from '@/Components/ui/highlight-card';
+import { PlaceholderPattern } from '@/Components/ui/placeholder-pattern';
 
 const chartConfig = {
     employees: {
