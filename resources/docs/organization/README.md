@@ -12,6 +12,7 @@ This section covers the organization management features of the HRIS system.
 - [Position Management](#position-management)
 - [Level Management](#level-management)
 - [Brand Management](#brand-management)
+- [Role System](#role-system)
 
 ## Company Management
 
@@ -19,6 +20,29 @@ This section covers the organization management features of the HRIS system.
 - Companies are the top-level organization units
 - Each company can have multiple branches and brands
 - Companies are isolated in terms of data but users can access multiple companies based on permissions
+
+### Registration Process
+1. **Contact Information Validation**
+   - System validates contact information (email or phone) for uniqueness
+   - Verification code is sent to the provided contact
+
+2. **Contact Verification**
+   - Users must enter the verification code received
+   - System verifies code against stored session data
+
+3. **Company Details Submission**
+   - Company name
+   - Company email (must be unique)
+   - Company phone (must be unique)
+   - Company address
+   - Company city
+   - Company state
+   - Company postal code
+   - Company country
+   - Admin user details:
+     - Admin name
+     - Admin email
+     - Admin password
 
 ### Features
 - Create and manage company profiles
@@ -108,6 +132,36 @@ This section covers the organization management features of the HRIS system.
 - Create and manage brand profiles
 - Assign brand managers
 - Track brand-specific metrics
+
+## Role System
+
+### Role Structure
+- Each role has a unique name per company
+- Roles have a slug for URL-friendly identification
+- Description field for role description
+- Roles are company-specific
+- Role names are used for display purposes
+- Slugs are automatically generated from role names
+
+### Role Creation
+- Super Admin role is created during company registration
+- Admin role is a system role with full access
+- Roles are assigned to users through the user_roles pivot table
+- Role names must be unique within a company
+- Role slugs are automatically generated from names
+
+### Role Management
+- Roles can be created, updated, and deleted
+- Role assignments can be managed through user_roles table
+- Role permissions are managed through role permissions
+- Role hierarchy is maintained through parent-child relationships
+
+### Best Practices
+1. Use meaningful role names that describe the role's purpose
+2. Keep role descriptions clear and concise
+3. Use role slugs for URL-friendly identification
+4. Regularly review and update role permissions
+5. Maintain proper role hierarchy
 
 ## Best Practices
 

@@ -15,9 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('display_name');
             $table->text('description')->nullable();
-            $table->boolean('is_system')->default(false);
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->timestamps();
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Http\Requests\CompanyRegistrationRequest;
 use App\Models\Company;
 use App\Models\Role;
 use App\Models\SystemSetting;
@@ -27,527 +28,91 @@ class CompanyRegistrationController extends Controller
      */
     public function showRegistrationForm()
     {
-        return Inertia::render('auth/register-company', [
+        return Inertia::render('RegisterCompany', [
             'title' => 'Installation'
         ]);
     }
 
     /**
-     * Step 1: Validate and store contact information
+     * Store company registration
      */
-    public function validateContact(Request $request)
+    public function store(CompanyRegistrationRequest $request)
     {
-        $validated = $request->validate([
-            'contact' => 'required|string',
-            'contact_type' => 'required|in:email,phone',
-        ]);
+        $validated = $request->validated();
 
-        $contactType = $validated['contact_type'];
-        $contact = $validated['contact'];
-
-        // Additional validation based on contact type
-        if ($contactType === 'email') {
-            $request->validate([
-                'contact' => 'email|unique:companies,email',
-            ]);
-
-        } else {
-            $request->validate([
-                'contact' => 'regex:/^[0-9+\s]+$/|unique:companies,phone',
-            ]);
-        }
-
-        // Generate a 6-digit verification code
-        $verificationCode = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-
-        // Store verification data in session with expiration
-        $registrationData = [
-            'contact' => $contact,
-            'contact_type' => $contactType,
-            'verification_code' => $verificationCode,
-            'verified' => false,
-            'created_at' => now(),
-            'expires_at' => now()->addMinutes(5), // 5 minute expiration
-        ];
-
-        Session::put('registration_data', $registrationData);
-
-        // Send verification code
-        if ($contactType === 'email') {
-            try {
-                Mail::to($contact)->send(new \App\Mail\VerificationCodeMail($verificationCode));
-                Log::info('Verification code sent to email: '.$contact);
-            } catch (\Exception $e) {
-                Log::error('Failed to send verification email: '.$e->getMessage());
-                return back()
-                    ->withInput()
-                    ->withErrors([
-                        'contact' => 'Failed to send verification code. Please try again.',
-                    ]);
-            }
-        } else {
-            Log::info('SMS verification code for '.$contact.': '.$verificationCode);
-        }
-
-        return Inertia::render('auth/register-company', [
-            'contactData' => $validated,
-            'currentStep' => 'Verification',
-            'error' => null
-        ]);
-    }
-
-    /**
-     * Step 2: Verify the code
-     */
-    public function verifyCode(Request $request)
-    {
-        $validated = $request->validate([
-            'verification_code' => 'required|string|size:6',
-        ]);
-
-        $registrationData = Session::get('registration_data');
-
-        if (! $registrationData) {
-            return back()
-                ->withInput()
-                ->withErrors([
-                    'verification_code' => 'Session expired. Please start over.',
-                ]);
-        }
-
-        // Check if code has expired
-        if ($registrationData['expires_at'] < now()) {
-            return back()
-                ->withInput()
-                ->withErrors([
-                    'verification_code' => 'Verification code has expired. Please request a new code.',
-                ]);
-        }
-
-        if ($validated['verification_code'] !== $registrationData['verification_code']) {
-            return back()
-                ->withInput()
-                ->withErrors([
-                    'verification_code' => 'The verification code is invalid.',
-                ]);
-        }
-
-        // Mark as verified
-        $registrationData['verified'] = true;
-        Session::put('registration_data', $registrationData);
-
-        return Inertia::render('auth/register-company', [
-            'contactData' => $registrationData,
-            'currentStep' => 'CompanyDetails',
-            'error' => null
-        ]);
-    }
-
-    /**
-     * Resend verification code
-     */
-    public function resendCode(Request $request)
-    {
-        $registrationData = Session::get('registration_data');
-
-        if (! $registrationData) {
-            return back()
-                ->withInput()
-                ->withErrors([
-                    'contact' => 'Session expired. Please start over.',
-                ]);
-        }
-
-        if ($registrationData['verified']) {
-            return back()
-                ->withInput()
-                ->withErrors([
-                    'contact' => 'Already verified. Please proceed to the next step.',
-                ]);
-        }
-
-        // Generate new verification code
-        $verificationCode = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-
-        // Update session with new code and expiration
-        $registrationData['verification_code'] = $verificationCode;
-        $registrationData['expires_at'] = now()->addMinutes(5);
-        Session::put('registration_data', $registrationData);
-
-        // Send new verification code
-        $contact = $registrationData['contact'];
-        $contactType = $registrationData['contact_type'];
-
-        if ($contactType === 'email') {
-            try {
-                Mail::to($contact)->send(new \App\Mail\VerificationCodeMail($verificationCode));
-                Log::info('New verification code : '.$verificationCode);
-            } catch (\Exception $e) {
-                Log::error('Failed to send new verification email: '.$e->getMessage());
-                return back()
-                    ->withInput()
-                    ->withErrors([
-                        'contact' => 'Failed to send new verification code. Please try again.',
-                    ]);
-            }
-        } else {
-            Log::info('New SMS verification code for '.$contact.': '.$verificationCode);
-        }
-
-        return back()->with('success', 'New verification code sent to '.$contact);
-    }
-
-    /**
-     * Step 3: Save company details
-     */
-    public function saveCompanyDetails(Request $request)
-    {
-        $validated = $request->validate([
-            // Company information
-            'company_name' => 'required|string|max:255',
-            'company_email' => 'required|email|unique:companies,email|unique:users,email',
-            'company_phone' => 'required|string|unique:companies,phone',
-            'company_address' => 'required|string',
-            'company_city' => 'required|string',
-            'company_country' => 'required|string',
-
-            // Contact information (from previous steps)
-            'contact_type' => 'required|in:email,phone',
-            'contact' => 'required|string',
-            'verification_code' => 'required|string|size:6',
-        ]);
-
-        // Verify the verification code
-        $storedCode = Session::get('registration_data');
-        if (! $storedCode || $validated['verification_code'] !== $storedCode['verification_code']) {
-            return back()
-                ->withInput()
-                ->withErrors([
-                    'verification_code' => 'Invalid verification code',
-                ]);
-        }
-
-        // Create the company
-        $company = Company::create([
-            'name' => $validated['company_name'],
-            'email' => $validated['company_email'],
-            'phone' => $validated['company_phone'],
-            'address' => $validated['company_address'],
-            'city' => $validated['company_city'],
-            'country' => $validated['company_country'],
-            'owner_id' => null, // Will be set when admin is created
-        ]);
-
-        // Update session with company ID
-        $registrationData = Session::get('registration_data');
-        $registrationData['company_id'] = $company->id;
-        Session::put('registration_data', $registrationData);
-
-        return Inertia::location(route('landing-page.installation-wizard.save-system-settings'));
-    }
-
-    /**
-     * Complete registration and redirect to dashboard
-     */
-    public function register(Request $request)
-    {
-        $validated = $request->validate([
-            'contact' => 'required|string',
-            'contact_type' => 'required|in:email,phone',
-            'verification_code' => 'required|string',
-            'company_name' => 'required|string|max:255',
-            'company_email' => 'required|email|unique:companies,email|unique:users,email',
-            'company_phone' => 'required|string|unique:companies,phone',
-            'company_address' => 'required|string',
-            'company_city' => 'required|string',
-            'company_country' => 'required|string',
-            'admin_name' => 'required|string|max:255',
-            'admin_email' => 'required|email|unique:users,email',
-            'admin_password' => 'required|string|min:8|confirmed',
-        ]);
-
-        // Verify the verification code
-        $storedCode = session('verification_code');
-        if (! $storedCode || $validated['verification_code'] !== $storedCode) {
-            return redirect()->back()->withErrors([
-                'verification_code' => 'Invalid verification code',
-            ])->withInput();
-        }
-
-        DB::transaction(function () use ($validated) {
+        DB::beginTransaction();
+        try {
             // Create company
             $company = Company::create([
-                'name' => $validated['company_name'],
-                'email' => $validated['company_email'],
-                'phone' => $validated['company_phone'],
-                'address' => $validated['company_address'],
-                'city' => $validated['company_city'],
-                'country' => $validated['company_country'],
-                'is_primary' => true,
+                'name' => $validated['name'],
+                'code' => $validated['code'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'address' => $validated['address'],
+                'city' => $validated['city'],
+                'state' => $validated['state'],
+                'postal_code' => $validated['postal_code'],
+                'country' => $validated['country'],
                 'is_active' => true,
+                'is_primary' => true,
             ]);
 
             // Create admin user
             $admin = User::create([
-                'name' => $validated['admin_name'],
-                'email' => $validated['admin_email'],
-                'password' => Hash::make($validated['admin_password']),
+                'name' => $validated['administrator']['name'],
+                'email' => $validated['administrator']['email'],
+                'password' => Hash::make($validated['administrator']['password']),
                 'company_id' => $company->id,
             ]);
 
             // Create user details
             $admin->userDetails()->create([
                 'user_id' => $admin->id,
-                'phone' => $validated['company_phone'],
-                'address' => $validated['company_address'],
-                'city' => $validated['company_city'],
-                'country' => $validated['company_country'],
-            ]);
-
-            // Create default work schedule
-            $workSchedule = WorkSchedule::create([
-                'name' => 'Default Work Schedule',
-                'start_time' => '09:00:00',
-                'end_time' => '17:00:00',
-                'grace_period_minutes' => 15,
-                'working_days' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
-                'is_default' => true,
-                'company_id' => $company->id,
-                'is_active' => true,
-            ]);
-
-            // Create system settings
-            $defaultSettings = [
-                'attendance' => [
-                    'late_threshold' => '15',
-                    'early_threshold' => '15',
-                    'overtime_start' => '18:00:00',
-                    'overtime_threshold' => '30',
-                    'allow_manual_attendance' => 'true',
-                ],
-                'leave' => [
-                    'maximum_leave_balance' => '30',
-                    'minimum_leave_balance' => '0',
-                    'leave_approval_required' => 'true',
-                    'maximum_leave_request_days' => '30',
-                ],
-                'payroll' => [
-                    'default_pay_period' => 'monthly',
-                    'payroll_processing_days' => '7',
-                    'tax_deduction' => 'true',
-                ],
-                'general' => [
-                    'company_time_zone' => 'Asia/Jakarta',
-                    'date_format' => 'Y-m-d',
-                    'time_format' => 'H:i',
-                    'language' => 'en',
-                ],
-            ];
-
-            foreach ($defaultSettings as $category => $settings) {
-                foreach ($settings as $key => $value) {
-                    $settingKey = $category . '.' . $key;
-                    SystemSetting::create([
-                        'company_id' => $company->id,
-                        'key' => $settingKey,
-                        'value' => $value,
-                        'type' => gettype($value),
-                        'is_active' => true,
-                    ]);
-                }
-            }
-
-            // Create work shifts
-            $morningShift = WorkShift::create([
-                'name' => 'Morning Shift',
-                'start_time' => '09:00:00',
-                'end_time' => '17:00:00',
-                'code' => 'WSH'.str_pad($company->id.'1', 4, '0', STR_PAD_LEFT),
-                'company_id' => $company->id,
-                'is_active' => true,
-            ]);
-
-            $eveningShift = WorkShift::create([
-                'name' => 'Evening Shift',
-                'start_time' => '17:00:00',
-                'end_time' => '23:00:00',
-                'code' => 'WSH'.str_pad($company->id.'2', 4, '0', STR_PAD_LEFT),
-                'company_id' => $company->id,
-                'is_active' => true,
+                'phone' => $validated['phone'],
+                'address' => $validated['address'],
+                'city' => $validated['city'],
+                'state' => $validated['state'],
+                'postal_code' => $validated['postal_code'],
+                'country' => $validated['country'],
             ]);
 
             // Create default roles
-            $roles = [
-                'admin' => [
-                    'name' => 'admin',
-                    'display_name' => 'Administrator',
-                    'description' => 'System administrator with full access',
-                ],
-                'manager' => [
-                    'name' => 'manager',
-                    'display_name' => 'Manager',
-                    'description' => 'Manage employees and departments',
-                ],
-                'employee' => [
-                    'name' => 'employee',
-                    'display_name' => 'Employee',
-                    'description' => 'Basic employee access',
-                ],
-            ];
-
-            foreach ($roles as $role) {
-                $roleModel = Role::create([
-                    'name' => $role['name'],
-                    'display_name' => $role['display_name'],
-                    'description' => $role['description'],
-                    'company_id' => $company->id
-                ]);
-
-                // Assign admin role to the admin user
-                if ($role['name'] === 'admin') {
-                    UserRole::create([
-                        'user_id' => $admin->id,
-                        'role_id' => $roleModel->id,
-                        'company_id' => $company->id
-                    ]);
-                }
-            }
-
-            // Assign default work schedule to admin
-            $admin->workSchedules()->attach($workSchedule->id, [
-                'effective_date' => now(),
-                'is_active' => true,
-            ]);
-
-            // Assign morning shift to admin for today
-            $admin->workShifts()->attach($morningShift->id, [
-                'date' => now()->toDateString(),
-            ]);
-
-            // Login the admin user
-            Auth::guard('web')->login($admin);
-        });
-
-        return redirect()->route('dashboard')->with('success', 'Company and admin account created successfully!');
-    }
-
-    /**
-     * Save system settings
-     */
-    public function saveSystemSettings(Request $request)
-    {
-        $validated = $request->validate([
-            'company_id' => 'required|exists:companies,id',
-            'attendance' => 'required|array',
-            'attendance.late_threshold' => 'required|integer|min:0',
-            'attendance.early_threshold' => 'required|integer|min:0',
-            'attendance.overtime_start' => 'required|date_format:H:i:s',
-            'attendance.overtime_threshold' => 'required|integer|min:0',
-            'attendance.allow_manual_attendance' => 'required|boolean',
-            'leave' => 'required|array',
-            'leave.maximum_leave_balance' => 'required|integer|min:0',
-            'leave.minimum_leave_balance' => 'required|integer|min:0',
-            'leave.leave_approval_required' => 'required|boolean',
-            'leave.maximum_leave_request_days' => 'required|integer|min:0',
-            'payroll' => 'required|array',
-            'payroll.default_pay_period' => 'required|in:monthly,biweekly,weekly',
-            'payroll.payroll_processing_days' => 'required|integer|min:0',
-            'payroll.tax_deduction' => 'required|boolean',
-            'general' => 'required|array',
-            'general.company_time_zone' => 'required|timezone',
-            'general.date_format' => 'required|in:Y-m-d,d-m-Y,m/d/Y',
-            'general.time_format' => 'required|in:H:i,h:i A',
-            'general.language' => 'required|in:en,id',
-        ]);
-
-        try {
-            DB::beginTransaction();
-
-            // Delete existing settings for this company
-            SystemSetting::where('company_id', $validated['company_id'])->delete();
-
-            // Save new settings
-            foreach ($validated as $category => $settings) {
-                if ($category === 'company_id') continue;
-
-                foreach ($settings as $key => $value) {
-                    $settingKey = $category . '.' . $key;
-                    SystemSetting::create([
-                        'company_id' => $validated['company_id'],
-                        'key' => $settingKey,
-                        'value' => $value,
-                        'type' => gettype($value),
-                        'is_active' => true,
-                    ]);
-                }
-            }
-
-            DB::commit();
-
-            return redirect()->route('landing-page.installation-wizard.save-admin-details');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Failed to save system settings: ' . $e->getMessage());
-
-            return back()
-                ->withInput()
-                ->withErrors([
-                    'system_settings' => 'Failed to save system settings. Please try again.',
-                ]);
-        }
-    }
-
-    /**
-     * Save admin details
-     */
-    public function saveAdminDetails(Request $request)
-    {
-        $validated = $request->validate([
-            'company_id' => 'required|exists:companies,id',
-            'admin_name' => 'required|string|max:255',
-            'admin_email' => 'required|email|unique:users,email',
-            'admin_password' => 'required|string|min:8|confirmed',
-        ]);
-
-        try {
-            DB::beginTransaction();
-
-            // Create admin user
-            $admin = User::create([
-                'name' => $validated['admin_name'],
-                'email' => $validated['admin_email'],
-                'password' => Hash::make($validated['admin_password']),
-                'primary_company_id' => $validated['company_id'],
-            ]);
-
-            // Create admin role
+            $slug = 'super-admin-' . $company->id;
             $adminRole = Role::firstOrCreate([
-                'name' => 'admin',
-                'display_name' => 'Administrator',
-                'description' => 'System administrator with full access',
-                'is_system' => true,
-                'slug' => 'admin',
-                'company_id' => $validated['company_id']
+                'name' => 'Super Admin',
+                'company_id' => $company->id,
+            ], [
+                'slug' => $slug,
+                'description' => 'Super Administrator',
             ]);
 
-            // Create user role relationship
+            // Assign role to admin
             UserRole::create([
                 'user_id' => $admin->id,
                 'role_id' => $adminRole->id,
-                'company_id' => $validated['company_id']
+                'company_id' => $company->id,
             ]);
+
+            // Set primary company for the user
+            $admin->update([
+                'primary_company_id' => $company->id,
+            ]);
+
+            // Login the user
+            Auth::login($admin, true); // true for remember token
 
             DB::commit();
 
-            return redirect()->route('landing-page.installation-wizard.complete');
+            return Inertia::location(route('dashboard'));
+
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Failed to save admin details: ' . $e->getMessage());
+            Log::error('Failed to complete registration: ' . $e->getMessage());
 
             return back()
                 ->withInput()
                 ->withErrors([
-                    'admin_details' => 'Failed to save admin details. Please try again.',
+                    'registration' => 'Registration failed. Please try again.',
                 ]);
         }
     }

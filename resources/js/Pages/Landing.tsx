@@ -45,7 +45,7 @@ export default function Landing() {
                                 transition={{ duration: 0.8, delay: 0.4 }}
                             >
                                 <Button asChild size="lg" className="bg-primary text-white hover:bg-primary/90">
-                                    <a href={route('login')}>
+                                    <a href={route('register.company')}>
                                         <Rocket className="mr-2 h-4 w-4" />
                                         Getting Started
                                     </a>

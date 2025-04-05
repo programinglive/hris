@@ -20,21 +20,18 @@ class RoleTest extends TestCase
 
         $role = Role::create([
             'name' => 'testrole',
-            'display_name' => 'Test Role',
             'description' => 'Test Role Description',
             'company_id' => $company->id,
         ]);
 
         $this->assertDatabaseHas('roles', [
             'name' => 'testrole',
-            'display_name' => 'Test Role',
             'description' => 'Test Role Description',
             'company_id' => $company->id,
             'slug' => 'testrole',
         ]);
 
         $this->assertEquals('testrole', $role->name);
-        $this->assertEquals('Test Role', $role->display_name);
         $this->assertEquals('Test Role Description', $role->description);
         $this->assertEquals($company->id, $role->company_id);
         $this->assertEquals('testrole', $role->slug);
@@ -50,13 +47,11 @@ class RoleTest extends TestCase
             'name' => 'admin',
             'company_id' => $company->id,
         ], [
-            'display_name' => 'Administrator',
             'description' => 'Administrator Role',
         ]);
 
         $this->assertDatabaseHas('roles', [
             'name' => 'admin',
-            'display_name' => 'Administrator',
             'description' => 'Administrator Role',
             'company_id' => $company->id,
             'slug' => 'admin',
@@ -67,11 +62,10 @@ class RoleTest extends TestCase
             'name' => 'admin',
             'company_id' => $company->id,
         ], [
-            'display_name' => 'Administrator',
+            'description' => 'Administrator Role',
         ]);
 
         $this->assertEquals($role1->id, $role2->id);
-        $this->assertEquals('Administrator', $role2->display_name);
         $this->assertEquals('Administrator Role', $role2->description);
         $this->assertEquals($company->id, $role2->company_id);
         $this->assertEquals('admin', $role2->slug);
@@ -84,7 +78,6 @@ class RoleTest extends TestCase
 
         $role = Role::create([
             'name' => 'testrole',
-            'display_name' => 'Test Role',
             'description' => 'Test Role Description',
             'company_id' => $company->id,
         ]);
@@ -95,11 +88,12 @@ class RoleTest extends TestCase
 
         $this->assertDatabaseHas('roles', [
             'name' => 'testrole',
-            'display_name' => 'Test Role',
             'description' => 'Updated Description',
             'company_id' => $company->id,
             'slug' => 'testrole',
         ]);
+
+        $this->assertEquals('Updated Description', $role->description);
     }
 
     #[Test]
@@ -109,7 +103,6 @@ class RoleTest extends TestCase
 
         $role = Role::create([
             'name' => 'testrole',
-            'display_name' => 'Test Role',
             'description' => 'Test Role Description',
             'company_id' => $company->id,
         ]);
@@ -128,7 +121,6 @@ class RoleTest extends TestCase
 
         $role = Role::create([
             'name' => 'testrole',
-            'display_name' => 'Test Role',
             'description' => 'Test Role Description',
             'company_id' => $company->id,
         ]);

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Organization;
 
 use App\Models\Company;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -16,13 +17,15 @@ class CompanyRegistrationTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     protected $verificationCode;
+    protected $timestamp;
 
     protected function setUp(): void
     {
         parent::setUp();
-
+        
         // Store timestamp for consistent testing
         $this->timestamp = time();
+        Mail::fake();
     }
 
     #[Test]
@@ -30,98 +33,6 @@ class CompanyRegistrationTest extends TestCase
     {
         $response = $this->get('/register-company');
         $response->assertStatus(200);
-    }
-
-    #[Test]
-    public function contact_validation_step()
-    {
-        Mail::fake();
-
-        $response = $this->postJson('/register-company/validate-contact', [
-            'contact' => 'test'.$this->timestamp.'@example.com',
-            'contact_type' => 'email',
-        ]);
-
-        $response->assertStatus(200)
-            ->assertJson([
-                'success' => true,
-                'message' => 'Verification code sent to test'.$this->timestamp.'@example.com',
-                'next_step' => 'verify_code',
-            ]);
-
-        $registrationData = Session::get('registration_data');
-        $this->assertEquals('test'.$this->timestamp.'@example.com', $registrationData['contact']);
-        $this->assertEquals('email', $registrationData['contact_type']);
-        $this->assertFalse($registrationData['verified']);
-        $this->assertNotEmpty($registrationData['verification_code']);
-
-        Mail::assertSent(\App\Mail\VerificationCodeMail::class, function ($mail) use ($registrationData) {
-            return $mail->hasTo('test'.$this->timestamp.'@example.com') &&
-                   $mail->verificationCode === $registrationData['verification_code'];
-        });
-    }
-
-    #[Test]
-    public function verification_code_step()
-    {
-        $verificationCode = '123456';
-        Session::put('registration_data', [
-            'contact' => 'test'.$this->timestamp.'@example.com',
-            'contact_type' => 'email',
-            'verification_code' => $verificationCode,
-            'verified' => false,
-        ]);
-
-        $response = $this->postJson('/register-company/verify-code', [
-            'verification_code' => $verificationCode,
-        ]);
-
-        $response->assertStatus(200)
-            ->assertJson([
-                'success' => true,
-                'message' => 'Verification successful',
-                'next_step' => 'company_details',
-            ]);
-
-        $registrationData = Session::get('registration_data');
-        $this->assertTrue($registrationData['verified']);
-    }
-
-    #[Test]
-    public function save_company_details_step()
-    {
-        Session::put('registration_data', [
-            'contact' => 'test'.$this->timestamp.'@example.com',
-            'contact_type' => 'email',
-            'verification_code' => '123456',
-            'verified' => true,
-        ]);
-
-        $response = $this->postJson('/register-company/save-details', [
-            'company_name' => 'Test Company',
-            'admin_name' => 'Test Admin',
-            'admin_email' => 'admin'.$this->timestamp.'@example.com',
-            'admin_password' => 'password123',
-        ]);
-
-        $response->assertStatus(200)
-            ->assertJson([
-                'success' => true,
-                'message' => 'Registration completed successfully',
-            ]);
-
-        $user = User::first();
-        $company = Company::first();
-
-        $this->assertNotNull($user);
-        $this->assertNotNull($company);
-        $this->assertEquals($user->id, $company->owner_id);
-        $this->assertEquals('Test Company', $company->name);
-
-        // Verify main branch was created
-        $mainBranch = $company->branches()->where('is_main_branch', true)->first();
-        $this->assertNotNull($mainBranch);
-        $this->assertEquals('Main Branch', $mainBranch->name);
     }
 
     #[Test]
@@ -154,5 +65,79 @@ class CompanyRegistrationTest extends TestCase
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['contact']);
+    }
+
+    #[Test]
+    public function store_method_creates_company_and_admin_with_role()
+    {
+        // First, get the registration page
+        $response = $this->get(route('register.company'));
+        $response->assertOk();
+
+        // Then make the store request
+        $response = $this->postJson(route('register.company.store'), [
+            'name' => 'Test Company',
+            'code' => 'TESTCOMP' . $this->timestamp,
+            'email' => 'test'.$this->timestamp.'@example.com',
+            'phone' => '1234567890',
+            'address' => '123 Test St',
+            'city' => 'Test City',
+            'state' => 'Test State',
+            'postal_code' => '12345',
+            'country' => 'Test Country',
+            'administrator' => [
+                'name' => 'Test Admin',
+                'email' => 'admin'.$this->timestamp.'@example.com',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ],
+        ]);
+
+        $response->assertRedirect(route('dashboard'));
+
+        // Verify company was created
+        $this->assertDatabaseHas('companies', [
+            'name' => 'Test Company',
+            'email' => 'test'.$this->timestamp.'@example.com',
+            'phone' => '1234567890',
+            'is_active' => true,
+            'is_primary' => true,
+        ]);
+
+        // Verify admin user was created
+        $this->assertDatabaseHas('users', [
+            'email' => 'admin'.$this->timestamp.'@example.com',
+            'name' => 'Test Admin',
+            'company_id' => Company::where('email', 'test'.$this->timestamp.'@example.com')->value('id'),
+        ]);
+
+        // Verify user details were created
+        $admin = User::where('email', 'admin'.$this->timestamp.'@example.com')->first();
+        $this->assertNotNull($admin);
+        $this->assertDatabaseHas('user_details', [
+            'user_id' => $admin->id,
+            'phone' => '1234567890',
+            'address' => '123 Test St',
+            'city' => 'Test City',
+            'state' => 'Test State',
+            'postal_code' => '12345',
+            'country' => 'Test Country',
+        ]);
+
+        // Verify role was created
+        $this->assertDatabaseHas('roles', [
+            'name' => 'Super Admin',
+            'slug' => 'super-admin',
+            'description' => 'Super Administrator',
+        ]);
+
+        // Verify user_role relationship
+        $this->assertDatabaseHas('user_roles', [
+            'user_id' => $admin->id,
+            'role_id' => Role::where('name', 'Super Admin')->first()->id,
+        ]);
+
+        // Verify user is logged in
+        $this->assertAuthenticatedAs($admin);
     }
 }

@@ -44,13 +44,14 @@ Route::middleware(['guest'])->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.update');
-
-    // Company registration routes
-    Route::get('register/company', [CompanyRegistrationController::class, 'create'])
-        ->name('register.company');
-
-    Route::post('register/company', [CompanyRegistrationController::class, 'store']);
 });
+
+// Company registration routes
+Route::get('register/company', [CompanyRegistrationController::class, 'showRegistrationForm'])
+    ->name('register.company');
+
+Route::post('register/company', [CompanyRegistrationController::class, 'store'])
+    ->name('register.company.store');
 
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {

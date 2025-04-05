@@ -32,30 +32,22 @@ class RoleSeeder extends Seeder
         $roles = [
             [
                 'name' => 'administrator',
-                'display_name' => 'Administrator',
                 'description' => 'System administrator with full access to all features',
-                'is_system' => true,
                 'company_id' => $defaultCompany->id,
             ],
             [
                 'name' => 'employee',
-                'display_name' => 'Employee',
                 'description' => 'Regular employee with access to employee features',
-                'is_system' => true,
                 'company_id' => $defaultCompany->id,
             ],
             [
                 'name' => 'manager',
-                'display_name' => 'Manager',
                 'description' => 'Manager with access to management features',
-                'is_system' => true,
                 'company_id' => $defaultCompany->id,
             ],
             [
                 'name' => 'hr',
-                'display_name' => 'HR Personnel',
                 'description' => 'Human Resources personnel with access to HR features',
-                'is_system' => true,
                 'company_id' => $defaultCompany->id,
             ],
         ];

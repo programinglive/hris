@@ -82,3 +82,7 @@
 2. Because this is Open Source Base application someone can pull and install the application, so please add documentation on how to install the application.
 3. If fresh install they should install the application set first company to be primary company.
 4. Instalation must be step by step wizard
+
+# Input 
+
+1. Type username, password need autocomplete
