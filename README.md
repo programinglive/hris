@@ -111,24 +111,34 @@ npm run dev
 
 ## Installation Wizard
 
-The HRIS Project includes an installation wizard to help you set up your company and admin user. The wizard consists of three steps:
+The Installation Wizard is a one-time setup process that runs when you first pull and install the application. It is used to set up the initial company configuration and administrator account. This wizard:
 
-1. **Contact Information Validation**
-   - Enter your contact information (email or phone)
-   - System validates the contact information for uniqueness
-   - Receive a verification code via email or SMS
+- Runs only once during fresh installation
+- Sets up the primary company that will be used to manage the HRIS system
+- Creates the initial administrator account
+- Configures essential system settings
+- Must be completed before any other functionality is accessible
 
-2. **Verification Code**
-   - Enter the verification code received
-   - Code expires after 5 minutes
-   - Option to resend verification code if needed
+### Key Differences
 
-3. **Company Registration**
-   - Enter company details (name, email, phone, address, city, country)
-   - Create admin user (name, email, password)
-   - Complete registration to access the system
+| Feature | Installation Wizard | Company Registration |
+|---------|---------------------|----------------------|
+| Purpose | Initial system setup | New company registration |
+| Usage   | One-time during installation | Available after installation |
+| Access  | First-time users only | Available to all users |
+| Result  | Sets up primary company | Creates additional company |
+| Flow    | Required before use | Optional after setup |
 
-### Security Features
+## Company Registration
+
+Company Registration is a feature for users who want to use the HRIS system as a SaaS application. It allows:
+
+- Existing users to register new companies
+- Users to join the HRIS system as a new company
+- Multiple companies to use the same HRIS instance
+- Companies to have their own separate data and configurations
+
+## Security Features
 
 - All registration data is validated before submission
 - Password requirements are enforced for admin accounts
@@ -175,84 +185,6 @@ Once the installation wizard is complete, you can access the HRIS system through
    - View and manage employee users
    - Support for multiple roles per user
    - Associate employees with multiple brands
-
-## Company Registration Wizard
-
-The Company Registration Wizard is a step-by-step process that guides administrators through setting up their organization in HRIS Project. This wizard is essential for new installations and ensures that all necessary company information is properly configured before users can access the system.
-
-### Installation Process
-
-1. **System Setup**
-   - Environment configuration
-   - Database connection
-   - Initial data setup
-
-2. **Company Setup**
-   - Company information
-   - Contact verification
-   - Admin user creation
-
-3. **Basic Configuration**
-   - Company logo
-   - Description
-   - Settings
-
-4. **Final Configuration**
-   - Email settings
-   - Storage configuration
-   - Application settings
-
-### Registration Process
-
-1. **Company Information**
-   - Enter basic company details
-   - Set up primary company information
-   - Configure company contact information
-   - Upload company logo (optional)
-
-2. **Administrator Setup**
-   - Create the first admin user
-   - Set up admin credentials
-   - Assign initial roles and permissions
-
-3. **Basic Configuration**
-   - Set up initial departments
-   - Configure work schedules
-   - Set up default settings
-
-### Accessing the Registration Wizard
-
-- The wizard is automatically triggered when no companies exist in the system
-- Users attempting to access any authentication routes (login, register) will be redirected to the wizard
-- The wizard must be completed before any other functionality can be accessed
-
-### Security Features
-
-- All registration data is validated before submission
-- Password requirements are enforced for admin accounts
-- Company information is validated against existing records
-- Session-based security to prevent unauthorized access
-
-### Verification System
-
-- Contact verification through email or phone
-- 6-digit verification code system
-- Automatic code sending
-- Secure session-based verification
-
-### Error Handling
-
-- Clear error messages for each step
-- Validation feedback
-- Progress tracking
-- Ability to go back and edit previous steps
-
-### Technical Requirements
-
-- Uses Inertia.js for frontend
-- Laravel middleware for routing
-- Secure session handling
-- Comprehensive testing coverage
 
 ## License
 

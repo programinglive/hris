@@ -3,6 +3,7 @@
 use App\Http\Controllers\Organization\CompanyRegistrationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Redirect;
 
 // Landing page route
 Route::get('/', function () {
@@ -13,11 +14,6 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return Inertia::render('auth/Login');
 })->name('login')->middleware('guest');
-
-// Registration route
-Route::get('/register', function () {
-    return Inertia::render('auth/Register');
-})->name('register')->middleware('guest');
 
 // Installation wizard routes
 Route::get('/installation-wizard', [CompanyRegistrationController::class, 'showRegistrationForm'])
@@ -38,14 +34,6 @@ Route::post('/installation-wizard/resend-code', [CompanyRegistrationController::
 
 Route::post('/installation-wizard/save-company-details', [CompanyRegistrationController::class, 'saveCompanyDetails'])
     ->name('landing-page.installation-wizard.save-company-details')
-    ->middleware('guest');
-
-Route::post('/installation-wizard/save-system-settings', [CompanyRegistrationController::class, 'saveSystemSettings'])
-    ->name('landing-page.installation-wizard.save-system-settings')
-    ->middleware('guest');
-
-Route::post('/installation-wizard/save-admin-details', [CompanyRegistrationController::class, 'saveAdminDetails'])
-    ->name('landing-page.installation-wizard.save-admin-details')
     ->middleware('guest');
 
 Route::post('/installation-wizard/complete', [CompanyRegistrationController::class, 'completeRegistration'])

@@ -51,6 +51,18 @@ export default function Landing() {
                                     </a>
                                 </Button>
                             </motion.div>
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.6 }}
+                            >
+                                <Button asChild size="lg" variant="outline" className="text-gray-900 hover:bg-gray-100">
+                                    <a href={route('login')}>
+                                        <User className="mr-2 h-4 w-4" />
+                                        Login to Account
+                                    </a>
+                                </Button>
+                            </motion.div>
                         </div>
                     </div>
                 </div>
@@ -123,7 +135,7 @@ export default function Landing() {
                                 transition={{ duration: 0.8, delay: 0.4 }}
                             >
                                 <Button asChild size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
-                                    <a href={route('register')}>
+                                    <a href={route('register.company.show')}>
                                         <BookOpen className="mr-2 h-4 w-4" />
                                         Start Your Free Trial
                                     </a>

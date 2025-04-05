@@ -3,10 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\RateLimiter as Limit;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
@@ -25,28 +21,15 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->configureRateLimiting();
-
         $this->routes(function () {
+            // Web routes
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
 
+            // API routes
             Route::prefix('api')
                 ->middleware('api')
                 ->group(base_path('routes/api.php'));
-        });
-
-        // Register middleware
-        $this->app['router']->aliasMiddleware('check.installation.wizard', \App\Http\Middleware\CheckInstallationWizard::class);
-    }
-
-    /**
-     * Configure the rate limiters for the application.
-     */
-    protected function configureRateLimiting(): void
-    {
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
 }

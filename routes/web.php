@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Sentry\Sentry;
 
-// Include landing page routes (for company registration)
+// Include landing page routes
 include 'module/landingpage.php';
 
 // Test Sentry route
@@ -24,8 +24,8 @@ Route::get('/test-sentry', function () {
     }
 });
 
-// Apply installation wizard check middleware to all guest routes
-Route::middleware(['guest', 'check.installation.wizard'])->group(function () {
+// Guest routes
+Route::middleware(['guest'])->group(function () {
     // Login route
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
@@ -44,6 +44,12 @@ Route::middleware(['guest', 'check.installation.wizard'])->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.update');
+
+    // Company registration routes
+    Route::get('register/company', [CompanyRegistrationController::class, 'create'])
+        ->name('register.company');
+
+    Route::post('register/company', [CompanyRegistrationController::class, 'store']);
 });
 
 // Authenticated routes
