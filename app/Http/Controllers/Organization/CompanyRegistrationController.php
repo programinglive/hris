@@ -3,22 +3,15 @@
 namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
-use App\Models\Branch;
 use App\Http\Requests\CompanyRegistrationRequest;
 use App\Models\Company;
 use App\Models\Role;
-use App\Models\SystemSetting;
 use App\Models\User;
 use App\Models\UserRole;
-use App\Models\WorkSchedule;
-use App\Models\WorkShift;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class CompanyRegistrationController extends Controller
@@ -29,7 +22,7 @@ class CompanyRegistrationController extends Controller
     public function showRegistrationForm()
     {
         return Inertia::render('RegisterCompany', [
-            'title' => 'Installation'
+            'title' => 'Installation',
         ]);
     }
 
@@ -83,7 +76,7 @@ class CompanyRegistrationController extends Controller
             ]);
 
             // Create default roles
-            $slug = 'super-admin-' . $company->id;
+            $slug = 'super-admin-'.$company->id;
             $adminRole = Role::firstOrCreate([
                 'name' => 'Super Admin',
                 'company_id' => $company->id,
@@ -108,7 +101,7 @@ class CompanyRegistrationController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Failed to complete registration: ' . $e->getMessage());
+            Log::error('Failed to complete registration: '.$e->getMessage());
 
             return back()
                 ->withInput()

@@ -2,11 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+use Inertia\Inertia;
 
 class RedirectIfNoCompany
 {
@@ -14,7 +14,7 @@ class RedirectIfNoCompany
     {
         if (Auth::check()) {
             $user = User::find(Auth::id());
-            if (!$user || $user->companies()->count() === 0) {
+            if (! $user || $user->companies()->count() === 0) {
                 return Inertia::location(route('register.company'));
             }
         }

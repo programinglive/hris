@@ -5,8 +5,8 @@ namespace Tests\Feature;
 use App\Models\Company;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class InstallationWizardTest extends TestCase
 {
@@ -15,10 +15,10 @@ class InstallationWizardTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Ensure no companies exist before each test
         Company::query()->delete();
-        
+
         // Ensure no users exist before each test
         User::query()->delete();
     }
@@ -27,7 +27,7 @@ class InstallationWizardTest extends TestCase
     public function installation_wizard_is_accessible_when_no_companies_exist_and_user_is_not_authenticated(): void
     {
         $response = $this->get(route('landing-page.installation-wizard'));
-        
+
         $response->assertStatus(200);
         $response->assertViewIs('app');
     }
@@ -45,7 +45,7 @@ class InstallationWizardTest extends TestCase
     {
         $response = $this->postJson(route('landing-page.installation-wizard.validate-contact'), [
             'contact' => 'test@example.com',
-            'contact_type' => 'email'
+            'contact_type' => 'email',
         ]);
 
         $response->assertStatus(200);
@@ -53,7 +53,7 @@ class InstallationWizardTest extends TestCase
             'success',
             'message',
             'next_step',
-            'verification_code'
+            'verification_code',
         ]);
     }
 
@@ -62,7 +62,7 @@ class InstallationWizardTest extends TestCase
     {
         $response = $this->postJson(route('landing-page.installation-wizard.validate-contact'), [
             'contact' => 'invalid',
-            'contact_type' => 'email'
+            'contact_type' => 'email',
         ]);
 
         $response->assertStatus(422);
@@ -75,21 +75,21 @@ class InstallationWizardTest extends TestCase
         // First validate contact to get verification code
         $response = $this->postJson(route('landing-page.installation-wizard.validate-contact'), [
             'contact' => 'test@example.com',
-            'contact_type' => 'email'
+            'contact_type' => 'email',
         ]);
 
         $verificationCode = $response->json('verification_code');
 
         // Now verify the code
         $response = $this->postJson(route('landing-page.installation-wizard.verify-code'), [
-            'verification_code' => $verificationCode
+            'verification_code' => $verificationCode,
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'success',
             'message',
-            'next_step'
+            'next_step',
         ]);
     }
 
@@ -120,14 +120,14 @@ class InstallationWizardTest extends TestCase
         // First validate contact
         $response = $this->postJson(route('landing-page.installation-wizard.validate-contact'), [
             'contact' => 'test@example.com',
-            'contact_type' => 'email'
+            'contact_type' => 'email',
         ]);
 
         $verificationCode = $response->json('verification_code');
 
         // Verify code
         $response = $this->postJson(route('landing-page.installation-wizard.verify-code'), [
-            'verification_code' => $verificationCode
+            'verification_code' => $verificationCode,
         ]);
 
         // Complete registration
@@ -138,29 +138,29 @@ class InstallationWizardTest extends TestCase
             'admin_password' => 'password123',
             'contact' => 'test@example.com',
             'contact_type' => 'email',
-            'verification_code' => $verificationCode
+            'verification_code' => $verificationCode,
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'success',
             'message',
-            'redirect'
+            'redirect',
         ]);
 
         $this->assertDatabaseHas('companies', [
             'name' => 'Test Company',
-            'email' => 'test@example.com'
+            'email' => 'test@example.com',
         ]);
 
         $this->assertDatabaseHas('users', [
             'email' => 'admin@example.com',
-            'name' => 'Test Admin'
+            'name' => 'Test Admin',
         ]);
 
         $this->assertDatabaseHas('branches', [
             'name' => 'Main Branch',
-            'is_main_branch' => true
+            'is_main_branch' => true,
         ]);
     }
 }

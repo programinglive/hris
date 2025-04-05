@@ -3,12 +3,11 @@
 namespace Tests\Feature\Organization;
 
 use App\Models\Company;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Session;
-use Tests\TestCase;
-use PHPUnit\Framework\Attributes\Test;
 use Inertia\Testing\AssertableInertia as Assert;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class CompanyRegistrationControllerTest extends TestCase
 {
@@ -38,11 +37,11 @@ class CompanyRegistrationControllerTest extends TestCase
         // Test email validation
         $response = $this->post(route('landing-page.installation-wizard.validate-contact'), [
             'contact' => 'test@example.com',
-            'contact_type' => 'email'
+            'contact_type' => 'email',
         ]);
 
         $response->assertSessionHas('success', 'Verification code sent to test@example.com');
-        
+
         $sessionData = Session::get('registration_data');
         $this->assertNotEmpty($sessionData);
         $this->assertEquals('test@example.com', $sessionData['contact']);
@@ -55,11 +54,11 @@ class CompanyRegistrationControllerTest extends TestCase
         // Test phone validation
         $response = $this->post(route('landing-page.installation-wizard.validate-contact'), [
             'contact' => '+1234567890',
-            'contact_type' => 'phone'
+            'contact_type' => 'phone',
         ]);
 
         $response->assertSessionHas('success', 'Verification code sent to +1234567890');
-        
+
         $sessionData = Session::get('registration_data');
         $this->assertNotEmpty($sessionData);
         $this->assertEquals('+1234567890', $sessionData['contact']);
@@ -76,7 +75,7 @@ class CompanyRegistrationControllerTest extends TestCase
         // Test invalid email format
         $response = $this->post(route('landing-page.installation-wizard.validate-contact'), [
             'contact' => 'invalid-email',
-            'contact_type' => 'email'
+            'contact_type' => 'email',
         ]);
 
         $response->assertSessionHasErrors('contact', 'The contact must be a valid email address.');
@@ -84,7 +83,7 @@ class CompanyRegistrationControllerTest extends TestCase
         // Test invalid phone format
         $response = $this->post(route('landing-page.installation-wizard.validate-contact'), [
             'contact' => 'invalid-phone',
-            'contact_type' => 'phone'
+            'contact_type' => 'phone',
         ]);
 
         $response->assertSessionHasErrors('contact', 'The contact must only contain numbers, plus signs, and spaces.');
@@ -92,7 +91,7 @@ class CompanyRegistrationControllerTest extends TestCase
         // Test empty contact
         $response = $this->post(route('landing-page.installation-wizard.validate-contact'), [
             'contact' => '',
-            'contact_type' => 'email'
+            'contact_type' => 'email',
         ]);
 
         $response->assertSessionHasErrors('contact', 'The contact field is required.');
@@ -100,7 +99,7 @@ class CompanyRegistrationControllerTest extends TestCase
         // Test invalid contact type
         $response = $this->post(route('landing-page.installation-wizard.validate-contact'), [
             'contact' => 'test@example.com',
-            'contact_type' => 'invalid'
+            'contact_type' => 'invalid',
         ]);
 
         $response->assertSessionHasErrors('contact_type', 'The selected contact type is invalid.');
@@ -112,13 +111,13 @@ class CompanyRegistrationControllerTest extends TestCase
         // Create existing company with email and phone
         Company::factory()->create([
             'email' => 'existing@example.com',
-            'phone' => '+1234567890'
+            'phone' => '+1234567890',
         ]);
 
         // Test duplicate email
         $response = $this->post(route('landing-page.installation-wizard.validate-contact'), [
             'contact' => 'existing@example.com',
-            'contact_type' => 'email'
+            'contact_type' => 'email',
         ]);
 
         $response->assertSessionHasErrors('contact', 'The contact has already been taken.');
@@ -126,7 +125,7 @@ class CompanyRegistrationControllerTest extends TestCase
         // Test duplicate phone
         $response = $this->post(route('landing-page.installation-wizard.validate-contact'), [
             'contact' => '+1234567890',
-            'contact_type' => 'phone'
+            'contact_type' => 'phone',
         ]);
 
         $response->assertSessionHasErrors('contact', 'The contact has already been taken.');
@@ -142,11 +141,11 @@ class CompanyRegistrationControllerTest extends TestCase
             'verification_code' => '123456',
             'verified' => false,
             'expires_at' => now()->addMinutes(5),
-            'created_at' => now()
+            'created_at' => now(),
         ]);
 
         $response = $this->post(route('landing-page.installation-wizard.verify-code'), [
-            'verification_code' => '123456'
+            'verification_code' => '123456',
         ]);
 
         $response->assertRedirect(route('landing-page.installation-wizard.save-company-details'));
@@ -162,11 +161,11 @@ class CompanyRegistrationControllerTest extends TestCase
             'contact_type' => 'email',
             'verification_code' => '123456',
             'verified' => false,
-            'expires_at' => now()->addMinutes(5)
+            'expires_at' => now()->addMinutes(5),
         ]);
 
         $response = $this->post(route('landing-page.installation-wizard.verify-code'), [
-            'verification_code' => '654321'
+            'verification_code' => '654321',
         ]);
 
         $response->assertSessionHasErrors('verification_code', 'The verification code is invalid.');
@@ -181,11 +180,11 @@ class CompanyRegistrationControllerTest extends TestCase
             'contact_type' => 'email',
             'verification_code' => '123456',
             'verified' => false,
-            'expires_at' => now()->subMinutes(6)
+            'expires_at' => now()->subMinutes(6),
         ]);
 
         $response = $this->post(route('landing-page.installation-wizard.verify-code'), [
-            'verification_code' => '123456'
+            'verification_code' => '123456',
         ]);
 
         $response->assertSessionHasErrors('verification_code', 'The verification code has expired.');
@@ -200,7 +199,7 @@ class CompanyRegistrationControllerTest extends TestCase
             'contact_type' => 'email',
             'verification_code' => '123456',
             'verified' => true,
-            'expires_at' => now()->addMinutes(5)
+            'expires_at' => now()->addMinutes(5),
         ]);
 
         $response = $this->post(route('landing-page.installation-wizard.save-company-details'), [
@@ -221,7 +220,7 @@ class CompanyRegistrationControllerTest extends TestCase
             'admin_password_confirmation' => 'password123',
             'contact_type' => 'email',
             'contact' => 'test@example.com',
-            'verification_code' => '123456'
+            'verification_code' => '123456',
         ]);
 
         $response->assertRedirect(route('dashboard'));
@@ -232,13 +231,13 @@ class CompanyRegistrationControllerTest extends TestCase
     #[Test]
     public function company_registration_fails_with_invalid_details()
     {
-         // Store verified registration data in session
-         Session::put('registration_data', [
+        // Store verified registration data in session
+        Session::put('registration_data', [
             'contact' => 'test@example.com',
             'contact_type' => 'email',
             'verification_code' => '123456',
             'verified' => true,
-            'expires_at' => now()->addMinutes(5)
+            'expires_at' => now()->addMinutes(5),
         ]);
 
         $response = $this->post(route('landing-page.installation-wizard.save-company-details'), [
@@ -254,7 +253,7 @@ class CompanyRegistrationControllerTest extends TestCase
             'admin_password_confirmation' => '', // Required field
             'contact_type' => '', // Required field
             'contact' => '', // Required field
-            'verification_code' => '' // Required field
+            'verification_code' => '', // Required field
         ]);
 
         $response->assertSessionHasErrors([

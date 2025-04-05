@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -17,12 +16,13 @@ class CompanyRegistrationTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     protected $verificationCode;
+
     protected $timestamp;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Store timestamp for consistent testing
         $this->timestamp = time();
         Mail::fake();
@@ -77,7 +77,7 @@ class CompanyRegistrationTest extends TestCase
         // Then make the store request
         $response = $this->postJson(route('register.company.store'), [
             'name' => 'Test Company',
-            'code' => 'TESTCOMP' . $this->timestamp,
+            'code' => 'TESTCOMP'.$this->timestamp,
             'email' => 'test'.$this->timestamp.'@example.com',
             'phone' => '1234567890',
             'address' => '123 Test St',

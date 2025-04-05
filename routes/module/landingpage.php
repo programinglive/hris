@@ -3,7 +3,6 @@
 use App\Http\Controllers\Organization\CompanyRegistrationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Redirect;
 
 // Landing page route
 Route::get('/', function () {

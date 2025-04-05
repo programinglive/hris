@@ -11,12 +11,12 @@ class SystemSetting extends Model
         'key',
         'value',
         'type',
-        'is_active'
+        'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
-        'value' => 'json'
+        'value' => 'json',
     ];
 
     public function company()
