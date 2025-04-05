@@ -1,107 +1,28 @@
-import { type PageProps } from '@/types';
 import AppLayout from '@/layouts/app/app-layout';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Select } from '@/components/ui/select';
-import { Link } from '@inertiajs/react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Loader2 } from 'lucide-react';
+import { type BreadcrumbItem } from '@/types';
 
-interface LeaveRequest {
-    id: number;
-    employee: {
-        name: string;
-    };
-    leaveType: {
-        name: string;
-    };
-    start_date: string;
-    end_date: string;
-    status: string;
-    reason: string;
-}
-
-export default function LeaveRequestShow({ auth, leave }: PageProps & { leave: LeaveRequest }) {
-    return (
-        <AppLayout>
-            <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">Leave Request Details</h1>
-                    <Link href="/attendance/leave">
-                        <Button variant="outline">Back</Button>
-                    </Link>
-                </div>
-
-                <Card>
-                    <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <Label>Employee</Label>
-                                <Input
-                                    value={leave.employee.name}
-                                    disabled
-                                />
-                            </div>
-
-                            <div>
-                                <Label>Leave Type</Label>
-                                <Input
-                                    value={leave.leaveType.name}
-                                    disabled
-                                />
-                            </div>
-
-                            <div>
-                                <Label>Start Date</Label>
-                                <Input
-                                    type="date"
-                                    value={leave.start_date}
-                                    disabled
-                                />
-                            </div>
-
-                            <div>
-                                <Label>End Date</Label>
-                                <Input
-                                    type="date"
-                                    value={leave.end_date}
-                                    disabled
-                                />
-                            </div>
-
-                            <div>
-                                <Label>Status</Label>
-                                <Select
-                                    value={leave.status}
-                                    disabled
-                                >
-                                    <option value="pending">Pending</option>
-                                    <option value="approved">Approved</option>
-                                    <option value="rejected">Rejected</option>
-                                    <option value="cancelled">Cancelled</option>
-                                </Select>
-                            </div>
-
-                            <div className="col-span-2">
-                                <Label>Reason</Label>
-                                <Input
-                                    type="textarea"
-                                    value={leave.reason}
-                                    disabled
-                                />
-                            </div>
-                        </div>
-
-                        {auth.user.role === 'admin' && leave.status === 'pending' && (
-                            <div className="flex justify-end gap-2">
-                                <Link href={`/attendance/leave/${leave.id}/edit`}>
-                                    <Button>Edit</Button>
-                                </Link>
-                            </div>
-                        )}
-                    </div>
-                </Card>
-            </div>
-        </AppLayout>
-    );
+export default function LeaveRequestShow() {
+  return (
+    <AppLayout
+      title="View Leave Request"
+      breadcrumbs={[
+        { title: 'Dashboard', href: '/dashboard' },
+        { title: 'Attendance', href: '/attendance' },
+        { title: 'Leave Requests', href: '/attendance/leave' },
+        { title: 'View', href: '/attendance/leave/{id}' },
+      ]}
+    >
+      <div className="container py-6">
+        <Card className="w-full">
+          <CardContent className="p-6 flex flex-col items-center justify-center space-y-4">
+            <Loader2 className="h-12 w-12 animate-spin text-muted-foreground" />
+            <h2 className="text-2xl font-semibold">Leave Management Module</h2>
+            <p className="text-muted-foreground text-center">This module is currently under development and will be available soon.</p>
+          </CardContent>
+        </Card>
+      </div>
+    </AppLayout>
+  );
 }
