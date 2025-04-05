@@ -16,45 +16,25 @@ createInertiaApp({
         // Extract module paths for easier comparison
         const availableModulePaths = Object.keys(modules);
         
-        // Convert route names to proper case for component paths
-        const segments = name.split('/');
-        const pageName = segments.pop() || ''; // Get the last segment (filename)
+        // Generate the component path directly from the name
+        const componentPath = `./Pages/${name}.tsx`;
         
-        // Generate all possible folder paths
-        const folderPaths = [''];
-        if (segments.length > 0) {
-            // Original path
-            folderPaths.push(segments.join('/') + '/');
-            
-            // Capitalized folders
-            const capitalizedFolders = segments.map(segment => 
-                segment.charAt(0).toUpperCase() + segment.slice(1)
-            );
-            folderPaths.push(capitalizedFolders.join('/') + '/');
+        // Check if the exact path exists
+        if (availableModulePaths.includes(componentPath)) {
+            return modules[componentPath]();
         }
         
-        // Generate all possible file name variants
-        const fileVariants = [
-            pageName,
-            pageName.charAt(0).toUpperCase() + pageName.slice(1), // PascalCase
-            pageName.toLowerCase(), // lowercase
-            pageName.toUpperCase() // UPPERCASE (rare but possible)
-        ];
+        // If not found, try with different casing (fallback)
+        const foundPath = availableModulePaths.find(path => 
+            path.toLowerCase() === componentPath.toLowerCase()
+        );
         
-        // Try all possible combinations of folder paths and file variants
-        for (const folderPath of folderPaths) {
-            for (const fileVariant of fileVariants) {
-                const path = `./Pages/${folderPath}${fileVariant}.tsx`;
-                
-                // Check if the module exists
-                if (availableModulePaths.includes(path)) {
-                    return resolvePageComponent(path, modules);
-                }
-            }
+        if (foundPath) {
+            return modules[foundPath]();
         }
         
-        // If no match found, try the original path (backward compatibility)
-        return resolvePageComponent(`./Pages/${name}.tsx`, modules);
+        // If still not found, throw an error
+        throw new Error(`Could not resolve component: ${name}`);
     },
     setup({ el, App, props }) {
         const root = createRoot(el);
