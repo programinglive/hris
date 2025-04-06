@@ -1,6 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { motion } from 'framer-motion';
-import { Clock, AlertCircle } from 'lucide-react';
+import { Clock, AlertCircle, BookOpen } from 'lucide-react';
+import { Link } from '@inertiajs/react';
 
 export default function InstallationWizard() {
     return (
@@ -52,6 +53,18 @@ export default function InstallationWizard() {
                         >
                             <AlertCircle className="h-6 w-6 text-yellow-500" />
                             <span className="text-sm text-gray-500">Development in progress</span>
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.8 }}
+                            className="mt-8"
+                        >
+                            <Link href={route('docs')} className="inline-flex items-center text-primary hover:text-primary/80 transition-colors">
+                                <BookOpen className="mr-2 h-4 w-4" />
+                                View Documentation
+                            </Link>
                         </motion.div>
                     </div>
                 </div>

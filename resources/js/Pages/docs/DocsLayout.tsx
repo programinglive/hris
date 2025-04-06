@@ -56,7 +56,7 @@ export default function DocsLayout({ children, title, activeFile }: DocsLayoutPr
     const renderNavigation = () => {
         return Object.entries(sections).map(([sectionName, items]) => (
             <div key={sectionName} className="space-y-1">
-                <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                     {sectionName}
                 </h3>
                 <ul className="space-y-1">
@@ -66,9 +66,9 @@ export default function DocsLayout({ children, title, activeFile }: DocsLayoutPr
                             <li key={file}>
                                 <Link
                                     href={route('docs.show', { file })}
-                                    className={`block rounded-md text-sm font-medium ${
+                                    className={`block rounded-md text-sm font-medium transition-colors duration-200 ${
                                         activeFile === file
-                                            ? 'bg-blue-50 text-blue-700'
+                                            ? 'bg-primary/5 text-primary hover:bg-primary/10'
                                             : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                     }`}
                                 >
@@ -83,15 +83,15 @@ export default function DocsLayout({ children, title, activeFile }: DocsLayoutPr
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-50">
             <Head title={title} />
             
             {/* Header */}
-            <header className="bg-white border-b">
+            <header className="bg-white border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex items-center">
-                            <Link href="/" className="text-xl font-bold text-gray-800">
+                            <Link href="/" className="text-xl font-bold text-gray-900">
                                 HRIS Open Source
                             </Link>
                         </div>
@@ -110,16 +110,14 @@ export default function DocsLayout({ children, title, activeFile }: DocsLayoutPr
             {/* Main Content */}
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-12 gap-8">
-                    {/* Sidebar */}
-                    <aside className="col-span-12 lg:col-span-3">
-                        <nav>
+                    <aside className="col-span-3">
+                        <nav className="space-y-4">
                             {renderNavigation()}
                         </nav>
                     </aside>
-
-                    {/* Content */}
-                    <div className="col-span-12 lg:col-span-9 bg-white rounded-lg shadow">
-                        <div className="prose prose-lg max-w-none">
+                    <div className="col-span-9 bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div className="p-6">
+                            <h1 className="text-2xl font-bold text-gray-900 mb-4">{title}</h1>
                             {children}
                         </div>
                     </div>

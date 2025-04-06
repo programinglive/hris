@@ -26,7 +26,10 @@ Route::get('/test-sentry', function () {
 });
 
 // Documentation routes
-Route::get('/docs', [DocsController::class, 'index'])->name('docs.index');
+Route::get('/docs', function () {
+    return Inertia::render('Docs');
+})->name('docs');
+
 Route::get('/docs/{file}', [DocsController::class, 'show'])->name('docs.show');
 
 // Installation Wizard route

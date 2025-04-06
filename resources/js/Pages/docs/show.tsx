@@ -8,8 +8,8 @@ interface DocumentationShowProps {
 export default function DocsShow({ html, file }: DocumentationShowProps) {
     return (
         <DocsLayout title={file.replace('.md', '')} activeFile={file}>
-            <div className="prose prose-lg max-w-4xl mx-auto px-10">
-                <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: html || '' }} />
+            <div className="prose prose-lg max-w-none">
+                <div className="prose prose-lg max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: html || '' }} />
             </div>
         </DocsLayout>
     );
