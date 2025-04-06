@@ -27,7 +27,7 @@ Route::get('/test-sentry', function () {
 
 // Documentation routes
 Route::get('/docs', function () {
-    return Inertia::render('Docs');
+    return Inertia::render('Docs/Index');
 })->name('docs');
 
 Route::get('/docs/{file}', [DocsController::class, 'show'])->name('docs.show');
