@@ -2,7 +2,7 @@ import DocsLayout from './DocsLayout';
 
 export default function Docs() {
     return (
-        <DocsLayout title="Documentation">
+        <DocsLayout title="Documentation" activeFile="index">
             <div className="prose prose-lg max-w-none">
                 <p>Welcome to the HRIS Open Source documentation. This guide will help you get started with the application and explore its features.</p>
                 
