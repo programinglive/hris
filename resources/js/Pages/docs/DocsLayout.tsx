@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from '@inertiajs/react';
 import { Head } from '@inertiajs/react';
 
@@ -53,10 +53,19 @@ interface DocsLayoutProps {
 }
 
 export default function DocsLayout({ children, title, activeFile }: DocsLayoutProps) {
+    const formattedTitle = useMemo(() => {
+        // Remove .md extension and convert to title case
+        const baseName = activeFile?.replace(/\.md$/, '');
+        return baseName
+            ?.split('-')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(' ');
+    }, [activeFile]);
+
     const renderNavigation = () => {
         return Object.entries(sections).map(([sectionName, items]) => (
             <div key={sectionName} className="space-y-1">
-                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
                     {sectionName}
                 </h3>
                 <ul className="space-y-1">
@@ -68,8 +77,8 @@ export default function DocsLayout({ children, title, activeFile }: DocsLayoutPr
                                     href={route('docs.show', { file })}
                                     className={`block rounded-md text-sm font-medium transition-colors duration-200 ${
                                         activeFile === file
-                                            ? 'bg-primary/5 text-primary hover:bg-primary/10'
-                                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                            ? 'text-primary dark:text-primary hover:text-primary'
+                                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
                                     }`}
                                 >
                                     {item}
@@ -83,23 +92,23 @@ export default function DocsLayout({ children, title, activeFile }: DocsLayoutPr
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
             <Head title={title} />
             
             {/* Header */}
-            <header className="bg-white border-b border-gray-200">
+            <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex items-center">
-                            <Link href="/" className="text-xl font-bold text-gray-900">
+                            <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white">
                                 HRIS Open Source
                             </Link>
                         </div>
                         <div className="flex items-center space-x-4">
-                            <Link href="/docs" className="text-gray-600 hover:text-gray-900">
+                            <Link href="/docs" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
                                 Documentation
                             </Link>
-                            <Link href="/github" className="text-gray-600 hover:text-gray-900">
+                            <Link href="/github" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
                                 GitHub
                             </Link>
                         </div>
@@ -115,10 +124,12 @@ export default function DocsLayout({ children, title, activeFile }: DocsLayoutPr
                             {renderNavigation()}
                         </nav>
                     </aside>
-                    <div className="col-span-9 bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div className="col-span-9 bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-none overflow-hidden">
                         <div className="p-6">
-                            <h1 className="text-2xl font-bold text-gray-900 mb-4">{title}</h1>
-                            {children}
+                            <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-gray-900 dark:text-white">{formattedTitle}</h1>
+                            <div className="prose prose-lg max-w-none dark:prose-invert">
+                                {children}
+                            </div>
                         </div>
                     </div>
                 </div>
