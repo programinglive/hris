@@ -29,6 +29,11 @@ Route::get('/test-sentry', function () {
 Route::get('/docs', [DocsController::class, 'index'])->name('docs.index');
 Route::get('/docs/{file}', [DocsController::class, 'show'])->name('docs.show');
 
+// Installation Wizard route
+Route::get('/installation-wizard', function () {
+    return Inertia::render('InstallationWizard');
+})->name('installation-wizard')->middleware('guest');
+
 // Guest routes
 Route::middleware(['guest'])->group(function () {
     // Login route
