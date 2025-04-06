@@ -12,18 +12,55 @@ class DocsController extends Controller
 {
     public function index()
     {
-        $docs = [
-            'Introduction' => 'getting-started.md',
-            'Installation' => 'installation.md',
-            'Installation Wizard' => 'installation-wizard.md',
-            'API Documentation' => 'api.md',
-            'Employee Management' => 'employee.md',
-            'Organization Structure' => 'organization.md',
-            'README' => 'README.md',
+        $docsDir = resource_path('docs');
+        
+        // Get all markdown files in the docs directory
+        $files = File::files($docsDir);
+        
+        // Create an array of documentation files with human-readable titles
+        $docs = collect($files)
+            ->mapWithKeys(function ($file) {
+                $filename = $file->getFilename();
+                $title = str_replace('.md', '', $filename);
+                
+                // Special cases for specific files
+                $specialTitles = [
+                    'getting-started' => 'Introduction',
+                    'installation-wizard' => 'Installation Wizard',
+                    'api' => 'API Documentation',
+                    'employee' => 'Employee Management',
+                    'organization' => 'Organization Structure',
+                    'readme' => 'README',
+                    'role-tests' => 'Role Tests'
+                ];
+                
+                return [$specialTitles[$title] ?? ucfirst(str_replace('-', ' ', $title)) => $filename];
+            })
+            ->sortKeys()
+            ->toArray();
+
+        // Define the section organization
+        $sections = [
+            'Getting Started' => [
+                'Introduction',
+                'Installation Wizard'
+            ],
+            'Features' => [
+                'Employee Management',
+                'Organization Structure'
+            ],
+            'API' => [
+                'API Documentation'
+            ],
+            'Reference' => [
+                'README',
+                'Role Tests'
+            ]
         ];
 
         return Inertia::render('Docs/Index', [
             'docs' => $docs,
+            'sections' => $sections,
         ]);
     }
 

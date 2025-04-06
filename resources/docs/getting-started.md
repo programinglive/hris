@@ -6,8 +6,8 @@ Welcome to the HRIS (Human Resource Information System) documentation. This guid
 
 Before you begin, make sure you have the following installed on your system:
 
-- PHP 8.1 or higher
-- Node.js 18 or higher
+- PHP 8.3 or higher
+- Node.js 20 or higher
 - Composer
 - npm or yarn
 - MySQL 8.0 or higher
@@ -56,8 +56,9 @@ npm run build
 
 9. Start the development server:
 ```bash
-php artisan serve
+composer run dev
 ```
+**Note:** This will start the development server in a local environment. Make sure to configure your environment variables accordingly.
 
 ## Configuration
 
@@ -99,8 +100,22 @@ Once you're logged in, you should:
 
 ## Support
 
-For support, please:
+If you need help, you can:
 
 - Check the documentation
 - Open an issue on GitHub
-- Contact the development team
+- Join our community forums
+
+## Technology Stack
+
+The application is built with:
+
+- **Backend**: Laravel 10
+- **Frontend**: React.js with Inertia.js
+- **PHP Version**: PHP 8.3+
+- **Node.js Version**: Node.js 20+
+- **Database**: MySQL 8.0+
+- **UI Framework**: Tailwind CSS with Shadcn UI
+- **Authentication**: Laravel Inertia Auth
+- **Excel Handling**: Spatie Simple Excel
+- **Testing**: PHPUnit with Laravel Dusk

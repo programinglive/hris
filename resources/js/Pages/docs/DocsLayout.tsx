@@ -7,54 +7,47 @@ interface Section {
 }
 
 interface DocMapping {
-    'Introduction': 'getting-started.md';
-    'Installation': 'installation.md';
-    'Installation Wizard': 'installation-wizard.md';
-    'API Documentation': 'api.md';
-    'Employee Management': 'employee.md';
-    'Organization Structure': 'organization.md';
-    'README': 'README.md';
+    [key: string]: string;
 }
 
 type DocTitle = keyof DocMapping;
 
-const sections: Section = {
-    'Getting Started': [
-        'Introduction',
-        'Installation',
-        'Installation Wizard'
-    ] as DocTitle[],
-    'Features': [
-        'Employee Management',
-        'Organization Structure'
-    ] as DocTitle[],
-    'API': [
-        'API Documentation'
-    ] as DocTitle[],
-    'Reference': [
-        'README'
-    ] as DocTitle[]
-};
-
-const docs: DocMapping = {
-    'Introduction': 'getting-started.md',
-    'Installation': 'installation.md',
-    'Installation Wizard': 'installation-wizard.md',
-    'API Documentation': 'api.md',
-    'Employee Management': 'employee.md',
-    'Organization Structure': 'organization.md',
-    'README': 'README.md'
-};
-
 interface DocsLayoutProps {
     children: React.ReactNode;
     title: string;
-    activeFile?: string;
+    activeFile: string;
 }
+
+const sections: Record<string, string[]> = {
+    'Getting Started': [
+        'Introduction',
+        'Installation Wizard'
+    ],
+    'Features': [
+        'Employee Management',
+        'Organization Structure'
+    ],
+    'API': [
+        'API Documentation'
+    ],
+    'Reference': [
+        'README',
+        'Role Tests'
+    ]
+};
+
+const specialTitles = {
+    'getting-started.md': 'Introduction',
+    'installation-wizard.md': 'Installation Wizard',
+    'api.md': 'API Documentation',
+    'employee.md': 'Employee Management',
+    'organization.md': 'Organization Structure',
+    'README.md': 'README',
+    'role-tests.md': 'Role Tests'
+} as const;
 
 export default function DocsLayout({ children, title, activeFile }: DocsLayoutProps) {
     const formattedTitle = useMemo(() => {
-        // Remove .md extension and convert to title case
         const baseName = activeFile?.replace(/\.md$/, '');
         return baseName
             ?.split('-')
@@ -65,21 +58,28 @@ export default function DocsLayout({ children, title, activeFile }: DocsLayoutPr
     const renderNavigation = () => {
         return Object.entries(sections).map(([sectionName, items]) => (
             <div key={sectionName} className="space-y-1">
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
+                <h3 className="text-sm font-medium mb-2 mt-4 uppercase text-gray-500 dark:text-gray-400">
                     {sectionName}
                 </h3>
                 <ul className="space-y-1">
-                    {items.map((item: string) => {
-                        const file = docs[item as DocTitle];
+                    {items.map((item) => {
+                        // Find the corresponding filename from specialTitles
+                        const fileName = Object.entries(specialTitles)
+                            .find(([_, title]) => title === item)?.[0] ||
+                            item.toLowerCase().replace(/\s+/g, '-');
+                        
+                        // Remove any existing .md extension and add it back
+                        const cleanFileName = fileName.replace(/\.md$/, '') + '.md';
+                        
                         return (
-                            <li key={file}>
+                            <li key={item}>
                                 <Link
-                                    href={route('docs.show', { file })}
-                                    className={`block rounded-md text-sm font-medium transition-colors duration-200 ${
-                                        activeFile === file
-                                            ? 'text-primary dark:text-primary hover:text-primary'
-                                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
-                                    }`}
+                                    href={`/docs/${cleanFileName}`}
+                                    className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors
+                                        ${cleanFileName === activeFile
+                                            ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white'
+                                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                        }`}
                                 >
                                     {item}
                                 </Link>
