@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\DocsController;
 use App\Http\Controllers\Organization\CompanyRegistrationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,6 +24,10 @@ Route::get('/test-sentry', function () {
         ], 500);
     }
 });
+
+// Documentation routes
+Route::get('/docs', [DocsController::class, 'index'])->name('docs.index');
+Route::get('/docs/{file}', [DocsController::class, 'show'])->name('docs.show');
 
 // Guest routes
 Route::middleware(['guest'])->group(function () {
@@ -77,9 +82,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Assets routes
     include 'module/assets.php';
-
-    // Documentation routes
-    include 'module/docs.php';
 });
 
 require __DIR__.'/settings.php';

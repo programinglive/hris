@@ -11,22 +11,28 @@ createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => {
         // Get all available page modules
-        const modules = import.meta.glob('./Pages/**/*.tsx');
+        const tsxModules = import.meta.glob('./Pages/**/*.tsx');
+        const jsxModules = import.meta.glob('./Pages/**/*.jsx');
+        
+        // Combine both sets of modules
+        const modules = {
+            ...tsxModules,
+            ...jsxModules
+        };
         
         // Extract module paths for easier comparison
         const availableModulePaths = Object.keys(modules);
         
-        // Generate the component path directly from the name
-        const componentPath = `./Pages/${name}.tsx`;
+        // Generate component paths for both extensions
+        const componentPaths = [
+            `./Pages/${name}.tsx`,
+            `./Pages/${name}.jsx`
+        ];
         
-        // Check if the exact path exists
-        if (availableModulePaths.includes(componentPath)) {
-            return modules[componentPath]();
-        }
-        
-        // If not found, try with different casing (fallback)
-        const foundPath = availableModulePaths.find(path => 
-            path.toLowerCase() === componentPath.toLowerCase()
+        // Try to find the component with either extension
+        const foundPath = componentPaths.find(path => 
+            availableModulePaths.includes(path) || 
+            availableModulePaths.some(p => p.toLowerCase() === path.toLowerCase())
         );
         
         if (foundPath) {
