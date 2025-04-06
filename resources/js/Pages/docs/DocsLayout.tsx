@@ -105,10 +105,7 @@ export default function DocsLayout({ children, title, activeFile }: DocsLayoutPr
                             </Link>
                         </div>
                         <div className="flex items-center space-x-4">
-                            <Link href="/docs" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                                Documentation
-                            </Link>
-                            <Link href="/github" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                            <Link href="https://github.com/programinglive/hris" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
                                 GitHub
                             </Link>
                         </div>
