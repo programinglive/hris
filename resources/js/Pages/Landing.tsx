@@ -2,8 +2,13 @@ import { Head } from '@inertiajs/react';
 import { Button } from '@/Components/ui/button';
 import { motion } from 'framer-motion';
 import { User, Users, DollarSign, BookOpen, UserPlus, Rocket } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import { type SharedData } from '@/types';
 
 export default function Landing() {
+    const page = usePage<SharedData>();
+    const { auth } = page.props;
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
             <Head>
@@ -43,10 +48,10 @@ export default function Landing() {
                                 transition={{ duration: 0.8, delay: 0.4 }}
                             >
                                 <Button asChild size="lg" className="bg-primary text-white hover:bg-primary/90">
-                                    <a href={route('register.company')}>
+                                    <Link href={route('register.company')}>
                                         <Rocket className="mr-2 h-4 w-4" />
                                         Getting Started
-                                    </a>
+                                    </Link>
                                 </Button>
                             </motion.div>
                             <motion.div
@@ -54,12 +59,21 @@ export default function Landing() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.6 }}
                             >
-                                <Button asChild size="lg" variant="outline" className="text-gray-900 hover:bg-gray-100">
-                                    <a href={route('login')}>
-                                        <User className="mr-2 h-4 w-4" />
-                                        Login to Account
-                                    </a>
-                                </Button>
+                                {auth.user ? (
+                                    <Button asChild size="lg" variant="outline" className="text-gray-900 hover:bg-gray-100">
+                                        <Link href={route('dashboard')}>
+                                            <User className="mr-2 h-4 w-4" />
+                                            Go to Dashboard
+                                        </Link>
+                                    </Button>
+                                ) : (
+                                    <Button asChild size="lg" variant="outline" className="text-gray-900 hover:bg-gray-100">
+                                        <Link href={route('login')}>
+                                            <User className="mr-2 h-4 w-4" />
+                                            Login to Account
+                                        </Link>
+                                    </Button>
+                                )}
                             </motion.div>
                         </div>
                     </div>
@@ -133,10 +147,10 @@ export default function Landing() {
                                 transition={{ duration: 0.8, delay: 0.4 }}
                             >
                                 <Button asChild size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
-                                    <a href={route('register.company.show')}>
+                                    <Link href={route('register.company.show')}>
                                         <BookOpen className="mr-2 h-4 w-4" />
                                         Start Your Free Trial
-                                    </a>
+                                    </Link>
                                 </Button>
                             </motion.div>
                         </div>
