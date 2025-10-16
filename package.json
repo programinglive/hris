@@ -78,7 +78,7 @@
         "framer-motion": "^12.6.2",
         "laravel-vite-plugin": "^1.0",
         "lucide-react": "^0.485.0",
-        "mermaid": "^11.6.0",
+        "mermaid": "^11.10.0",
         "postcss": "^8.4.35",
         "react": "^19.1.0",
         "react-day-picker": "^9.6.3",
@@ -91,7 +91,7 @@
         "tailwind-merge": "^3.0.1",
         "tailwindcss": "^4.0.0",
         "tailwindcss-animate": "^1.0.7",
-        "vite": ">=6.3.4",
+        "vite": ">=6.3.6",
         "zod": "^3.24.2"
     },
     "optionalDependencies": {
