@@ -35,12 +35,10 @@ class WorkingCalendarControllerTest extends TestCase
         ]);
 
         // Create a test user with company_id
-        $this->user = User::factory()->create([
-            'company_id' => $this->company->id,
-        ]);
+        $this->user = User::factory()->forCompany($this->company->id)->create();
 
         // Assign role to user
-        $this->user->roles()->attach($role);
+        $this->user->roles()->attach($role->id, ['company_id' => $role->company_id]);
 
         // Create user details
         UserDetail::create([

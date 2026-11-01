@@ -54,6 +54,7 @@ class EmployeeFeatureTest extends TestCase
 
         // Create roles first with unique slugs
         $this->adminRole = Role::create([
+            'company_id' => $this->company->id,
             'name' => 'administrator',
             'display_name' => 'Administrator',
             'description' => 'Full access to all system features',
@@ -62,6 +63,7 @@ class EmployeeFeatureTest extends TestCase
         ]);
 
         $this->employeeRole = Role::create([
+            'company_id' => $this->company->id,
             'name' => 'employee',
             'display_name' => 'Employee',
             'description' => 'Regular employee access',
@@ -70,10 +72,9 @@ class EmployeeFeatureTest extends TestCase
         ]);
 
         // Create a test user with admin role
-        $this->user = User::factory()->create([
+        $this->user = User::factory()->forCompany($this->company->id)->create([
             'email' => 'test@example.com',
             'password' => bcrypt('password'),
-            'company_id' => $this->company->id,
         ]);
 
         // Assign admin role to test user
@@ -121,9 +122,7 @@ class EmployeeFeatureTest extends TestCase
         $this->actingAs($this->user);
 
         // Create an employee
-        $employee = User::factory()->create([
-            'company_id' => $this->company->id,
-        ]);
+        $employee = User::factory()->forCompany($this->company->id)->create();
 
         // Create user details
         $employee->userDetails()->create([
@@ -145,7 +144,7 @@ class EmployeeFeatureTest extends TestCase
         $response = $this->get(route('employee.index'));
 
         $response->assertInertia(function (Assert $page) {
-            $page->component('Employee/Index')
+            $page->component('employee/index')
                 ->has('employees.data', 1)
                 ->where('employees.current_page', 1)
                 ->where('employees.per_page', 10)
@@ -160,9 +159,7 @@ class EmployeeFeatureTest extends TestCase
     public function employee_list_has_correct_structure()
     {
         // Create a test employee
-        $employee = User::factory()->create([
-            'company_id' => $this->company->id,
-        ]);
+        $employee = User::factory()->forCompany($this->company->id)->create();
 
         // Assign employee role
         $employee->roles()->attach($this->employeeRole);
@@ -185,7 +182,7 @@ class EmployeeFeatureTest extends TestCase
 
         // Assert the response
         $response->assertInertia(function (Assert $page) use ($employee, $userDetail) {
-            $page->component('Employee/Index')
+            $page->component('employee/index')
                 ->has('employees', 1)
                 ->where('employees.0.name', $employee->name)
                 ->where('employees.0.email', $employee->email)
@@ -200,8 +197,7 @@ class EmployeeFeatureTest extends TestCase
     #[Test]
     public function employees_can_be_filtered_by_search()
     {
-        $employee = User::factory()->create([
-            'company_id' => $this->company->id,
+        $employee = User::factory()->forCompany($this->company->id)->create([
             'name' => 'John Doe',
         ]);
 
@@ -229,7 +225,7 @@ class EmployeeFeatureTest extends TestCase
         ]));
 
         $response->assertInertia(function (Assert $page) use ($employee) {
-            $page->component('Employee/Index')
+            $page->component('employee/index')
                 ->has('employees.data', 1)
                 ->where('employees.data.0.name', $employee->name)
                 ->where('employees.current_page', 1)
@@ -278,7 +274,7 @@ class EmployeeFeatureTest extends TestCase
             ->get(route('employee.index', ['status' => 'active']));
 
         $response->assertInertia(function (Assert $page) use ($activeEmployee) {
-            $page->component('Employee/Index')
+            $page->component('employee/index')
                 ->has('employees.data', 1)
                 ->where('employees.data.0.id', $activeEmployee->id);
         });
@@ -291,22 +287,16 @@ class EmployeeFeatureTest extends TestCase
         $department1 = Department::factory()->create(['company_id' => $this->company->id]);
         $department2 = Department::factory()->create(['company_id' => $this->company->id]);
 
-        User::factory()->count(2)->create([
-            'company_id' => $this->company->id,
-        ])->each(function ($user) use ($department1) {
+        User::factory()->count(2)->forCompany($this->company->id)->create()->each(function ($user) use ($department1) {
             $user->userDetails()->update([
                 'department_id' => $department1->id,
-                'department' => $department1->name,
             ]);
             $user->assignRole($this->employeeRole);
         });
 
-        User::factory()->create([
-            'company_id' => $this->company->id,
-        ])->each(function ($user) use ($department2) {
+        User::factory()->forCompany($this->company->id)->create()->each(function ($user) use ($department2) {
             $user->userDetails()->update([
                 'department_id' => $department2->id,
-                'department' => $department2->name,
             ]);
             $user->assignRole($this->employeeRole);
         });
@@ -318,7 +308,7 @@ class EmployeeFeatureTest extends TestCase
         ]));
 
         $response->assertInertia(function (Assert $page) use ($department1) {
-            $page->component('Employee/Index')
+            $page->component('employee/index')
                 ->has('employees.data', 3)
                 ->where('employees.data.0.department_id', $department1->id)
                 ->where('employees.data.1.department_id', $department1->id)
@@ -333,22 +323,16 @@ class EmployeeFeatureTest extends TestCase
         $position1 = Position::factory()->create(['company_id' => $this->company->id]);
         $position2 = Position::factory()->create(['company_id' => $this->company->id]);
 
-        User::factory()->count(2)->create([
-            'company_id' => $this->company->id,
-        ])->each(function ($user) use ($position1) {
+        User::factory()->count(2)->forCompany($this->company->id)->create()->each(function ($user) use ($position1) {
             $user->userDetails()->update([
                 'position_id' => $position1->id,
-                'position' => $position1->name,
             ]);
             $user->assignRole($this->employeeRole);
         });
 
-        User::factory()->create([
-            'company_id' => $this->company->id,
-        ])->each(function ($user) use ($position2) {
+        User::factory()->forCompany($this->company->id)->create()->each(function ($user) use ($position2) {
             $user->userDetails()->update([
                 'position_id' => $position2->id,
-                'position' => $position2->name,
             ]);
             $user->assignRole($this->employeeRole);
         });
@@ -360,7 +344,7 @@ class EmployeeFeatureTest extends TestCase
         ]));
 
         $response->assertInertia(function (Assert $page) use ($position1) {
-            $page->component('Employee/Index')
+            $page->component('employee/index')
                 ->has('employees.data', 3)
                 ->where('employees.data.0.position_id', $position1->id)
                 ->where('employees.data.1.position_id', $position1->id)
@@ -376,6 +360,7 @@ class EmployeeFeatureTest extends TestCase
 
         // Create multiple roles
         $role1 = Role::create([
+            'company_id' => $this->company->id,
             'name' => 'role1',
             'display_name' => 'Role 1',
             'description' => 'First role',
@@ -384,6 +369,7 @@ class EmployeeFeatureTest extends TestCase
         ]);
 
         $role2 = Role::create([
+            'company_id' => $this->company->id,
             'name' => 'role2',
             'display_name' => 'Role 2',
             'description' => 'Second role',
@@ -392,7 +378,8 @@ class EmployeeFeatureTest extends TestCase
         ]);
 
         // Assign both roles to the user
-        $user->roles()->attach([$role1->id, $role2->id]);
+        $user->roles()->attach($role1->id, ['company_id' => $role1->company_id]);
+        $user->roles()->attach($role2->id, ['company_id' => $role2->company_id]);
 
         // Verify the user has both roles
         $this->assertTrue($user->roles()->where('name', 'role1')->exists());
@@ -412,7 +399,7 @@ class EmployeeFeatureTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertInertia(function (Assert $page) {
-            $page->component('Employee/Create')
+            $page->component('employee/create')
                 ->has('companies')
                 ->has('departments')
                 ->has('positions')
@@ -430,8 +417,6 @@ class EmployeeFeatureTest extends TestCase
             'email' => 'john@example.com',
             'password' => 'password123',
             'employee_code' => 'EMP123456',
-            'position' => 'HR Manager',
-            'department' => 'HR Department',
             'join_date' => now()->format('Y-m-d'),
             'status' => 'active',
             'branch_id' => $this->branch->id,
@@ -448,8 +433,6 @@ class EmployeeFeatureTest extends TestCase
 
         $this->assertDatabaseHas('user_details', [
             'employee_code' => 'EMP123456',
-            'position' => 'HR Manager',
-            'department' => 'HR Department',
             'status' => 'active',
             'branch_id' => $this->branch->id,
             'department_id' => $this->department->id,
@@ -461,9 +444,7 @@ class EmployeeFeatureTest extends TestCase
     #[Test]
     public function user_can_view_employee_edit_form()
     {
-        $employee = User::factory()->create([
-            'company_id' => $this->company->id,
-        ])->assignRole($this->employeeRole);
+        $employee = User::factory()->forCompany($this->company->id)->create()->assignRole($this->employeeRole);
 
         $this->actingAs($this->user);
 
@@ -471,7 +452,7 @@ class EmployeeFeatureTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertInertia(function (Assert $page) {
-            $page->component('Employee/Edit')
+            $page->component('employee/edit')
                 ->has('companies')
                 ->has('departments')
                 ->has('positions')
@@ -482,17 +463,13 @@ class EmployeeFeatureTest extends TestCase
     #[Test]
     public function user_can_update_employee_details()
     {
-        $employee = User::factory()->create([
-            'company_id' => $this->company->id,
-        ])->assignRole($this->employeeRole);
+        $employee = User::factory()->forCompany($this->company->id)->create()->assignRole($this->employeeRole);
 
         $this->actingAs($this->user);
 
         $response = $this->put(route('employee.update', $employee), [
             'name' => 'Updated Name',
             'email' => 'updated@example.com',
-            'position' => 'Updated Position',
-            'department' => 'Updated Department',
             'status' => 'on_leave',
             'branch_id' => $this->branch->id,
             'department_id' => $this->department->id,
@@ -509,8 +486,6 @@ class EmployeeFeatureTest extends TestCase
 
         $this->assertDatabaseHas('user_details', [
             'user_id' => $employee->id,
-            'position' => 'Updated Position',
-            'department' => 'Updated Department',
             'status' => 'on_leave',
             'branch_id' => $this->branch->id,
             'department_id' => $this->department->id,
@@ -529,7 +504,7 @@ class EmployeeFeatureTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertInertia(function (Assert $page) {
-            $page->component('Employee/Import')
+            $page->component('employee/import')
                 ->has('companies');
         });
     }

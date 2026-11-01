@@ -45,7 +45,7 @@ class DataTableTest extends TestCase
             ['name' => 'administrator'],
             ['display_name' => 'Administrator']
         );
-        $this->user->roles()->attach($adminRole);
+        $this->user->roles()->attach($adminRole->id, ['company_id' => $adminRole->company_id]);
     }
 
     /**

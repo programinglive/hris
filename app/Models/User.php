@@ -61,6 +61,18 @@ class User extends Authenticatable implements \Illuminate\Contracts\Auth\Authent
     }
 
     /**
+     * Alias for userDetails().
+     *
+     * Controllers across Attendance refer to `$user->detail`, while the
+     * canonical relation is `userDetails()`. Without this alias every one of
+     * those calls throws BadMethodCallException.
+     */
+    public function detail(): HasOne
+    {
+        return $this->userDetails();
+    }
+
+    /**
      * Get all of the brands that are associated with the user.
      */
     public function brands(): BelongsToMany
@@ -151,7 +163,11 @@ class User extends Authenticatable implements \Illuminate\Contracts\Auth\Authent
         }
 
         if (! $this->hasRole($role->name)) {
-            $this->roles()->attach($role);
+            // user_roles.company_id is NOT NULL and every role belongs to a
+            // company, so the pivot row inherits the role's company.
+            $this->roles()->attach($role->id, [
+                'company_id' => $role->company_id,
+            ]);
         }
     }
 

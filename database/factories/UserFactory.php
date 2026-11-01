@@ -28,7 +28,6 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
-            'primary_company_id' => null, // Will be set when creating first user
         ];
     }
 
@@ -90,5 +89,51 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    /**
+     * Place the user in a company.
+     *
+     * Company membership lives on `user_details`, not `users`; `User::company()`
+     * resolves it through `hasOneThrough`. Accepting `company_id` here keeps the
+     * intent of `User::factory()->forCompany($company)` readable without
+     * pretending the column exists on the users table.
+     */
+    public function forCompany($company): static
+    {
+        $companyId = $company instanceof \App\Models\Company ? $company->id : $company;
+
+        return $this->afterCreating(function (User $user) use ($companyId) {
+            $details = $user->userDetails;
+
+            if ($details) {
+                $details->forceFill(['company_id' => $companyId])->save();
+            } else {
+                $user->userDetails()->create([
+                    'user_id' => $user->id,
+                    'company_id' => $companyId,
+                    'status' => 'active',
+                ]);
+            }
+
+            WorkSchedule::where('is_default', true)
+                ->where('company_id', $companyId)
+                ->get()
+                ->each(function ($schedule) use ($user) {
+                    $user->workSchedules()->syncWithoutDetaching([
+                        $schedule->id => ['effective_date' => now(), 'is_active' => true],
+                    ]);
+                });
+
+            $defaultRole = \App\Models\Role::where('company_id', $companyId)
+                ->where('name', 'employee')
+                ->first();
+
+            if ($defaultRole) {
+                $user->roles()->syncWithoutDetaching([
+                    $defaultRole->id => ['company_id' => $companyId],
+                ]);
+            }
+        });
     }
 }

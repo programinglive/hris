@@ -29,18 +29,14 @@ class CompanyRequirementTest extends TestCase
         $this->expectException(\Illuminate\Validation\ValidationException::class);
 
         // Try to create user without company_id
-        User::factory()->create([
-            'company_id' => null,
-        ]);
+        User::factory()->forCompany(null)->create();
     }
 
     #[Test]
     public function user_details_creation_requires_company_id()
     {
         // Create a user
-        $user = User::factory()->create([
-            'company_id' => $this->company->id,
-        ]);
+        $user = User::factory()->forCompany($this->company->id)->create();
 
         $this->expectException(\Illuminate\Validation\ValidationException::class);
 
@@ -59,9 +55,7 @@ class CompanyRequirementTest extends TestCase
         $company2 = Company::factory()->create();
 
         // Create a user in company1
-        $user = User::factory()->create([
-            'company_id' => $company1->id,
-        ]);
+        $user = User::factory()->forCompany($company1->id)->create();
 
         $this->expectException(\Illuminate\Validation\ValidationException::class);
 
@@ -76,9 +70,7 @@ class CompanyRequirementTest extends TestCase
     public function company_id_cannot_be_changed()
     {
         // Create a user
-        $user = User::factory()->create([
-            'company_id' => $this->company->id,
-        ]);
+        $user = User::factory()->forCompany($this->company->id)->create();
 
         $this->expectException(\Illuminate\Validation\ValidationException::class);
 
@@ -94,8 +86,6 @@ class CompanyRequirementTest extends TestCase
         $this->expectException(\Illuminate\Validation\ValidationException::class);
 
         // Try to create user with non-existent company_id
-        User::factory()->create([
-            'company_id' => 999999, // Non-existent company
-        ]);
+        User::factory()->forCompany(999999)->create();
     }
 }

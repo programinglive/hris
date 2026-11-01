@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Company;
 use App\Models\Role;
+use App\Models\User;
 use App\Models\WorkSchedule;
 use App\Models\WorkShift;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -140,6 +141,21 @@ class CompanyFactory extends Factory
             return [
                 'is_active' => false,
             ];
+        });
+    }
+
+    /**
+     * Attach an owning user after the company is created.
+     *
+     * `owner_id` is nullable at insert time because the owner is created
+     * afterwards, so it is assigned in a second step.
+     */
+    public function withOwner(?User $owner = null): static
+    {
+        return $this->afterCreating(function (Company $company) use ($owner) {
+            $owner ??= User::factory()->create();
+
+            $company->forceFill(['owner_id' => $owner->id])->save();
         });
     }
 }
