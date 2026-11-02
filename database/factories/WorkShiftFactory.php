@@ -6,6 +6,8 @@ use App\Models\Company;
 use App\Models\WorkShift;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function fake;
+
 class WorkShiftFactory extends Factory
 {
     protected $model = WorkShift::class;

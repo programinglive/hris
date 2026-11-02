@@ -6,6 +6,8 @@ use App\Models\Company;
 use App\Models\Level;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function fake;
+
 class LevelFactory extends Factory
 {
     /**

@@ -5,6 +5,8 @@ namespace Database\Factories;
 use App\Models\WorkSchedule;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function fake;
+
 class WorkScheduleFactory extends Factory
 {
     protected $model = WorkSchedule::class;

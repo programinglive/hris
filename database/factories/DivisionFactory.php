@@ -6,6 +6,8 @@ use App\Models\Department;
 use App\Models\Division;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function fake;
+
 class DivisionFactory extends Factory
 {
     /**
