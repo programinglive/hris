@@ -46,15 +46,16 @@ Route::prefix('organization')->name('organization.')->group(function () {
         Route::get('/', [BrandController::class, 'index'])->name('index');
         Route::get('/create', [BrandController::class, 'create'])->name('create');
         Route::post('/', [BrandController::class, 'store'])->name('store');
+        // Brand Import routes
+        Route::get('/import', [BrandController::class, 'showImport'])->name('import');
+        Route::get('/import/template', [BrandController::class, 'downloadTemplate'])->name('import.template');
+        Route::post('/import/process', [BrandController::class, 'processImport'])->name('import.process');
+
         Route::get('/{brand}', [BrandController::class, 'show'])->name('show');
         Route::get('/{brand}/edit', [BrandController::class, 'edit'])->name('edit');
         Route::put('/{brand}', [BrandController::class, 'update'])->name('update');
         Route::delete('/{brand}', [BrandController::class, 'destroy'])->name('destroy');
 
-        // Brand Import routes
-        Route::get('/import', [BrandController::class, 'showImport'])->name('import');
-        Route::get('/import/template', [BrandController::class, 'downloadTemplate'])->name('import.template');
-        Route::post('/import/process', [BrandController::class, 'processImport'])->name('import.process');
     });
 
     // Department routes
@@ -62,14 +63,15 @@ Route::prefix('organization')->name('organization.')->group(function () {
         Route::get('/', [DepartmentController::class, 'index'])->name('index');
         Route::get('/create', [DepartmentController::class, 'create'])->name('create');
         Route::post('/', [DepartmentController::class, 'store'])->name('store');
+        // Department Import routes
+        Route::get('/import/template', [DepartmentController::class, 'downloadTemplate'])->name('import.template');
+        Route::post('/import/process', [DepartmentController::class, 'processImport'])->name('import.process');
+
         Route::get('/{department}', [DepartmentController::class, 'show'])->name('show');
         Route::get('/{department}/edit', [DepartmentController::class, 'edit'])->name('edit');
         Route::put('/{department}', [DepartmentController::class, 'update'])->name('update');
         Route::delete('/{department}', [DepartmentController::class, 'destroy'])->name('destroy');
 
-        // Department Import routes
-        Route::get('/import/template', [DepartmentController::class, 'downloadTemplate'])->name('import.template');
-        Route::post('/import/process', [DepartmentController::class, 'processImport'])->name('import.process');
     });
 
     // Division routes with Inertia.js
@@ -92,15 +94,16 @@ Route::prefix('organization')->name('organization.')->group(function () {
         Route::get('/', [SubDivisionController::class, 'index'])->name('index');
         Route::get('/create', [SubDivisionController::class, 'create'])->name('create');
         Route::post('/', [SubDivisionController::class, 'store'])->name('store');
+        // Sub Division Import routes
+        Route::get('/import', [SubDivisionController::class, 'import'])->name('import');
+        Route::get('/import/template', [SubDivisionController::class, 'downloadTemplate'])->name('import.template');
+        Route::post('/import/process', [SubDivisionController::class, 'processImport'])->name('import.process');
+
         Route::get('/{subdivision}', [SubDivisionController::class, 'show'])->name('show');
         Route::get('/{subdivision}/edit', [SubDivisionController::class, 'edit'])->name('edit');
         Route::put('/{subdivision}', [SubDivisionController::class, 'update'])->name('update');
         Route::delete('/{subdivision}', [SubDivisionController::class, 'destroy'])->name('destroy');
 
-        // Sub Division Import routes
-        Route::get('/import', [SubDivisionController::class, 'import'])->name('import');
-        Route::get('/import/template', [SubDivisionController::class, 'downloadTemplate'])->name('import.template');
-        Route::post('/import/process', [SubDivisionController::class, 'processImport'])->name('import.process');
     });
 
     // Level routes
