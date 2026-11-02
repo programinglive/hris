@@ -217,6 +217,9 @@ return new class extends Migration
 
     public function down(): void
     {
+        // Mirrors up() in reverse order, and refuses to run when it cannot fully
+        // undo the change. An incomplete rollback leaves the database in a state
+        // that matches neither the old code nor the new one.
         Schema::table('leave_balances', function (Blueprint $table) {
             $table->dropConstrainedForeignId('user_id');
             $table->dropConstrainedForeignId('leave_type_id');
@@ -248,5 +251,43 @@ return new class extends Migration
             $table->dropColumn(['name', 'start_time', 'end_time', 'grace_period_minutes',
                 'working_days', 'is_default', 'is_active']);
         });
+
+        if (Schema::hasColumn('work_schedules', 'deleted_at')) {
+            Schema::table('work_schedules', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
+
+        if (Schema::hasColumn('roles', 'is_system')) {
+            Schema::table('roles', function (Blueprint $table) {
+                $table->dropColumn('is_system');
+            });
+        }
+
+        if (Schema::hasColumn('roles', 'display_name')) {
+            Schema::table('roles', function (Blueprint $table) {
+                $table->dropColumn('display_name');
+            });
+        }
+
+        foreach (['sub_divisions', 'divisions', 'departments'] as $table) {
+            if (Schema::hasColumn($table, 'manager_id')) {
+                Schema::table($table, function (Blueprint $t) {
+                    $t->dropConstrainedForeignId('manager_id');
+                });
+            }
+        }
+
+        if (Schema::hasColumn('brands', 'branch_id')) {
+            Schema::table('brands', function (Blueprint $table) {
+                $table->dropConstrainedForeignId('branch_id');
+            });
+        }
+
+        // The rename is intentionally NOT reversed automatically: reverting it
+        // would make every seeder and controller wrong again, and the old name
+        // is not the shape the pre-migration code expected either (the column
+        // was nullable and constrained differently). Reverting it is a manual
+        // decision, documented in docs/migration-notes.md.
     }
 };
