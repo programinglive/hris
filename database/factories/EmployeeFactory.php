@@ -17,7 +17,7 @@ class EmployeeFactory extends Factory
             'company_id' => function (array $attributes) {
                 return $attributes['user_id'] ? User::find($attributes['user_id'])->userDetails->company_id : null;
             },
-            'employee_id' => $this->faker->unique()->numberBetween(100000, 999999),
+            'employee_id' => fake()->unique()->numberBetween(100000, 999999),
             'join_date' => now()->subDays(rand(1, 365)),
             'status' => 'active',
         ];

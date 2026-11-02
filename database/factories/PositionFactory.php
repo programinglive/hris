@@ -27,8 +27,8 @@ class PositionFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->words(3, true),
-            'description' => $this->faker->paragraph,
+            'name' => fake()->unique()->words(3, true),
+            'description' => fake()->paragraph,
             'company_id' => Company::factory(),
             'department_id' => Department::factory(),
             'division_id' => Division::factory(),

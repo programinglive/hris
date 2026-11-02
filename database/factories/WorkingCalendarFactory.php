@@ -18,10 +18,10 @@ class WorkingCalendarFactory extends Factory
         $start = now()->startOfYear();
 
         return [
-            'name' => 'Calendar '.$this->faker->unique()->numerify('####'),
+            'name' => 'Calendar '.fake()->unique()->numerify('####'),
             'start_date' => $start->toDateString(),
             'end_date' => $start->copy()->endOfYear()->toDateString(),
-            'description' => $this->faker->sentence(),
+            'description' => fake()->sentence(),
             'is_active' => true,
             'company_id' => Company::factory(),
         ];

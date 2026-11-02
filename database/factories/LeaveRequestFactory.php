@@ -23,7 +23,7 @@ class LeaveRequestFactory extends Factory
             'start_date' => $startDate,
             'end_date' => $endDate,
             'total_days' => $startDate->diffInDays($endDate) + 1,
-            'reason' => $this->faker->sentence,
+            'reason' => fake()->sentence,
             'status' => 'pending',
         ];
     }

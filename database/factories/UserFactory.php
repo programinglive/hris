@@ -43,9 +43,9 @@ class UserFactory extends Factory
             $user->userDetails()->firstOrCreate(
                 ['user_id' => $user->id],
                 [
-                    'phone' => $this->faker->phoneNumber(),
-                    'address' => $this->faker->address(),
-                    'date_of_birth' => $this->faker->dateTimeBetween('-50 years', '-20 years'),
+                    'phone' => fake()->phoneNumber(),
+                    'address' => fake()->address(),
+                    'date_of_birth' => fake()->dateTimeBetween('-50 years', '-20 years'),
                 ]
             );
 

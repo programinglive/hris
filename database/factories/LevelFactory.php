@@ -23,11 +23,11 @@ class LevelFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->jobTitle(),
-            'description' => $this->faker->paragraph(),
-            'level_order' => $this->faker->numberBetween(1, 10),
+            'name' => fake()->jobTitle(),
+            'description' => fake()->paragraph(),
+            'level_order' => fake()->numberBetween(1, 10),
             'company_id' => Company::factory(),
-            'is_active' => $this->faker->boolean(80),
+            'is_active' => fake()->boolean(80),
         ];
     }
 }
