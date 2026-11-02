@@ -69,13 +69,17 @@ class UserFactory extends Factory
                 ]);
             }
 
-            // Assign default role
-            $defaultRole = \App\Models\Role::where('name', 'employee')
-                ->first();
+            // Assign the company's employee role. users has no
+            // primary_company_id column; membership lives on user_details.
+            $companyId = $user->userDetails?->company_id;
+
+            $defaultRole = $companyId
+                ? \App\Models\Role::where('company_id', $companyId)->where('name', 'employee')->first()
+                : null;
 
             if ($defaultRole) {
-                $user->roles()->attach($defaultRole->id, [
-                    'company_id' => $user->primary_company_id,
+                $user->roles()->syncWithoutDetaching([
+                    $defaultRole->id => ['company_id' => $companyId],
                 ]);
             }
         });
@@ -124,16 +128,6 @@ class UserFactory extends Factory
                         $schedule->id => ['effective_date' => now(), 'is_active' => true],
                     ]);
                 });
-
-            $defaultRole = \App\Models\Role::where('company_id', $companyId)
-                ->where('name', 'employee')
-                ->first();
-
-            if ($defaultRole) {
-                $user->roles()->syncWithoutDetaching([
-                    $defaultRole->id => ['company_id' => $companyId],
-                ]);
-            }
         });
     }
 }

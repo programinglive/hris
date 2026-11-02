@@ -124,8 +124,11 @@ class EmployeeFeatureTest extends TestCase
         // Create an employee
         $employee = User::factory()->forCompany($this->company->id)->create();
 
-        // Create user details
-        $employee->userDetails()->create([
+        // Update the row forCompany() already created; a second insert makes
+        // hasOne resolve the wrong record.
+        $employee->userDetails()->updateOrCreate(
+            ['user_id' => $employee->id],
+            [
             'company_id' => $this->company->id,
             'employee_code' => 'EMP'.$this->faker->unique()->numerify('######'),
             'status' => 'active',
@@ -133,7 +136,8 @@ class EmployeeFeatureTest extends TestCase
             'branch_id' => $this->branch->id,
             'department_id' => $this->department->id,
             'position_id' => $this->position->id,
-        ]);
+            ]
+        );
 
         // Assign employee role
         $employee->assignRole($this->employeeRole);
@@ -162,11 +166,17 @@ class EmployeeFeatureTest extends TestCase
         $employee = User::factory()->forCompany($this->company->id)->create();
 
         // Assign employee role
-        $employee->roles()->attach($this->employeeRole);
+        // forCompany() already attaches the company's employee role, so a plain
+        // attach() hits the unique(user_id, role_id, company_id) index.
+        $employee->roles()->syncWithoutDetaching([
+            $this->employeeRole->id => ['company_id' => $this->employeeRole->company_id],
+        ]);
 
-        // Create user details
-        $userDetail = UserDetail::create([
-            'user_id' => $employee->id,
+        // Update the row forCompany() already created; a second insert makes
+        // hasOne resolve the wrong record.
+        $employee->userDetails()->updateOrCreate(
+            ['user_id' => $employee->id],
+            [
             'company_id' => $this->company->id,
             'employee_code' => 'EMP'.$this->faker->unique()->numerify('######'),
             'status' => 'active',
@@ -174,7 +184,9 @@ class EmployeeFeatureTest extends TestCase
             'branch_id' => $this->branch->id,
             'department_id' => $this->department->id,
             'position_id' => $this->position->id,
-        ]);
+            ]
+        );
+        $userDetail = $employee->userDetails()->first();
 
         // Make the request
         $response = $this->actingAs($this->user)
@@ -183,14 +195,14 @@ class EmployeeFeatureTest extends TestCase
         // Assert the response
         $response->assertInertia(function (Assert $page) use ($employee, $userDetail) {
             $page->component('employee/index')
-                ->has('employees', 1)
-                ->where('employees.0.name', $employee->name)
-                ->where('employees.0.email', $employee->email)
-                ->where('employees.0.userDetails.employee_code', $userDetail->employee_code)
-                ->where('employees.0.userDetails.position.name', $userDetail->position->name)
-                ->where('employees.0.userDetails.department.name', $userDetail->department->name)
-                ->where('employees.0.userDetails.status', $userDetail->status)
-                ->where('employees.0.userDetails.company.name', $userDetail->company->name);
+                ->has('employees.data', 1)
+                ->where('employees.data.0.name', $employee->name)
+                ->where('employees.data.0.email', $employee->email)
+                ->where('employees.data.0.user_details.employee_code', $userDetail->employee_code)
+                ->where('employees.data.0.user_details.position.name', $userDetail->position->name)
+                ->where('employees.data.0.user_details.department.name', $userDetail->department->name)
+                ->where('employees.data.0.user_details.status', $userDetail->status)
+                ->where('employees.data.0.user_details.company.name', $userDetail->company->name);
         });
     }
 
@@ -201,8 +213,11 @@ class EmployeeFeatureTest extends TestCase
             'name' => 'John Doe',
         ]);
 
-        // Create user details
-        $employee->userDetails()->create([
+        // Update the row forCompany() already created; a second insert makes
+        // hasOne resolve the wrong record.
+        $employee->userDetails()->updateOrCreate(
+            ['user_id' => $employee->id],
+            [
             'company_id' => $this->company->id,
             'employee_code' => 'EMP'.$this->faker->unique()->numerify('######'),
             'status' => 'active',
@@ -210,7 +225,8 @@ class EmployeeFeatureTest extends TestCase
             'branch_id' => $this->branch->id,
             'department_id' => $this->department->id,
             'position_id' => $this->position->id,
-        ]);
+            ]
+        );
 
         // Assign employee role
         $employee->assignRole($this->employeeRole);
@@ -246,7 +262,7 @@ class EmployeeFeatureTest extends TestCase
         $inactiveEmployee = User::factory()
             ->create();
 
-        $role = Role::factory()->create(['name' => 'employee']);
+        $role = $this->employeeRole;
         $activeEmployee->assignRole($role);
         $inactiveEmployee->assignRole($role);
 
@@ -444,7 +460,8 @@ class EmployeeFeatureTest extends TestCase
     #[Test]
     public function user_can_view_employee_edit_form()
     {
-        $employee = User::factory()->forCompany($this->company->id)->create()->assignRole($this->employeeRole);
+        $employee = User::factory()->forCompany($this->company->id)->create();
+        $employee->assignRole($this->employeeRole);
 
         $this->actingAs($this->user);
 
@@ -463,7 +480,8 @@ class EmployeeFeatureTest extends TestCase
     #[Test]
     public function user_can_update_employee_details()
     {
-        $employee = User::factory()->forCompany($this->company->id)->create()->assignRole($this->employeeRole);
+        $employee = User::factory()->forCompany($this->company->id)->create();
+        $employee->assignRole($this->employeeRole);
 
         $this->actingAs($this->user);
 
@@ -530,7 +548,7 @@ class EmployeeFeatureTest extends TestCase
         $employee = User::factory()
             ->create();
 
-        $role = Role::factory()->create(['name' => 'employee']);
+        $role = $this->employeeRole;
         $employee->assignRole($role);
 
         $userDetail = UserDetail::factory()->create([
