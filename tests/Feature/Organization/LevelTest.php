@@ -53,7 +53,7 @@ class LevelTest extends TestCase
             'description' => 'Entry level position',
             'level_order' => 1,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         Level::create([
@@ -61,7 +61,7 @@ class LevelTest extends TestCase
             'description' => 'Senior level position',
             'level_order' => 2,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Visit the level list page
@@ -84,7 +84,7 @@ class LevelTest extends TestCase
             'description' => 'Entry level position',
             'level_order' => 1,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         Level::create([
@@ -92,7 +92,7 @@ class LevelTest extends TestCase
             'description' => 'Senior level position',
             'level_order' => 2,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Search for Junior
@@ -114,7 +114,7 @@ class LevelTest extends TestCase
             'description' => 'Active level description',
             'level_order' => 1,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         Level::create([
@@ -122,7 +122,7 @@ class LevelTest extends TestCase
             'description' => 'Inactive level description',
             'level_order' => 2,
             'company_id' => $this->company->id,
-            'status' => 'inactive',
+            'is_active' => false,
         ]);
 
         // Filter by status
@@ -143,7 +143,7 @@ class LevelTest extends TestCase
             'description' => 'New Level Description',
             'level_order' => 3,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ];
 
         $response = $this->post('/organization/level', $levelData);
@@ -162,7 +162,7 @@ class LevelTest extends TestCase
             // Missing required fields
         ]);
 
-        $response->assertSessionHasErrors(['name', 'level_order', 'company_id', 'status']);
+        $response->assertSessionHasErrors(['name', 'level_order', 'company_id']);
     }
 
     #[Test]
@@ -173,7 +173,7 @@ class LevelTest extends TestCase
             'description' => 'Test Level Description',
             'level_order' => 1,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this->get('/organization/level/'.$level->id);
@@ -194,7 +194,7 @@ class LevelTest extends TestCase
             'description' => 'Test Level Description',
             'level_order' => 1,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $updatedData = [
@@ -202,7 +202,7 @@ class LevelTest extends TestCase
             'description' => 'Updated Level Description',
             'level_order' => 2,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ];
 
         $response = $this->put('/organization/level/'.$level->id, $updatedData);
@@ -223,14 +223,14 @@ class LevelTest extends TestCase
             'description' => 'Test Level Description',
             'level_order' => 1,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this->put('/organization/level/'.$level->id, [
             // Missing required fields
         ]);
 
-        $response->assertSessionHasErrors(['name', 'level_order', 'company_id', 'status']);
+        $response->assertSessionHasErrors(['name', 'level_order', 'company_id']);
     }
 
     #[Test]
@@ -242,7 +242,7 @@ class LevelTest extends TestCase
             'description' => 'Test Level Description',
             'level_order' => 1,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Mock the controller to bypass the positions check
@@ -272,7 +272,7 @@ class LevelTest extends TestCase
             'description' => 'Test Level Description',
             'level_order' => 1,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Mock the controller to simulate a level with positions
@@ -339,7 +339,7 @@ class LevelTest extends TestCase
             'description' => 'Imported Level Description',
             'level_order' => 5,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
         $writer->close();
 
@@ -368,7 +368,7 @@ class LevelTest extends TestCase
             'description' => 'Imported Level Description',
             'level_order' => 5,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Clean up using Storage facade

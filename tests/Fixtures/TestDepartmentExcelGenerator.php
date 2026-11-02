@@ -39,7 +39,7 @@ class TestDepartmentExcelGenerator
             'company_id' => 'company_id',
             'branch_id' => 'branch_id',
             'manager_id' => 'manager_id',
-            'status' => 'status',
+            'is_active' => 'is_active',
         ]);
 
         // Add test data with valid company_id and branch_id
@@ -49,7 +49,7 @@ class TestDepartmentExcelGenerator
             'company_id' => $company->id,
             'branch_id' => $branch->id,
             'manager_id' => '',
-            'status' => 'active',
+            'is_active' => 'Yes',
         ]);
 
         $writer->addRow([
@@ -58,7 +58,7 @@ class TestDepartmentExcelGenerator
             'company_id' => $company->id,
             'branch_id' => $branch->id, // Ensure this has a valid branch_id
             'manager_id' => '',
-            'status' => 'active',
+            'is_active' => 'Yes',
         ]);
 
         $writer->addRow([
@@ -67,7 +67,7 @@ class TestDepartmentExcelGenerator
             'company_id' => $company->id,
             'branch_id' => $branch->id,
             'manager_id' => '',
-            'status' => 'inactive',
+            'is_active' => 'No',
         ]);
 
         $writer->close();
@@ -104,7 +104,7 @@ class TestDepartmentExcelGenerator
             'company_id' => 'company_id',
             'branch_id' => 'branch_id',
             'manager_id' => 'manager_id',
-            'status' => 'status',
+            'is_active' => 'is_active',
         ]);
 
         // Add invalid test data (missing required company_id)
@@ -114,7 +114,7 @@ class TestDepartmentExcelGenerator
             'company_id' => '',
             'branch_id' => $branch->id,
             'manager_id' => '',
-            'status' => 'active',
+            'is_active' => 'Yes',
         ]);
 
         // Add invalid test data (invalid status)

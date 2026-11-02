@@ -66,7 +66,7 @@ class DepartmentTest extends TestCase
             'description' => 'Human Resources',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         Department::create([
@@ -74,7 +74,7 @@ class DepartmentTest extends TestCase
             'description' => 'Information Technology',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Visit the department list page
@@ -98,7 +98,7 @@ class DepartmentTest extends TestCase
             'description' => 'Human Resources',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         Department::create([
@@ -106,7 +106,7 @@ class DepartmentTest extends TestCase
             'description' => 'Information Technology',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Mock the DepartmentController to return filtered results
@@ -122,7 +122,7 @@ class DepartmentTest extends TestCase
                                 'description' => 'Human Resources',
                                 'company_id' => $this->company->id,
                                 'branch_id' => $this->branch->id,
-                                'status' => 'active',
+                                'is_active' => true,
                                 'company' => ['name' => 'Test Company'],
                                 'branch' => ['name' => 'Test Branch'],
                             ],
@@ -155,7 +155,7 @@ class DepartmentTest extends TestCase
             'phone' => '987654321',
             'email' => 'info@secondcompany.com',
             'website' => 'www.secondcompany.com',
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Create departments for different companies
@@ -164,7 +164,7 @@ class DepartmentTest extends TestCase
             'description' => 'Human Resources',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         Department::create([
@@ -172,7 +172,7 @@ class DepartmentTest extends TestCase
             'description' => 'Finance',
             'company_id' => $company2->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Mock the DepartmentController to return filtered results
@@ -188,7 +188,7 @@ class DepartmentTest extends TestCase
                                 'description' => 'Human Resources',
                                 'company_id' => $this->company->id,
                                 'branch_id' => $this->branch->id,
-                                'status' => 'active',
+                                'is_active' => true,
                                 'company' => ['name' => 'Test Company'],
                                 'branch' => ['name' => 'Test Branch'],
                             ],
@@ -221,7 +221,7 @@ class DepartmentTest extends TestCase
             'phone' => '123987456',
             'email' => 'info@secondbranch.com',
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Create departments for different branches
@@ -230,7 +230,7 @@ class DepartmentTest extends TestCase
             'description' => 'Human Resources',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         Department::create([
@@ -238,7 +238,7 @@ class DepartmentTest extends TestCase
             'description' => 'Marketing',
             'company_id' => $this->company->id,
             'branch_id' => $branch2->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Mock the DepartmentController to return filtered results
@@ -254,7 +254,7 @@ class DepartmentTest extends TestCase
                                 'description' => 'Human Resources',
                                 'company_id' => $this->company->id,
                                 'branch_id' => $this->branch->id,
-                                'status' => 'active',
+                                'is_active' => true,
                                 'company' => ['name' => 'Test Company'],
                                 'branch' => ['name' => 'Test Branch'],
                             ],
@@ -289,7 +289,7 @@ class DepartmentTest extends TestCase
             'description' => 'New Department Description',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response->assertRedirect('/organization/department/index');
@@ -298,7 +298,7 @@ class DepartmentTest extends TestCase
             'description' => 'New Department Description',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
     }
 
@@ -311,7 +311,7 @@ class DepartmentTest extends TestCase
             'description' => 'Human Resources',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // View the department
@@ -334,7 +334,7 @@ class DepartmentTest extends TestCase
             'description' => 'Human Resources',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Visit the edit page
@@ -347,7 +347,7 @@ class DepartmentTest extends TestCase
             'description' => 'Updated Description',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'inactive',
+            'is_active' => false,
         ]);
 
         $response->assertRedirect('/organization/department/index');
@@ -355,7 +355,7 @@ class DepartmentTest extends TestCase
             'id' => $department->id,
             'name' => 'Updated Department',
             'description' => 'Updated Description',
-            'status' => 'inactive',
+            'is_active' => false,
         ]);
     }
 
@@ -368,7 +368,7 @@ class DepartmentTest extends TestCase
             'description' => 'Human Resources',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Delete the department

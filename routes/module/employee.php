@@ -3,6 +3,7 @@
 // Employee routes
 
 use App\Http\Controllers\Employee\EmployeeController;
+use App\Http\Controllers\Employee\EmployeeImportController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('employee')->name('employee.')->group(function () {
@@ -15,9 +16,9 @@ Route::prefix('employee')->name('employee.')->group(function () {
     Route::delete('/{id}', [EmployeeController::class, 'destroy'])->name('destroy');
 
     // Employee Import routes
-    Route::get('/import', [EmployeeController::class, 'showImportForm'])->name('import');
-    Route::get('/import/template', [EmployeeController::class, 'downloadTemplate'])->name('import.template');
-    Route::post('/import/process', [EmployeeController::class, 'processImport'])->name('import.process');
+    Route::get('/import', [EmployeeImportController::class, 'showImportForm'])->name('import');
+    Route::get('/import/template', [EmployeeImportController::class, 'downloadTemplate'])->name('import.template');
+    Route::post('/import/process', [EmployeeImportController::class, 'processImport'])->name('import.process');
 
     // Work Shift routes
     Route::prefix('work-shift')->name('work-shift.')->group(function () {
