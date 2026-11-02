@@ -191,6 +191,16 @@ return new class extends Migration
             }
         });
 
+        // LeaveType and LeaveRequest use the SoftDeletes trait; the tables were
+        // scaffolded without the column, so every query against them failed.
+        foreach (['leave_types', 'leave_requests', 'leave_balances'] as $table) {
+            if (! Schema::hasColumn($table, 'deleted_at')) {
+                Schema::table($table, function (Blueprint $t) {
+                    $t->softDeletes();
+                });
+            }
+        }
+
         Schema::table('leave_balances', function (Blueprint $table) {
             if (! Schema::hasColumn('leave_balances', 'user_id')) {
                 $table->foreignId('user_id')->after('id')

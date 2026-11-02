@@ -58,10 +58,6 @@ Route::prefix('attendance')->name('attendance.')->group(function () {
         Route::get('/', [WorkShiftController::class, 'index'])->name('index');
         Route::get('/create', [WorkShiftController::class, 'create'])->name('create');
         Route::post('/', [WorkShiftController::class, 'store'])->name('store');
-        Route::get('/{workShift}', [WorkShiftController::class, 'show'])->name('show');
-        Route::get('/{workShift}/edit', [WorkShiftController::class, 'edit'])->name('edit');
-        Route::put('/{workShift}', [WorkShiftController::class, 'update'])->name('update');
-        Route::delete('/{workShift}', [WorkShiftController::class, 'destroy'])->name('destroy');
 
         // User Working Shift Assignment routes
         Route::prefix('assignment')->name('assignment.')->group(function () {
@@ -73,5 +69,10 @@ Route::prefix('attendance')->name('attendance.')->group(function () {
             Route::put('/{userWorkShift}', [UserWorkShiftController::class, 'update'])->name('update');
             Route::delete('/{userWorkShift}', [UserWorkShiftController::class, 'destroy'])->name('destroy');
         });
+        Route::get('/{workShift}', [WorkShiftController::class, 'show'])->name('show');
+        Route::get('/{workShift}/edit', [WorkShiftController::class, 'edit'])->name('edit');
+        Route::put('/{workShift}', [WorkShiftController::class, 'update'])->name('update');
+        Route::delete('/{workShift}', [WorkShiftController::class, 'destroy'])->name('destroy');
+
     });
 });

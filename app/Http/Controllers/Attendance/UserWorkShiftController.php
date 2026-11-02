@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Attendance;
 
 use App\Http\Controllers\Controller;
-use App\Models\Attendance\UserWorkShift;
-use App\Models\Attendance\WorkShift;
+use App\Models\UserWorkShift;
+use App\Models\WorkShift;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,8 +33,8 @@ class UserWorkShiftController extends Controller
      */
     public function create(): Response
     {
-        $users = User::with('userDetail')
-            ->whereHas('userDetail', function ($query) {
+        $users = User::with('userDetails')
+            ->whereHas('userDetails', function ($query) {
                 $query->where('status', 'active');
             })
             ->orderBy('name')
@@ -125,8 +125,8 @@ class UserWorkShiftController extends Controller
     {
         $userWorkShift->load(['user', 'workShift']);
 
-        $users = User::with('userDetail')
-            ->whereHas('userDetail', function ($query) {
+        $users = User::with('userDetails')
+            ->whereHas('userDetails', function ($query) {
                 $query->where('status', 'active');
             })
             ->orderBy('name')
