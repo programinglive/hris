@@ -117,14 +117,14 @@ class TestDepartmentExcelGenerator
             'is_active' => 'Yes',
         ]);
 
-        // Add invalid test data (invalid status)
+        // Add invalid test data (invalid company_id -> row must be rejected)
         $writer->addRow([
             'name' => 'Invalid Department 2',
             'description' => 'Invalid Department 2 Description',
-            'company_id' => $company->id,
+            'company_id' => 999999,
             'branch_id' => $branch->id,
             'manager_id' => '',
-            'status' => 'invalid_status',
+            'is_active' => 'Yes',
         ]);
 
         $writer->close();

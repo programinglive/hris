@@ -106,7 +106,7 @@ class WorkScheduleTest extends TestCase
         // Route is employee/{id}/work-schedule, and the controller validates
         // schedule_id with exists:work_schedules,id before anything else.
         $response = $this->postJson(
-            route('employee.work-schedule.store', ['id' => $this->user->id]),
+            route('employee.work-schedule.store', ['user' => $this->user->id]),
             [
                 'schedule_id' => 999999, // Non-existent schedule
                 'effective_date' => now()->toDateString(),

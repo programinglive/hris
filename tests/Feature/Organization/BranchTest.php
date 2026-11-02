@@ -343,6 +343,8 @@ class BranchTest extends TestCase
         $writer->addRow([
             'name' => 'name',
             'code' => 'code',
+            'company_code' => 'company_code',
+            'company_name' => 'company_name',
             'address' => 'address',
             'city' => 'city',
             'phone' => 'phone',
@@ -354,6 +356,8 @@ class BranchTest extends TestCase
         $writer->addRow([
             'name' => 'Test Import Branch 1',
             'code' => 'IMPORT001',
+            'company_code' => $this->company->code,
+            'company_name' => $this->company->name,
             'address' => '111 Import Street',
             'city' => 'Import City 1',
             'phone' => '1111111111',
@@ -364,6 +368,8 @@ class BranchTest extends TestCase
         $writer->addRow([
             'name' => 'Test Import Branch 2',
             'code' => 'IMPORT002',
+            'company_code' => $this->company->code,
+            'company_name' => $this->company->name,
             'address' => '222 Import Street',
             'city' => 'Import City 2',
             'phone' => '2222222222',
@@ -430,6 +436,8 @@ class BranchTest extends TestCase
         $writer->addRow([
             'name' => 'name',
             'code' => 'code',
+            'company_code' => 'company_code',
+            'company_name' => 'company_name',
             'address' => 'address',
             'city' => 'city',
             'phone' => 'phone',
@@ -493,11 +501,10 @@ class BranchTest extends TestCase
             'file' => $file,
         ]);
 
-        // Assert validation error
         // Validation failures on this route use back()->withErrors(), which
-        // yields a 302 redirect rather than a 422 JSON response.
+        // yields a 302 redirect rather than a 422 JSON body.
         $response->assertRedirect();
-        $response->assertJsonValidationErrors(['file']);
+        $response->assertSessionHasErrors(['file']);
     }
 
     #[Test]

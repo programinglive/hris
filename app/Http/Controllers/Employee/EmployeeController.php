@@ -238,6 +238,45 @@ class EmployeeController extends Controller
         return redirect()->route('employee.index')->with('success', 'Employee deleted successfully');
     }
 
+
+    /**
+     * Assign a work shift to an employee for a given date.
+     *
+     * The route has always pointed at this method, but it did not exist, so
+     * every call died with BadMethodCallException.
+     */
+    public function assignWorkShift(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'shift_id' => 'required|exists:work_shifts,id',
+            'date' => 'required|date',
+        ]);
+
+        $pivot = ['date' => $validated['date']];
+
+        // user_work_shifts is unique per (user, shift, date); attaching the same
+        // triple twice would raise a constraint violation.
+        $user->workShifts()->syncWithoutDetaching([
+            $validated['shift_id'] => $pivot,
+        ]);
+
+        return $request->wantsJson()
+            ? response()->json(['success' => true, 'message' => 'Work shift assigned.'])
+            : back()->with('success', 'Work shift assigned.');
+    }
+
+    /**
+     * Remove a work shift from an employee.
+     */
+    public function removeWorkShift(Request $request, User $user, \App\Models\WorkShift $shift)
+    {
+        $user->workShifts()->detach($shift->id);
+
+        return $request->wantsJson()
+            ? response()->json(['success' => true, 'message' => 'Work shift removed.'])
+            : back()->with('success', 'Work shift removed.');
+    }
+
     /**
      * Assign a work schedule to an employee.
      */
