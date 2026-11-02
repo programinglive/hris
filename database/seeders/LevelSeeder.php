@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Concerns\TruncatesTablesPortably;
 use App\Models\Company;
 use App\Models\Level;
 use Illuminate\Database\Seeder;
@@ -9,15 +10,16 @@ use Illuminate\Support\Facades\DB;
 
 class LevelSeeder extends Seeder
 {
+    use TruncatesTablesPortably;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        $this->clearTables(['levels']);
+
         // Clear existing levels to avoid duplicates
-        DB::statement('PRAGMA foreign_keys = OFF');
-        Level::truncate();
-        DB::statement('PRAGMA foreign_keys = ON');
 
         // Get all companies
         $companies = Company::all();

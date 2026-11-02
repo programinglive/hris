@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Concerns\TruncatesTablesPortably;
 use App\Models\Company;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
@@ -9,15 +10,16 @@ use Illuminate\Support\Facades\DB;
 
 class RoleSeeder extends Seeder
 {
+    use TruncatesTablesPortably;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        $this->clearTables(['roles']);
+
         // Clear existing roles to avoid duplicates
-        DB::statement('PRAGMA foreign_keys = OFF');
-        Role::truncate();
-        DB::statement('PRAGMA foreign_keys = ON');
 
         // Create default company if it doesn't exist
         $defaultCompany = \App\Models\Company::firstOrCreate([

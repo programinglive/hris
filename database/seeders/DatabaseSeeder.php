@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Concerns\TruncatesTablesPortably;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
@@ -17,19 +18,16 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
+    use TruncatesTablesPortably;
+
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // For SQLite, we use pragma to disable foreign keys
-        DB::statement('PRAGMA foreign_keys = OFF');
-
-        // Clear existing data to avoid duplicates
-        DB::table('user_brands')->truncate();
-        UserDetail::truncate();
-        User::truncate();
-        DB::statement('PRAGMA foreign_keys = ON');
+        // Truncate requires elevated rights on PostgreSQL; DELETE works on all
+        // supported drivers.
+        $this->clearTables(['user_brands', 'user_details', 'users']);
 
         // Create test user with administrator role
         $testUser = User::create([

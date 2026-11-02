@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Concerns\TruncatesTablesPortably;
 use App\Models\Brand;
 use App\Models\Company;
 use Illuminate\Database\Seeder;
@@ -9,15 +10,16 @@ use Illuminate\Support\Facades\DB;
 
 class BrandSeeder extends Seeder
 {
+    use TruncatesTablesPortably;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        $this->clearTables(['brands']);
+
         // Clear existing brands to avoid duplicates
-        DB::statement('PRAGMA foreign_keys = OFF');
-        Brand::truncate();
-        DB::statement('PRAGMA foreign_keys = ON');
 
         // Get all companies
         $companies = Company::all();

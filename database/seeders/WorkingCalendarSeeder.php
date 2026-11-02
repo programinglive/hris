@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Concerns\TruncatesTablesPortably;
 use App\Models\Company;
 use App\Models\WorkingCalendar;
 use Carbon\Carbon;
@@ -10,15 +11,16 @@ use Illuminate\Support\Facades\DB;
 
 class WorkingCalendarSeeder extends Seeder
 {
+    use TruncatesTablesPortably;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        $this->clearTables(['working_calendars']);
+
         // Clear existing working calendars to avoid duplicates
-        DB::statement('PRAGMA foreign_keys = OFF');
-        WorkingCalendar::truncate();
-        DB::statement('PRAGMA foreign_keys = ON');
 
         $this->command->info('Seeding working calendars...');
 
