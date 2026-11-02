@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Company;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -89,5 +90,28 @@ class CompanySeeder extends Seeder
             ->create([
                 'owner_id' => $admin->id,
             ]);
+
+        // The demo admin needs a role on the company that actually has the seed
+        // roles. RoleSeeder creates its roles on 'Default Company', not on the
+        // companies this seeder creates, so the role has to be looked up on the
+        // company the admin ends up belonging to — which is why this runs against
+        // the role's own company rather than the first company owned by $admin.
+        $adminRole = Role::where('name', 'administrator')->orderBy('id')->first();
+
+        if ($adminRole) {
+            $companyId = $adminRole->company_id;
+
+            $admin->userDetails()->firstOrCreate(
+                ['user_id' => $admin->id],
+                [
+                    'company_id' => $companyId,
+                    'employee_code' => 'ADM-000001',
+                    'status' => 'active',
+                    'join_date' => now(),
+                ]
+            );
+
+            $admin->assignRole($adminRole);
+        }
     }
 }
