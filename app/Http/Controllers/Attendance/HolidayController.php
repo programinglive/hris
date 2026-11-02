@@ -21,7 +21,7 @@ class HolidayController extends Controller
             'is_recurring' => 'boolean',
         ]);
 
-        $validated['company_id'] = Auth::user()->company_id;
+        $validated['company_id'] = Auth::user()?->userDetails?->company_id;
 
         Holiday::create($validated);
 

@@ -69,7 +69,7 @@ class LevelControllerTest extends TestCase
             'description' => 'Test Description',
             'level_order' => 1,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'is_active' => true,
         ];
 
         $response = $this->post(route('organization.level.store'), $levelData);
@@ -92,7 +92,7 @@ class LevelControllerTest extends TestCase
             // Missing required fields
         ]);
 
-        $response->assertSessionHasErrors(['name', 'level_order', 'company_id', 'status']);
+        $response->assertSessionHasErrors(['name', 'level_order', 'company_id']);
     }
 
     #[Test]
@@ -140,7 +140,7 @@ class LevelControllerTest extends TestCase
             'description' => 'Updated Description',
             'level_order' => 2,
             'company_id' => $this->company->id,
-            'status' => 'inactive',
+            'is_active' => false,
         ];
 
         $response = $this->put(route('organization.level.update', $level), $updatedData);
@@ -153,7 +153,7 @@ class LevelControllerTest extends TestCase
             'name' => 'Updated Level',
             'description' => 'Updated Description',
             'level_order' => 2,
-            'status' => 'inactive',
+            'is_active' => false,
         ]);
     }
 
@@ -168,7 +168,7 @@ class LevelControllerTest extends TestCase
             // Missing required fields
         ]);
 
-        $response->assertSessionHasErrors(['name', 'level_order', 'company_id', 'status']);
+        $response->assertSessionHasErrors(['name', 'level_order', 'company_id']);
     }
 
     #[Test]

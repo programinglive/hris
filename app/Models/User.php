@@ -85,8 +85,7 @@ class User extends Authenticatable implements \Illuminate\Contracts\Auth\Authent
                 'created_at',
                 'updated_at',
             ])
-            ->withTimestamps()
-            ->wherePivot('company_id', $this->primary_company_id);
+            ->withTimestamps();
     }
 
     /**

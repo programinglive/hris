@@ -193,7 +193,7 @@ class PositionControllerTest extends TestCase
             'sub_division_id' => $this->subDivision->id,
             'company_id' => $this->company->id,
             'department_id' => $this->department->id,
-            'status' => 'inactive',
+            'is_active' => false,
         ];
 
         $response = $this->put(route('organization.position.update', $position), $updatedData);

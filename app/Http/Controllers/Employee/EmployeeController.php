@@ -14,17 +14,32 @@ class EmployeeController extends Controller
     /**
      * Display a listing of employees.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $employees = User::with(['roles', 'brands', 'workSchedules'])
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'employee');
-            })
-            ->paginate(10);
+        $query = User::with(['roles', 'brands', 'workSchedules', 'userDetails'])
+            ->whereHas('roles', function ($builder) {
+                $builder->where('name', 'employee');
+            });
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($builder) use ($search) {
+                $builder->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhereHas('userDetails', function ($details) use ($search) {
+                        $details->where('employee_code', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($status = $request->input('status')) {
+            $query->whereHas('userDetails', function ($details) use ($status) {
+                $details->where('status', $status);
+            });
+        }
 
         return Inertia::render('employee/index', [
-            'employees' => $employees,
-            'filters' => request()->only(['search', 'status']),
+            'employees' => $query->paginate(10)->withQueryString(),
+            'filters' => $request->only(['search', 'status']),
         ]);
     }
 
@@ -33,7 +48,13 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return Inertia::render('employee/create');
+        return Inertia::render('employee/create', [
+            'companies' => \App\Models\Company::select(['id', 'name'])->orderBy('name')->get(),
+            'branches' => \App\Models\Branch::select(['id', 'name', 'company_id'])->orderBy('name')->get(),
+            'departments' => \App\Models\Department::select(['id', 'name', 'company_id'])->orderBy('name')->get(),
+            'positions' => \App\Models\Position::select(['id', 'name', 'company_id'])->orderBy('name')->get(),
+            'roles' => \App\Models\Role::select(['id', 'name', 'company_id'])->orderBy('name')->get(),
+        ]);
     }
 
     /**
@@ -43,22 +64,30 @@ class EmployeeController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'phone' => 'required|string|unique:users',
-            'company_id' => 'required|exists:companies,id',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
         ]);
 
+        // users has neither a phone nor a company_id column: phone lives on
+        // user_details and company membership is resolved through it. Writing
+        // them to users threw a SQL error on every create.
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'phone' => $validated['phone'],
-            'company_id' => $validated['company_id'],
             'password' => bcrypt($validated['password']),
+            'email_verified_at' => now(),
         ]);
 
-        // Assign employee role
-        $user->roles()->attach(1); // Assuming role_id 1 is 'employee'
+        // Assign the employee role. user_roles.company_id is NOT NULL, so the
+        // pivot needs the role's company; hardcoding role id 1 also failed
+        // whenever the seeded roles had different ids.
+        $employeeRole = \App\Models\Role::where('name', 'employee')->orderBy('id')->first();
+
+        if ($employeeRole) {
+            $user->roles()->attach($employeeRole->id, [
+                'company_id' => $employeeRole->company_id,
+            ]);
+        }
 
         return redirect()->route('employee.index')->with('success', 'Employee created successfully');
     }
