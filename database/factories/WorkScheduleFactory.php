@@ -2,22 +2,23 @@
 
 namespace Database\Factories;
 
+use Database\Factories\Concerns\HasFaker;
 use App\Models\WorkSchedule;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-use function fake;
-
 class WorkScheduleFactory extends Factory
 {
+    use HasFaker;
+
     protected $model = WorkSchedule::class;
 
     public function definition(): array
     {
         return [
-            'name' => fake()->jobTitle(),
-            'start_time' => fake()->time(),
-            'end_time' => fake()->time(),
-            'company_id' => fake()->randomNumber(),
+            'name' => $this->faker()->jobTitle(),
+            'start_time' => $this->faker()->time(),
+            'end_time' => $this->faker()->time(),
+            'company_id' => $this->faker()->randomNumber(),
             'is_active' => true,
         ];
     }

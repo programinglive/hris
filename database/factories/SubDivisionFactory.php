@@ -2,14 +2,15 @@
 
 namespace Database\Factories;
 
+use Database\Factories\Concerns\HasFaker;
 use App\Models\Division;
 use App\Models\SubDivision;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-use function fake;
-
 class SubDivisionFactory extends Factory
 {
+    use HasFaker;
+
     /**
      * The name of the factory's corresponding model.
      *
@@ -25,8 +26,8 @@ class SubDivisionFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->unique()->words(3, true),
-            'description' => fake()->paragraph,
+            'name' => $this->faker()->unique()->words(3, true),
+            'description' => $this->faker()->paragraph,
             'division_id' => Division::factory(),
             'is_active' => true,
         ];

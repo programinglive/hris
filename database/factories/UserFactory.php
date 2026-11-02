@@ -2,16 +2,17 @@
 
 namespace Database\Factories;
 
+use Database\Factories\Concerns\HasFaker;
 use App\Models\User;
 use App\Models\WorkSchedule;
 use App\Models\WorkShift;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-use function fake;
-
 class UserFactory extends Factory
 {
+    use HasFaker;
+
     /**
      * The current password being used by the factory.
      */
@@ -25,8 +26,8 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $this->faker()->name(),
+            'email' => $this->faker()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
@@ -45,9 +46,9 @@ class UserFactory extends Factory
             $user->userDetails()->firstOrCreate(
                 ['user_id' => $user->id],
                 [
-                    'phone' => fake()->phoneNumber(),
-                    'address' => fake()->address(),
-                    'date_of_birth' => fake()->dateTimeBetween('-50 years', '-20 years'),
+                    'phone' => $this->faker()->phoneNumber(),
+                    'address' => $this->faker()->address(),
+                    'date_of_birth' => $this->faker()->dateTimeBetween('-50 years', '-20 years'),
                 ]
             );
 

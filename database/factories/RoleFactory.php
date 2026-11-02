@@ -2,17 +2,18 @@
 
 namespace Database\Factories;
 
+use Database\Factories\Concerns\HasFaker;
 use App\Models\Company;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
-
-use function fake;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Role>
  */
 class RoleFactory extends Factory
 {
+    use HasFaker;
+
     /**
      * Define the model's default state.
      *
@@ -21,11 +22,11 @@ class RoleFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->unique()->word,
-            'display_name' => fake()->sentence,
-            'description' => fake()->paragraph,
+            'name' => $this->faker()->unique()->word,
+            'display_name' => $this->faker()->sentence,
+            'description' => $this->faker()->paragraph,
             'is_system' => false,
-            'slug' => fake()->unique()->slug,
+            'slug' => $this->faker()->unique()->slug,
             'company_id' => Company::factory(),
         ];
     }

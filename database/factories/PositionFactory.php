@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Database\Factories\Concerns\HasFaker;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
@@ -10,10 +11,10 @@ use App\Models\Position;
 use App\Models\SubDivision;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-use function fake;
-
 class PositionFactory extends Factory
 {
+    use HasFaker;
+
     /**
      * The name of the factory's corresponding model.
      *
@@ -29,8 +30,8 @@ class PositionFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->unique()->words(3, true),
-            'description' => fake()->paragraph,
+            'name' => $this->faker()->unique()->words(3, true),
+            'description' => $this->faker()->paragraph,
             'company_id' => Company::factory(),
             'department_id' => Department::factory(),
             'division_id' => Division::factory(),
