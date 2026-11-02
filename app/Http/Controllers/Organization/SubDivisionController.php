@@ -92,7 +92,7 @@ class SubDivisionController extends Controller
             'description' => 'nullable|string',
             'division_id' => 'required|exists:divisions,id',
             'manager_id' => 'nullable|exists:users,id',
-            'status' => 'required|in:active,inactive',
+            'is_active' => 'nullable',
         ]);
 
         SubDivision::create($validated);
@@ -143,7 +143,7 @@ class SubDivisionController extends Controller
             'description' => 'nullable|string',
             'division_id' => 'required|exists:divisions,id',
             'manager_id' => 'nullable|exists:users,id',
-            'status' => 'required|in:active,inactive',
+            'is_active' => 'nullable',
         ]);
 
         $subdivision->update($validated);
@@ -267,7 +267,7 @@ class SubDivisionController extends Controller
                 'description' => 'nullable|string',
                 'division_id' => 'required_without:'.$divisionId.'|exists:divisions,id',
                 'manager_id' => 'nullable|exists:users,id',
-                'status' => 'required|in:active,inactive',
+                'is_active' => 'nullable',
             ]);
 
             if ($rowValidator->fails()) {
@@ -288,7 +288,7 @@ class SubDivisionController extends Controller
                     'description' => $row['description'] ?? null,
                     'division_id' => $divisionId ?: $row['division_id'],
                     'manager_id' => $row['manager_id'] ?? null,
-                    'status' => $row['status'],
+                    'is_active' => $this->rowIsActive($row['is_active'] ?? true),
                 ]);
 
                 $success++;
@@ -320,5 +320,18 @@ class SubDivisionController extends Controller
 
         return redirect()->route('organization.subdivision.index')
             ->with('success', "Import completed. {$success} of {$total} sub-divisions imported successfully.");
+    }
+
+    /**
+     * Excel templates carry yes/no style text for the active flag, but the
+     * boolean rule rejects strings. Accept the human form and coerce it.
+     */
+    private function rowIsActive(mixed $value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        return in_array(strtolower(trim((string) $value)), ['yes', 'true', '1', 'y', 'active'], true);
     }
 }

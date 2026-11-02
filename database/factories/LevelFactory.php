@@ -27,7 +27,7 @@ class LevelFactory extends Factory
             'description' => $this->faker->paragraph(),
             'level_order' => $this->faker->numberBetween(1, 10),
             'company_id' => Company::factory(),
-            'status' => $this->faker->randomElement(['active', 'inactive']),
+            'is_active' => $this->faker->boolean(80),
         ];
     }
 }

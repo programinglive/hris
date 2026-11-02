@@ -41,9 +41,7 @@ class BrandAssociationTest extends TestCase
         ]);
 
         // Create test user
-        $this->user = User::factory()->create([
-            'company_id' => $this->company->id,
-        ]);
+        $this->user = User::factory()->forCompany($this->company->id)->create();
     }
 
     #[Test]

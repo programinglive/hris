@@ -61,10 +61,14 @@ class BranchImportTest extends TestCase
         // Create a writer and add test data
         $writer = SimpleExcelWriter::create($templatePath);
 
+        $company = \App\Models\Company::first();
+
         // Add headers
         $writer->addRow([
             'name' => 'name',
             'code' => 'code',
+            'company_code' => 'company_code',
+            'company_name' => 'company_name',
             'address' => 'address',
             'city' => 'city',
             'is_main_branch' => 'is_main_branch',
@@ -74,6 +78,8 @@ class BranchImportTest extends TestCase
         $writer->addRow([
             'name' => 'Test Import Branch 1',
             'code' => 'IMPORT001',
+            'company_code' => $company->code,
+            'company_name' => $company->name,
             'address' => 'Test Address 1',
             'city' => 'Test City 1',
             'is_main_branch' => 'Yes',
@@ -82,6 +88,8 @@ class BranchImportTest extends TestCase
         $writer->addRow([
             'name' => 'Test Import Branch 2',
             'code' => 'IMPORT002',
+            'company_code' => $company->code,
+            'company_name' => $company->name,
             'address' => 'Test Address 2',
             'city' => 'Test City 2',
             'is_main_branch' => 'No',
@@ -104,11 +112,13 @@ class BranchImportTest extends TestCase
             'company_id' => \App\Models\Company::first()->id,
         ]);
 
-        // Assert successful response
+        // processImport renders organization/branch/index again with the import
+        // outcome as props; it neither redirects nor returns JSON.
         $response->assertStatus(200);
-        $response->assertJson([
-            'success' => true,
-        ]);
+        $response->assertInertia(fn ($page) => $page
+            ->component('organization/branch/index')
+            ->has('importResults')
+        );
 
         // Assert the data was imported
         $this->assertDatabaseHas('branches', [
@@ -126,20 +136,21 @@ class BranchImportTest extends TestCase
     public function it_validates_the_uploaded_file()
     {
         // Test with no file
-        $response = $this->postJson(route('organization.branch.import.process'), []);
+        $response = $this->post(route('organization.branch.import.process'), []);
 
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['file']);
+        // back()->withErrors() answers with a redirect, not a 422 JSON payload.
+        $response->assertRedirect();
+        $response->assertSessionHasErrors(['file']);
 
         // Test with invalid file type
         $file = UploadedFile::fake()->create('document.pdf', 100);
 
-        $response = $this->postJson(route('organization.branch.import.process'), [
+        $response = $this->post(route('organization.branch.import.process'), [
             'file' => $file,
         ]);
 
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['file']);
+        $response->assertRedirect();
+        $response->assertSessionHasErrors(['file']);
     }
 
     #[Test]
@@ -164,10 +175,14 @@ class BranchImportTest extends TestCase
         // Create a writer and add test data
         $writer = \Spatie\SimpleExcel\SimpleExcelWriter::create($templatePath);
 
+        $company = \App\Models\Company::first();
+
         // Add headers
         $writer->addRow([
             'name' => 'name',
             'code' => 'code',
+            'company_code' => 'company_code',
+            'company_name' => 'company_name',
             'address' => 'address',
             'city' => 'city',
             'is_main_branch' => 'is_main_branch',

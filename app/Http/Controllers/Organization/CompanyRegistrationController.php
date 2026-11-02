@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -47,7 +48,6 @@ class CompanyRegistrationController extends Controller
                 'postal_code' => $validated['postal_code'],
                 'country' => $validated['country'],
                 'is_active' => true,
-                'is_primary' => true,
                 'owner_id' => null, // Will be set after admin user is created
             ]);
 
@@ -56,7 +56,7 @@ class CompanyRegistrationController extends Controller
                 'name' => $validated['administrator']['name'],
                 'email' => $validated['administrator']['email'],
                 'password' => Hash::make($validated['administrator']['password']),
-                'company_id' => $company->id,
+                'email_verified_at' => now(),
             ]);
 
             // Update company owner_id
@@ -64,9 +64,18 @@ class CompanyRegistrationController extends Controller
                 'owner_id' => $admin->id,
             ]);
 
+            // The primary-company flag lives on user_companies, not companies.
+            if (Schema::hasTable('user_companies')) {
+                DB::table('user_companies')->updateOrInsert(
+                    ['user_id' => $admin->id, 'company_id' => $company->id],
+                    ['is_primary' => true, 'created_at' => now(), 'updated_at' => now()]
+                );
+            }
+
             // Create user details
             $admin->userDetails()->create([
                 'user_id' => $admin->id,
+                'company_id' => $company->id,
                 'phone' => $validated['phone'],
                 'address' => $validated['address'],
                 'city' => $validated['city'],

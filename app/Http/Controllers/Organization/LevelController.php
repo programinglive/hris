@@ -33,7 +33,7 @@ class LevelController extends Controller
         }
 
         if ($request->filled('status')) {
-            $query->where('status', $request->input('status'));
+            $query->where('is_active', $request->boolean('status'));
         }
 
         // Get levels with pagination
@@ -71,7 +71,7 @@ class LevelController extends Controller
             'description' => 'nullable|string',
             'level_order' => 'required|integer|min:0',
             'company_id' => 'required|exists:companies,id',
-            'status' => 'required|in:active,inactive',
+            'is_active' => 'nullable',
         ]);
 
         Level::create($validated);
@@ -118,7 +118,7 @@ class LevelController extends Controller
             'description' => 'nullable|string',
             'level_order' => 'required|integer|min:0',
             'company_id' => 'required|exists:companies,id',
-            'status' => 'required|in:active,inactive',
+            'is_active' => 'nullable',
         ]);
 
         $level->update($validated);
@@ -180,7 +180,7 @@ class LevelController extends Controller
             'description' => 'description',
             'level_order' => 'level_order',
             'company_id' => 'company_id',
-            'status' => 'status',
+            'is_active' => 'nullable',
         ]);
 
         // Add sample data row
@@ -243,7 +243,7 @@ class LevelController extends Controller
                 'description' => 'nullable|string',
                 'level_order' => 'required|integer|min:0',
                 'company_id' => 'required_without:'.$companyId.'|exists:companies,id',
-                'status' => 'required|in:active,inactive',
+                'is_active' => 'nullable',
             ]);
 
             if ($rowValidator->fails()) {
@@ -264,7 +264,7 @@ class LevelController extends Controller
                     'description' => $row['description'] ?? null,
                     'level_order' => $row['level_order'],
                     'company_id' => $companyId ?: $row['company_id'],
-                    'status' => $row['status'],
+                    'is_active' => $this->rowIsActive($row['is_active'] ?? true),
                 ]);
 
                 $success++;
@@ -296,5 +296,18 @@ class LevelController extends Controller
 
         return redirect()->route('organization.level.index')
             ->with('success', "Import completed. {$success} of {$total} levels imported successfully.");
+    }
+
+    /**
+     * Excel templates carry yes/no style text for the active flag, but the
+     * boolean rule rejects strings. Accept the human form and coerce it.
+     */
+    private function rowIsActive(mixed $value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        return in_array(strtolower(trim((string) $value)), ['yes', 'true', '1', 'y', 'active'], true);
     }
 }

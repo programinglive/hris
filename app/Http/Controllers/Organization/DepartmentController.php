@@ -59,7 +59,7 @@ class DepartmentController extends Controller
                     'id' => $department->branch->id,
                     'name' => $department->branch->name,
                 ] : null,
-                'status' => $department->status,
+                'is_active' => (bool) $department->is_active,
                 'created_at' => $department->created_at->format('Y-m-d'),
             ];
         });
@@ -129,7 +129,7 @@ class DepartmentController extends Controller
             'managers' => $managers,
             'companies' => $companies,
             'branches' => $branches,
-            'statuses' => ['active', 'inactive'],
+            'statuses' => [['value' => true, 'label' => 'Active'], ['value' => false, 'label' => 'Inactive']],
         ]);
     }
 
@@ -144,7 +144,7 @@ class DepartmentController extends Controller
             'manager_id' => 'nullable|exists:users,id',
             'company_id' => 'required|exists:companies,id',
             'branch_id' => 'nullable|exists:branches,id',
-            'status' => 'required|in:active,inactive',
+            'is_active' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -160,7 +160,7 @@ class DepartmentController extends Controller
                 'manager_id' => $request->manager_id,
                 'company_id' => $request->company_id,
                 'branch_id' => $request->branch_id,
-                'status' => $request->status,
+                'is_active' => $request->boolean('is_active'),
             ]);
 
             Log::info('Department created successfully');
@@ -198,7 +198,7 @@ class DepartmentController extends Controller
                 'id' => $department->branch->id,
                 'name' => $department->branch->name,
             ] : null,
-            'status' => $department->status,
+            'is_active' => (bool) $department->is_active,
             'created_at' => $department->created_at->format('Y-m-d'),
             'employees' => $department->employees->map(function ($employee) {
                 return [
@@ -257,12 +257,12 @@ class DepartmentController extends Controller
                 'manager_id' => $department->manager_id,
                 'company_id' => $department->company_id,
                 'branch_id' => $department->branch_id,
-                'status' => $department->status,
+                'is_active' => (bool) $department->is_active,
             ],
             'managers' => $managers,
             'companies' => $companies,
             'branches' => $branches,
-            'statuses' => ['active', 'inactive'],
+            'statuses' => [['value' => true, 'label' => 'Active'], ['value' => false, 'label' => 'Inactive']],
         ]);
     }
 
@@ -279,7 +279,7 @@ class DepartmentController extends Controller
             'manager_id' => 'nullable|exists:users,id',
             'company_id' => 'required|exists:companies,id',
             'branch_id' => 'nullable|exists:branches,id',
-            'status' => 'required|in:active,inactive',
+            'is_active' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -295,7 +295,7 @@ class DepartmentController extends Controller
                 'manager_id' => $request->manager_id,
                 'company_id' => $request->company_id,
                 'branch_id' => $request->branch_id,
-                'status' => $request->status,
+                'is_active' => $request->boolean('is_active'),
             ]);
 
             Log::info('Department updated successfully');
@@ -353,7 +353,7 @@ class DepartmentController extends Controller
             'company_id' => 'company_id',
             'branch_id' => 'branch_id',
             'manager_id' => 'manager_id',
-            'status' => 'status',
+            'is_active' => 'nullable',
         ]);
 
         // Add example data
@@ -439,7 +439,7 @@ class DepartmentController extends Controller
                         'company_id' => 'required|exists:companies,id',
                         'branch_id' => 'required|exists:branches,id',
                         'manager_id' => 'nullable|exists:users,id',
-                        'status' => 'required|in:active,inactive',
+                        'is_active' => 'nullable',
                     ]);
 
                     if ($validator->fails()) {
@@ -460,7 +460,7 @@ class DepartmentController extends Controller
                             'description' => $row['description'] ?? null,
                             'company_id' => (int) $row['company_id'],
                             'branch_id' => (int) $row['branch_id'],
-                            'status' => $row['status'],
+                            'is_active' => $this->rowIsActive($row['is_active'] ?? true),
                         ];
 
                         // Only add manager_id if it's not empty
@@ -521,5 +521,18 @@ class DepartmentController extends Controller
 
             return back()->with('error', 'Error reading the import file: '.$e->getMessage());
         }
+    }
+
+    /**
+     * Excel templates carry yes/no style text for the active flag, but the
+     * boolean rule rejects strings. Accept the human form and coerce it.
+     */
+    private function rowIsActive(mixed $value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        return in_array(strtolower(trim((string) $value)), ['yes', 'true', '1', 'y', 'active'], true);
     }
 }

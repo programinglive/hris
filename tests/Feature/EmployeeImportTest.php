@@ -14,6 +14,42 @@ class EmployeeImportTest extends TestCase
 {
     use RefreshDatabase;
 
+    private string $templatePath = '';
+
+    /**
+     * The import test uploads the generated template as if a user had
+     * downloaded it, filled it in, and re-uploaded it. `storage/app/public` is
+     * git-ignored, so the file has to be produced by the application itself
+     * rather than committed as a fixture.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->templatePath = storage_path('app/public/templates/employee_import_template.xlsx');
+
+        $directory = dirname($this->templatePath);
+
+        if (! is_dir($directory)) {
+            mkdir($directory, 0775, true);
+        }
+
+        // Render the template through the controller so the fixture always
+        // matches what the application actually ships.
+        $controller = new \App\Http\Controllers\Employee\EmployeeImportController;
+        $response = $controller->downloadTemplate();
+        copy($response->getFile()->getPathname(), $this->templatePath);
+    }
+
+    protected function tearDown(): void
+    {
+        if ($this->templatePath !== '' && is_file($this->templatePath)) {
+            @unlink($this->templatePath);
+        }
+
+        parent::tearDown();
+    }
+
     /**
      * Test that the import template can be downloaded.
      */
@@ -45,7 +81,7 @@ class EmployeeImportTest extends TestCase
         $branch = Branch::factory()->create(['company_id' => $company->id]);
 
         // Create an uploaded file from the existing template
-        $templatePath = storage_path('app/public/templates/employee_import_template.xlsx');
+        $templatePath = $this->templatePath;
 
         // Ensure the template exists
         $this->assertFileExists($templatePath, 'Employee import template file not found');
@@ -83,7 +119,9 @@ class EmployeeImportTest extends TestCase
             'employee_code' => 'EMP001',
             'company_id' => $company->id,
             'branch_id' => $branch->id,
-            'status' => 'Active',
+            // user_details.status is an enum of lowercase values
+            // (active/inactive/on_leave/terminated); the importer normalises it.
+            'status' => 'active',
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Organization;
 
 use App\Models\Company;
+use App\Models\Department;
 use App\Models\Division;
 use App\Models\Level;
 use App\Models\Position;
@@ -27,6 +28,8 @@ class PositionControllerTest extends TestCase
 
     protected Division $division;
 
+    protected Department $department;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,8 +40,15 @@ class PositionControllerTest extends TestCase
         // Create a user (without company association for testing)
         $this->user = User::factory()->create();
 
+        // Create a department
+        $this->department = Department::factory()->create([
+            'company_id' => $this->company->id,
+        ]);
+
         // Create a division
-        $this->division = Division::factory()->create();
+        $this->division = Division::factory()->create([
+            'department_id' => $this->department->id,
+        ]);
 
         // Create a level
         $this->level = Level::factory()->create([
@@ -98,13 +108,14 @@ class PositionControllerTest extends TestCase
             'level_id' => $this->level->id,
             'sub_division_id' => $this->subDivision->id,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'department_id' => $this->department->id,
+            'is_active' => true,
         ];
 
         $response = $this->post(route('organization.position.store'), $positionData);
 
         $response->assertRedirect(route('organization.position.index'));
-        $response->assertSessionHas('success', 'Position created successfully.');
+        $response->assertSessionHas('success', 'Position created successfully');
 
         $this->assertDatabaseHas('positions', [
             'name' => 'Test Position',
@@ -112,7 +123,8 @@ class PositionControllerTest extends TestCase
             'level_id' => $this->level->id,
             'sub_division_id' => $this->subDivision->id,
             'company_id' => $this->company->id,
-            'status' => 'active',
+            'department_id' => $this->department->id,
+            'is_active' => true,
         ]);
     }
 
@@ -123,7 +135,7 @@ class PositionControllerTest extends TestCase
             // Missing required fields
         ]);
 
-        $response->assertSessionHasErrors(['name', 'company_id', 'status']);
+        $response->assertSessionHasErrors(['name', 'company_id', 'level_id']);
     }
 
     #[Test]
@@ -180,19 +192,20 @@ class PositionControllerTest extends TestCase
             'level_id' => $this->level->id,
             'sub_division_id' => $this->subDivision->id,
             'company_id' => $this->company->id,
-            'status' => 'inactive',
+            'department_id' => $this->department->id,
+            'is_active' => false,
         ];
 
         $response = $this->put(route('organization.position.update', $position), $updatedData);
 
         $response->assertRedirect(route('organization.position.index'));
-        $response->assertSessionHas('success', 'Position updated successfully.');
+        $response->assertSessionHas('success', 'Position updated successfully');
 
         $this->assertDatabaseHas('positions', [
             'id' => $position->id,
             'name' => 'Updated Position',
             'description' => 'Updated Description',
-            'status' => 'inactive',
+            'is_active' => false,
         ]);
     }
 
@@ -209,7 +222,7 @@ class PositionControllerTest extends TestCase
             // Missing required fields
         ]);
 
-        $response->assertSessionHasErrors(['name', 'company_id', 'status']);
+        $response->assertSessionHasErrors(['name', 'company_id', 'level_id']);
     }
 
     #[Test]
@@ -240,9 +253,10 @@ class PositionControllerTest extends TestCase
             'name' => 'Test Position',
             'description' => 'Test position description',
             'company_id' => $this->company->id,
+            'department_id' => $this->department->id,
             'level_id' => $this->level->id,
             'sub_division_id' => $this->subDivision->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response->assertRedirect(route('organization.position.index'));
@@ -251,7 +265,7 @@ class PositionControllerTest extends TestCase
             'company_id' => $this->company->id,
             'level_id' => $this->level->id,
             'sub_division_id' => $this->subDivision->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
     }
 
@@ -264,16 +278,17 @@ class PositionControllerTest extends TestCase
             'company_id' => $this->company->id,
             'level_id' => $this->level->id,
             'sub_division_id' => $this->subDivision->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this->put(route('organization.position.update', $position), [
             'name' => 'Updated Position',
             'description' => 'Updated position description',
             'company_id' => $this->company->id,
+            'department_id' => $this->department->id,
             'level_id' => $this->level->id,
             'sub_division_id' => $this->subDivision->id,
-            'status' => 'inactive',
+            'is_active' => false,
         ]);
 
         $response->assertRedirect(route('organization.position.index'));
@@ -281,9 +296,10 @@ class PositionControllerTest extends TestCase
             'id' => $position->id,
             'name' => 'Updated Position',
             'company_id' => $this->company->id,
+            'department_id' => $this->department->id,
             'level_id' => $this->level->id,
             'sub_division_id' => $this->subDivision->id,
-            'status' => 'inactive',
+            'is_active' => false,
         ]);
     }
 
@@ -296,7 +312,7 @@ class PositionControllerTest extends TestCase
             'company_id' => $this->company->id,
             'level_id' => $this->level->id,
             'sub_division_id' => $this->subDivision->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this->delete(route('organization.position.destroy', $position));

@@ -56,7 +56,7 @@ class BranchTest extends TestCase
             'company_id' => $this->company->id,
         ]);
 
-        $response = $this->get(route('organization.branch.index', ['company' => $this->company]));
+        $response = $this->get(route('organization.branch.index'));
 
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page) => $page
@@ -147,7 +147,7 @@ class BranchTest extends TestCase
 
         $response = $this->post(route('organization.branch.store', ['company' => $this->company]), $branchData);
 
-        $response->assertRedirect(route('organization.branch.index', ['company' => $this->company]));
+        $response->assertRedirect(route('organization.branch.index'));
         $response->assertSessionHas('success');
 
         $this->assertDatabaseHas('branches', [
@@ -207,7 +207,7 @@ class BranchTest extends TestCase
 
         $response = $this->put(route('organization.branch.update', ['company' => $this->company, 'branch' => $branch]), $updatedData);
 
-        $response->assertRedirect(route('organization.branch.index', ['company' => $this->company]));
+        $response->assertRedirect(route('organization.branch.index'));
         $response->assertSessionHas('success');
 
         $this->assertDatabaseHas('branches', [
@@ -231,7 +231,7 @@ class BranchTest extends TestCase
 
         $response = $this->delete(route('organization.branch.destroy', ['company' => $this->company, 'branch' => $branch]));
 
-        $response->assertRedirect(route('organization.branch.index', ['company' => $this->company]));
+        $response->assertRedirect(route('organization.branch.index'));
         $response->assertSessionHas('success');
 
         $this->assertDatabaseMissing('branches', [
@@ -254,7 +254,7 @@ class BranchTest extends TestCase
             'is_active' => true,
         ]);
 
-        $response = $this->get(route('organization.branch.index', ['company' => $this->company]));
+        $response = $this->get(route('organization.branch.index'));
 
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page) => $page
@@ -270,10 +270,11 @@ class BranchTest extends TestCase
                 ->has('is_main_branch')
                 ->has('is_active')
                 ->has('created_at')
+                // The controller also selects company_id for the row.
+                ->etc()
             )
             ->has('filters')
             ->has('companies')
-            ->has('cities')
         );
     }
 
@@ -342,6 +343,8 @@ class BranchTest extends TestCase
         $writer->addRow([
             'name' => 'name',
             'code' => 'code',
+            'company_code' => 'company_code',
+            'company_name' => 'company_name',
             'address' => 'address',
             'city' => 'city',
             'phone' => 'phone',
@@ -353,6 +356,8 @@ class BranchTest extends TestCase
         $writer->addRow([
             'name' => 'Test Import Branch 1',
             'code' => 'IMPORT001',
+            'company_code' => $this->company->code,
+            'company_name' => $this->company->name,
             'address' => '111 Import Street',
             'city' => 'Import City 1',
             'phone' => '1111111111',
@@ -363,6 +368,8 @@ class BranchTest extends TestCase
         $writer->addRow([
             'name' => 'Test Import Branch 2',
             'code' => 'IMPORT002',
+            'company_code' => $this->company->code,
+            'company_name' => $this->company->name,
             'address' => '222 Import Street',
             'city' => 'Import City 2',
             'phone' => '2222222222',
@@ -386,11 +393,16 @@ class BranchTest extends TestCase
             'file' => $file,
         ]);
 
-        // Assert the response is successful
+        // processImport renders the index page again with importResults,
+        // importMessage and importStatus props; it neither redirects nor
+        // returns JSON.
         $response->assertStatus(200);
-        $response->assertJson([
-            'success' => true,
-        ]);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('organization/branch/index')
+            ->has('importResults')
+            ->has('importMessage')
+            ->has('importStatus')
+        );
 
         // Assert the data was imported
         $this->assertDatabaseHas('branches', [
@@ -424,6 +436,8 @@ class BranchTest extends TestCase
         $writer->addRow([
             'name' => 'name',
             'code' => 'code',
+            'company_code' => 'company_code',
+            'company_name' => 'company_name',
             'address' => 'address',
             'city' => 'city',
             'phone' => 'phone',
@@ -458,18 +472,13 @@ class BranchTest extends TestCase
             'file' => $file,
         ]);
 
-        // Assert the response is successful but contains error information
+        // Same contract as the success case: the index page is rendered again
+        // with an error status.
         $response->assertStatus(200);
-        $response->assertJsonStructure([
-            'success',
-            'message',
-            'results' => [
-                'total',
-                'success',
-                'failed',
-                'errors',
-            ],
-        ]);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('organization/branch/index')
+            ->has('importResults')
+        );
 
         // Assert the invalid data was not imported
         $this->assertDatabaseMissing('branches', [
@@ -492,9 +501,10 @@ class BranchTest extends TestCase
             'file' => $file,
         ]);
 
-        // Assert validation error
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['file']);
+        // Validation failures on this route use back()->withErrors(), which
+        // yields a 302 redirect rather than a 422 JSON body.
+        $response->assertRedirect();
+        $response->assertSessionHasErrors(['file']);
     }
 
     #[Test]
@@ -549,18 +559,13 @@ class BranchTest extends TestCase
             'file' => $file,
         ]);
 
-        // Assert the response is successful but contains error information
+        // Same contract as the success case: the index page is rendered again
+        // with an error status.
         $response->assertStatus(200);
-        $response->assertJsonStructure([
-            'success',
-            'message',
-            'results' => [
-                'total',
-                'success',
-                'failed',
-                'errors',
-            ],
-        ]);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('organization/branch/index')
+            ->has('importResults')
+        );
 
         // Assert the duplicate data was not imported
         $this->assertEquals(1, Branch::where('code', 'DUPLICATE')->count());

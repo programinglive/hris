@@ -58,6 +58,13 @@ class CompanyFeatureTest extends TestCase
     #[Test]
     public function contact_validation_step()
     {
+        $this->markTestSkipped(
+            'The multi-step registration wizard (validate-contact, verify-code, '
+            . 'save-company-details) no longer exists. CompanyRegistrationController '
+            . 'now exposes only showRegistrationForm() and store(). Rewrite against '
+            . 'those endpoints or delete this test.'
+        );
+
         Mail::fake();
 
         $response = $this->postJson('/register-company/validate-contact', [
@@ -87,6 +94,13 @@ class CompanyFeatureTest extends TestCase
     #[Test]
     public function verification_code_step()
     {
+        $this->markTestSkipped(
+            'The multi-step registration wizard (validate-contact, verify-code, '
+            . 'save-company-details) no longer exists. CompanyRegistrationController '
+            . 'now exposes only showRegistrationForm() and store(). Rewrite against '
+            . 'those endpoints or delete this test.'
+        );
+
         $verificationCode = '123456';
         Session::put('registration_data', [
             'contact' => 'test'.$this->timestamp.'@example.com',
@@ -113,6 +127,13 @@ class CompanyFeatureTest extends TestCase
     #[Test]
     public function save_company_details_step()
     {
+        $this->markTestSkipped(
+            'The multi-step registration wizard (validate-contact, verify-code, '
+            . 'save-company-details) no longer exists. CompanyRegistrationController '
+            . 'now exposes only showRegistrationForm() and store(). Rewrite against '
+            . 'those endpoints or delete this test.'
+        );
+
         Session::put('registration_data', [
             'contact' => 'admin'.$this->timestamp.'@example.com',
             'contact_type' => 'email',

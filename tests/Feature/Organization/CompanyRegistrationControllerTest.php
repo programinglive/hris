@@ -11,6 +11,23 @@ use Tests\TestCase;
 
 class CompanyRegistrationControllerTest extends TestCase
 {
+    /**
+     * Targets the removed `landing-page.installation-wizard.*` endpoints
+     * (validate-contact, verify-code, save-company-details).
+     *
+     * CompanyRegistrationController now exposes only showRegistrationForm() and
+     * store(); the step endpoints and their controller are gone. Skipped rather
+     * than deleted so the original intent stays visible.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->markTestSkipped(
+            'Company registration wizard step endpoints no longer exist.'
+        );
+    }
+
     use RefreshDatabase;
 
     #[Test]

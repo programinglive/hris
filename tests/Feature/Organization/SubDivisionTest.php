@@ -65,7 +65,7 @@ class SubDivisionTest extends TestCase
             'description' => 'Test Department Description',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Create a division
@@ -75,7 +75,7 @@ class SubDivisionTest extends TestCase
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
             'department_id' => $this->department->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Login the user
@@ -90,14 +90,14 @@ class SubDivisionTest extends TestCase
             'name' => 'HR SubDivision',
             'description' => 'Human Resources SubDivision',
             'division_id' => $this->division->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         SubDivision::create([
             'name' => 'IT SubDivision',
             'description' => 'Information Technology SubDivision',
             'division_id' => $this->division->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Visit the subdivision list page
@@ -119,14 +119,14 @@ class SubDivisionTest extends TestCase
             'name' => 'HR SubDivision',
             'description' => 'Human Resources SubDivision',
             'division_id' => $this->division->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         SubDivision::create([
             'name' => 'IT SubDivision',
             'description' => 'Information Technology SubDivision',
             'division_id' => $this->division->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Search for HR
@@ -148,7 +148,7 @@ class SubDivisionTest extends TestCase
             'description' => 'Another Department Description',
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Create another division
@@ -158,7 +158,7 @@ class SubDivisionTest extends TestCase
             'company_id' => $this->company->id,
             'branch_id' => $this->branch->id,
             'department_id' => $anotherDepartment->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Create subdivisions for different divisions
@@ -166,14 +166,14 @@ class SubDivisionTest extends TestCase
             'name' => 'HR SubDivision',
             'description' => 'Human Resources SubDivision',
             'division_id' => $this->division->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         SubDivision::create([
             'name' => 'IT SubDivision',
             'description' => 'Information Technology SubDivision',
             'division_id' => $anotherDivision->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Filter by division
@@ -193,7 +193,7 @@ class SubDivisionTest extends TestCase
             'name' => 'New SubDivision',
             'description' => 'New SubDivision Description',
             'division_id' => $this->division->id,
-            'status' => 'active',
+            'is_active' => true,
         ];
 
         $response = $this->post('/organization/subdivision', $subdivisionData);
@@ -212,7 +212,7 @@ class SubDivisionTest extends TestCase
             // Missing required fields
         ]);
 
-        $response->assertSessionHasErrors(['name', 'division_id', 'status']);
+        $response->assertSessionHasErrors(['name', 'division_id']);
     }
 
     #[Test]
@@ -222,7 +222,7 @@ class SubDivisionTest extends TestCase
             'name' => 'Test SubDivision',
             'description' => 'Test SubDivision Description',
             'division_id' => $this->division->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this->get('/organization/subdivision/'.$subdivision->id);
@@ -242,14 +242,14 @@ class SubDivisionTest extends TestCase
             'name' => 'Test SubDivision',
             'description' => 'Test SubDivision Description',
             'division_id' => $this->division->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $updatedData = [
             'name' => 'Updated SubDivision',
             'description' => 'Updated SubDivision Description',
             'division_id' => $this->division->id,
-            'status' => 'active',
+            'is_active' => true,
         ];
 
         $response = $this->put('/organization/subdivision/'.$subdivision->id, $updatedData);
@@ -269,14 +269,14 @@ class SubDivisionTest extends TestCase
             'name' => 'Test SubDivision',
             'description' => 'Test SubDivision Description',
             'division_id' => $this->division->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         $response = $this->put('/organization/subdivision/'.$subdivision->id, [
             // Missing required fields
         ]);
 
-        $response->assertSessionHasErrors(['name', 'division_id', 'status']);
+        $response->assertSessionHasErrors(['name', 'division_id']);
     }
 
     #[Test]
@@ -287,7 +287,7 @@ class SubDivisionTest extends TestCase
             'name' => 'Test SubDivision',
             'description' => 'Test SubDivision Description',
             'division_id' => $this->division->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Mock the controller to bypass the positions check
@@ -316,7 +316,7 @@ class SubDivisionTest extends TestCase
             'name' => 'Test SubDivision',
             'description' => 'Test SubDivision Description',
             'division_id' => $this->division->id,
-            'status' => 'active',
+            'is_active' => true,
         ]);
 
         // Mock the controller to simulate a subdivision with positions

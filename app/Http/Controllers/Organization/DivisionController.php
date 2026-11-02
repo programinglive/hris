@@ -95,7 +95,7 @@ class DivisionController extends Controller
             'description' => 'nullable|string',
             'department_id' => 'required|exists:departments,id',
             'manager_id' => 'nullable|exists:users,id',
-            'status' => 'required|in:active,inactive',
+            'is_active' => 'nullable',
         ]);
 
         Division::create($validated);
@@ -146,7 +146,7 @@ class DivisionController extends Controller
             'description' => 'nullable|string',
             'department_id' => 'required|exists:departments,id',
             'manager_id' => 'nullable|exists:users,id',
-            'status' => 'required|in:active,inactive',
+            'is_active' => 'nullable',
         ]);
 
         $division->update($validated);
@@ -281,7 +281,7 @@ class DivisionController extends Controller
                         'description' => 'nullable|string',
                         'department_id' => 'required|exists:departments,id',
                         'manager_id' => 'nullable|exists:users,id',
-                        'status' => 'required|in:active,inactive',
+                        'is_active' => 'nullable',
                     ]);
 
                     if ($validator->fails()) {
@@ -301,7 +301,7 @@ class DivisionController extends Controller
                             'name' => $row['name'],
                             'description' => $row['description'] ?? null,
                             'department_id' => (int) $row['department_id'],
-                            'status' => $row['status'],
+                            'is_active' => $this->rowIsActive($row['is_active'] ?? true),
                         ];
 
                         // Only add manager_id if it's not empty
@@ -349,5 +349,18 @@ class DivisionController extends Controller
                 'message' => 'Error reading the import file: '.$e->getMessage(),
             ]);
         }
+    }
+
+    /**
+     * Excel templates carry yes/no style text for the active flag, but the
+     * boolean rule rejects strings. Accept the human form and coerce it.
+     */
+    private function rowIsActive(mixed $value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        return in_array(strtolower(trim((string) $value)), ['yes', 'true', '1', 'y', 'active'], true);
     }
 }

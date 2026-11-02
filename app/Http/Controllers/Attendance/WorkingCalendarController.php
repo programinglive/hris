@@ -16,11 +16,11 @@ class WorkingCalendarController extends Controller
      */
     public function index()
     {
-        $workingCalendars = WorkingCalendar::where('company_id', Auth::user()->company_id)
+        $workingCalendars = WorkingCalendar::where('company_id', Auth::user()?->userDetails?->company_id)
             ->orderBy('start_date', 'desc')
             ->get();
 
-        $holidays = Holiday::where('company_id', Auth::user()->company_id)
+        $holidays = Holiday::where('company_id', Auth::user()?->userDetails?->company_id)
             ->orderBy('date')
             ->get();
 
@@ -54,7 +54,10 @@ class WorkingCalendarController extends Controller
             'is_active' => 'boolean',
         ]);
 
-        $validated['company_id'] = Auth::user()->company_id;
+        // Fall back to the company supplied by the form when the authenticated
+        // user has no user_details row yet; the column is NOT NULL.
+        $validated['company_id'] = Auth::user()?->userDetails?->company_id
+            ?? $request->input('company_id');
 
         WorkingCalendar::create($validated);
 
@@ -69,7 +72,7 @@ class WorkingCalendarController extends Controller
     {
         $workingCalendar = WorkingCalendar::findOrFail($id);
 
-        $holidays = Holiday::where('company_id', Auth::user()->company_id)
+        $holidays = Holiday::where('company_id', Auth::user()?->userDetails?->company_id)
             ->whereDate('date', '>=', $workingCalendar->start_date)
             ->whereDate('date', '<=', $workingCalendar->end_date)
             ->orderBy('date')

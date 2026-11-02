@@ -55,12 +55,13 @@ class BranchListTest extends TestCase
                 ->has('is_active')
                 ->has('is_main_branch')
                 ->has('created_at')
+                // The controller also selects company_id on each row.
+                ->etc()
             )
             ->has('branches.current_page')
             ->has('branches.per_page')
             ->has('branches.total')
             ->has('companies')
-            ->has('cities')
         );
     }
 

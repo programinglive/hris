@@ -52,7 +52,7 @@ class BranchFeatureTest extends TestCase
             'company_id' => $this->company->id,
         ]);
 
-        $response = $this->get(route('organization.branch.index', ['company' => $this->company]));
+        $response = $this->get(route('organization.branch.index'));
 
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page) => $page->component('organization/branch/index')
@@ -131,7 +131,7 @@ class BranchFeatureTest extends TestCase
             'is_main_branch' => false,
         ]);
 
-        $response->assertRedirect(route('organization.branch.index', ['company' => $this->company]));
+        $response->assertRedirect(route('organization.branch.index'));
 
         $this->assertDatabaseHas('branches', [
             'name' => 'Test Branch',
@@ -229,7 +229,7 @@ class BranchFeatureTest extends TestCase
             'is_main_branch' => true,
         ]);
 
-        $response->assertRedirect(route('organization.branch.index', ['company' => $this->company]));
+        $response->assertRedirect(route('organization.branch.index'));
 
         $this->assertDatabaseHas('branches', [
             'id' => $branch->id,
@@ -252,7 +252,7 @@ class BranchFeatureTest extends TestCase
             'company' => $this->company,
             'branch' => $branch,
         ]));
-        $response->assertRedirect(route('organization.branch.index', ['company' => $this->company]));
+        $response->assertRedirect(route('organization.branch.index'));
 
         // Verify the branch was deleted
         $this->assertDatabaseMissing('branches', [

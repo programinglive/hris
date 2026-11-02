@@ -114,7 +114,7 @@ class DepartmentImportTest extends TestCase
         $this->assertDatabaseHas('departments', [
             'name' => 'Test Department 1',
             'description' => 'Test Department 1 Description',
-            'status' => 'active',
+            'is_active' => true,
         ]);
     }
 
@@ -219,7 +219,7 @@ class DepartmentImportTest extends TestCase
         $this->assertDatabaseHas('departments', [
             'name' => 'Test Department 1',
             'description' => 'Test Department 1 Description',
-            'status' => 'active',
+            'is_active' => true,
         ]);
     }
 }

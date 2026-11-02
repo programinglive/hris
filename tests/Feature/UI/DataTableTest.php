@@ -42,10 +42,10 @@ class DataTableTest extends TestCase
 
         // Create and assign admin role
         $adminRole = Role::firstOrCreate(
-            ['name' => 'administrator'],
+            ['name' => 'administrator', 'company_id' => $this->company->id],
             ['display_name' => 'Administrator']
         );
-        $this->user->roles()->attach($adminRole);
+        $this->user->roles()->attach($adminRole->id, ['company_id' => $adminRole->company_id]);
     }
 
     /**

@@ -65,7 +65,12 @@ class UserBrand extends Pivot
         parent::boot();
 
         static::creating(function (UserBrand $userBrand) {
-            if ($userBrand->company_id !== $userBrand->user->company_id) {
+            // Company membership lives on user_details, not users: reading
+            // $user->company_id always returned null, so the check compared
+            // against a column that does not exist.
+            $userCompanyId = $userBrand->user?->userDetails?->company_id;
+
+            if ($userCompanyId !== null && $userBrand->company_id !== $userCompanyId) {
                 throw new QueryException(
                     'Company ID mismatch between user and brand',
                     'Company ID mismatch between user and brand',

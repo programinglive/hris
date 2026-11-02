@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Company;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,6 +24,7 @@ class RoleFactory extends Factory
             'description' => $this->faker->paragraph,
             'is_system' => false,
             'slug' => $this->faker->unique()->slug,
+            'company_id' => Company::factory(),
         ];
     }
 
