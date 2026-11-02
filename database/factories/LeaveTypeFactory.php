@@ -6,6 +6,8 @@ use App\Models\Company;
 use App\Models\LeaveType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function fake;
+
 class LeaveTypeFactory extends Factory
 {
     protected $model = LeaveType::class;

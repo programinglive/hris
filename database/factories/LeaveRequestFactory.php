@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
+use function fake;
+
 class LeaveRequestFactory extends Factory
 {
     protected $model = LeaveRequest::class;

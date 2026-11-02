@@ -8,6 +8,8 @@ use App\Models\WorkShift;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+use function fake;
+
 class UserFactory extends Factory
 {
     /**

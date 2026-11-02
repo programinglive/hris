@@ -6,6 +6,8 @@ use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function fake;
+
 class EmployeeFactory extends Factory
 {
     protected $model = Employee::class;

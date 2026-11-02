@@ -6,6 +6,8 @@ use App\Models\Branch;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function fake;
+
 class BranchFactory extends Factory
 {
     /**

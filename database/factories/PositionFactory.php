@@ -10,6 +10,8 @@ use App\Models\Position;
 use App\Models\SubDivision;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function fake;
+
 class PositionFactory extends Factory
 {
     /**

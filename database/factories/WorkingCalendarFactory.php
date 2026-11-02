@@ -6,6 +6,8 @@ use App\Models\Company;
 use App\Models\WorkingCalendar;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function fake;
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\WorkingCalendar>
  */

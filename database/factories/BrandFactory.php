@@ -6,6 +6,8 @@ use App\Models\Brand;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function fake;
+
 class BrandFactory extends Factory
 {
     /**
