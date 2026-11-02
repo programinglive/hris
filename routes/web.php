@@ -14,6 +14,8 @@ include 'module/landingpage.php';
 
 // Test Sentry route
 Route::get('/test-sentry', function () {
+    abort_unless(app()->environment(['local', 'testing']), 404);
+
     try {
         throw new \Exception('This is a test error for Sentry');
     } catch (\Exception $e) {

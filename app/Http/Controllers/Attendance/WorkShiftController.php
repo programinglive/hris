@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Attendance;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
-use App\Models\WorkingShift;
+use App\Models\WorkShift;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +18,7 @@ class WorkShiftController extends Controller
      */
     public function index(): Response
     {
-        $workShifts = WorkingShift::with('company')
+        $workShifts = WorkShift::with('company')
             ->orderBy('name')
             ->get();
 
@@ -87,12 +87,12 @@ class WorkShiftController extends Controller
 
         // If this is set as default, unset other defaults for this company
         if ($request->is_default) {
-            WorkingShift::where('company_id', $request->company_id)
+            WorkShift::where('company_id', $request->company_id)
                 ->where('is_default', true)
                 ->update(['is_default' => false]);
         }
 
-        WorkingShift::create($validator->validated());
+        WorkShift::create($validator->validated());
 
         return redirect()->route('attendance.working-shift.index')
             ->with('success', 'Work shift created successfully.');
@@ -101,7 +101,7 @@ class WorkShiftController extends Controller
     /**
      * Display the specified work shift.
      */
-    public function show(WorkingShift $workShift): Response
+    public function show(WorkShift $workShift): Response
     {
         $workShift->load('company');
 
@@ -113,7 +113,7 @@ class WorkShiftController extends Controller
     /**
      * Show the form for editing the specified work shift.
      */
-    public function edit(WorkingShift $workShift): Response
+    public function edit(WorkShift $workShift): Response
     {
         $companies = Company::where('is_active', true)
             ->orderBy('name')
@@ -128,7 +128,7 @@ class WorkShiftController extends Controller
     /**
      * Update the specified work shift in storage.
      */
-    public function update(WorkingShift $workShift, Request $request): RedirectResponse
+    public function update(WorkShift $workShift, Request $request): RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -149,7 +149,7 @@ class WorkShiftController extends Controller
 
         // If this is set as default, unset other defaults for this company
         if ($request->is_default) {
-            WorkingShift::where('company_id', $request->company_id)
+            WorkShift::where('company_id', $request->company_id)
                 ->where('is_default', true)
                 ->where('id', '!=', $workShift->id)
                 ->update(['is_default' => false]);
@@ -164,7 +164,7 @@ class WorkShiftController extends Controller
     /**
      * Remove the specified work shift from storage.
      */
-    public function destroy(WorkingShift $workShift): RedirectResponse
+    public function destroy(WorkShift $workShift): RedirectResponse
     {
         // Check if this work shift is assigned to any users
         if ($workShift->users()->count() > 0) {

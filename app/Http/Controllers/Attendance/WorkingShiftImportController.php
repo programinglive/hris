@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Attendance;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
-use App\Models\WorkingShift;
+use App\Models\WorkShift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -128,7 +128,7 @@ class WorkingShiftImportController extends Controller
                 $isActive = in_array(strtolower($rowData['is_active']), ['yes', 'true', '1']);
 
                 // Check if code already exists for this company
-                $existingShift = WorkingShift::where('code', $rowData['code'])
+                $existingShift = WorkShift::where('code', $rowData['code'])
                     ->where('company_id', $company->id)
                     ->first();
 
@@ -144,7 +144,7 @@ class WorkingShiftImportController extends Controller
                     ]);
                 } else {
                     // Create new shift
-                    WorkingShift::create([
+                    WorkShift::create([
                         'name' => $rowData['name'],
                         'code' => $rowData['code'],
                         'start_time' => $rowData['start_time'],
@@ -196,7 +196,7 @@ class WorkingShiftImportController extends Controller
         }
 
         // Get all working shifts for the company
-        $workingShifts = WorkingShift::where('company_id', $company->id)->get();
+        $workingShifts = WorkShift::where('company_id', $company->id)->get();
 
         // Create the export file
         $fileName = 'working_shifts_export_'.date('Y-m-d_His').'.xlsx';
