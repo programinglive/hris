@@ -2,15 +2,16 @@
 
 namespace Database\Factories;
 
+use Database\Factories\Concerns\HasFaker;
 use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Department;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-use function fake;
-
 class DepartmentFactory extends Factory
 {
+    use HasFaker;
+
     /**
      * The name of the factory's corresponding model.
      *
@@ -26,8 +27,8 @@ class DepartmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->unique()->words(3, true),
-            'description' => fake()->paragraph,
+            'name' => $this->faker()->unique()->words(3, true),
+            'description' => $this->faker()->paragraph,
             'company_id' => Company::factory(),
             'branch_id' => Branch::factory(),
             'is_active' => true,

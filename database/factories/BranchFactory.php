@@ -2,14 +2,15 @@
 
 namespace Database\Factories;
 
+use Database\Factories\Concerns\HasFaker;
 use App\Models\Branch;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-use function fake;
-
 class BranchFactory extends Factory
 {
+    use HasFaker;
+
     /**
      * The name of the factory's corresponding model.
      *
@@ -25,25 +26,25 @@ class BranchFactory extends Factory
     public function definition(): array
     {
         $cities = ['Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Makassar', 'Bali', 'Yogyakarta', 'Semarang', 'Palembang', 'Balikpapan'];
-        $city = fake()->randomElement($cities);
+        $city = $this->faker()->randomElement($cities);
 
         $branchTypes = ['Main Office', 'Regional Office', 'Sales Office', 'Service Center', 'Warehouse', 'Retail Store'];
-        $branchType = fake()->randomElement($branchTypes);
+        $branchType = $this->faker()->randomElement($branchTypes);
 
         return [
             'name' => $city.' '.$branchType,
-            'code' => strtoupper(substr($city, 0, 3)).'-'.fake()->numerify('###'),
-            'address' => fake()->streetAddress(),
+            'code' => strtoupper(substr($city, 0, 3)).'-'.$this->faker()->numerify('###'),
+            'address' => $this->faker()->streetAddress(),
             'city' => $city,
-            'state' => fake()->state(),
-            'postal_code' => fake()->postcode(),
+            'state' => $this->faker()->state(),
+            'postal_code' => $this->faker()->postcode(),
             'country' => 'Indonesia',
-            'phone' => '+62'.fake()->numerify('##########'),
-            'email' => strtolower(substr($city, 0, 3)).'.'.fake()->word().'@beautyhris.com',
+            'phone' => '+62'.$this->faker()->numerify('##########'),
+            'email' => strtolower(substr($city, 0, 3)).'.'.$this->faker()->word().'@beautyhris.com',
             'company_id' => Company::factory(),
             'is_main_branch' => false,
-            'is_active' => fake()->boolean(90), // 90% chance of being active
-            'description' => fake()->paragraph(),
+            'is_active' => $this->faker()->boolean(90), // 90% chance of being active
+            'description' => $this->faker()->paragraph(),
         ];
     }
 

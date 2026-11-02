@@ -2,14 +2,15 @@
 
 namespace Database\Factories;
 
+use Database\Factories\Concerns\HasFaker;
 use App\Models\Company;
 use App\Models\Level;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-use function fake;
-
 class LevelFactory extends Factory
 {
+    use HasFaker;
+
     /**
      * The name of the factory's corresponding model.
      *
@@ -25,11 +26,11 @@ class LevelFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->jobTitle(),
-            'description' => fake()->paragraph(),
-            'level_order' => fake()->numberBetween(1, 10),
+            'name' => $this->faker()->jobTitle(),
+            'description' => $this->faker()->paragraph(),
+            'level_order' => $this->faker()->numberBetween(1, 10),
             'company_id' => Company::factory(),
-            'is_active' => fake()->boolean(80),
+            'is_active' => $this->faker()->boolean(80),
         ];
     }
 }

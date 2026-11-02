@@ -2,23 +2,24 @@
 
 namespace Database\Factories;
 
+use Database\Factories\Concerns\HasFaker;
 use App\Models\Company;
 use App\Models\WorkShift;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-use function fake;
-
 class WorkShiftFactory extends Factory
 {
+    use HasFaker;
+
     protected $model = WorkShift::class;
 
     public function definition(): array
     {
         return [
-            'name' => fake()->jobTitle,
-            'start_time' => fake()->time('H:i:s'),
-            'end_time' => fake()->time('H:i:s'),
-            'code' => 'WSH'.str_pad(fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT),
+            'name' => $this->faker()->jobTitle,
+            'start_time' => $this->faker()->time('H:i:s'),
+            'end_time' => $this->faker()->time('H:i:s'),
+            'code' => 'WSH'.str_pad($this->faker()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT),
             'company_id' => Company::factory(),
             'is_active' => true,
         ];

@@ -2,13 +2,14 @@
 
 namespace Database\Factories;
 
+use Database\Factories\Concerns\HasFaker;
 use App\Models\UserDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-use function fake;
-
 class UserDetailFactory extends Factory
 {
+    use HasFaker;
+
     /**
      * The name of the factory's corresponding model.
      *
@@ -27,8 +28,8 @@ class UserDetailFactory extends Factory
 
         return [
             'user_id' => null, // Will be set by UserFactory
-            'employee_code' => 'EMP'.fake()->unique()->numerify('######'),
-            'status' => fake()->randomElement($statuses),
+            'employee_code' => 'EMP'.$this->faker()->unique()->numerify('######'),
+            'status' => $this->faker()->randomElement($statuses),
             'company_id' => null, // Will be set by UserFactory
             'branch_id' => null,
             'department_id' => null,
@@ -36,7 +37,7 @@ class UserDetailFactory extends Factory
             'sub_division_id' => null,
             'level_id' => null,
             'position_id' => null,
-            'join_date' => fake()->dateTimeBetween('-5 years', 'now'),
+            'join_date' => $this->faker()->dateTimeBetween('-5 years', 'now'),
             'exit_date' => null,
             'gender' => null,
             'date_of_birth' => null,

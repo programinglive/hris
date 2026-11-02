@@ -2,16 +2,17 @@
 
 namespace Database\Factories;
 
+use Database\Factories\Concerns\HasFaker;
 use App\Models\LeaveRequest;
 use App\Models\LeaveType;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-use function fake;
-
 class LeaveRequestFactory extends Factory
 {
+    use HasFaker;
+
     protected $model = LeaveRequest::class;
 
     public function definition(): array
@@ -25,7 +26,7 @@ class LeaveRequestFactory extends Factory
             'start_date' => $startDate,
             'end_date' => $endDate,
             'total_days' => $startDate->diffInDays($endDate) + 1,
-            'reason' => fake()->sentence,
+            'reason' => $this->faker()->sentence,
             'status' => 'pending',
         ];
     }
