@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Concerns\TruncatesTablesPortably;
 use App\Models\Company;
 use App\Models\WorkingShift;
 use Illuminate\Database\Seeder;
@@ -9,15 +10,14 @@ use Illuminate\Support\Facades\DB;
 
 class WorkingShiftSeeder extends Seeder
 {
+    use TruncatesTablesPortably;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
         // Clear existing working shifts to avoid duplicates
-        DB::statement('PRAGMA foreign_keys = OFF');
-        DB::table('working_shifts')->truncate();
-        DB::statement('PRAGMA foreign_keys = ON');
 
         $this->command->info('Seeding working shifts...');
 

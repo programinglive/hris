@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Concerns\TruncatesTablesPortably;
 use App\Models\Branch;
 use App\Models\Company;
 use App\Models\Department;
@@ -19,16 +20,19 @@ use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
+    use TruncatesTablesPortably;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        $this->clearTables(['user_details']);
+
         // Clear existing user details to avoid duplicates
-        DB::statement('PRAGMA foreign_keys = OFF');
-        UserDetail::truncate();
+        $this->withoutForeignKeys(function () {
         // Don't truncate users table as it may have admin user created in DatabaseSeeder
-        DB::statement('PRAGMA foreign_keys = ON');
+        });
 
         // Make sure we have companies and branches
         $companies = Company::all();

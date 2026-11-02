@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Concerns\TruncatesTablesPortably;
 use App\Models\Branch;
 use App\Models\Company;
 use Illuminate\Database\Seeder;
@@ -9,15 +10,16 @@ use Illuminate\Support\Facades\DB;
 
 class BranchSeeder extends Seeder
 {
+    use TruncatesTablesPortably;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        $this->clearTables(['branches']);
+
         // Clear existing branches to avoid duplicates
-        DB::statement('PRAGMA foreign_keys = OFF');
-        Branch::truncate();
-        DB::statement('PRAGMA foreign_keys = ON');
 
         // Get all companies
         $companies = Company::all();

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Concerns\TruncatesTablesPortably;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Division;
@@ -12,15 +13,16 @@ use Illuminate\Support\Facades\DB;
 
 class PositionSeeder extends Seeder
 {
+    use TruncatesTablesPortably;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        $this->clearTables(['positions']);
+
         // Clear existing positions to avoid duplicates
-        DB::statement('PRAGMA foreign_keys = OFF');
-        Position::truncate();
-        DB::statement('PRAGMA foreign_keys = ON');
 
         // Get the first company
         $company = Company::with([

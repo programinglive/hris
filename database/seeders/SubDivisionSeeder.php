@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Concerns\TruncatesTablesPortably;
 use App\Models\Division;
 use App\Models\SubDivision;
 use App\Models\User;
@@ -10,15 +11,16 @@ use Illuminate\Support\Facades\DB;
 
 class SubDivisionSeeder extends Seeder
 {
+    use TruncatesTablesPortably;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        $this->clearTables(['sub_divisions']);
+
         // Clear existing sub-divisions to avoid duplicates
-        DB::statement('PRAGMA foreign_keys = OFF');
-        SubDivision::truncate();
-        DB::statement('PRAGMA foreign_keys = ON');
 
         // Get all divisions
         $divisions = Division::all();

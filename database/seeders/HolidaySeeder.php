@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Concerns\TruncatesTablesPortably;
 use App\Models\Company;
 use App\Models\Holiday;
 use Carbon\Carbon;
@@ -10,15 +11,16 @@ use Illuminate\Support\Facades\DB;
 
 class HolidaySeeder extends Seeder
 {
+    use TruncatesTablesPortably;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        $this->clearTables(['holidays']);
+
         // Clear existing holidays to avoid duplicates
-        DB::statement('PRAGMA foreign_keys = OFF');
-        Holiday::truncate();
-        DB::statement('PRAGMA foreign_keys = ON');
 
         $this->command->info('Seeding holidays...');
 

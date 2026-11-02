@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Concerns\TruncatesTablesPortably;
 use App\Models\Department;
 use App\Models\Division;
 use Illuminate\Database\Seeder;
@@ -9,15 +10,16 @@ use Illuminate\Support\Facades\DB;
 
 class DivisionSeeder extends Seeder
 {
+    use TruncatesTablesPortably;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        $this->clearTables(['divisions']);
+
         // Clear existing divisions to avoid duplicates
-        DB::statement('PRAGMA foreign_keys = OFF');
-        Division::truncate();
-        DB::statement('PRAGMA foreign_keys = ON');
 
         // Get all departments
         $departments = Department::all();
