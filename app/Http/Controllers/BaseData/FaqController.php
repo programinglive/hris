@@ -28,7 +28,7 @@ class FaqController extends Controller
 
         $faqs = $query->paginate($perPage);
 
-        return Inertia::render('basedata/faq/index', [
+        return Inertia::render('basedata/faq/lists', [
             'faqs' => $faqs->toArray(),
             'search' => $search,
         ]);

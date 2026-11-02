@@ -96,7 +96,7 @@ class TimeController extends Controller
      */
     public function show(TimeLog $timeLog): Response
     {
-        $timeLog->load('user', 'user.detail');
+        $timeLog->load('user', 'user.userDetails');
 
         return Inertia::render('attendance/time/show', [
             'timeLog' => $timeLog,
@@ -108,7 +108,7 @@ class TimeController extends Controller
      */
     public function edit(TimeLog $timeLog): Response
     {
-        $timeLog->load('user', 'user.detail');
+        $timeLog->load('user', 'user.userDetails');
         $users = User::with('detail')->whereHas('detail', function ($q) {
             $q->whereNotNull('employee_code');
         })->orderBy('name')->get(['id', 'name']);

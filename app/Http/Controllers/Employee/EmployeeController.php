@@ -149,8 +149,13 @@ class EmployeeController extends Controller
      */
     public function show(User $user)
     {
-        return Inertia::render('employee/show', [
-            'employee' => $user->load(['roles', 'brands', 'workSchedules']),
+        // The detail page is employee/details.tsx; there is no show.tsx.
+        return Inertia::render('employee/details', [
+            'employee' => $user->load([
+                'roles', 'brands', 'workSchedules',
+                'userDetails.position', 'userDetails.department',
+                'userDetails.branch', 'userDetails.company',
+            ]),
         ]);
     }
 
