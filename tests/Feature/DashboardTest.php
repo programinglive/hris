@@ -21,7 +21,7 @@ test('dashboard contains highlight cards', function () {
     $response = $this->get('/dashboard');
 
     $response->assertInertia(function ($page) {
-        $page->component('dashboard');
+        $page->component('Dashboard');
     });
 });
 
@@ -31,6 +31,6 @@ test('dashboard contains charts', function () {
     $response = $this->get('/dashboard');
 
     $response->assertInertia(function ($page) {
-        $page->component('dashboard');
+        $page->component('Dashboard');
     });
 });
