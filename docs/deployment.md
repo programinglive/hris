@@ -1,5 +1,11 @@
 # Deploy — `hris.programinglive.com`
 
+> **This host runs the public demo, not a production service.** It is a small
+> shared box (2 vCPU / 8 GB) that also serves a dozen other sites. Capacity is
+> deliberately not raised: 502s under load are expected and are not application
+> bugs. For a real deployment, run your own instance — the steps below apply,
+> but size the machine and the PHP-FPM pool for your traffic.
+
 Production runs on `bw-server-clean` (GCP, Debian 12, nginx 1.22.1, PHP 8.3, PostgreSQL 16).
 
 ## Topology
@@ -116,6 +122,10 @@ sudo supervisorctl restart hris-worker:*
 ```
 
 ## Verifying a deploy
+
+Run these against the site you just deployed. `502` means the server is busy
+(see the note at the top); only a `500` with a matching `laravel.log` entry is a
+defect.
 
 ```bash
 # expected: 200

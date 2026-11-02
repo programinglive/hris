@@ -16,6 +16,32 @@ Both seeded accounts (`admin@beautyhris.com` and `test@example.com`) use the pas
 
 > **This instance is a demo.** It is wiped and reseeded periodically, and the credentials above are intentionally public so anyone can explore the app. Do not enter real personal data. If you deploy your own copy, change the passwords.
 
+### What this demo is, and is not
+
+The demo exists so people can click through the app. It shares a small server
+with other sites, **2 vCPU / 8 GB, no scaling**, and nothing about it is tuned
+for load.
+
+- **It is not a production service.** No SLA, no backups you should rely on, no
+  capacity planning. Pages may return **502** when the shared PHP-FPM pool is
+  busy with another site. That is the expected behaviour of a demo on a shared
+  box, not a bug in this application.
+- **Do not report 502 as a bug.** If a page loads when you retry a few seconds
+  later, the app is fine and the server was busy. A real regression shows up as
+  a **500** with a stack trace in `storage/logs/laravel.log`.
+- **It is not a benchmark.** Load-testing this host will degrade every other
+  site on it.
+- **Capacity will not be raised for the demo.** If you need reliability, run your
+  own instance: see [docs/deployment.md](docs/deployment.md).
+
+If you are evaluating whether pages work, the two signals worth trusting are:
+
+| Signal | Meaning |
+|---|---|
+| `500` + entry in `laravel.log` | a real defect worth reporting |
+| `502` | the shared pool was busy; retry |
+| `200` / `302` | working as intended |
+
 ## About HRIS Project
 
 HRIS Project is a modern human resource management system designed to help businesses streamline their HR operations. The platform provides tools for managing employees, company structure, attendance, and more, all within a user-friendly interface.
