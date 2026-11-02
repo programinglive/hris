@@ -102,7 +102,7 @@ class UserWorkShiftController extends Controller
 
         UserWorkShift::create($validator->validated());
 
-        return redirect()->route('user-work-shifts.index')
+        return redirect()->route('attendance.working-shift.assignment.index')
             ->with('success', 'Work shift assigned successfully.');
     }
 
@@ -196,7 +196,7 @@ class UserWorkShiftController extends Controller
 
         $userWorkShift->update($validator->validated());
 
-        return redirect()->route('user-work-shifts.index')
+        return redirect()->route('attendance.working-shift.assignment.index')
             ->with('success', 'Work shift assignment updated successfully.');
     }
 
@@ -207,7 +207,7 @@ class UserWorkShiftController extends Controller
     {
         $userWorkShift->delete();
 
-        return redirect()->route('user-work-shifts.index')
+        return redirect()->route('attendance.working-shift.assignment.index')
             ->with('success', 'Work shift assignment deleted successfully.');
     }
 }

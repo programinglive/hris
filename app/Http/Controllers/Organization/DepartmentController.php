@@ -97,8 +97,8 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        $managers = User::whereHas('detail', function ($query) {
-            $query->whereIn('position', ['Manager', 'Director', 'System Administrator']);
+        $managers = User::whereHas('userDetails.position', function ($query) {
+            $query->whereIn('name', ['Manager', 'Director', 'System Administrator']);
         })->get()->map(function ($user) {
             return [
                 'id' => $user->id,
@@ -204,7 +204,7 @@ class DepartmentController extends Controller
                 return [
                     'id' => $employee->user->id,
                     'name' => $employee->user->name,
-                    'position' => $employee->position,
+                    'position' => $employee->userDetails?->position?->name,
                 ];
             }),
         ];
@@ -221,8 +221,8 @@ class DepartmentController extends Controller
     {
         $department = Department::findOrFail($id);
 
-        $managers = User::whereHas('detail', function ($query) {
-            $query->whereIn('position', ['Manager', 'Director', 'System Administrator']);
+        $managers = User::whereHas('userDetails.position', function ($query) {
+            $query->whereIn('name', ['Manager', 'Director', 'System Administrator']);
         })->get()->map(function ($user) {
             return [
                 'id' => $user->id,
