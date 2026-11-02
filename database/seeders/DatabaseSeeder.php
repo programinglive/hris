@@ -177,9 +177,14 @@ class DatabaseSeeder extends Seeder
                 'join_date' => now(),
             ]);
 
-            // Assign admin role to test user
-            if (Role::where('name', 'admin')->exists()) {
-                $testUser->assignRole('admin');
+            // RoleSeeder creates 'administrator'; looking for 'admin' meant this
+            // never ran and the seeded user had no role.
+            $adminRole = Role::where('name', 'administrator')
+                ->where('company_id', $firstCompany->id)
+                ->first();
+
+            if ($adminRole) {
+                $testUser->assignRole($adminRole);
             }
         }
     }
