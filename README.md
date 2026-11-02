@@ -1,6 +1,20 @@
 # HRIS SaaS Open Source Project
 
-A comprehensive Human Resource Information System (HRIS) built with Laravel, Inertia.js, React, and TypeScript. This open-source project is designed to help businesses streamline their HR operations, and while it's being used by BeautyWorld, it's available for anyone to use and contribute to.
+A comprehensive Human Resource Information System (HRIS) built with Laravel, Inertia.js, React, and TypeScript. This open-source project helps businesses streamline their HR operations, and while it is used by BeautyWorld, it is available for anyone to use and contribute to.
+
+## Live demo
+
+A public instance runs so you can try the application without installing anything:
+
+| | |
+|---|---|
+| URL | https://hris.programinglive.com |
+| Email | `admin@beautyhris.com` |
+| Password | `password` |
+
+Both seeded accounts (`admin@beautyhris.com` and `test@example.com`) use the password `password` and hold the `administrator` role.
+
+> **This instance is a demo.** It is wiped and reseeded periodically, and the credentials above are intentionally public so anyone can explore the app. Do not enter real personal data. If you deploy your own copy, change the passwords.
 
 ## About HRIS Project
 
@@ -13,14 +27,15 @@ HRIS Project is a modern human resource management system designed to help busin
   - Import branch data using templates
   - Manage multiple brands
   - Organize company structure hierarchically
-  - Secure company registration with verification
+  - Company registration for new tenants
 
 - **Employee Management**
   - Comprehensive employee database with detailed records
-  - Import employee data in bulk
+  - Import employee data in bulk from Excel/CSV
   - View and manage employee users
   - Support for multiple roles per user
   - Associate employees with multiple brands
+  - Assign work schedules and work shifts
 
 - **User Management**
   - Role-based access control
@@ -33,27 +48,32 @@ HRIS Project is a modern human resource management system designed to help busin
   - Built with React and Inertia.js
   - Responsive design for desktop and mobile
   - Intuitive navigation
-  - Real-time updates
+
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| Backend | Laravel 12, PHP 8.3+ |
+| Frontend | React 19, TypeScript, Inertia.js, Vite, Tailwind CSS |
+| Database | SQLite (development), PostgreSQL or MySQL (production) |
+| Queue & scheduler | Laravel queue (database driver) + `schedule:run` cron |
 
 ## Installation
 
-Follow these steps to set up the HRIS Project on your local machine:
-
 ### Prerequisites
 
-- PHP 8.3 or higher
-- Composer
-- Node.js and npm
-- SQLite (for development)
-- MySQL or PostgreSQL (for production)
+- PHP 8.3 or higher, with the usual Laravel extensions
+- Composer 2
+- Node.js 20+ and npm
+- SQLite for development, or MySQL/PostgreSQL for production
 
-### Setup Instructions
+### Setup
 
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/beautyworld_repository/hrisnew.git
-cd hrisnew
+git clone https://github.com/programinglive/hris.git
+cd hris
 ```
 
 2. **Install PHP dependencies**
@@ -64,128 +84,116 @@ composer install
 
 3. **Install JavaScript dependencies**
 
+The lockfile carries a React 19 / `@tinymce/tinymce-react@6` peer conflict, so `npm ci` needs the flag:
+
 ```bash
-npm install --legacy-peer-deps
+npm ci --legacy-peer-deps
 ```
 
-4. **Set up environment variables**
+4. **Environment**
 
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-5. **Configure your database**
+5. **Configure the database**
 
-For development (SQLite):
-Edit the `.env` file:
+Development (SQLite) — `database/database.sqlite` must exist:
 
-```
+```env
 DB_CONNECTION=sqlite
 ```
 
-For production (MySQL/PostgreSQL):
-Edit the `.env` file and set your database connection details:
+Production (PostgreSQL example):
 
-```
-DB_CONNECTION=mysql
+```env
+DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=hris_project
-DB_USERNAME=root
-DB_PASSWORD=
+DB_PORT=5432
+DB_DATABASE=pghris_db
+DB_USERNAME=pghris_user
+DB_PASSWORD=secret
 ```
 
-6. **Run migrations and seed the database**
+For production also set:
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://your-domain.example
+SESSION_DRIVER=database
+QUEUE_CONNECTION=database
+CACHE_STORE=database
+```
+
+6. **Schema and demo data**
 
 ```bash
-php artisan migrate --seed
+php artisan migrate
+php artisan db:seed        # optional: creates the demo accounts below
 ```
 
-7. **Start the development server**
+Seeding creates `admin@beautyhris.com` and `test@example.com`, password `password`, role `administrator`, plus 8 sample companies and the base organization structure (branches, departments, divisions, positions, levels, roles, working calendars).
+
+7. **Build the frontend**
 
 ```bash
-php artisan serve
-npm run dev
+npm run build
 ```
 
-## Installation Wizard
+8. **Run it**
 
-The Installation Wizard is a one-time setup process that runs when you first pull and install the application. It is used to set up the initial company configuration and administrator account. This wizard:
+```bash
+php artisan serve    # http://localhost:8000
+npm run dev          # only when editing frontend assets
+```
 
-- Runs only once during fresh installation
-- Sets up the primary company that will be used to manage the HRIS system
-- Creates the initial administrator account
-- Configures essential system settings
-- Must be completed before any other functionality is accessible
+## Production notes
 
-### Key Differences
+Full instructions live in [docs/deployment.md](docs/deployment.md). Two things catch people out:
 
-| Feature | Installation Wizard | Company Registration |
-|---------|---------------------|----------------------|
-| Purpose | Initial system setup | New company registration |
-| Usage   | One-time during installation | Available after installation |
-| Access  | First-time users only | Available to all users |
-| Result  | Sets up primary company | Creates additional company |
-| Flow    | Required before use | Optional after setup |
+- **Queue worker.** With `QUEUE_CONNECTION=database`, nothing happens without a worker. Run `php artisan queue:work` under supervisor or systemd; a sample config is in `deploy/supervisor/hris-worker.conf`.
+- **Nginx behind a TLS-terminating proxy.** If your load balancer ends TLS and forwards over HTTP, the vhost must pass the original scheme to PHP:
+
+  ```nginx
+  fastcgi_param HTTPS $http_x_forwarded_proto;
+  ```
+
+  Without it Laravel emits `http://` asset URLs, the browser blocks them as mixed content, and the page renders **blank with no visible error**. A ready vhost is in `deploy/nginx/hris.programinglive.com.conf`.
+
+Schema history and the one irreversible step (a column rename) are documented in [docs/migration-notes.md](docs/migration-notes.md).
 
 ## Company Registration
 
-Company Registration is a feature for users who want to use the HRIS system as a SaaS application. It allows:
+Company registration is the multi-tenant entry point: it lets a new company sign up on an existing instance, create its own administrator, and keep its data separate from other tenants.
 
-- Existing users to register new companies
-- Users to join the HRIS system as a new company
-- Multiple companies to use the same HRIS instance
-- Companies to have their own separate data and configurations
+- `GET /register/company` renders the registration form
+- `POST /register/company` creates the company, its administrator, and the first `user_details` row in one transaction
 
-## Security Features
+Note that the older multi-step wizard (`validate-contact`, `verify-code`, `save-company-details`) has been removed. Only the single-step form exists in the current code; the tests that covered the wizard are skipped with that reason.
 
-- All registration data is validated before submission
-- Password requirements are enforced for admin accounts
-- Company information is validated against existing records
-- Session-based security to prevent unauthorized access
-- 6-digit verification code system
-- Contact verification through email or phone
+## Landing page and registration form
 
-### Verification System
+- `GET /` renders the landing page
+- `GET /installation-wizard` renders the first-run setup page
+- `GET /register-company` renders the standalone registration page
 
-- Contact verification through email or phone
-- 6-digit verification code system
-- Automatic code sending
-- Secure session-based verification
-- Multiple verification attempts allowed
+## Testing
 
-### Error Handling
+```bash
+php artisan test
+```
 
-- Clear error messages for each step
-- Validation feedback
-- Progress tracking
-- Ability to go back and edit previous steps
+The suite covers feature and unit tests for employees, organization structure, attendance, and imports.
 
-## Usage
+- `tests/Concerns/SkipsViteWhenUnbuilt` keeps the suite meaningful on a fresh clone: the compiled frontend lives in `public/build`, which is git-ignored, so without it every Inertia response throws "Vite manifest not found". When the manifest is missing the trait swaps in Laravel's null Vite handler; once `npm run build` has run, the real instance is used.
+- A handful of tests are skipped deliberately, each with a reason in the test itself (mostly endpoints that no longer exist).
 
-Once the installation wizard is complete, you can access the HRIS system through your web browser. The system provides a comprehensive interface for managing all HR-related tasks.
+## Contributing
 
-### Accessing the System
-
-- Login URL: `http://localhost:8000`
-- Default admin credentials will be set during the installation wizard
-
-### Features
-
-1. **Organization Management**
-   - Create and manage companies, branches, departments, divisions, sub-divisions, positions, and position levels
-   - Import branch data using templates
-   - Manage multiple brands
-   - Organize company structure hierarchically
-
-2. **Employee Management**
-   - Comprehensive employee database with detailed records
-   - Import employee data in bulk
-   - View and manage employee users
-   - Support for multiple roles per user
-   - Associate employees with multiple brands
+Issues and pull requests are welcome. Please run `php artisan test` before opening a PR.
 
 ## License
 
-This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
