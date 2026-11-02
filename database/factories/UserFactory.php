@@ -37,13 +37,17 @@ class UserFactory extends Factory
     public function configureInitialData(): static
     {
         return $this->afterCreating(function (User $user) {
-            // Create user details
-            $user->userDetails()->create([
-                'user_id' => $user->id,
-                'phone' => $this->faker->phoneNumber(),
-                'address' => $this->faker->address(),
-                'date_of_birth' => $this->faker->dateTimeBetween('-50 years', '-20 years'),
-            ]);
+            // Create user details only when there is none yet; forCompany() may
+            // have created one already and a second row makes hasOne resolve an
+            // arbitrary record.
+            $user->userDetails()->firstOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'phone' => $this->faker->phoneNumber(),
+                    'address' => $this->faker->address(),
+                    'date_of_birth' => $this->faker->dateTimeBetween('-50 years', '-20 years'),
+                ]
+            );
 
             // Assign default work schedule
             $defaultSchedule = WorkSchedule::where('is_default', true)
@@ -69,19 +73,10 @@ class UserFactory extends Factory
                 ]);
             }
 
-            // Assign the company's employee role. users has no
-            // primary_company_id column; membership lives on user_details.
-            $companyId = $user->userDetails?->company_id;
-
-            $defaultRole = $companyId
-                ? \App\Models\Role::where('company_id', $companyId)->where('name', 'employee')->first()
-                : null;
-
-            if ($defaultRole) {
-                $user->roles()->syncWithoutDetaching([
-                    $defaultRole->id => ['company_id' => $companyId],
-                ]);
-            }
+            // Deliberately no role assignment here. configureInitialData() is
+            // opt-in via ->configureInitialData(), and silently granting the
+            // employee role made every factory user look like staff, which
+            // broke every list/filter assertion. Tests attach roles explicitly.
         });
     }
 

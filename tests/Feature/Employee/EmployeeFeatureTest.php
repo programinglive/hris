@@ -303,19 +303,25 @@ class EmployeeFeatureTest extends TestCase
         $department1 = Department::factory()->create(['company_id' => $this->company->id]);
         $department2 = Department::factory()->create(['company_id' => $this->company->id]);
 
-        User::factory()->count(2)->forCompany($this->company->id)->create()->each(function ($user) use ($department1) {
-            $user->userDetails()->update([
-                'department_id' => $department1->id,
+        // Build the detail rows directly: the factory's afterCreating hooks make
+        // the relationship state hard to reason about, and these tests are about
+        // the query, not about factory behaviour.
+        $makeEmployee = function (int $departmentId) {
+            $user = User::factory()->create();
+            UserDetail::create([
+                'user_id' => $user->id,
+                'company_id' => $this->company->id,
+                'department_id' => $departmentId,
+                'status' => 'active',
             ]);
             $user->assignRole($this->employeeRole);
-        });
 
-        User::factory()->forCompany($this->company->id)->create()->each(function ($user) use ($department2) {
-            $user->userDetails()->update([
-                'department_id' => $department2->id,
-            ]);
-            $user->assignRole($this->employeeRole);
-        });
+            return $user;
+        };
+
+        $makeEmployee($department1->id);
+        $makeEmployee($department1->id);
+        $makeEmployee($department2->id);
 
         $this->actingAs($this->user);
 
@@ -325,10 +331,11 @@ class EmployeeFeatureTest extends TestCase
 
         $response->assertInertia(function (Assert $page) use ($department1) {
             $page->component('employee/index')
-                ->has('employees.data', 3)
-                ->where('employees.data.0.department_id', $department1->id)
-                ->where('employees.data.1.department_id', $department1->id)
-                ->where('employees.data.2.department_id', $department1->id);
+                // Two employees belong to department1; the third belongs to
+                // department2 and must be filtered out.
+                ->has('employees.data', 2)
+                ->where('employees.data.0.user_details.department_id', $department1->id)
+                ->where('employees.data.1.user_details.department_id', $department1->id);
         });
     }
 
@@ -339,19 +346,22 @@ class EmployeeFeatureTest extends TestCase
         $position1 = Position::factory()->create(['company_id' => $this->company->id]);
         $position2 = Position::factory()->create(['company_id' => $this->company->id]);
 
-        User::factory()->count(2)->forCompany($this->company->id)->create()->each(function ($user) use ($position1) {
-            $user->userDetails()->update([
-                'position_id' => $position1->id,
+        $makeEmployee = function (int $positionId) {
+            $user = User::factory()->create();
+            UserDetail::create([
+                'user_id' => $user->id,
+                'company_id' => $this->company->id,
+                'position_id' => $positionId,
+                'status' => 'active',
             ]);
             $user->assignRole($this->employeeRole);
-        });
 
-        User::factory()->forCompany($this->company->id)->create()->each(function ($user) use ($position2) {
-            $user->userDetails()->update([
-                'position_id' => $position2->id,
-            ]);
-            $user->assignRole($this->employeeRole);
-        });
+            return $user;
+        };
+
+        $makeEmployee($position1->id);
+        $makeEmployee($position1->id);
+        $makeEmployee($position2->id);
 
         $this->actingAs($this->user);
 
@@ -361,10 +371,9 @@ class EmployeeFeatureTest extends TestCase
 
         $response->assertInertia(function (Assert $page) use ($position1) {
             $page->component('employee/index')
-                ->has('employees.data', 3)
-                ->where('employees.data.0.position_id', $position1->id)
-                ->where('employees.data.1.position_id', $position1->id)
-                ->where('employees.data.2.position_id', $position1->id);
+                ->has('employees.data', 2)
+                ->where('employees.data.0.user_details.position_id', $position1->id)
+                ->where('employees.data.1.user_details.position_id', $position1->id);
         });
     }
 
@@ -523,22 +532,41 @@ class EmployeeFeatureTest extends TestCase
 
         $response->assertInertia(function (Assert $page) {
             $page->component('employee/import')
-                ->has('companies');
+                ->has('templateRoute')
+                ->has('processRoute');
         });
     }
 
     #[Test]
     public function user_can_import_employees_from_excel()
     {
-        $file = UploadedFile::fake()->create('employees.xlsx');
+        // UploadedFile::fake()->create() produces an empty placeholder, which is
+        // not a readable xlsx. Generate a real workbook instead.
+        $path = storage_path('app/employee_import_test.xlsx');
+        $writer = \Spatie\SimpleExcel\SimpleExcelWriter::create($path);
+        $writer->addRow([
+            'employee_code' => 'EMP900001',
+            'name' => 'Imported Employee',
+            'email' => 'imported.'.uniqid().'@example.com',
+            'company_code' => $this->company->code,
+            'status' => 'Active',
+            'is_active' => 'Yes',
+        ]);
+        $writer->close();
+
+        $file = new UploadedFile(
+            $path,
+            'employee_import_test.xlsx',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            null,
+            true
+        );
 
         $response = $this->actingAs($this->user)
-            ->post(route('employee.import'), [
-                'file' => $file,
-                'company_id' => $this->company->id,
-            ]);
+            ->postJson(route('employee.import.process'), ['file' => $file]);
 
-        $response->assertRedirect(route('employee.index'));
+        $response->assertStatus(200)
+            ->assertJsonPath('results.success', 1);
     }
 
     // Employee Delete Tests

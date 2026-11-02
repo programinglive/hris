@@ -134,21 +134,13 @@ class UserDetail extends Model
     {
         $array = parent::toArray();
 
-        // Load relationships if they exist
-        if ($this->relationLoaded('company')) {
-            $array['company'] = $this->company->only('id', 'name');
-        }
-
-        if ($this->relationLoaded('branch')) {
-            $array['branch'] = $this->branch->only('id', 'name');
-        }
-
-        if ($this->relationLoaded('department')) {
-            $array['department'] = $this->department->only('id', 'name');
-        }
-
-        if ($this->relationLoaded('position')) {
-            $array['position'] = $this->position->only('id', 'name');
+        // Load relationships if they exist. A loaded relation can still be null
+        // (nullable FK), and calling only() on null threw a 500 on every
+        // employee page whose detail row lacked, say, a position.
+        foreach (['company', 'branch', 'department', 'position'] as $relation) {
+            if ($this->relationLoaded($relation) && $this->{$relation} !== null) {
+                $array[$relation] = $this->{$relation}->only('id', 'name');
+            }
         }
 
         return $array;

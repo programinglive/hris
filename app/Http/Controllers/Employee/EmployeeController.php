@@ -45,9 +45,22 @@ class EmployeeController extends Controller
             });
         }
 
+        // The list page filters on organisation fields that live on
+        // user_details. Without these the request returned every employee and
+        // the dropdowns appeared to do nothing.
+        foreach (['department_id', 'position_id', 'branch_id', 'company_id'] as $filter) {
+            if ($value = $request->input($filter)) {
+                $query->whereHas('userDetails', function ($details) use ($filter, $value) {
+                    $details->where($filter, $value);
+                });
+            }
+        }
+
         return Inertia::render('employee/index', [
             'employees' => $query->paginate(10)->withQueryString(),
-            'filters' => $request->only(['search', 'status']),
+            'filters' => $request->only([
+                'search', 'status', 'department_id', 'position_id', 'branch_id', 'company_id',
+            ]),
         ]);
     }
 
@@ -164,16 +177,55 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        // users has neither `phone` nor `company_id`; those columns live on
+        // user_details. Writing them to users threw a SQL error on every
+        // update, so the form could never be saved.
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,'.$user->id,
-            'phone' => 'required|string|unique:users,phone,'.$user->id,
-            'company_id' => 'required|exists:companies,id',
+            'password' => 'nullable|string|min:8',
+            'employee_code' => 'nullable|string|max:64',
+            'join_date' => 'nullable|date',
+            'status' => 'nullable|in:active,inactive,on_leave,terminated',
+            'branch_id' => 'nullable|exists:branches,id',
+            'department_id' => 'nullable|exists:departments,id',
+            'division_id' => 'nullable|exists:divisions,id',
+            'sub_division_id' => 'nullable|exists:sub_divisions,id',
+            'position_id' => 'nullable|exists:positions,id',
+            'level_id' => 'nullable|exists:levels,id',
+            'company_id' => 'nullable|exists:companies,id',
+            'phone' => 'nullable|string|max:32',
+            'address' => 'nullable|string',
         ]);
 
-        $user->update($validated);
+        $user->fill([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ]);
 
-        return redirect()->route('employee.index')->with('success', 'Employee updated successfully');
+        if (! empty($validated['password'])) {
+            $user->password = bcrypt($validated['password']);
+        }
+
+        $user->save();
+
+        $detailFields = [
+            'employee_code', 'status', 'join_date', 'branch_id',
+            'department_id', 'division_id', 'sub_division_id', 'position_id',
+            'level_id', 'phone', 'address',
+        ];
+
+        $details = array_intersect_key($validated, array_flip($detailFields));
+
+        if ($details !== []) {
+            $user->userDetails()->updateOrCreate(
+                ['user_id' => $user->id],
+                $details + ['company_id' => $validated['company_id'] ?? null],
+            );
+        }
+
+        return redirect()->route('employee.show', $user)
+            ->with('success', 'Employee updated successfully');
     }
 
     /**
