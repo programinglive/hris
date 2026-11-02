@@ -26,25 +26,25 @@ class CompanyFactory extends Factory
      */
     public function definition(): array
     {
-        $companyName = $this->faker->company();
+        $companyName = fake()->company();
         $companyCode = Str::upper(Str::slug($companyName, '-'));
 
         return [
             'name' => $companyName,
             'code' => $companyCode,
-            'legal_name' => $this->faker->company().' '.$this->faker->companySuffix(),
-            'tax_id' => $this->faker->numerify('##-#######'),
-            'registration_number' => $this->faker->numerify('REG-########'),
-            'email' => $this->faker->unique()->companyEmail(),
-            'phone' => $this->faker->unique()->phoneNumber(),
-            'address' => $this->faker->streetAddress(),
-            'city' => $this->faker->city(),
-            'state' => $this->faker->state(),
-            'postal_code' => $this->faker->postcode(),
-            'country' => $this->faker->country(),
-            'website' => $this->faker->url(),
-            'description' => $this->faker->paragraph(),
-            'is_active' => $this->faker->boolean(80), // 80% chance of being active
+            'legal_name' => fake()->company().' '.fake()->companySuffix(),
+            'tax_id' => fake()->numerify('##-#######'),
+            'registration_number' => fake()->numerify('REG-########'),
+            'email' => fake()->unique()->companyEmail(),
+            'phone' => fake()->unique()->phoneNumber(),
+            'address' => fake()->streetAddress(),
+            'city' => fake()->city(),
+            'state' => fake()->state(),
+            'postal_code' => fake()->postcode(),
+            'country' => fake()->country(),
+            'website' => fake()->url(),
+            'description' => fake()->paragraph(),
+            'is_active' => fake()->boolean(80), // 80% chance of being active
             'owner_id' => null, // Will be set when creating first user
         ];
     }

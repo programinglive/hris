@@ -12,10 +12,10 @@ class WorkScheduleFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->jobTitle(),
-            'start_time' => $this->faker->time(),
-            'end_time' => $this->faker->time(),
-            'company_id' => $this->faker->randomNumber(),
+            'name' => fake()->jobTitle(),
+            'start_time' => fake()->time(),
+            'end_time' => fake()->time(),
+            'company_id' => fake()->randomNumber(),
             'is_active' => true,
         ];
     }

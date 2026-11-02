@@ -19,11 +19,11 @@ class RoleFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->word,
-            'display_name' => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
+            'name' => fake()->unique()->word,
+            'display_name' => fake()->sentence,
+            'description' => fake()->paragraph,
             'is_system' => false,
-            'slug' => $this->faker->unique()->slug,
+            'slug' => fake()->unique()->slug,
             'company_id' => Company::factory(),
         ];
     }

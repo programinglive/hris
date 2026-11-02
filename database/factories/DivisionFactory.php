@@ -23,8 +23,8 @@ class DivisionFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->words(3, true),
-            'description' => $this->faker->paragraph,
+            'name' => fake()->unique()->words(3, true),
+            'description' => fake()->paragraph,
             'department_id' => Department::factory(),
             'is_active' => true,
         ];
